@@ -17,7 +17,7 @@
 **大部分情况下，你只需要修改后端的application.yml里的mysql、redis、七牛配置项，前端需要修改config/index.js里的七牛云相关配置项即可**
 
 
-##前端说明
+## 前端说明
 
 - 基于[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin) 4.2.1，功能做了大量调整，具体如下：
 ```
