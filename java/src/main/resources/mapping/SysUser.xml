@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toesbieya.my.mapper.SysUserMapper">
+    <sql id="searchCondition">
+        <if test="id!=null">and a.id=#{id}</if>
+        <if test="name!=null and name!=''">and a.name like "%"#{name}"%"</if>
+        <if test="role!=null and role!=''">and a.role in (${role})</if>
+        <if test="status!=null">and a.status=#{status}</if>
+        <if test="startTime!=null">and a.ctime <![CDATA[ >= ]]> #{startTime}</if>
+        <if test="endTime!=null">and a.ctime <![CDATA[ <= ]]> #{endTime}</if>
+    </sql>
+    <insert id="add">
+        insert into sys_user (name, pwd, role, avatar, ctime)
+        values (#{name}, #{pwd}, #{role}, #{avatar}, #{ctime})
+    </insert>
+    <update id="update">
+        update sys_user
+        set name=#{name},
+        role=#{role},
+        status=#{status}
+        where id = #{id}
+    </update>
+    <update id="updatePwd">
+        update sys_user
+        set pwd=#{new_pwd}
+        where id = #{id}
+        and pwd = #{old_pwd}
+    </update>
+    <update id="updateAvatar">
+        update sys_user
+        set avatar=#{avatar}
+        where id = #{id}
+    </update>
+    <delete id="del">
+        delete
+        from sys_user
+        where id = #{id}
+        and admin = 0
+    </delete>
+    <select id="getById" resultType="com.toesbieya.my.model.entity.SysUser">
+        select a.*,
+        if(a.admin = 1, '超级管理员', b.name) role_name
+        from sys_user a
+        left join sys_role b on a.role = b.id
+        where a.id = #{id}
+    </select>
+    <select id="getByNameAndPwd" resultType="com.toesbieya.my.model.entity.SysUser">
+        select a.*,
+        if(a.admin = 1, '超级管理员', b.name) role_name
+        from sys_user a
+        left join sys_role b on a.role = b.id
+        where a.name = #{name}
+        and a.pwd = #{pwd}
+    </select>
+    <select id="search" resultType="com.toesbieya.my.model.entity.SysUser"
+            parameterType="com.toesbieya.my.model.vo.search.UserSearch">
+        select a.id, a.name, a.avatar, a.status, a.role, a.admin, a.ctime,if(a.admin = 1, '超级管理员', b.name) role_name
+        from sys_user a
+        left join sys_role b on a.role=b.id
+        where a.admin=0
+        <include refid="searchCondition"/>
+        order by a.ctime desc
+    </select>
+    <select id="isNameExist" resultType="java.lang.Boolean">
+        select if(count(0) > 0, 1, 0)
+        from sys_user
+        where name = #{name}
+        <if test="id!=null">and id!=#{id}</if>
+    </select>
+    <select id="checkByIdAndPwd" resultType="java.lang.Boolean">
+        select if(count(0) > 0, 1, 0)
+        from sys_user
+        where id = #{id}
+        and pwd = #{pwd}
+    </select>
+    <update id="resetPwd">
+        update sys_user set pwd=#{pwd} where id=#{id} and admin=0
+    </update>
+</mapper>

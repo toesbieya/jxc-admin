@@ -1,0 +1,122 @@
+<template>
+    <el-dialog
+            v-drag-dialog
+            :visible="value"
+            append-to-body
+            title="选择客户"
+            width="50%"
+            top="50px"
+            @close="cancel"
+            @open="search"
+    >
+        <el-row>
+            <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
+            <el-button size="small" type="primary" @click="confirm">确 定</el-button>
+            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button
+                    v-if="canGoToSysCustomerPage"
+                    plain
+                    size="small"
+                    type="dashed"
+                    @click="goToSysCustomerPage"
+            >
+                添加客户
+            </el-button>
+        </el-row>
+        <el-scrollbar>
+            <el-row class="table-container">
+                <liner-progress :show="config.loading"/>
+                <el-table
+                        ref="table"
+                        :data="tableData"
+                        current-row-key="id"
+                        highlight-current-row
+                        row-key="id"
+                        @row-click="row=$event"
+                        @row-dblclick="dbclick"
+                >
+                    <el-table-column align="center" label="#" type="index" width="80"/>
+                    <el-table-column align="center" label="客 户" prop="name" show-overflow-tooltip/>
+                    <el-table-column align="center" label="行政区域" prop="region_name" show-overflow-tooltip/>
+                    <el-table-column align="center" label="地 址" prop="address" show-overflow-tooltip/>
+                    <el-table-column align="center" label="联系人" prop="linkman" show-overflow-tooltip/>
+                    <el-table-column align="center" label="联系电话" prop="linkphone" show-overflow-tooltip/>
+                    <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
+                        <template v-slot="{row}">{{row.ctime | timestamp2Date}}</template>
+                    </el-table-column>
+                    <el-table-column align="center" label="状 态" width="120">
+                        <template v-slot="{row}">
+                            <span :class="row.status===1?'success':'error'" class="dot"/>
+                            <span>{{row.status===1?'启用':'禁用'}}</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                        background
+                        :current-page="searchForm.page"
+                        :page-size="searchForm.pageSize"
+                        :total="searchForm.total"
+                        layout="total, prev, pager, next, jumper"
+                        @current-change="pageChange"
+                />
+            </el-row>
+        </el-scrollbar>
+    </el-dialog>
+</template>
+
+<script>
+    import LinerProgress from '@/components/LinerProgress'
+    import tableMixin from '@/mixins/tablePageMixin'
+    import {getCustomers} from "@/api/system/customer"
+    import {elError} from "@/utils/message"
+    import {auth} from "@/utils/auth"
+
+    export default {
+        name: "CustomerSelector",
+        mixins: [tableMixin],
+        components: {LinerProgress},
+        props: {value: Boolean},
+        data() {
+            return {
+                searchForm: {
+                    status: 1
+                }
+            }
+        },
+        computed: {
+            canGoToSysCustomerPage() {
+                return auth('/system/customer')
+            }
+        },
+        methods: {
+            search() {
+                if (!this.value || this.config.loading) return
+                this.config.loading = true
+                this.row = null
+                getCustomers(this.searchForm)
+                    .then(({list, total}) => {
+                        this.searchForm.total = total
+                        this.tableData = list
+                    })
+                    .finally(() => this.config.loading = false)
+            },
+            dbclick(row) {
+                this.row = row
+                this.confirm()
+            },
+            confirm() {
+                if (!this.row) return elError('请选择一个客户')
+                this.$emit('select', this.row)
+            },
+            cancel() {
+                this.$emit('input', false)
+                this.tableData = []
+            },
+            goToSysCustomerPage() {
+                this.$emit('input', false)
+                this.$emit('jump')
+                this.$nextTick(() => this.$router.push('/system/customer'))
+            }
+        }
+    }
+</script>

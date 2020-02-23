@@ -1,0 +1,197 @@
+// cover some element-ui styles
+.el-button {
+    [class*="el-icon-"] + span {
+        margin-left: 7px;
+    }
+
+    //按钮新增类型type=dashed
+    &.el-button--dashed {
+        border-style: dashed;
+    }
+
+    &.el-button--small {
+        font-size: 14px;
+        padding: 8px 15px;
+
+        &.is-circle {
+            padding: 8px;
+        }
+    }
+}
+
+.el-form {
+    .el-row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+.el-table {
+    thead {
+        color: rgba(0, 0, 0, .85)
+    }
+
+    thead > tr > th {
+        background: #fbfbfb;
+    }
+
+    .el-table__body tr.current-row > td {
+        background-color: $--color-primary;
+        color: #fff;
+
+        .el-table__expand-icon {
+            color: #fff;
+        }
+    }
+}
+
+.el-pagination {
+    padding-top: 10px;
+}
+
+.el-scrollbar {
+    height: 100%;
+}
+
+.el-tree {
+    &.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+        background-color: $--color-primary;
+        color: #fff;
+    }
+}
+
+.el-select {
+    width: 100%;
+}
+
+.el-message {
+    @include deep-shadow;
+    border-width: 0;
+
+    .el-message__icon, .el-message__content {
+        color: #fff !important;
+    }
+
+    &.el-message--success {
+        background: $--color-success;
+    }
+
+    &.el-message--info {
+        background: $--color-primary;
+    }
+
+    &.el-message--warning {
+        background: $--color-warning;
+    }
+
+    &.el-message--error {
+        background: $--color-danger;
+    }
+}
+
+.el-message-box {
+    position: relative;
+    @include deep-shadow;
+}
+
+.el-notification {
+    @include deep-shadow;
+
+    .el-notification__icon.el-icon-info {
+        color: $--color-primary;
+    }
+}
+
+.el-card {
+    .el-card__body {
+        height: 100%;
+    }
+
+    .el-card__header + .el-card__body {
+        height: calc(100% - 55px);
+    }
+}
+
+.el-dialog {
+    @include deep-shadow;
+
+    margin-bottom: 0;
+
+    .el-dialog__header {
+        border-bottom: 1px solid #ebeef5;
+        padding: 17px;
+
+        .el-dialog__title {
+            line-height: inherit;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .el-dialog__headerbtn {
+            top: 18px;
+        }
+    }
+
+    .el-dialog__footer {
+        border-top: 1px solid #ebeef5;
+        padding: 10px 16px;
+    }
+
+    .el-scrollbar__wrap {
+        //53 for dialog header,53 for dialog footer,100 for up+down
+        max-height: calc(100vh - 53px - 53px - 100px);
+    }
+}
+
+.el-timeline {
+    padding-left: 1px;
+
+    .el-timeline__empty {
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .el-timeline-item__tail {
+        left: 5px;
+    }
+
+    .el-timeline-item__node--normal {
+        left: 0;
+    }
+
+    .el-scrollbar__wrap {
+        overflow-x: hidden;
+    }
+}
+
+.el-textarea {
+    .el-input__count {
+        background: transparent;
+    }
+}
+
+.el-pagination {
+    text-align: right;
+
+    .el-pagination__editor.el-input {
+        margin: 0 5px;
+    }
+}
+
+.el-loading-mask {
+    background: #fff;
+    color: $--color-primary;
+}
+
+.el-date-editor.el-input,
+.el-date-editor--daterange {
+    width: 100% !important;
+}
+
+
+
+
+
+
+

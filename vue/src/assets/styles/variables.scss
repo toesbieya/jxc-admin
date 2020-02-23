@@ -1,0 +1,59 @@
+//material design的基础颜色
+$--color-red: #F44336;
+$--color-pink: #E91E63;
+$--color-purple: #9C27B0;
+$--color-deep-purple: #673AB7;
+$--color-indigo: #3F51B5;
+$--color-blue: #2196F3;
+$--color-light-blue: #03A9F4;
+$--color-cyan: #00BCD4;
+$--color-teal: #009688;
+$--color-green: #4CAF50;
+$--color-light-green: #8BC34A;
+$--color-lime: #CDDC39;
+$--color-yellow: #FFEB3B;
+$--color-amber: #FFC107;
+$--color-orange: #FF9800;
+$--color-deep-orange: #FF5722;
+$--color-brown: #795548;
+$--color-gray: #9E9E9E;
+$--color-blue-gray: #607D8B;
+
+//覆盖element颜色
+$--color-primary: $--color-blue;
+$--color-success: $--color-green;
+$--color-warning: $--color-deep-orange;
+$--color-danger: $--color-red;
+$--color-info: $--color-teal;
+
+@mixin deep-shadow {
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+}
+
+// sidebar
+$menuText: #bfcbd9;
+$menuBg: #304156;
+$menuHover: #263445;
+$subMenuBg: #1f2d3d;
+$subMenuHover: #001528;
+
+$sideBarWidth: 210px;
+$headerHeight: 90px;
+
+//路由页面的margin
+$pageViewMargin: 15px;
+
+//引入element的scss时需要覆盖字体路径
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+    menuText: $menuText;
+    menuBg: $menuBg;
+    primary: $--color-primary;
+    info: $--color-info;
+    success: $--color-success;
+    danger: $--color-danger;
+    warning: $--color-warning;
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toesbieya.my.mapper.RecAttachmentMapper">
+    <select id="getByPid" resultType="com.toesbieya.my.model.entity.RecAttachment">
+        select *
+        from rec_attachment
+        where pid = #{pid}
+        order by `order` desc
+    </select>
+    <select id="getUrlByPid" resultType="java.lang.String">
+        select url
+        from rec_attachment
+        where pid = #{pid}
+    </select>
+
+    <insert id="add" parameterType="com.toesbieya.my.model.entity.RecAttachment">
+        insert into rec_attachment (pid, name, time, `order`, url,size)
+        VALUES
+        <foreach collection="list" item="i" separator=",">
+            (#{i.pid}, #{i.name}, #{i.time}, #{i.order}, #{i.url},#{i.size})
+        </foreach>
+    </insert>
+
+    <delete id="del">
+        delete
+        from rec_attachment
+        where 0
+        <if test="id!=null">and id = #{id}</if>
+        <if test="pid!=null and pid!=''">and pid = #{pid}</if>
+        <if test="url!=null and url!=''">and url = #{url}</if>
+    </delete>
+    <delete id="delByUrls">
+        delete
+        from rec_attachment
+        where url in
+        <foreach collection="list" open="(" close=")" item="i" separator=",">
+            #{i}
+        </foreach>
+    </delete>
+    <delete id="delByPid">
+        delete
+        from rec_attachment
+        where pid = #{pid}
+    </delete>
+</mapper>

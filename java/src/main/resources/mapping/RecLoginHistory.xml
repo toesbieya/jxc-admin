@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toesbieya.my.mapper.RecLoginHistoryMapper">
+    <sql id="searchCondition">
+        <if test="uid!=null">and uid=#{uid}</if>
+        <if test="uname!=null and uname!=''">and uname like "%"#{uname}"%"</if>
+        <if test="type!=null">and type=#{type}</if>
+        <if test="ip!=null and ip!=''">and ip =#{ip}</if>
+        <if test="address!=null and address!=''">and address like "%"#{address}"%"</if>
+        <if test="startTime!=null">and time <![CDATA[ >= ]]> #{startTime}</if>
+        <if test="endTime!=null">and time <![CDATA[ <= ]]> #{endTime}</if>
+    </sql>
+    <select id="getByUid" resultType="com.toesbieya.my.model.entity.RecLoginHistory">
+        select *
+        from rec_login_history
+        where uid = #{uid}
+        order by time desc
+    </select>
+    <select id="search" resultType="com.toesbieya.my.model.entity.RecLoginHistory"
+            parameterType="com.toesbieya.my.model.vo.search.LoginHistorySearch">
+        select *
+        from rec_login_history
+        where 1
+        <include refid="searchCondition"/>
+        order by time desc
+    </select>
+
+    <insert id="insert" parameterType="com.toesbieya.my.model.entity.RecLoginHistory">
+        insert into rec_login_history (uid, uname, ip, address, type, time)
+        VALUES (#{uid}, #{uname}, #{ip}, #{address}, #{type}, #{time})
+    </insert>
+</mapper>

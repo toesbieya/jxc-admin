@@ -1,0 +1,63 @@
+server:
+  port: 8081
+  tomcat:
+    #指定tomcat临时目录，否则每次启动都会在用户临时文件夹里创建一个tomcat文件夹
+    basedir: C:\static
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/your repo?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: your name
+    password: your password
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 3000
+    jedis:
+      pool:
+        max-idle: 500
+        min-idle: 50
+        max-active: 2000
+        max-wait: 1000
+    password: your password,if no use password,remove this node
+  session:
+    store-type: redis
+  servlet:
+    multipart:
+      #单文件上传最大值
+      max-file-size: 10MB
+      #单次请求最大值
+      max-request-size: 10MB
+
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+socket:
+  hostname: localhost
+  port: 12580
+  max-frame-payload: 1048576
+  max-http-content: 1048576
+  event:
+    logout: logout
+
+file:
+  #临时文件保存目录
+  temp: C:\static\
+  #excel模板目录
+  template: C:\static\template\
+
+qiniu:
+  access-key: your key
+  secret-key: your key
+  bucket: your bucket
+
+#logging:
+#  level:
+#    com.toesbieya.my.mapper: DEBUG

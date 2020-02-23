@@ -1,0 +1,174 @@
+@import "variables";
+@import "~element-ui/packages/theme-chalk/src/index";
+@import "transition";
+@import "element-ui";
+@import "sidebar";
+@import "nprogress";
+
+body {
+    height: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#app {
+    height: 100%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+a:focus,
+a:active,
+div:focus {
+    outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+}
+
+//滚动条样式修改
+::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+
+    &-thumb {
+        background-color: rgba(#909399, 0.3);
+        transition: .3s background-color;
+
+        &:hover {
+            background: rgba(#909399, 0.5);
+        }
+    }
+}
+
+.clearfix {
+    &:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+}
+
+.overflow-hidden {
+    overflow: hidden !important;
+}
+
+.text-center {
+    text-align: center
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+.max-view-height {
+    height: calc(100vh - #{$pageViewMargin * 2});
+}
+
+.has-header {
+    .max-view-height {
+        height: calc(100vh - #{$headerHeight} - #{$pageViewMargin * 2});
+    }
+}
+
+.table-container {
+    margin-top: 10px;
+}
+
+.card-container {
+    position: relative;
+
+    .el-scrollbar__wrap {
+        overflow-x: hidden;
+    }
+}
+
+.tip-row {
+    position: relative;
+    z-index: 1;
+    background: #fafafa;
+    padding: 8px 24px;
+    margin-bottom: 20px;
+    border-radius: 2px;
+    display: block;
+    line-height: 32px;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    color: #337ab7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    * + & {
+        margin-top: 40px;
+    }
+
+    a {
+        color: #337ab7;
+        cursor: pointer;
+        text-decoration: none;
+    }
+}
+
+//小圆点
+.dot {
+    width: 6px;
+    height: 6px;
+    display: inline-block;
+    border-radius: 50%;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    margin-right: 11px;
+    background: $--color-info;
+
+    &.success {
+        background: $--color-success;
+    }
+
+    &.primary {
+        background: $--color-primary;
+    }
+
+    &.error {
+        background: $--color-danger;
+    }
+}
+
+//印章
+.seal {
+    float: left;
+    border: solid .1em $--color-danger;
+    border-radius: .2em;
+    color: $--color-danger;
+    font-size: 23px;
+    font-weight: bold;
+    padding: .1em .5em;
+    bottom: 15px;
+
+    & + & {
+        margin-left: 20px;
+    }
+}
+
+

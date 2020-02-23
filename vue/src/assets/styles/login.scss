@@ -1,0 +1,89 @@
+$bg: #283443;
+$light_gray: #fff;
+$dark_gray: #889aa4;
+$cursor: #fff;
+
+@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+    .login-container .el-input input {
+        color: $cursor;
+    }
+}
+
+.login-container {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+
+    canvas {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        z-index: -1;
+        background: #2d3a4b;
+    }
+
+    .login-form {
+        width: 520px;
+        padding: 0 35px;
+        margin: 160px auto;
+    }
+
+    .svg-container {
+        padding: 6px 5px 6px 15px;
+        color: $dark_gray;
+        vertical-align: middle;
+        width: 30px;
+        display: inline-block;
+    }
+
+    .title-container {
+        position: relative;
+
+        .title {
+            font-size: 26px;
+            color: #eee;
+            margin: 0 auto 40px auto;
+            text-align: center;
+            font-weight: bold;
+        }
+    }
+
+    .show-pwd {
+        position: absolute;
+        right: 10px;
+        top: 7px;
+        font-size: 16px;
+        color: $dark_gray;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .el-input {
+        display: inline-block;
+        height: 47px;
+        width: 85%;
+
+        input {
+            background: transparent;
+            border: 0;
+            -webkit-appearance: none;
+            border-radius: 0;
+            padding: 12px 5px 12px 15px;
+            color: $light_gray;
+            height: 47px;
+            caret-color: $cursor;
+
+            &:-webkit-autofill {
+                box-shadow: 0 0 0 1000px $bg inset !important;
+                -webkit-text-fill-color: $cursor !important;
+            }
+        }
+    }
+
+    .el-form-item {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        color: #454545;
+    }
+}

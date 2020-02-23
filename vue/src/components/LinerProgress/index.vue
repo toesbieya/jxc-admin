@@ -1,0 +1,57 @@
+<script type="text/jsx">
+    //从muse-ui处搬运，https://muse-ui.org/#/zh-CN/progress
+    export default {
+        name: "LinerProgress",
+        functional: true,
+        props: {show: Boolean},
+        render(h, context) {
+            if (context.props.show) {
+                return (
+                    <div class="liner-progress">
+                        <div class="liner-progress-background"/>
+                        <div class="linear-progress-indeterminate"/>
+                    </div>
+                )
+            }
+        }
+    }
+</script>
+
+<style lang="scss">
+    .liner-progress {
+        position: relative;
+        height: 4px;
+        display: block;
+        width: 100%;
+        margin: 0;
+        overflow: hidden;
+
+        .liner-progress-background {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: $--color-primary;
+            opacity: .3;
+        }
+
+        .linear-progress-indeterminate {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 40%;
+            background-color: $--color-primary;
+            animation: linear-progress-animate .84s cubic-bezier(.445, .05, .55, .95) infinite;
+        }
+
+        @keyframes linear-progress-animate {
+            0% {
+                left: -40%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+    }
+</style>
