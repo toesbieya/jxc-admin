@@ -12,10 +12,6 @@ const steps = [
         content: '这是全屏按钮',
     },
     {
-        element: '.lock-btn.right-menu-item',
-        content: '这是锁屏按钮',
-    },
-    {
         element: '.setting-btn.right-menu-item',
         content: '这是个性设置按钮，可以根据自己喜好进行一些设置',
     },
