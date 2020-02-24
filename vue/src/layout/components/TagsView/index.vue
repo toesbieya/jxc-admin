@@ -2,12 +2,12 @@
     <nav class="tags-view-container">
         <scroll-pane class="tags-view-wrapper" ref="scrollPane">
             <router-link
-                    v-for="tag in visitedViews"
                     ref="tag"
-                    :class="{active:isActive(tag)}"
+                    v-for="tag in visitedViews"
                     :key="tag.path"
-                    :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+                    :class="{active:isActive(tag)}"
                     class="tags-view-item"
+                    :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
                     tag="div"
                     @contextmenu.prevent.native="openMenu(tag,$event)"
                     @dblclick.prevent.native="closeSelectedTag(tag)"
