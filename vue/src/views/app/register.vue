@@ -109,5 +109,5 @@
 </script>
 
 <style lang="scss">
-    @import "src/assets/styles/login";
+    @import "~@/assets/styles/login";
 </style>

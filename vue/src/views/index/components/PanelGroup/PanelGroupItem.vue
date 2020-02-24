@@ -3,8 +3,8 @@
             class="card-panel"
             type="flex"
             justify="space-between"
-            @mouseout.native="style='color:'+color"
-            @mouseover.native="style='background:'+color"
+            @mouseout.native="mouseout"
+            @mouseover.native="mouseover"
     >
         <div class="card-panel-icon-wrapper" :style="style">
             <svg-icon :icon="icon" class-name="card-panel-icon"/>
@@ -32,10 +32,16 @@
             return {
                 style: 'color:' + this.color
             }
+        },
+        methods: {
+            mouseout() {
+                this.style = 'color:' + this.color
+            },
+            mouseover() {
+                this.style = 'background:' + this.color
+            }
         }
     }
 </script>
 
-<style lang="scss">
-    @import "./PanelGroupItem.scss";
-</style>
+<style lang="scss" src="./PanelGroupItem.scss"></style>

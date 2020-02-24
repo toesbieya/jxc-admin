@@ -177,6 +177,4 @@
     }
 </script>
 
-<style lang="scss">
-    @import './tree';
-</style>
+<style lang="scss" src="./tree.scss"></style>

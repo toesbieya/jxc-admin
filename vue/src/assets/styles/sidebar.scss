@@ -1,3 +1,5 @@
+$iconSize: 17px;
+
 .sidebar-container {
     display: flex;
     flex-direction: column;
@@ -10,7 +12,7 @@
 
     //折叠设置
     &.collapse-sidebar {
-        width: 54px;
+        width: $iconSize + 20px * 2;
 
         .sidebar-item-content {
             display: none;
@@ -72,24 +74,8 @@
         }
     }
 
-    a {
-        display: inline-block;
-        width: 100%;
-        overflow: hidden;
-    }
-
-    .svg-icon {
-        margin-right: 16px;
-    }
-
-    .el-menu {
-        border: none;
-        height: 100%;
-        width: 100%;
-    }
-
     .is-active > .el-submenu__title {
-        color: #fff !important;
+        color: $--color-primary !important;
     }
 
     // menu hover
@@ -110,15 +96,22 @@
     }
 }
 
-.el-menu--vertical {
+.el-menu {
+    border: none;
+    height: 100%;
+    width: 100%;
+
     .svg-icon {
         margin-right: 16px;
+        width: $iconSize;
+        height: $iconSize;
     }
 
-    //侧边菜单折叠时弹出菜单的滚动条高度
-    /*.popover-menu__wrap {
-        max-height: 80vh;
-    }*/
+    a {
+        display: inline-block;
+        width: 100%;
+        overflow: hidden;
+    }
 
     .popover-menu__title {
         cursor: auto;

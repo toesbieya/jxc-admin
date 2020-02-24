@@ -44,6 +44,4 @@
     }
 </script>
 
-<style lang="sass">
-    @import "./QSkeleton.sass"
-</style>
+<style lang="sass" src="./QSkeleton.sass"></style>
