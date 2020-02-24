@@ -100,8 +100,8 @@
         }
     }
 
-    & .nest-menu .el-submenu > .el-submenu__title,
-    & .el-submenu .el-menu-item {
+    .nest-menu > .el-submenu__title,
+    .el-submenu .el-menu-item {
         background-color: $subMenuBg !important;
 
         &:hover {
@@ -116,9 +116,9 @@
     }
 
     //侧边菜单折叠时弹出菜单的滚动条高度
-    .popover-menu__wrap {
+    /*.popover-menu__wrap {
         max-height: 80vh;
-    }
+    }*/
 
     .popover-menu__title {
         cursor: auto;

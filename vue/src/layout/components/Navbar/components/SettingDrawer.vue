@@ -20,7 +20,7 @@
             </div>
             <div class="drawer-item">
                 <span>折叠菜单显示上级</span>
-                <el-switch v-model="sidebarShowParent" :disabled="!sidebarCollapse" class="drawer-switch"/>
+                <el-switch v-model="sidebarShowParent" class="drawer-switch"/>
             </div>
             <div class="drawer-item">
                 <span>左侧菜单自动隐藏</span>
@@ -77,9 +77,6 @@
                     this.$store.commit('setting/sidebarCollapse', v)
                     if (v && this.sidebarAutoHidden) {
                         this.$store.commit('setting/sidebarAutoHidden', false)
-                    }
-                    if (!v && this.sidebarShowParent) {
-                        this.$store.commit('setting/sidebarShowParent', false)
                     }
                 }
             },

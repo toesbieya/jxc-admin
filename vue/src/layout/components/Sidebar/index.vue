@@ -23,6 +23,7 @@
                         v-for="route in routes"
                         :key="route.path"
                         :show-parent="sidebarShowParent"
+                        :collapse="sidebarCollapse"
                         :base-path="route.path"
                         :item="route"
                 />
