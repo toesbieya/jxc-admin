@@ -1,27 +1,24 @@
 <template>
     <nav class="tags-view-container">
         <scroll-pane class="tags-view-wrapper" ref="scrollPane">
-            <draggable :draggable="'.draggable'" v-model="visitedViews">
-                <transition-group name="flip-list" type="transition">
-                    <router-link :class="{active:isActive(tag),draggable:!isAffix(tag)}"
-                                 :key="tag.path"
-                                 :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-                                 @contextmenu.prevent.native="openMenu(tag,$event)"
-                                 @dblclick.prevent.native="closeSelectedTag(tag)"
-                                 class="tags-view-item"
-                                 ref="tag"
-                                 tag="div"
-                                 v-for="tag in visitedViews">
-                        {{ tag.title }}
-                        <i @click.prevent.stop="closeSelectedTag(tag)" class="el-icon-close"
-                           v-if="!isAffix(tag)"/>
-                    </router-link>
-                </transition-group>
-            </draggable>
+            <router-link
+                    v-for="tag in visitedViews"
+                    ref="tag"
+                    :class="{active:isActive(tag)}"
+                    :key="tag.path"
+                    :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+                    class="tags-view-item"
+                    tag="div"
+                    @contextmenu.prevent.native="openMenu(tag,$event)"
+                    @dblclick.prevent.native="closeSelectedTag(tag)"
+            >
+                {{ tag.title }}
+                <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
+            </router-link>
         </scroll-pane>
-        <context-menu :left="contextmenu.left" :top="contextmenu.top" v-model="contextmenu.show">
+        <context-menu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
             <context-menu-item @click="refreshSelectedTag(selectedTag)">刷新</context-menu-item>
-            <context-menu-item @click="closeSelectedTag(selectedTag)" v-show="!isAffix(selectedTag)">
+            <context-menu-item v-show="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
                 关闭
             </context-menu-item>
             <context-menu-item @click="closeOthersTags">关闭其他</context-menu-item>
@@ -31,7 +28,6 @@
 </template>
 
 <script>
-    import Draggable from 'vuedraggable'
     import ScrollPane from './ScrollPane'
     import ContextMenu from "@/components/ContextMenu"
     import ContextMenuItem from "@/components/ContextMenu/ContextMenuItem"
@@ -40,7 +36,7 @@
 
     export default {
         mixins: [shortcutsMixin, decideRouterTransitionMixin],
-        components: {ContextMenu, ContextMenuItem, ScrollPane, Draggable},
+        components: {ContextMenu, ContextMenuItem, ScrollPane},
         data() {
             return {
                 contextmenu: {
@@ -54,13 +50,8 @@
             }
         },
         computed: {
-            visitedViews: {
-                get() {
-                    return this.$store.state.tagsView.visitedViews
-                },
-                set(v) {
-                    this.$store.commit('tagsView/SET_VISITED_VIEWS', v)
-                }
+            visitedViews() {
+                return this.$store.state.tagsView.visitedViews
             },
             routes() {
                 return this.$store.state.resource.routes

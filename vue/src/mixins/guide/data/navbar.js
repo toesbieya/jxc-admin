@@ -24,7 +24,7 @@ const steps = [
         content: `<p>这是tab栏，可以右键tab页进行相关操作</p>
                   <p>ctrl + ← → 可以进行tab页的左右切换</p>
                   <p>当tab过多时通过鼠标滚轮来滚动</p>
-                  <p>非固定的tab可以拖动排序</p>`,
+                  <p>双击可以关闭</p>`,
         /*forceShowNextBtn: true,
         nextBtnText: '下一阶段',
         onNext() {
