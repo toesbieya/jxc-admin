@@ -44,4 +44,69 @@
     }
 </script>
 
-<style lang="scss" src="./PanelGroupItem.scss"></style>
+<style lang="scss">
+    .card-panel {
+        height: 108px;
+        cursor: pointer;
+        font-size: 12px;
+        position: relative;
+        overflow: hidden;
+        color: #666;
+        background: #fff;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+        border-color: rgba(0, 0, 0, .05);
+
+        &:hover .card-panel-icon-wrapper {
+            color: #fff;
+        }
+
+        .card-panel-icon-wrapper {
+            margin: 14px 0 14px 14px;
+            padding: 16px;
+            transition: all 0.38s ease-out;
+            border-radius: 6px;
+        }
+
+        .card-panel-icon {
+            font-size: 48px;
+        }
+
+        .card-panel-description {
+            font-weight: bold;
+            margin: 26px 20px 0 26px;
+
+            .card-panel-text {
+                line-height: 18px;
+                color: rgba(0, 0, 0, 0.45);
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+
+            .card-panel-num {
+                font-size: 20px;
+            }
+        }
+    }
+
+    @media (max-width: 550px) {
+        .card-panel-description {
+            display: none;
+        }
+
+        .card-panel-icon-wrapper {
+            float: none !important;
+            width: 100%;
+            height: 100%;
+            margin: 0 !important;
+
+            .svg-icon {
+                display: block;
+                margin: 14px auto !important;
+                float: none !important;
+            }
+        }
+    }
+
+</style>
