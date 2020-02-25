@@ -75,7 +75,7 @@ public class RedisModule {
 
     //每天零点初始化单据ID
     @Async("scheduledExecutor")
-    @Scheduled(cron = "0 0 0 */1 * ?")
+    @Scheduled(cron = "1 0 0 */1 * ?")
     public void autoRefreshDocumentID() {
         log.info("开始定时更新单据ID......当前共有【{}】种待更新......", DOCUMENTS_TYPE.length);
         try (LockHelper locker = new RedisLockHelper(RedisLockType.UPDATE_DOCUMENT_ID)) {

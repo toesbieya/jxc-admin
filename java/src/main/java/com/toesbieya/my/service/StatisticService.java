@@ -90,7 +90,7 @@ public class StatisticService {
 
     //每天零点统计信息
     @Async("scheduledExecutor")
-    @Scheduled(cron = "0 0 0 */1 * ?")
+    @Scheduled(cron = "1 0 0 */1 * ?")
     @PostConstruct
     public void autoStat() {
         log.info("开始统计信息...");
