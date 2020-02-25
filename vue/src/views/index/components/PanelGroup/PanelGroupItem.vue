@@ -1,45 +1,28 @@
-<template>
-    <el-row
-            class="card-panel"
-            type="flex"
-            justify="space-between"
-            @mouseout.native="mouseout"
-            @mouseover.native="mouseover"
-    >
-        <div class="card-panel-icon-wrapper" :style="style">
-            <svg-icon :icon="icon" class-name="card-panel-icon"/>
-        </div>
-        <div class="card-panel-description">
-            <div class="card-panel-text">{{text}}</div>
-            <count-to class="card-panel-num" :duration="2000" :end-val="value" :start-val="0"/>
-        </div>
-    </el-row>
-</template>
-
-<script>
+<script type="text/jsx">
     import CountTo from 'vue-count-to'
 
     export default {
         name: "PanelGroupItem",
-        components: {CountTo},
+        functional: true,
         props: {
             icon: String,
             color: String,
             text: String,
             value: Number
         },
-        data() {
-            return {
-                style: 'color:' + this.color
-            }
-        },
-        methods: {
-            mouseout() {
-                this.style = 'color:' + this.color
-            },
-            mouseover() {
-                this.style = 'background:' + this.color
-            }
+        render(h, context) {
+            const {icon, color, text, value} = context.props
+            return (
+                <el-row class="card-panel" type="flex" justify="space-between">
+                    <div class="card-panel-icon-wrapper" style={'color:' + color}>
+                        <svg-icon icon={icon} class-name="card-panel-icon"/>
+                    </div>
+                    <div class="card-panel-description">
+                        <div class="card-panel-text">{text}</div>
+                        <CountTo class="card-panel-num" end-val={value} start-val={0}/>
+                    </div>
+                </el-row>
+            )
         }
     }
 </script>

@@ -116,10 +116,11 @@ $iconSize: 17px;
     .popover-menu__title {
         cursor: auto;
         text-align: center;
+        color: $menuText;
         border-bottom: 1px solid $subMenuBg;
 
-        &.is-disabled {
-            opacity: 1;
+        &.el-menu-item:hover {
+            background-color: $menuBg;
         }
     }
 }

@@ -9,11 +9,11 @@
     }
 
     function getOnlyChild(item) {
-        const showingChildren = item.children || []
+        const children = item.children || []
 
-        if (showingChildren.length === 1) return showingChildren[0]
+        if (children.length === 1) return children[0]
 
-        if (showingChildren.length <= 0) return {...item, path: undefined, children: undefined}
+        if (children.length < 1) return {...item, path: undefined, children: undefined}
 
         return null
     }
@@ -31,7 +31,7 @@
             function renderNode({item, isNest, showParent, collapse, basePath}) {
                 let onlyOneChild = getOnlyChild(item)
 
-                const showSingle = onlyOneChild && !onlyOneChild.children && !item.alwaysShow
+                const showSingle = onlyOneChild && !onlyOneChild.children
 
                 if (showSingle) {
                     const index = resolvePath(basePath, onlyOneChild.path)
@@ -64,9 +64,9 @@
                         //弹出菜单显示父级信息
                         if (showParent) {
                             children.unshift(
-                                <el-menu-item class="popover-menu__title" disabled>
+                                <div class="popover-menu__title el-menu-item">
                                     <SidebarItemContent icon={icon} title={title}/>
-                                </el-menu-item>
+                                </div>
                             )
                         }
                     }

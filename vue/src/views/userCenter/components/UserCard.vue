@@ -8,14 +8,14 @@
             </div>
         </div>
 
-        <div class="user-bio">
+        <!--<div class="user-bio">
             <div class="user-bio-section">
                 <div class="user-bio-section-header">
                     <i class="el-icon-lock"/>
                     <span>修改锁屏密码</span>
                 </div>
             </div>
-        </div>
+        </div>-->
     </el-card>
 </template>
 

@@ -68,7 +68,7 @@ const actions = {
     }
 }
 
-//再原始路由数组基础上添加全路径
+//在原始路由数组基础上添加全路径
 function transformOriginRoutes(routes) {
     let res = JSON.parse(JSON.stringify(routes))
 
@@ -90,7 +90,7 @@ function clean(routes, cleanHidden = true) {
         }
         if (routes[i].children) {
             clean(routes[i].children, cleanHidden)
-            if (routes[i].children.length < 1) {
+            if (routes[i].children.length < 1 && routes[i].alwaysShow !== true) {
                 routes.splice(i, 1)
             }
         }
@@ -111,14 +111,14 @@ function getAuthorizedRoutes({resources, admin}) {
     if (admin === 1) return finalAuthorityRoutes
     if (!resources) return []
     let arr = JSON.parse(JSON.stringify(finalAuthorityRoutes))
-    filter(arr, i => i.fullPath in resources)
+    filter(arr, i => !needAuth(i) || i.fullPath in resources)
     return arr
 }
 
 //若没有children且未通过，则删除，若有，当children长度为0时删除
 function filter(arr, fun) {
     for (let i = 0; i < arr.length; i++) {
-        if (!arr[i].children && needAuth(arr[i]) && !fun(arr[i])) {
+        if (!arr[i].children && !fun(arr[i])) {
             arr.splice(i, 1)
             i--
             continue

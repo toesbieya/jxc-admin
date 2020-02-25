@@ -1,7 +1,7 @@
 <template>
     <el-row :gutter="40" class="panel-group">
         <el-col v-for="i in list" :key="i.id" :xs="12" :sm="12" :lg="6">
-            <panel-group-item :ref="i.id" v-bind="i" @click.native="jump(i)"/>
+            <panel-group-item v-bind="i" @click.native="jump(i)"/>
         </el-col>
     </el-row>
 </template>
@@ -29,8 +29,8 @@
                         value: 0,
                         text: '今日采购额'
                     },
-                    {id: 'sell', path: '/sell/order', icon: 'sell', color: variables.danger, value: 0, text: '今日销售额'},
-                    {id: 'profit', icon: 'money', color: variables.info, value: 0, text: '今日毛利润'},
+                    {id: 'sell', path: '/sell/order', icon: 'sell', color: variables.warning, value: 0, text: '今日销售额'},
+                    {id: 'profit', icon: 'money', color: variables.success, value: 0, text: '今日毛利润'},
                 ]
             }
         },
@@ -46,11 +46,8 @@
                     })
                     .finally(() => this.loading = false)
             },
-            jump({id, path}) {
-                if (!isEmpty(path) && auth(path)) {
-                    this.$router.push(path)
-                    this.$refs[id][0].mouseout()
-                }
+            jump({path}) {
+                if (!isEmpty(path) && auth(path)) this.$router.push(path)
             }
         },
         mounted() {
