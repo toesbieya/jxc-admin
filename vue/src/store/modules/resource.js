@@ -102,7 +102,7 @@ function addFullPath(routes, basePath = '/') {
     routes.forEach(route => {
         delete route.components
         route.fullPath = path.resolve(basePath, route.path)
-        route.children && addFullPath(route.children, route.path)
+        route.children && addFullPath(route.children, route.fullPath)
     })
 }
 

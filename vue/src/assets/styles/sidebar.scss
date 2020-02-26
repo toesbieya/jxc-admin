@@ -113,6 +113,10 @@ $iconSize: 17px;
         overflow: hidden;
     }
 
+    .el-submenu__title i {
+        color: inherit;
+    }
+
     .popover-menu__title {
         cursor: auto;
         text-align: center;
