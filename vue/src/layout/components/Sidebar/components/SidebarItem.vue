@@ -26,8 +26,8 @@
                 const showSingle = onlyOneChild && !onlyOneChild.children
 
                 if (showSingle) {
-                    const icon = onlyOneChild.meta.icon || (item.meta && item.meta.icon)
-                    const title = onlyOneChild.meta.title
+                    const {icon, title} = onlyOneChild.meta
+
                     return (
                         <el-menu-item
                             index={onlyOneChild.fullPath}
@@ -38,8 +38,7 @@
                     )
                 }
                 else {
-                    const icon = (item.meta && item.meta.icon) || (onlyOneChild.meta && onlyOneChild.meta.icon)
-                    const title = item.meta.title
+                    const {icon, title} = item.meta
 
                     const children = item.children.map(child => renderNode({
                         isNest: true,

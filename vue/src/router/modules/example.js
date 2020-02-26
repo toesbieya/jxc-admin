@@ -1,4 +1,4 @@
-/*路由表：有意思的组件*/
+/*路由表：演示用例*/
 import Layout from '@/layout'
 
 const router = {
@@ -10,23 +10,23 @@ const router = {
             path: 'style-page',
             name: 'stylePage',
             component: () => import('@/views/example/stylePage'),
-            meta: {title: '样 式', icon: 'style'}
+            meta: {title: '样 式'}
         },
         {
             path: 'icons',
             name: 'icons',
             component: () => import('@/views/example/icons'),
-            meta: {title: '图 标',icon: 'icon'}
+            meta: {title: '图 标'}
         },
         {
             path: 'taobao',
             name: 'taobao',
-            meta: {title: '淘宝iframe', iframe: 'https://www.taobao.com',icon: 'documentation'}
+            meta: {title: '淘宝iframe', iframe: 'https://www.taobao.com'}
         },
         {
             path: 'cool',
             component: {render: h => h('router-view')},
-            meta: {title: '好玩的东东',icon: 'cool'},
+            meta: {title: '好玩的东东'},
             children: [
                 {
                     path: 'fluid',
@@ -45,7 +45,7 @@ const router = {
         {
             path: 'components',
             component: {render: h => h('router-view')},
-            meta: {title: '组件',icon: 'component'},
+            meta: {title: '组件'},
             children: [
                 {
                     path: 'upload',
@@ -83,7 +83,7 @@ const router = {
             path: 'developing-test',
             name: 'developingTest',
             component: () => import('@/views/example/developingTest'),
-            meta: {title: '开发测试',icon: 'bug'}
+            meta: {title: '开发测试'}
         }
     ]
 }
