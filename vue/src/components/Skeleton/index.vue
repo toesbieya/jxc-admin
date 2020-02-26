@@ -9,7 +9,7 @@
             type: {
                 type: String,
                 validator: v => skeletonTypes.includes(v),
-                default: 'rect'
+                default: 'text'
             },
             animation: {
                 type: String,
