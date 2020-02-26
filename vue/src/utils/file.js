@@ -1,5 +1,5 @@
 import request from '@/config/request'
-import {attachmentUploadUrl,attachmentPrefix} from '@/config'
+import {attachmentUploadUrl, attachmentPrefix} from '@/config'
 import {isEmpty, timeFormat} from "@/utils"
 
 const baseUrl = '/file'
@@ -47,6 +47,6 @@ export function upload(blob, filename = '快照.png') {
 //自动补全附件链接前缀
 export function autoCompleteUrl(url) {
     if (isEmpty(url)) return ''
-    if (['http','https'].some(i=>url.startsWith(i))) return url
+    if (['http', 'https'].some(i => url.startsWith(i))) return url
     return attachmentPrefix + url
 }

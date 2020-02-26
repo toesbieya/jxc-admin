@@ -64,7 +64,7 @@
                             v-model="row.num"
                             :min="0"
                             size="small"
-                            @change="changeInboundNum($event,row)"
+                            @change="(nv,ov)=>changeInboundNum(nv,ov,row)"
                     />
                     <span v-else>{{row.num}}</span>
                 </template>
@@ -128,10 +128,10 @@
                     num: i.remain_num
                 }))
             },
-            changeInboundNum(v, row) {
+            changeInboundNum(nv, ov, row) {
                 let parentSub = this.parentSubList.find(i => i.cid === row.cid)
-                if (!parentSub || v > parentSub.remain_num) {
-                    return elAlert(`${row.cname}的入库数量超出采购数量`, () => row.num = parentSub.remain_num)
+                if (!parentSub || nv > parentSub.remain_num) {
+                    return elAlert(`${row.cname}的入库数量超出采购数量`, () => row.num = ov)
                 }
             },
             validate() {

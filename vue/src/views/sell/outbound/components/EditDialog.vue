@@ -69,7 +69,7 @@
                                     v-model="d.row.num"
                                     :min="0"
                                     size="small"
-                                    @change="changeOutboundNum($event,d.row,row)"
+                                    @change="(nv,ov)=>changeOutboundNum(nv,ov,d.row,row)"
                             />
                             <span v-else>{{d.row.num}}</span>
                         </template>
@@ -208,9 +208,9 @@
                     return sum
                 }
             },
-            changeOutboundNum(v, row, displayTableRow) {
-                if (v > row.max_num) {
-                    return elAlert(`${row.cname}的出库数量超出库存数量`, () => row.num = row.max_num)
+            changeOutboundNum(nv, ov, row, displayTableRow) {
+                if (nv > row.max_num) {
+                    return elAlert(`${row.cname}的出库数量超出库存数量`, () => row.num = ov)
                 }
 
                 let outboundNum = displayTableRow.data.map(i => i.num)
@@ -219,10 +219,10 @@
                 if (!outboundNum) return
 
                 if (outboundNum > displayTableRow.remain_num) {
-                    let correctNum = sub(displayTableRow.remain_num, sub(outboundNum, v))
+                    let correctNum = sub(displayTableRow.remain_num, sub(outboundNum, nv))
                     if (correctNum < 0) correctNum = 0
                     else if (correctNum > row.max_num) correctNum = row.max_num
-                    return elAlert(`${displayTableRow.cname}的出库数量超出销售数量`, () => row.num = correctNum)
+                    return elAlert(`${displayTableRow.cname}的出库数量超出销售数量`, () => row.num = ov)
                 }
             },
             validate() {

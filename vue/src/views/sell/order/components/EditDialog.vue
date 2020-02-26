@@ -126,7 +126,7 @@
                     customer_name: null,
                     finish: 0,
                     ftime: null,
-                    total:0
+                    total: 0
                 },
                 rules: {
                     customer_name: [{required: true, message: '客户不能为空', trigger: 'change'}]
@@ -174,7 +174,7 @@
                     if (isEmpty(sub.price)) return `第${index + 1}个商品单价不能为空`
                     if (sub.num < 0 || !isInteger(sub.num)) return `第${index}个商品数量有误`
                     if (sub.price <= 0 || !isInteger(sub.price)) return `第${index}个商品单价有误`
-                    this.form.total=plus(this.form.total,mul(sub.num, sub.price))
+                    this.form.total = plus(this.form.total, mul(sub.num, sub.price))
                     index++
                 }
                 return null

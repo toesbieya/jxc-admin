@@ -32,7 +32,7 @@
                 (animation !== 'none' ? ` q-skeleton--anim-${animation}` : '') +
                 (square === true ? ' q-skeleton--square' : '') +
                 (bordered === true ? ' q-skeleton--bordered' : '') +
-                (className !== undefined ? ' '+className : '')
+                (className !== undefined ? ' ' + className : '')
 
             return h(tag, {
                 staticClass: 'q-skeleton',

@@ -31,5 +31,5 @@ module.exports = {
     attachmentPrefix: 'https://static.toesbieya.cn/',
 
     //省市地区json数据请求地址
-    regionDataUrl:'/static/json/region-pca.json'
+    regionDataUrl: '/static/json/region-pca.json'
 }
