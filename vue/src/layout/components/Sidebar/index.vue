@@ -16,8 +16,8 @@
                     :default-active="$route.path"
                     :text-color="variables.menuText"
                     :unique-opened="sidebarUniqueOpen"
-                    router
                     mode="vertical"
+                    @select="select"
             >
                 <sidebar-item
                         v-for="route in routes"
@@ -70,6 +70,13 @@
         methods: {
             moveEvent(e) {
                 if (e.clientX <= 15) this.mouseOutside = false
+            },
+            select(index) {
+                if (this.$route.path === index) {
+                    this.$store.commit('tagsView/DEL_CACHED_VIEW', this.$route)
+                    this.$nextTick(() => this.$router.replace({path: '/redirect' + this.$route.fullPath}))
+                }
+                else this.$router.push(index)
             }
         },
         mounted() {
