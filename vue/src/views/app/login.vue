@@ -58,6 +58,7 @@
     import {loginBackgroundAnimate} from '@/config'
     import {isEmpty} from "@/utils"
     import md5 from "js-md5"
+    import {elSuccess} from "@/utils/message"
 
     export default {
         name: 'login',
@@ -97,6 +98,7 @@
                 })
             },
             success() {
+                elSuccess('登陆成功')
                 let redirect = this.$route.query.redirect || '/'
                 window.location.href = '/#' + redirect
             },
@@ -126,6 +128,7 @@
             else this.$refs.password.focus()
         },
         beforeDestroy() {
+            this.$message.closeAll()
             this.removeEvent()
             this.rain && this.rain.stop()
         }

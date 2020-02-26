@@ -5,7 +5,7 @@ const router = {
     path: '/stock',
     component: Layout,
     alwaysShow: true,
-    meta: {title: '库存管理', icon: 'stock', breadcrumb: false},
+    meta: {title: '库存管理', icon: 'stock'},
     children: [
         {
             path: 'current',

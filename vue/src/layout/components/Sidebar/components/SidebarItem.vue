@@ -1,17 +1,10 @@
 <script type="text/jsx">
-    import path from 'path'
     import SidebarItemContent from './SidebarItemContent'
-
-    function resolvePath(basePath, routePath = '') {
-        const indexOf = basePath.indexOf(routePath)
-        const samePath = basePath.length === indexOf + routePath.length
-        return indexOf && samePath ? basePath : path.resolve(basePath, routePath)
-    }
 
     function getOnlyChild(item) {
         const children = item.children || []
 
-        if (children.length === 1) return children[0]
+        if (children.length === 1) return item.alwaysShow ? null : children[0]
 
         if (children.length < 1) return {...item, path: undefined, children: undefined}
 
@@ -24,22 +17,20 @@
             item: Object,
             isNest: Boolean,
             showParent: Boolean,
-            collapse: Boolean,
-            basePath: {type: String, default: ''}
+            collapse: Boolean
         },
         render(h, context) {
-            function renderNode({item, isNest, showParent, collapse, basePath}) {
+            function renderNode({item, isNest, showParent, collapse}) {
                 let onlyOneChild = getOnlyChild(item)
 
                 const showSingle = onlyOneChild && !onlyOneChild.children
 
                 if (showSingle) {
-                    const index = resolvePath(basePath, onlyOneChild.path)
                     const icon = onlyOneChild.meta.icon || (item.meta && item.meta.icon)
                     const title = onlyOneChild.meta.title
                     return (
                         <el-menu-item
-                            index={index}
+                            index={onlyOneChild.fullPath}
                             class={{'submenu-title-noDropdown': !isNest, 'nest-menu': isNest}}
                         >
                             <SidebarItemContent icon={icon} title={title}/>
@@ -47,14 +38,12 @@
                     )
                 }
                 else {
-                    const index = resolvePath(basePath, item.path)
                     const icon = (item.meta && item.meta.icon) || (onlyOneChild.meta && onlyOneChild.meta.icon)
                     const title = item.meta.title
 
                     const children = item.children.map(child => renderNode({
                         isNest: true,
                         item: child,
-                        basePath: resolvePath(basePath, child.path),
                         showParent,
                         collapse
                     }))
@@ -72,7 +61,7 @@
                     }
 
                     return (
-                        <el-submenu class={{'nest-menu': isNest}} index={index} popper-append-to-body>
+                        <el-submenu class={{'nest-menu': isNest}} index={item.fullPath} popper-append-to-body>
                             <SidebarItemContent slot="title" icon={icon} title={title}/>
                             {children}
                         </el-submenu>
