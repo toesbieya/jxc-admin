@@ -40,7 +40,6 @@
                     },
                     xAxis: {
                         data: time,
-                        boundaryGap: false,
                         axisTick: {
                             show: false
                         }

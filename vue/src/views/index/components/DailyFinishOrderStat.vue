@@ -38,7 +38,6 @@
                     },
                     xAxis: {
                         data: time,
-                        boundaryGap: false,
                         axisTick: {
                             show: false
                         }
@@ -63,18 +62,18 @@
                         }
                     },
                     legend: {
-                        data: ['采购额', '销售额'],
+                        data: ['采购订单', '销售订单'],
                         right: 10
                     },
                     series: [
                         {
-                            name: '采购额',
+                            name: '采购订单',
                             smooth: true,
                             type: 'line',
                             data: purchase
                         },
                         {
-                            name: '销售额',
+                            name: '销售订单',
                             smooth: true,
                             type: 'line',
                             data: sell
