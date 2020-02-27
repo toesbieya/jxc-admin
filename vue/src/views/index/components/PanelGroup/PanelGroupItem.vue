@@ -13,7 +13,7 @@
         render(h, context) {
             const {icon, color, text, value} = context.props
             return (
-                <el-row class="card-panel" type="flex" justify="space-between">
+                <el-row class="card-panel" type="flex" justify="space-between" {...context.data}>
                     <div class="card-panel-icon-wrapper" style={'color:' + color}>
                         <svg-icon icon={icon} class-name="card-panel-icon"/>
                     </div>
