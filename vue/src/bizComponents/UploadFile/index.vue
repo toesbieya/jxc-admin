@@ -240,16 +240,28 @@
         display: none;
     }
 
-    .el-upload-list--picture-card .progress-mask {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 100%;
-        background-color: #fff;
-        opacity: 0.9;
+    .el-upload-list--picture-card {
+        .el-progress {
+            width: 100%;
+            height: 100%;
 
-        .el-progress__text {
-            color: $--color-primary;
+            .el-progress-circle {
+                height: 100% !important;
+                width: 100% !important;
+            }
+        }
+
+        .progress-mask {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            background-color: #fff;
+            opacity: 0.9;
+
+            .el-progress__text {
+                color: $--color-primary;
+            }
         }
     }
 
