@@ -25,7 +25,7 @@ module.exports = {
     leftSideRouteTransition: 'right-out',
 
     //七牛云上传地址
-    attachmentUploadUrl: 'http://upload.qiniup.com',
+    attachmentUploadUrl: 'https://upload.qiniup.com',
 
     //附件上传后的预览地址前缀
     attachmentPrefix: 'https://static.toesbieya.cn/',
