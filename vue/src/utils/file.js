@@ -41,7 +41,7 @@ export function upload(blob, filename = '快照.png') {
             param.append('file', blob, filename)
             return request.post(attachmentUploadUrl, param, {...formConfig, baseUrl: ''})
         })
-        .then(data => data.key)
+        .then(({data}) => data.key)
 }
 
 //自动补全附件链接前缀

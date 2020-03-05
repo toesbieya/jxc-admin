@@ -44,9 +44,13 @@
             >
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="头像" width="100">
-                    <template v-slot="{row}">
-                        <el-avatar :size="40" :src="row.avatar" v-if="row.avatar"/>
-                    </template>
+                    <img
+                            slot-scope="{row}"
+                            v-if="row.avatar"
+                            :src="row.avatar"
+                            class="table-image"
+                            @click.stop="previewAvatar(row.avatar)"
+                    >
                 </el-table-column>
                 <el-table-column align="center" label="用户名" prop="name" show-overflow-tooltip/>
                 <el-table-column align="center" label="角 色" prop="role_name" show-overflow-tooltip/>
@@ -206,6 +210,9 @@
                 elSuccess(msg)
                 this.editDialog = false
                 this.search()
+            },
+            previewAvatar(src) {
+                this.$image({index: 0, urlList: [src]})
             }
         }
     }

@@ -78,15 +78,11 @@
                 if (!this.img) return elError('请先上传图片')
                 if (this.loading) return
                 this.loading = true
-                let url
                 this.$refs.cropper.getCropBlob(data => {
                     upload(new Blob([data]), this.name)
-                        .then(key => {
-                            url = key
-                            return updateAvatar(key)
-                        })
-                        .then(({msg}) => {
-                            this.$store.commit('user/SET_AVATAR', autoCompleteUrl(url))
+                        .then(key => updateAvatar(key))
+                        .then(({key, msg}) => {
+                            this.$store.commit('user/SET_AVATAR', autoCompleteUrl(key))
                             this.$store.dispatch('user/refresh')
                             elSuccess(msg)
                         })

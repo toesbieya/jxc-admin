@@ -96,6 +96,16 @@ a:hover {
     margin-top: 10px;
 }
 
+.table-image {
+    cursor: pointer;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
 .card-container {
     position: relative;
 

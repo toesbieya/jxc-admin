@@ -39,7 +39,7 @@ export function updateUserPwd(data) {
 }
 
 export function updateAvatar(key) {
-    return request.get(baseUrl + '/updateAvatar?key=' + encodeURIComponent(key)).then(({data}) => data)
+    return request.get(baseUrl + '/updateAvatar?key=' + encodeURIComponent(key)).then(({data}) => ({...data, key}))
 }
 
 export function validate(pwd) {
