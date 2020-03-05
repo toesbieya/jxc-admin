@@ -74,7 +74,7 @@ public class RecService {
                 .type(historyEnum.getCode())
                 .time(System.currentTimeMillis())
                 .build();
-        history.setAddress(IpUtil.getIpAddr(ip));
+        history.setAddress(IpUtil.getIpAddress(ip));
         loginHistoryMapper.insert(history);
     }
 
