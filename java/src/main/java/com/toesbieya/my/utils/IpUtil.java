@@ -9,11 +9,12 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class IpUtil {
     private static final RestTemplate restTemplate = new RestTemplate();
 
-    private static List<IpAddressRequestHandler> handlerList = new ArrayList<>();
+    private static List<Function<String, String>> handlerList = new ArrayList<>();
 
     static {
         handlerList.add(new PconlineApi());
@@ -50,9 +51,9 @@ public class IpUtil {
             return cache;
         }
         if (handlerList.size() == 0) return null;
-        for (IpAddressRequestHandler handler : handlerList) {
+        for (Function<String, String> handler : handlerList) {
             try {
-                cache = handler.getIpAddress(ip);
+                cache = handler.apply(ip);
             } catch (Exception e) {
                 continue;
             }
@@ -68,14 +69,10 @@ public class IpUtil {
         return ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip);
     }
 
-    private interface IpAddressRequestHandler {
-        String getIpAddress(String ip);
-    }
-
     //淘宝 部分ip无法查询
-    private static class TaobaoApi implements IpAddressRequestHandler {
+    private static class TaobaoApi implements Function<String, String> {
         @Override
-        public String getIpAddress(String ip) {
+        public String apply(String ip) {
             String url = "http://ip.taobao.com/service/getIpInfo.php?ip=" + ip;
             String response = restTemplate.getForObject(url, String.class);
             JSONObject result = JSON.parseObject(response);
@@ -87,9 +84,9 @@ public class IpUtil {
         }
     }
 
-    private static class IphelpApi implements IpAddressRequestHandler {
+    private static class IphelpApi implements Function<String, String> {
         @Override
-        public String getIpAddress(String ip) {
+        public String apply(String ip) {
             String url = "https://ip.help.bj.cn/?ip=" + ip;
             String response = restTemplate.getForObject(url, String.class);
             JSONObject result = JSON.parseObject(response);
@@ -104,9 +101,9 @@ public class IpUtil {
     }
 
     //https://www.ipip.net/support/api.html 每天限1000次
-    private static class IpipApi implements IpAddressRequestHandler {
+    private static class IpipApi implements Function<String, String> {
         @Override
-        public String getIpAddress(String ip) {
+        public String apply(String ip) {
             String url = "https://freeapi.ipip.net/" + ip;
             String response = restTemplate.getForObject(url, String.class);
             JSONArray result = JSON.parseArray(response);
@@ -116,9 +113,9 @@ public class IpUtil {
     }
 
     //这个不错
-    private static class PconlineApi implements IpAddressRequestHandler {
+    private static class PconlineApi implements Function<String, String> {
         @Override
-        public String getIpAddress(String ip) {
+        public String apply(String ip) {
             String url = "http://whois.pconline.com.cn/ipJson.jsp?json=true&ip=" + ip;
             String response = restTemplate.getForObject(url, String.class);
             JSONObject result = JSON.parseObject(response);
