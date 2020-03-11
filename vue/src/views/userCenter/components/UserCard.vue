@@ -36,11 +36,9 @@
 
 <style lang="scss">
     .user-card {
-        .el-avatar {
-            /deep/ i {
-                line-height: 150px;
-                font-size: 100px;
-            }
+        .el-avatar i {
+            line-height: 180px;
+            font-size: 150px;
         }
 
         .text-muted {
