@@ -37,7 +37,8 @@ public class StatisticService {
         FourBlockStat stat = new FourBlockStat();
         double purchase = purchaseOrderMapper.getDailyTotalPurchasePrice(now, null);
         double sell = sellOrderMapper.getDailyTotalPurchasePrice(now, null);
-        stat.setOnline(SocketModule.getOnlineNum());
+        int onlineNum = SocketModule.getOnlineNum();
+        stat.setOnline(onlineNum == 0 ? 1 : onlineNum);//进行此请求时在线用户必然大于0
         stat.setPurchase(purchase);
         stat.setSell(sell);
         stat.setProfit(sell - purchase);

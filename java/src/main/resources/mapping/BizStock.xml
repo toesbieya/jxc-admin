@@ -39,7 +39,7 @@
     </select>
     <select id="export" parameterType="com.toesbieya.my.model.vo.search.StockSearch"
             resultType="com.toesbieya.my.model.vo.export.StockExport">
-        select a.cname,a.total_num,a.total_price,b.cgddid,b.cgrkid,b.price cg_price,
+        select a.cid,a.cname,a.total_num,a.total_price,b.cgddid,b.cgrkid,b.price cg_price,
         from_unixtime(b.ctime / 1000, '%Y-%m-%d %H:%m:%s') ctime,
         c.num rk_num,
         d.num cg_num
@@ -57,7 +57,7 @@
         join biz_stock b using (cid)
         left join biz_purchase_inbound_sub c on c.cid = a.cid and c.pid = b.cgrkid
         left join biz_purchase_order_sub d on c.cid = d.cid and d.pid = b.cgddid
-        order by b.cgddid desc, b.cgrkid desc
+        order by a.cid,b.cgddid desc, b.cgrkid desc
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete
