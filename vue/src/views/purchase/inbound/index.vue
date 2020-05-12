@@ -126,14 +126,14 @@
                 },
                 excel: {
                     column: [
-                        {header: '序号', alias: 'id'},
-                        {header: '采购订单单号', alias: 'pid', width: 30},
-                        {header: '创建人', alias: 'cname'},
-                        {header: '创建时间', alias: 'ctime'},
-                        {header: '审核人', alias: 'vname'},
-                        {header: '审核时间', alias: 'vtime'},
-                        {header: '状态', alias: 'status'},
-                        {header: '备注', alias: 'remark', width: 50}
+                        {header: '序号', prop: 'id'},
+                        {header: '采购订单单号', prop: 'pid', width: 30},
+                        {header: '创建人', prop: 'cname'},
+                        {header: '创建时间', prop: 'ctime'},
+                        {header: '审核人', prop: 'vname'},
+                        {header: '审核时间', prop: 'vtime'},
+                        {header: '状态', prop: 'status'},
+                        {header: '备注', prop: 'remark', width: 50}
                     ]
                 },
             }

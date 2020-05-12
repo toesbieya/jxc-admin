@@ -20,9 +20,9 @@
             return {
                 loading: false,
                 column: [
-                    {header: '序号', alias: 'no', merge: true},
-                    {header: '名称', alias: 'name', merge: true},
-                    {header: '日期', alias: 'date'},
+                    {header: '序号', prop: 'no', merge: true},
+                    {header: '名称', prop: 'name', merge: true},
+                    {header: '日期', prop: 'date'},
                 ],
                 row: {
                     no: 1,

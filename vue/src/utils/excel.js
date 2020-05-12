@@ -3,7 +3,13 @@ import {download} from "@/utils/file"
 import request from "@/config/request"
 import {elError} from "@/utils/message"
 
-//导出excel
+/**
+ * 搜索表格页导出excel
+ * 响应头为json时进行前端导出，否则直接下载文件
+ * @param url 搜索的请求地址
+ * @param searchForm 搜索参数
+ * @param options 合并选项{column, merge}，只有前端导出时才需要
+ */
 export function exportExcel(url, searchForm, options) {
     request({url, method: 'post', responseType: 'blob', data: searchForm})
         .then(({headers, data}) => {
@@ -21,9 +27,8 @@ export function exportExcel(url, searchForm, options) {
                     exportExcelByJs(sheet, filename)
                 }
                 reader.readAsText(data)
-                return
             }
-            download(data, filename)
+            else download(data, filename)
         })
         .catch(e => elError(e))
 }
@@ -52,13 +57,13 @@ export function exportExcelByJs(sheet, filename) {
  */
 export function json2sheet(column, data, mergeOption, headerRows = 1) {
     const header = []
-    const aliasMap = {}
+    const propMap = {}
     const colWidth = []
     const needMerge = []
     column.forEach((item, i) => {
         if (!isEmpty(item.header)) header[i] = item.header
-        if (!isEmpty(item.alias)) aliasMap[item.alias] = i
-        if (item.merge) needMerge[i] = item.alias
+        if (!isEmpty(item.prop)) propMap[item.prop] = i
+        if (item.merge) needMerge[i] = item.prop
         colWidth[i] = {wch: item.width || 20}
     })
 
@@ -69,7 +74,7 @@ export function json2sheet(column, data, mergeOption, headerRows = 1) {
     }
 
     let result = data.map(i => Object.keys(i).reduce((arr, key) => {
-        arr[aliasMap[key]] = i[key]
+        arr[propMap[key]] = i[key]
         return arr
     }, []))
 
@@ -85,23 +90,23 @@ export function json2sheet(column, data, mergeOption, headerRows = 1) {
  * 合并excel
  * @param primaryKey   该行json的唯一标识字段名
  * @param indexKey     该行json的序号字段名
- * @param alias        表头别名，用于映射json
+ * @param prop         表头的属性名称，用于映射json
  * @param data         json数组
  * @param ignoreRows   忽略的行数，默认为1（忽略表头）
  */
-function mergeExcel(alias, data, primaryKey, indexKey, ignoreRows = 1) {
+function mergeExcel(prop, data, primaryKey, indexKey, ignoreRows = 1) {
     const result = []
     const startRows = ignoreRows + 1
 
-    const merge = alias.map(_ => isEmpty(_) ? undefined : [1])
-    const temp = alias.map(_ => isEmpty(_) ? undefined : 1)
+    const merge = prop.map(_ => isEmpty(_) ? undefined : [1])
+    const temp = prop.map(_ => isEmpty(_) ? undefined : 1)
 
     //序号从1开始
     let indexAfterMerge = 1
     data[0][indexKey] = indexAfterMerge
 
     function compare(currentRow, lastRow, nextRow, colIndex) {
-        const attr = alias[colIndex]
+        const attr = prop[colIndex]
 
         //若与上一行的primaryKey相同且属性相同，则temp对应项+1
         if (currentRow[primaryKey] === lastRow[primaryKey]
@@ -142,7 +147,7 @@ function mergeExcel(alias, data, primaryKey, indexKey, ignoreRows = 1) {
             nextRow[indexKey] = currentRow[indexKey]
         }
 
-        alias.forEach((_, colIndex) => !isEmpty(_) && compare(currentRow, lastRow, nextRow, colIndex))
+        prop.forEach((_, colIndex) => !isEmpty(_) && compare(currentRow, lastRow, nextRow, colIndex))
     }
 
     function number2excelColumnHeader(n) {
@@ -166,9 +171,7 @@ function mergeExcel(alias, data, primaryKey, indexKey, ignoreRows = 1) {
         })
     }
 
-    merge.forEach((arr, index) => {
-        arr && mergeResultConstructor(arr, index)
-    })
+    merge.forEach((arr, index) => arr && mergeResultConstructor(arr, index))
 
     return result
 }
@@ -177,9 +180,7 @@ function mergeExcel(alias, data, primaryKey, indexKey, ignoreRows = 1) {
 const defaultCellStyle = {
     font: {name: '宋体'},
     alignment: {
-        // 自动换行
-        wrapText: 1,
-        // 居中
+        wrapText: 1,// 自动换行
         horizontal: "center",
         vertical: "center",
         indent: 0

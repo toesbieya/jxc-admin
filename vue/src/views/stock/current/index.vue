@@ -104,16 +104,16 @@
                 detailDialog: false,
                 excel: {
                     column: [
-                        {header: '序号', alias: 'id', width: 20, merge: true},
-                        {header: '分类名称', alias: 'cname', width: 20, merge: true},
-                        {header: '库存总数', alias: 'total_num', width: 20, merge: true},
-                        {header: '库存总值', alias: 'total_price', width: 20, merge: true},
-                        {header: '采购订单号', alias: 'cgddid', width: 20, merge: true},
-                        {header: '采购单价', alias: 'cg_price', width: 20, merge: true},
-                        {header: '采购数量', alias: 'cg_num', width: 20, merge: true},
-                        {header: '采购入库单号', alias: 'cgrkid', width: 20},
-                        {header: '入库时间', alias: 'ctime', width: 20},
-                        {header: '入库数量', alias: 'rk_num', width: 20},
+                        {header: '序号', prop: 'id', width: 20, merge: true},
+                        {header: '分类名称', prop: 'cname', width: 20, merge: true},
+                        {header: '库存总数', prop: 'total_num', width: 20, merge: true},
+                        {header: '库存总值', prop: 'total_price', width: 20, merge: true},
+                        {header: '采购订单号', prop: 'cgddid', width: 20, merge: true},
+                        {header: '采购单价', prop: 'cg_price', width: 20, merge: true},
+                        {header: '采购数量', prop: 'cg_num', width: 20, merge: true},
+                        {header: '采购入库单号', prop: 'cgrkid', width: 20},
+                        {header: '入库时间', prop: 'ctime', width: 20},
+                        {header: '入库数量', prop: 'rk_num', width: 20},
                     ],
                     merge: {primaryKey: 'cid', orderKey: 'id'}
                 }

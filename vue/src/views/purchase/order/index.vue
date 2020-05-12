@@ -158,16 +158,16 @@
                 api: {search, del, getSubById},
                 excel: {
                     column: [
-                        {header: '序号', alias: 'id'},
-                        {header: '供应商', alias: 'sname', width: 30},
-                        {header: '创建人', alias: 'cname'},
-                        {header: '创建时间', alias: 'ctime'},
-                        {header: '审核人', alias: 'vname'},
-                        {header: '审核时间', alias: 'vtime'},
-                        {header: '状态', alias: 'status'},
-                        {header: '完成情况', alias: 'finish'},
-                        {header: '完成时间', alias: 'ftime'},
-                        {header: '备注', alias: 'remark', width: 50}
+                        {header: '序号', prop: 'id'},
+                        {header: '供应商', prop: 'sname', width: 30},
+                        {header: '创建人', prop: 'cname'},
+                        {header: '创建时间', prop: 'ctime'},
+                        {header: '审核人', prop: 'vname'},
+                        {header: '审核时间', prop: 'vtime'},
+                        {header: '状态', prop: 'status'},
+                        {header: '完成情况', prop: 'finish'},
+                        {header: '完成时间', prop: 'ftime'},
+                        {header: '备注', prop: 'remark', width: 50}
                     ]
                 }
             }
