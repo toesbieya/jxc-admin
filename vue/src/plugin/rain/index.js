@@ -9,6 +9,7 @@ export default class Rain {
         this.stopSign = false
         this.canvas = canvas
         this.ctx = canvas.getContext('2d')
+        this.resize = this.resize.bind(this)
         this.start()
     }
 
@@ -49,11 +50,13 @@ export default class Rain {
     }
 
     start() {
+        window.addEventListener('resize', this.resize)
         this.resize()
         this.loop()
     }
 
     stop() {
+        window.removeEventListener('resize', this.resize)
         this.stopSign = true
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     }

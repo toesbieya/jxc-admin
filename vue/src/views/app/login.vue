@@ -1,56 +1,56 @@
 <template>
-    <div class="login-container">
+    <div class="login-page">
         <canvas id="login-background"/>
-        <el-form ref="form" :model="form" :rules="rules" autocomplete="on" class="login-form" label-position="left">
-            <div class="title-container">
-                <h3 class="title">进销存管理系统</h3>
-            </div>
-            <el-form-item prop="username">
+        <div class="login-container">
+            <div class="title">进销存管理系统</div>
+            <el-form ref="form" :model="form" :rules="rules" autocomplete="on" label-position="left">
+                <el-form-item prop="username">
                 <span class="svg-container">
                     <svg-icon icon="user"/>
                 </span>
-                <el-input
-                        ref="username"
-                        v-model="form.username"
-                        :maxlength="20"
-                        autocomplete="on"
-                        name="username"
-                        placeholder="请输入用户名"
-                        type="text"
-                />
-            </el-form-item>
-            <el-form-item prop="password">
-                <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">
+                    <el-input
+                            ref="username"
+                            v-model="form.username"
+                            :maxlength="20"
+                            autocomplete="on"
+                            name="username"
+                            placeholder="请输入用户名"
+                            type="text"
+                    />
+                </el-form-item>
+                <el-form-item prop="password">
+                    <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">
                     <span class="svg-container">
                         <svg-icon icon="password"/>
                     </span>
-                </el-tooltip>
-                <el-input
-                        ref="password"
-                        v-model="form.password"
-                        :key="passwordType"
-                        :type="passwordType"
-                        :maxlength="20"
-                        autocomplete="on"
-                        name="password"
-                        placeholder="请输入密码"
-                        @keyup.enter.native="login"
-                />
-                <span @click="showPwd" class="show-pwd">
+                    </el-tooltip>
+                    <el-input
+                            ref="password"
+                            v-model="form.password"
+                            :key="passwordType"
+                            :type="passwordType"
+                            :maxlength="20"
+                            autocomplete="on"
+                            name="password"
+                            placeholder="请输入密码"
+                            @keyup.enter.native="login"
+                    />
+                    <span @click="showPwd" class="show-pwd">
                     <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'"/>
                 </span>
-            </el-form-item>
-            <el-button :loading="loading" style="width: 100%" type="primary" @click="login">登录</el-button>
-            <div class="flex" style="margin-top: 20px">
-                <p class="other-ways">
-                    其他方式登录
-                    <span v-for="i in otherWays" :key="i" @click="$message.info('假装可以第三方登录')">
+                </el-form-item>
+                <el-button :loading="loading" style="width: 100%" type="primary" @click="login">登录</el-button>
+                <div class="flex" style="margin-top: 20px">
+                    <p class="other-ways">
+                        其他方式登录
+                        <span v-for="i in otherWays" :key="i" @click="$message.info('假装可以第三方登录')">
                         <svg-icon :icon="i"/>
                     </span>
-                </p>
-                <el-button type="text" @click="!loading&&$router.push('/register')">注册账户</el-button>
-            </div>
-        </el-form>
+                    </p>
+                    <el-button type="text" @click="!loading&&$router.push('/register')">注册账户</el-button>
+                </div>
+            </el-form>
+        </div>
     </div>
 </template>
 
@@ -100,7 +100,8 @@
             success() {
                 elSuccess('登陆成功')
                 let redirect = this.$route.query.redirect || '/'
-                window.location.href = '/#' + redirect
+                //由于清除消息时会造成卡顿，所以延迟0.5s跳转
+                setTimeout(() => window.location.href = '/#' + redirect, 500)
             },
             capsLockTip({keyCode}) {
                 if (keyCode === 20) this.capsTooltip = !this.capsTooltip
@@ -116,11 +117,13 @@
             if (loginBackgroundAnimate) {
                 import('@/plugin/rain')
                     .then(_ => {
-                        this.rain = new _.default({
-                            rainDropCount: 500,
-                            rainColor: 'rgba(150,180,255,0.8)',
-                            backgroundColor: '#2d3a4b'
-                        }, document.getElementById('login-background'))
+                        this.rain = new _.default(
+                            {
+                                rainDropCount: 500,
+                                rainColor: 'rgba(150,180,255,0.8)',
+                                backgroundColor: '#2d3a4b'
+                            },
+                            document.getElementById('login-background'))
                     })
             }
             this.addCapsLockEvent()

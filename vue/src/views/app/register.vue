@@ -1,42 +1,42 @@
 <template>
-    <div class="login-container">
-        <canvas/>
-        <el-form ref="form" :model="form" :rules="rules" class="login-form" label-position="left">
-            <div class="title-container">
-                <h3 class="title">用户注册</h3>
-            </div>
-            <el-form-item prop="username">
+    <div class="login-page">
+        <canvas id="login-background"/>
+        <div class="login-container">
+            <div class="title">用户注册</div>
+            <el-form ref="form" :model="form" :rules="rules" label-position="left">
+                <el-form-item prop="username">
                 <span class="svg-container">
                     <svg-icon icon="user"/>
                 </span>
-                <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入用户名"/>
-            </el-form-item>
-            <el-form-item prop="pwd">
-                <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">
+                    <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入用户名"/>
+                </el-form-item>
+                <el-form-item prop="pwd">
+                    <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">
                     <span class="svg-container">
                         <svg-icon icon="password"/>
                     </span>
-                </el-tooltip>
-                <el-input v-model="form.pwd" placeholder="请输入密码" type="password" :maxlength="20"/>
-            </el-form-item>
-            <el-form-item prop="repwd">
+                    </el-tooltip>
+                    <el-input v-model="form.pwd" placeholder="请输入密码" type="password" :maxlength="20"/>
+                </el-form-item>
+                <el-form-item prop="repwd">
                 <span class="svg-container">
                     <svg-icon icon="password"/>
                 </span>
-                <el-input
-                        v-model="form.repwd"
-                        placeholder="请确认密码"
-                        type="password"
-                        :maxlength="20"
-                        @keyup.enter.native="register"
-                />
-            </el-form-item>
-            <el-button :loading="loading" style="width: 100%" type="primary" @click="register">注册</el-button>
-            <div class="flex" style="margin-top: 20px">
-                <p/>
-                <el-button type="text" @click="!loading&&$router.push('/login')">已有账户登陆</el-button>
-            </div>
-        </el-form>
+                    <el-input
+                            v-model="form.repwd"
+                            placeholder="请确认密码"
+                            type="password"
+                            :maxlength="20"
+                            @keyup.enter.native="register"
+                    />
+                </el-form-item>
+                <el-button :loading="loading" style="width: 100%" type="primary" @click="register">注册</el-button>
+                <div class="flex" style="margin-top: 20px">
+                    <p/>
+                    <el-button type="text" @click="!loading&&$router.push('/login')">已有账户登陆</el-button>
+                </div>
+            </el-form>
+        </div>
     </div>
 </template>
 
