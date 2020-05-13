@@ -31,7 +31,7 @@
 <script>
     import DialogForm from '@/bizComponents/DialogForm'
     import RoleSelector from './RoleSelector'
-    import {addUser, updateUser} from "@/api/system/user"
+    import {addUser, updateUser, checkName} from "@/api/system/user"
     import {isEmpty} from '@/utils'
     import {elConfirm} from "@/utils/message"
 
@@ -44,6 +44,11 @@
             data: {type: Object, default: () => ({})},
         },
         data() {
+            const validateName = (r, v, c) => {
+                checkName(this.form.name)
+                    .then(({msg}) => msg ? c(msg) : c())
+                    .catch(e => c(e))
+            }
             return {
                 loading: false,
                 form: {
@@ -54,7 +59,10 @@
                     status: 1,
                 },
                 rules: {
-                    name: [{required: true, message: '用户名称不能为空', trigger: 'change'}],
+                    name: [
+                        {required: true, message: '用户名称不能为空', trigger: 'change'},
+                        {validator: validateName, trigger: 'change'}
+                    ],
                     role: [{required: true, message: '用户角色不能为空', trigger: 'change'}],
                     status: [{required: true, message: '用户状态不能为空', trigger: 'change'}],
                 }

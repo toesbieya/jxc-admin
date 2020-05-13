@@ -43,12 +43,18 @@
 <script>
     import md5 from "js-md5"
     import {register} from "@/api/account"
+    import {checkName} from "@/api/system/user"
     import {elSuccess} from "@/utils/message"
 
     export default {
         name: "register",
         data() {
-            let validateRepwd = (r, v, c) => {
+            const validateName = (r, v, c) => {
+                checkName(this.form.username)
+                    .then(({msg}) => msg ? c(msg) : c())
+                    .catch(e => c(e))
+            }
+            const validateRepwd = (r, v, c) => {
                 return v !== this.form.pwd ? c('两次密码输入不一致') : c()
             }
 
@@ -59,7 +65,10 @@
                     repwd: ''
                 },
                 rules: {
-                    username: [{required: true, message: '请输入用户名', trigger: 'change'}],
+                    username: [
+                        {required: true, message: '请输入用户名', trigger: 'change'},
+                        {validator: validateName, trigger: 'change'}
+                    ],
                     pwd: [
                         {required: true, message: '请输入密码', trigger: 'change'},
                         {min: 6, max: 32, message: '请输入6-32位的密码', trigger: 'change'}

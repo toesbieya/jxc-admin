@@ -45,3 +45,7 @@ export function updateAvatar(key) {
 export function validate(pwd) {
     return request.get(baseUrl + '/validate?pwd=' + pwd).then(({data}) => data)
 }
+
+export function checkName(name) {
+    return request.get(baseUrl + '/checkName?name=' + name).then(({data}) => data)
+}
