@@ -136,6 +136,11 @@ public class SysUserController {
         return Result.success("校验通过");
     }
 
+    @GetMapping("checkName")
+    public Result checkName(@RequestParam String name) {
+        return Result.success(userService.checkName(name) ? null : "该用户名已存在");
+    }
+
     private String validateUserCreateParam(SysUser user) {
         if (user.getId() != null) return "创建失败，参数错误";
         if (StringUtils.isEmpty(user.getName())) return "创建失败，用户名称不能为空";

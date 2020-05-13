@@ -184,6 +184,10 @@ public class SysUserService {
         return Result.fail("上传头像失败");
     }
 
+    public boolean checkName(String name) {
+        return !userMapper.isNameExist(name, null);
+    }
+
     public void setUpdateAction(SysUser user) {
         RecUserAction action = ThreadUtil.getAction();
         SysUser origin = userMapper.getById(user.getId());

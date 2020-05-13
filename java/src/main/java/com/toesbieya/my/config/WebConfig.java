@@ -54,7 +54,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        String[] exclude = {"/test/**", "/login", "/logout", "/register", "/error"};
+        String[] exclude = {"/test/**", "/login", "/logout", "/register", "/error", "/system/user/checkName"};
         addInterceptor(registry, new SecurityInterceptor(), exclude);
         addInterceptor(registry, new RateControlInterceptor(), exclude);
         addInterceptor(registry, new UserActionInterceptor(), exclude);
