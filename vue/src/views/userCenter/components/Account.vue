@@ -49,7 +49,7 @@
             clearForm() {
                 this.form.old_pwd = null
                 this.form.new_pwd = null
-                this.$refs.form.resetFields()
+                this.$nextTick(() => this.$refs.form.clearValidate())
             },
             submit() {
                 if (this.loading) return

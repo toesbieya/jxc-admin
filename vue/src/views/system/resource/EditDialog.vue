@@ -58,14 +58,12 @@
         },
         methods: {
             open() {
-                this.$nextTick(() => {
-                    this.$refs.form.resetFields()
-                    mergeObj(this.form, this.data)
-                })
+                this.$nextTick(() => mergeObj(this.form, this.data))
             },
             cancel() {
                 this.$emit('input', false)
                 resetObj(this.form)
+                this.$nextTick(() => this.$refs.form.clearValidate())
             },
             confirm() {
                 if (this.loading) return

@@ -105,7 +105,6 @@
             },
             open() {
                 this.$nextTick(() => {
-                    this.$refs.form.resetFields()
                     if (this.type === 'edit') {
                         mergeObj(this.form, this.data)
                         this.$refs.tree.setCheckedKeys(this.form.resource_id)
@@ -118,7 +117,7 @@
                 this.form.status = 1
                 this.form.resource_id = []
                 this.$refs.tree.setCheckedKeys([])
-                this.$refs.form.resetFields()
+                this.$nextTick(() => this.$refs.form.clearValidate())
             },
             cancel() {
                 this.$emit('input', false)

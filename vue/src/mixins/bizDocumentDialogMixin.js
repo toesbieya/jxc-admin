@@ -269,7 +269,7 @@ export default {
             resetObj(this.form)
             this.history = []
             this.parentSubList && (this.parentSubList = [])
-            this.$nextTick(() => this.$refs.form.resetFields())
+            this.$nextTick(() => this.$refs.form.clearValidate())
         },
 
         //附件操作

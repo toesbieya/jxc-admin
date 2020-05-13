@@ -129,7 +129,7 @@
             clearForm() {
                 resetObj(this.form)
                 this.form.status = 1
-                this.$refs.form.resetFields()
+                this.$nextTick(() => this.$refs.form.clearValidate())
             },
             cancel() {
                 this.$emit('input', false)

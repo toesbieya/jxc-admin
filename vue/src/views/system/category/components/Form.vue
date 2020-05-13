@@ -121,7 +121,7 @@
             cancel() {
                 this.type = 'none'
                 this.clearForm()
-                this.$refs.form.resetFields()
+                this.$nextTick(() => this.$refs.form.clearValidate())
             },
             clearForm() {
                 this.form.id = null
