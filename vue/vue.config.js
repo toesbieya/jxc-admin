@@ -15,6 +15,7 @@ module.exports = {
     publicPath: './',
     outputDir: 'dist',
     assetsDir: 'static',
+    runtimeCompiler: true,
     lintOnSave: false,
     productionSourceMap: false,
     parallel: true,

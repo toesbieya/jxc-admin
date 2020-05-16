@@ -1,4 +1,5 @@
-import {Message, MessageBox} from 'element-ui'
+import Message from '@/components/Message'
+import {MessageBox} from 'element-ui'
 import {isEmpty} from "@/utils"
 
 export function elError(msg = '操作失败') {

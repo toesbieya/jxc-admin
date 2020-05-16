@@ -68,6 +68,21 @@
 .el-message {
     @include deep-shadow;
     border-width: 0;
+    overflow: visible;
+
+    &__badge {
+        animation: el-message-badge .42s;
+        padding: 4px 8px;
+        position: absolute;
+        box-shadow: 0 1px 3px rgba(#000, .2), 0 1px 1px rgba(#000, .14), 0 2px 1px -1px rgba(#000, .12);
+        background-color: $--color-danger;
+        color: #fff;
+        border-radius: 4px;
+        top: -10px;
+        left: -10px;
+        font-size: 12px;
+        line-height: 12px;
+    }
 
     .el-message__icon, .el-message__content {
         color: #fff !important;
@@ -187,6 +202,24 @@
 .el-date-editor.el-input,
 .el-date-editor--daterange {
     width: 100% !important;
+}
+
+@keyframes el-message-badge {
+    15% {
+        transform: translate3d(-25%, 0, 0) rotate3d(0, 0, 1, -5deg)
+    }
+    30% {
+        transform: translate3d(20%, 0, 0) rotate3d(0, 0, 1, 3deg)
+    }
+    45% {
+        transform: translate3d(-15%, 0, 0) rotate3d(0, 0, 1, -3deg)
+    }
+    60% {
+        transform: translate3d(10%, 0, 0) rotate3d(0, 0, 1, 2deg)
+    }
+    75% {
+        transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg)
+    }
 }
 
 

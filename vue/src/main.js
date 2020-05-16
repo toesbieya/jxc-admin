@@ -12,6 +12,9 @@ import * as filters from './filter'
 import BottomTip from '@/components/BottomTip'
 import Guide from '@/components/Guide'
 import ImageViewer from '@/components/ImageViewer'
+import Message from '@/components/Message'
+
+Vue.use(Element)
 
 //注册过滤器
 Object.keys(filters).forEach(key => {
@@ -25,8 +28,7 @@ store.dispatch('socket/init', store.state.user).then()
 Vue.prototype.$bottomTip = BottomTip
 Vue.prototype.$guide = Guide
 Vue.prototype.$image = ImageViewer
-
-Vue.use(Element)
+Vue.prototype.$message = Message
 
 Vue.config.productionTip = false
 
