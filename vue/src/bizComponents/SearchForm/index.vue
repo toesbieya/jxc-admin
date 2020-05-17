@@ -15,7 +15,7 @@
         data() {
             return {
                 showCollapse: false,
-                collapse: false,
+                collapse: true,
                 num: 0
             }
         },

@@ -84,6 +84,20 @@
         line-height: 12px;
     }
 
+    &__progress {
+        z-index: -1;
+        position: absolute;
+        height: 3px;
+        bottom: 0;
+        left: 10px;
+        right: 10px;
+        animation: el-message-progress linear;
+        background: currentColor;
+        opacity: .3;
+        transform-origin: 0 50%;
+        transform: scaleX(0);
+    }
+
     .el-message__icon, .el-message__content {
         color: #fff !important;
     }
@@ -219,6 +233,15 @@
     }
     75% {
         transform: translate3d(-5%, 0, 0) rotate3d(0, 0, 1, -1deg)
+    }
+}
+
+@keyframes el-message-progress {
+    0% {
+        transform: scaleX(1)
+    }
+    100% {
+        transform: scaleX(0)
     }
 }
 

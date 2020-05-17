@@ -27,7 +27,7 @@ const Message = function (options) {
     if (originalMessage) {
         //旧实例的badge+1，并重新计时（如果有的话）
         originalMessage.badge++
-        originalMessage.clearTimer()
+        originalMessage.clearTimer(true)
         originalMessage.startTimer()
         return originalMessage
     }
