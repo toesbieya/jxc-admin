@@ -25,9 +25,10 @@ $cursor: #fff;
 
     .login-container {
         flex: 1;
-        padding: 32px 0;
+        padding: 32px 35px;
         text-align: center;
-        width: 384px;
+        width: 520px;
+        max-width: 100%;
         margin: 0 auto;
 
         .title {
@@ -38,13 +39,21 @@ $cursor: #fff;
             color: #eee;
             font-weight: bold;
             position: relative;
+
+            .set-animation {
+                color: #fff;
+                position: absolute;
+                top: 115px;
+                font-size: 18px;
+                right: 10px;
+                cursor: pointer;
+            }
         }
 
         .svg-container {
-            padding: 6px 5px 6px 15px;
+            padding: 6px 5px 6px 0;
             color: $dark_gray;
             vertical-align: middle;
-            width: 30px;
             display: inline-block;
         }
 
@@ -82,8 +91,9 @@ $cursor: #fff;
 
         .el-form-item {
             border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
             background: rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
+            margin-bottom: 22px;
         }
     }
 }

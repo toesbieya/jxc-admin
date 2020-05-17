@@ -8,9 +8,6 @@ module.exports = {
     //socketUrl: 'wss://toesbieya.cn',
     socketUrl: 'localhost:12580',
 
-    //登录页开启背景动画
-    loginBackgroundAnimate: true,
-
     sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
 
     errorLog: ['production', 'development'],

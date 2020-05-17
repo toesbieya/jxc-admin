@@ -1,7 +1,7 @@
 import RainDrop from "./RainDrop"
 
-export default class Rain {
-    constructor({rainDropCount, rainColor, backgroundColor}, canvas) {
+export default class ReflectRain {
+    constructor(canvas, {rainDropCount = 500, rainColor = 'rgba(150,180,255,0.8)', backgroundColor = '#2d3a4b'} = {}) {
         this.props = {rainDropCount, rainColor, backgroundColor}
         this.rainDrops = []
         this.timer = null
@@ -10,17 +10,38 @@ export default class Rain {
         this.canvas = canvas
         this.ctx = canvas.getContext('2d')
         this.resize = this.resize.bind(this)
+        this.loop = this.loop.bind(this)
         this.start()
     }
 
-    resize() {
-        this.dimensions = {
-            width: window.innerWidth,
-            height: window.innerHeight
+    start() {
+        window.addEventListener('resize', this.resize)
+        this.resize()
+        this.loop()
+    }
+
+    stop() {
+        window.removeEventListener('resize', this.resize)
+        this.stopSign = true
+        this.rainDrops = []
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    }
+
+    loop() {
+        if (this.stopSign) {
+            this.rAF && window.cancelAnimationFrame(this.rAF)
+            this.timer && window.clearTimeout(this.timer)
+            return
         }
-        this.canvas.width = this.dimensions.width
-        this.canvas.height = this.dimensions.height
-        this.floor = this.dimensions.height * 0.7
+        if (this.rainDrops.length < this.props.rainDropCount) {
+            this.timer = window.setTimeout(() => this.rainDrops.push(new RainDrop(this)), Math.random() * 200)
+        }
+        else if (this.timer) {
+            window.clearTimeout(this.timer)
+            this.timer = null
+        }
+        this.draw()
+        this.rAF = window.requestAnimationFrame(this.loop)
     }
 
     draw() {
@@ -49,32 +70,13 @@ export default class Rain {
         this.ctx.restore()
     }
 
-    start() {
-        window.addEventListener('resize', this.resize)
-        this.resize()
-        this.loop()
-    }
-
-    stop() {
-        window.removeEventListener('resize', this.resize)
-        this.stopSign = true
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    }
-
-    loop() {
-        if (this.stopSign) {
-            this.rAF && window.cancelAnimationFrame(this.rAF)
-            this.timer && window.clearTimeout(this.timer)
-            return
+    resize() {
+        this.dimensions = {
+            width: window.innerWidth,
+            height: window.innerHeight
         }
-        if (this.rainDrops.length < this.props.rainDropCount) {
-            this.timer = window.setTimeout(() => this.rainDrops.push(new RainDrop(this)), Math.random() * 200)
-        }
-        else if (this.timer) {
-            window.clearTimeout(this.timer)
-            this.timer = null
-        }
-        this.draw()
-        this.rAF = window.requestAnimationFrame(this.loop.bind(this))
+        this.canvas.width = this.dimensions.width
+        this.canvas.height = this.dimensions.height
+        this.floor = this.dimensions.height * 0.7
     }
 }

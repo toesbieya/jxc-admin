@@ -2,7 +2,10 @@
     <div class="login-page">
         <canvas id="login-background"/>
         <div class="login-container">
-            <div class="title">用户注册</div>
+            <div class="title">
+                用户注册
+                <set-animation :value="registerPageBackgroundAnimation" class="set-animation" @select="setAnimation"/>
+            </div>
             <el-form ref="form" :model="form" :rules="rules" label-position="left">
                 <el-form-item prop="username">
                 <span class="svg-container">
@@ -30,7 +33,7 @@
                             @keyup.enter.native="register"
                     />
                 </el-form-item>
-                <el-button :loading="loading" style="width: 100%" type="primary" @click="register">注册</el-button>
+                <el-button :loading="loading" style="width: 100%" type="primary" @click="register">注 册</el-button>
                 <div class="flex" style="margin-top: 20px">
                     <p/>
                     <el-button type="text" @click="!loading&&$router.push('/login')">已有账户登陆</el-button>
@@ -45,9 +48,12 @@
     import {register} from "@/api/account"
     import {checkName} from "@/api/system/user"
     import {elSuccess} from "@/utils/message"
+    import {isEmpty} from "@/utils"
+    import SetAnimation from "./components/SetAnimation"
 
     export default {
         name: "register",
+        components: {SetAnimation},
         data() {
             const validateName = (r, v, c) => {
                 checkName(this.form.username)
@@ -80,7 +86,12 @@
                 },
                 capsTooltip: false,
                 loading: false,
-                rain: null,
+                animation: null
+            }
+        },
+        computed: {
+            registerPageBackgroundAnimation() {
+                return this.$store.state.app.registerPageBackgroundAnimation
             }
         },
         methods: {
@@ -105,14 +116,30 @@
             },
             removeEvent() {
                 document.removeEventListener('keyup', this.addCapsLockEvent)
+            },
+            clearAnimation() {
+                if (this.animation) {
+                    this.animation.stop()
+                    this.animation = null
+                }
+            },
+            setAnimation(value) {
+                this.clearAnimation()
+                this.$store.commit('app/setRegisterPageBackgroundAnimation', value)
+                if (isEmpty(value)) return
+                import(`@/plugin/canvasAnimation/${value}`)
+                    .then(_ => this.animation = new _.default(document.getElementById('login-background')))
             }
         },
         mounted() {
+            this.setAnimation(this.registerPageBackgroundAnimation)
             this.addEvent()
             this.$nextTick(() => this.$refs.username.focus())
         },
         beforeDestroy() {
+            this.$message.closeAll()
             this.removeEvent()
+            this.clearAnimation()
         }
     }
 </script>

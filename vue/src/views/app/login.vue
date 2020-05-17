@@ -2,7 +2,10 @@
     <div class="login-page">
         <canvas id="login-background"/>
         <div class="login-container">
-            <div class="title">进销存管理系统</div>
+            <div class="title">
+                进销存管理系统
+                <set-animation :value="loginPageBackgroundAnimation" class="set-animation" @select="setAnimation"/>
+            </div>
             <el-form ref="form" :model="form" :rules="rules" autocomplete="on" label-position="left">
                 <el-form-item prop="username">
                 <span class="svg-container">
@@ -39,7 +42,7 @@
                     <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'"/>
                 </span>
                 </el-form-item>
-                <el-button :loading="loading" style="width: 100%" type="primary" @click="login">登录</el-button>
+                <el-button :loading="loading" style="width: 100%" type="primary" @click="login">登 录</el-button>
                 <div class="flex" style="margin-top: 20px">
                     <p class="other-ways">
                         其他方式登录
@@ -55,13 +58,14 @@
 </template>
 
 <script>
-    import {loginBackgroundAnimate} from '@/config'
     import {isEmpty} from "@/utils"
     import md5 from "js-md5"
     import {elSuccess} from "@/utils/message"
+    import SetAnimation from "./components/SetAnimation"
 
     export default {
         name: 'login',
+        components: {SetAnimation},
         data() {
             return {
                 form: {
@@ -79,7 +83,12 @@
                 capsTooltip: false,
                 otherWays: ['qq'],
                 loading: false,
-                rain: null,
+                animation: null
+            }
+        },
+        computed: {
+            loginPageBackgroundAnimation() {
+                return this.$store.state.app.loginPageBackgroundAnimation
             }
         },
         methods: {
@@ -111,21 +120,23 @@
             },
             removeEvent() {
                 document.removeEventListener('keyup', this.addCapsLockEvent)
+            },
+            clearAnimation() {
+                if (this.animation) {
+                    this.animation.stop()
+                    this.animation = null
+                }
+            },
+            setAnimation(value) {
+                this.clearAnimation()
+                this.$store.commit('app/setLoginPageBackgroundAnimation', value)
+                if (isEmpty(value)) return
+                import(`@/plugin/canvasAnimation/${value}`)
+                    .then(_ => this.animation = new _.default(document.getElementById('login-background')))
             }
         },
         mounted() {
-            if (loginBackgroundAnimate) {
-                import('@/plugin/rain')
-                    .then(_ => {
-                        this.rain = new _.default(
-                            {
-                                rainDropCount: 500,
-                                rainColor: 'rgba(150,180,255,0.8)',
-                                backgroundColor: '#2d3a4b'
-                            },
-                            document.getElementById('login-background'))
-                    })
-            }
+            this.setAnimation(this.loginPageBackgroundAnimation)
             this.addCapsLockEvent()
             if (isEmpty(this.form.username)) this.$refs.username.focus()
             else this.$refs.password.focus()
@@ -133,7 +144,7 @@
         beforeDestroy() {
             this.$message.closeAll()
             this.removeEvent()
-            this.rain && this.rain.stop()
+            this.clearAnimation()
         }
     }
 </script>

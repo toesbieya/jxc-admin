@@ -4,6 +4,10 @@ const localSettings = getLocalPersonalSettings()
 
 const state = {
     device: 'pc',
+    //登陆页背景动画
+    loginPageBackgroundAnimation: 'reflectRain',
+    //注册页背景动画
+    registerPageBackgroundAnimation: 'firework',
     //路由页面滚动高度
     scrollTop: 0,
     //右侧块是否含有头部
@@ -11,13 +15,19 @@ const state = {
 }
 
 const mutations = {
-    SET_DEVICE: (state, device) => {
+    setDevice: (state, device) => {
         state.device = device
     },
-    SET_SCROLLTOP(state, scrollTop) {
+    setLoginPageBackgroundAnimation: (state, value) => {
+        state.loginPageBackgroundAnimation = value
+    },
+    setRegisterPageBackgroundAnimation: (state, value) => {
+        state.registerPageBackgroundAnimation = value
+    },
+    setScrollTop(state, scrollTop) {
         state.scrollTop = scrollTop
     },
-    SET_HASHEADER(state, hasHeader) {
+    setHasHeader(state, hasHeader) {
         state.hasHeader = hasHeader
     }
 }

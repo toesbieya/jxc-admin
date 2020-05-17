@@ -39,7 +39,7 @@
         },
         watch: {
             hideHeader(v) {
-                this.$store.commit('app/SET_HASHEADER', !v)
+                this.$store.commit('app/setHasHeader', !v)
                 v ? this.addEvent() : this.removeEvent()
             }
         },
