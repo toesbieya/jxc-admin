@@ -12,6 +12,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -41,11 +42,11 @@ public class LockAspect {
         Object[] args = point.getArgs();
         for (String v : values) {
             String lockKey = (String) SpringUtil.spell(v, parameterNames, args);
+            //跳过空值
+            if (StringUtils.isEmpty(lockKey)) continue;
             LockHelper lockHelper = new RedisLockHelper(lockKey);
             if (!lockHelper.lock()) {
-                if (locks.size() > 0) {
-                    locks.forEach(LockHelper::close);
-                }
+                locks.forEach(LockHelper::close);
                 return Result.fail("操作失败，请刷新后重试");
             }
             locks.add(lockHelper);
