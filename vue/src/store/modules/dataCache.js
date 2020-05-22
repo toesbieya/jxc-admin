@@ -12,11 +12,11 @@ const state = {
 }
 
 const mutations = {
-    SET_CATEGORIES(state, categories) {
+    categories(state, categories) {
         state.categories = categories || []
         state.categoryTree = createTree(state.categories)
     },
-    SET_REGION_TREE(state, regionTree) {
+    regionTree(state, regionTree) {
         state.regionTree = regionTree || []
     },
 }
@@ -25,7 +25,7 @@ const actions = {
     initRegion({commit}) {
         return fetch(regionDataUrl)
             .then(r => r.json())
-            .then(r => commit('SET_REGION_TREE', r))
+            .then(r => commit('regionTree', r))
     }
 }
 

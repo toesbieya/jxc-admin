@@ -73,7 +73,7 @@
             },
             select(index) {
                 if (this.$route.path === index) {
-                    this.$store.commit('tagsView/DEL_CACHED_VIEW', this.$route)
+                    this.$store.commit('tagsView/delCachedView', this.$route)
                     this.$nextTick(() => this.$router.replace({path: '/redirect' + this.$route.fullPath}))
                 }
                 else this.$router.push(index)

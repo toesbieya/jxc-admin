@@ -125,7 +125,7 @@
             },
             setAnimation(value) {
                 this.clearAnimation()
-                this.$store.commit('app/setRegisterPageBackgroundAnimation', value)
+                this.$store.commit('app/registerPageBackgroundAnimation', value)
                 if (isEmpty(value)) return
                 import(`@/plugin/canvasAnimation/${value}`)
                     .then(_ => this.animation = new _.default(document.getElementById('login-background')))

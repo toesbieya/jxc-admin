@@ -1,20 +1,14 @@
 import {MessageBox} from "element-ui"
 import {socketUrl} from '@/config'
 import SocketIO from 'socket.io-client'
+import {createMutations} from "@/utils"
 
 const state = {
     socket: null,
     online: true
 }
 
-const mutations = {
-    SET_SOCKET(state, socket) {
-        state.socket = socket
-    },
-    SET_ONLINE(state, online) {
-        state.online = online
-    }
-}
+const mutations = createMutations(state)
 
 const actions = {
     init({state, commit, dispatch, rootState}, user) {
@@ -38,13 +32,13 @@ const actions = {
             })
         })
 
-        commit('SET_SOCKET', socket)
+        commit('socket', socket)
     },
     close({state, commit}) {
         return new Promise(resolve => {
             if (!state.socket) return resolve()
             state.socket.close()
-            commit('SET_SOCKET', null)
+            commit('socket', null)
             resolve()
         })
     }
@@ -59,12 +53,12 @@ function initSocket({id, session_id}) {
 
 function defaultEventBind(socket, {state, commit, dispatch}) {
     socket.on('connect', () => {
-        commit('SET_ONLINE', true)
+        commit('online', true)
         console.log('socket连接成功')
     })
 
     socket.on('disconnect', (reason) => {
-        commit('SET_ONLINE', false)
+        commit('online', false)
         if (reason === 'io server disconnect') {
             return console.log('服务端关闭了socket连接')
         }
@@ -72,12 +66,12 @@ function defaultEventBind(socket, {state, commit, dispatch}) {
     })
 
     socket.on('reconnecting', (attemptNumber) => {
-        commit('SET_ONLINE', false)
+        commit('online', false)
         console.log(`socket第${attemptNumber}次重连中...`)
     })
 
     socket.on('reconnect', (attemptNumber) => {
-        commit('SET_ONLINE', true)
+        commit('online', true)
         console.log(`socket第${attemptNumber}次重连成功`)
     })
 

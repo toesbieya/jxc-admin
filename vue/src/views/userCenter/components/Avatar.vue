@@ -82,7 +82,7 @@
                     upload(new Blob([data]), this.name)
                         .then(key => updateAvatar(key))
                         .then(({key, msg}) => {
-                            this.$store.commit('user/SET_AVATAR', autoCompleteUrl(key))
+                            this.$store.commit('user/avatar', autoCompleteUrl(key))
                             this.$store.dispatch('user/refresh')
                             elSuccess(msg)
                         })

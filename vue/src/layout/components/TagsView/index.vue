@@ -96,7 +96,7 @@
             initTags() {
                 this.affixTags = this.filterAffixTags(this.routes)
                 for (let tag of this.affixTags) {
-                    this.$store.commit('tagsView/ADD_VISITED_VIEW', tag)
+                    this.$store.commit('tagsView/addVisitedView', tag)
                 }
             },
 
@@ -114,7 +114,7 @@
                     this.$refs.scrollPane.moveToTarget(tag)
                     //更新全路径
                     if (tag.to.fullPath !== this.$route.fullPath) {
-                        this.$store.commit('tagsView/UPDATE_VISITED_VIEW', this.$route)
+                        this.$store.commit('tagsView/updateVisitedViews', this.$route)
                     }
                 })
             },
@@ -124,7 +124,7 @@
             * 刷新所选、关闭所选、关闭其他、关闭所有
             * */
             refreshSelectedTag(view) {
-                this.$store.commit('tagsView/DEL_CACHED_VIEW', view)
+                this.$store.commit('tagsView/delCachedView', view)
                 this.$nextTick(() => this.$router.replace({path: '/redirect' + view.fullPath}))
             },
             closeSelectedTag(view) {

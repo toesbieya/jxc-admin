@@ -21,7 +21,7 @@ const state = {
     session_id: !isEmpty(user.session_id) ? user.session_id : ''
 }
 
-const mutations = createMutations(state)
+const mutations = createMutations(state, true)
 
 const actions = {
     login({commit, dispatch}, userInfo) {
@@ -30,7 +30,7 @@ const actions = {
             login({username: username.trim(), password})
                 .then(user => {
                     user.avatar = autoCompleteUrl(user.avatar)
-                    commit('SET_$ALL', user)
+                    commit('$all', user)
                     setUser(user)
                     return dispatch('socket/init', user, {root: true})
                 })
@@ -42,18 +42,18 @@ const actions = {
     logout({commit, state, dispatch}) {
         return new Promise((resolve, reject) => {
             if (state.prepare_logout) return Promise.reject()
-            commit('SET_PREPARE_LOGOUT', 'yes')
+            commit('prepare_logout', 'yes')
             logout(state.token)
                 .then(() => dispatch('socket/close', null, {root: true}))
                 .then(() => {
                     dispatch('removeUser')
                     dispatch('tagsView/delAllViews', null, {root: true})
-                    commit('resource/SET_INIT_ROUTES_SIGN', false, {root: true})
+                    commit('resource/hasInitRoutes', false, {root: true})
                     resolve()
                     window.location.reload()
                 })
                 .catch(error => reject(error))
-                .finally(() => commit('SET_PREPARE_LOGOUT', ''))
+                .finally(() => commit('prepare_logout', ''))
         })
     },
 
@@ -62,7 +62,7 @@ const actions = {
     },
 
     removeUser({commit}) {
-        commit('SET_$ALL', {resources: {}})
+        commit('$all', {resources: {}})
         setUser()
     }
 }

@@ -7,12 +7,12 @@ const state = {
 }
 
 const mutations = {
-    ...createMutations(state, false),
-    ADD_IFRAME(state, src) {
+    ...createMutations(state),
+    addIframe(state, src) {
         if (state.list.some(i => i === src)) return
         state.list.push(src)
     },
-    DEL_IFRAME(state, src) {
+    delIframe(state, src) {
         if (!src) return
         let index = state.list.findIndex(i => i === src)
         index > -1 && state.list.splice(index, 1)
@@ -22,14 +22,14 @@ const mutations = {
 const actions = {
     open({commit}, src) {
         if (!src) return
-        commit('SET_SHOW', true)
-        commit('SET_CURRENT', src)
-        commit('ADD_IFRAME', src)
+        commit('show', true)
+        commit('current', src)
+        commit('addIframe', src)
     },
     close({commit}, src) {
-        commit('SET_SHOW', false)
-        commit('SET_CURRENT', '')
-        commit('DEL_IFRAME', src)
+        commit('show', false)
+        commit('current', '')
+        commit('delIframe', src)
     }
 }
 

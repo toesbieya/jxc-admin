@@ -22,7 +22,7 @@ const state = {
 }
 
 const mutations = {
-    SET_ROUTES: (state, routes) => {
+    routes(state, routes) {
         let tempConstantRoutes = JSON.parse(JSON.stringify(finalConstantRoutes))
         let tempAuthorityRoutes = JSON.parse(JSON.stringify(routes))
         clean(tempConstantRoutes)
@@ -30,12 +30,12 @@ const mutations = {
         state.routes = finalConstantRoutes.concat(routes)
         state.sidebarMenus = tempConstantRoutes.concat(tempAuthorityRoutes)
     },
-    SET_DATA: (state, data) => {
+    data(state, data) {
         state.data = data || []
         state.tree = createTree(data)
         setLocalResource(data)
     },
-    SET_INIT_ROUTES_SIGN: (state, sign) => {
+    hasInitRoutes(state, sign) {
         state.hasInitRoutes = sign
     }
 }
@@ -51,8 +51,8 @@ const actions = {
         const {resources, admin} = user
         return new Promise(resolve => {
             let accessedRoutes = getAuthorizedRoutes({resources, admin})
-            commit('SET_ROUTES', accessedRoutes)
-            commit('SET_INIT_ROUTES_SIGN', true)
+            commit('routes', accessedRoutes)
+            commit('hasInitRoutes', true)
             resolve()
         })
     },
@@ -61,7 +61,7 @@ const actions = {
             //if (state.data.length > 0) return resolve();
             getResources()
                 .then(data => {
-                    commit('SET_DATA', data)
+                    commit('data', data)
                     resolve()
                 })
         })

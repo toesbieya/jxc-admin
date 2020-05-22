@@ -31,7 +31,7 @@
             init() {
                 if (this.selectableCategories.length > 0) return
                 getAllCategories()
-                    .then(data => this.$store.commit('dataCache/SET_CATEGORIES', data))
+                    .then(data => this.$store.commit('dataCache/categories', data))
             },
             change(v) {
                 if (!v || this.selected.length <= 0) return

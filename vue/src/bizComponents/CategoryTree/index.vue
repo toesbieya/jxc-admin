@@ -24,7 +24,7 @@
         },
         mounted() {
             getAllCategories()
-                .then(data => this.$store.commit('dataCache/SET_CATEGORIES', data))
+                .then(data => this.$store.commit('dataCache/categories', data))
                 .finally(() => this.loading = false)
         }
     }

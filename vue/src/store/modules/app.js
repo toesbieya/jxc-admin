@@ -1,11 +1,12 @@
 import {getLocalPersonalSettings} from "@/utils/localStorage"
+import {createMutations} from "@/utils"
 
 const localSettings = getLocalPersonalSettings()
 
 const state = {
     device: 'pc',
     //登陆页背景动画
-    loginPageBackgroundAnimation: 'reflectRain',
+    loginPageBackgroundAnimation: 'firework',
     //注册页背景动画
     registerPageBackgroundAnimation: 'firework',
     //路由页面滚动高度
@@ -14,24 +15,7 @@ const state = {
     hasHeader: !!!localSettings.headerAutoHidden,
 }
 
-const mutations = {
-    setDevice: (state, device) => {
-        state.device = device
-    },
-    setLoginPageBackgroundAnimation: (state, value) => {
-        state.loginPageBackgroundAnimation = value
-    },
-    setRegisterPageBackgroundAnimation: (state, value) => {
-        state.registerPageBackgroundAnimation = value
-    },
-    setScrollTop(state, scrollTop) {
-        state.scrollTop = scrollTop
-    },
-    setHasHeader(state, hasHeader) {
-        state.hasHeader = hasHeader
-    }
-}
-
+const mutations = createMutations(state)
 
 export default {
     namespaced: true,

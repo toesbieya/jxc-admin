@@ -151,13 +151,13 @@ export function waitUntilSuccess(success, callback, interval = 1000) {
 }
 
 //store中根据state批量生成对应的mutation
-export function createMutations(state, all = true, keyFunction = key => 'SET_' + key.toUpperCase()) {
+export function createMutations(state, all = false) {
     const arr = Object.keys(state)
     const obj = {}
     arr.forEach(key => {
-        obj[keyFunction(key)] = (s, v) => s[key] = v
+        obj[key] = (s, v) => s[key] = v
     })
-    if (all) obj['SET_$ALL'] = (s, v) => arr.forEach(key => s[key] = v ? v[key] || '' : '')
+    if (all) obj['$all'] = (s, v) => arr.forEach(key => s[key] = v ? v[key] || '' : '')
     return obj
 }
 
