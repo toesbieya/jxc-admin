@@ -60,12 +60,6 @@ const router = {
                     meta: {title: '图片预览'}
                 },
                 {
-                    path: 'verify',
-                    name: 'verify',
-                    component: () => import('@/views/example/components/verify'),
-                    meta: {title: '滑块验证'}
-                },
-                {
                     path: 'skeleton',
                     name: 'skeleton',
                     component: () => import('@/views/example/components/skeleton'),

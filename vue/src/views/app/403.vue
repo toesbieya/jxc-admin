@@ -2,7 +2,7 @@
     <div class="error-container">
         <div>
             <div class="pic">
-                <img alt="403" height="428" src="@/assets/403_images/403.gif" width="313">
+                <img alt="403" height="428" src="@/assets/images/403.gif" width="313">
             </div>
             <div class="bullshit">
                 <div class="bullshit__oops">Oops!</div>

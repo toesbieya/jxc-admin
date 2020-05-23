@@ -96,12 +96,16 @@
                 this.passwordType = this.passwordType === 'password' ? '' : 'password'
                 this.$nextTick(() => this.$refs.password.focus())
             },
-            login() {
+            login({pageX, pageY}) {
                 if (this.loading) return
                 this.$refs.form.validate(valid => {
                     if (!valid) return
                     this.loading = true
-                    this.$store.dispatch('user/login', {...this.form, password: md5(this.form.password)})
+                    this.$puzzleVerify({left: pageX, top: pageY})
+                        .then(() => this.$store.dispatch('user/login', {
+                            ...this.form,
+                            password: md5(this.form.password)
+                        }))
                         .then(() => this.success())
                         .catch(() => this.loading = false)
                 })

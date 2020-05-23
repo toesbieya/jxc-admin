@@ -13,6 +13,7 @@ import BottomTip from '@/components/BottomTip'
 import Guide from '@/components/Guide'
 import ImageViewer from '@/components/ImageViewer'
 import Message from '@/components/Message'
+import PuzzleVerify from '@/components/PuzzleVerify'
 
 Vue.use(Element)
 
@@ -29,6 +30,7 @@ Vue.prototype.$bottomTip = BottomTip
 Vue.prototype.$guide = Guide
 Vue.prototype.$image = ImageViewer
 Vue.prototype.$message = Message
+Vue.prototype.$puzzleVerify = PuzzleVerify
 
 Vue.config.productionTip = false
 

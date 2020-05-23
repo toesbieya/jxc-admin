@@ -2,10 +2,10 @@
     <div class="error-container">
         <div>
             <div class="pic">
-                <img alt="404" class="pic__parent" src="@/assets/404_images/404.png">
-                <img alt="404" class="pic__child left" src="@/assets/404_images/404_cloud.png">
-                <img alt="404" class="pic__child mid" src="@/assets/404_images/404_cloud.png">
-                <img alt="404" class="pic__child right" src="@/assets/404_images/404_cloud.png">
+                <img alt="404" class="pic__parent" src="@/assets/images/404.png">
+                <img alt="404" class="pic__child left" src="@/assets/images/404_cloud.png">
+                <img alt="404" class="pic__child mid" src="@/assets/images/404_cloud.png">
+                <img alt="404" class="pic__child right" src="@/assets/images/404_cloud.png">
             </div>
             <div class="bullshit">
                 <div class="bullshit__oops">Oops!</div>
