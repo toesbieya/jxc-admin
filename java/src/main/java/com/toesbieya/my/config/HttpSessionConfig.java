@@ -1,23 +1,37 @@
 package com.toesbieya.my.config;
 
 import com.alibaba.fastjson.JSON;
-import com.toesbieya.my.listener.RedisSessionListener;
+import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.module.SocketModule;
+import com.toesbieya.my.utils.Util;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
 @EnableRedisHttpSession()
 public class HttpSessionConfig {
-
     @Bean
-    public RedisSessionListener httpSessionEventPublisher() {
-        return new RedisSessionListener();
+    public HttpSessionListener httpSessionEventPublisher() {
+        return new HttpSessionListener() {
+            @Override
+            public void sessionCreated(HttpSessionEvent se) { }
+
+            @Override
+            public void sessionDestroyed(HttpSessionEvent se) {
+                SysUser user = Util.getUser(se.getSession());
+                if (user != null) {
+                    SocketModule.logout(user.getId(), "登陆状态过期，请重新登陆");
+                }
+            }
+        };
     }
 
     @Bean("springSessionDefaultRedisSerializer")

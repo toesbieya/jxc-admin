@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class UserActionSearch extends BaseSearch {
-    private String uid;
+    private Integer uid;
     private String uname;
     private String ip;
     private String url;

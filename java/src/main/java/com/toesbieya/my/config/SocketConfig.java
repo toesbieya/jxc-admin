@@ -16,6 +16,7 @@ public class SocketConfig {
         config.setPort(SocketConstant.PORT);
         config.setMaxFramePayloadLength(SocketConstant.MAX_FRAME_PAYLOAD);
         config.setMaxHttpContentLength(SocketConstant.MAX_HTTP_CONTENT);
+        config.setAddVersionHeader(false);
         return new SocketIOServer(config);
     }
 

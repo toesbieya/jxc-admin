@@ -42,10 +42,8 @@ public class SysUserController {
     public Result getLoginHistory(@RequestBody LoginHistorySearch vo) {
         SysUser user = Util.getUser(session);
         assert user != null;
-        if (!user.getAdmin().equals(1)) {
-            vo.setStartTime(null);
-            vo.setEndTime(DateUtil.getTimestampBeforeNow(-7));
-        }
+        vo.setUid(user.getId());
+        vo.setStartTime(DateUtil.getTimestampBeforeNow(7));
         return Result.success(recService.searchLoginHistory(vo));
     }
 
@@ -53,10 +51,8 @@ public class SysUserController {
     public Result getUserAction(@RequestBody UserActionSearch vo) {
         SysUser user = Util.getUser(session);
         assert user != null;
-        if (user.getAdmin() != 1) {
-            vo.setStartTime(null);
-            vo.setEndTime(DateUtil.getTimestampBeforeNow(-7));
-        }
+        vo.setUid(user.getId());
+        vo.setStartTime(DateUtil.getTimestampBeforeNow(7));
         return Result.success(recService.searchUserAction(vo));
     }
 

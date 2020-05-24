@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class LoginHistorySearch extends BaseSearch {
-    private String uid;
+    private Integer uid;
     private String uname;
     private Integer type;
     private String ip;

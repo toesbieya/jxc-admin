@@ -10,12 +10,6 @@
         <if test="startTime!=null">and time <![CDATA[ >= ]]> #{startTime}</if>
         <if test="endTime!=null">and time <![CDATA[ <= ]]> #{endTime}</if>
     </sql>
-    <select id="getByUid" resultType="com.toesbieya.my.model.entity.RecLoginHistory">
-        select *
-        from rec_login_history
-        where uid = #{uid}
-        order by time desc
-    </select>
     <select id="search" resultType="com.toesbieya.my.model.entity.RecLoginHistory"
             parameterType="com.toesbieya.my.model.vo.search.LoginHistorySearch">
         select *
