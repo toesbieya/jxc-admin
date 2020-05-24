@@ -1,7 +1,7 @@
 <template>
     <el-dialog
             v-drag-dialog
-            class="dialog-form"
+            custom-class="dialog-form"
             :top="top"
             :visible="value"
             :width="width"

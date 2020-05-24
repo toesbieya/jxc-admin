@@ -1,23 +1,35 @@
 <template>
-    <el-form ref="form" :model="form" :rules="rules" size="small" label-position="right" label-width="100px"
-             status-icon>
-        <el-form-item label="旧密码：" prop="old_pwd">
-            <el-input v-model.trim="form.old_pwd" autocomplete="off" maxlength="100" type="password"/>
-        </el-form-item>
-        <el-form-item label="新密码：" prop="new_pwd">
-            <el-input v-model.trim="form.new_pwd" autocomplete="off" maxlength="100" type="password"/>
-        </el-form-item>
-        <el-form-item>
-            <el-button :loading="loading" type="primary" @click="submit">确认修改</el-button>
-        </el-form-item>
-    </el-form>
+    <dialog-form :loading="loading" title="修改密码" :value="value" width="30%" @close="cancel">
+        <el-form
+                ref="form"
+                :model="form"
+                :rules="rules"
+                size="small"
+                label-position="right"
+                label-width="100px"
+                status-icon
+        >
+            <el-form-item label="旧密码：" prop="old_pwd">
+                <el-input v-model.trim="form.old_pwd" maxlength="100" type="password"/>
+            </el-form-item>
+            <el-form-item label="新密码：" prop="new_pwd">
+                <el-input v-model.trim="form.new_pwd" maxlength="100" type="password"/>
+            </el-form-item>
+        </el-form>
+        <template v-slot:footer>
+            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button size="small" type="primary" @click="confirm">确 定</el-button>
+        </template>
+    </dialog-form>
 </template>
 
 <script>
+    import DialogForm from '@/bizComponents/DialogForm'
     import {updateUserPwd} from "@/api/system/user"
     import {elSuccess} from "@/utils/message"
 
     export default {
+        components: {DialogForm},
         data() {
             return {
                 loading: false,
@@ -30,9 +42,7 @@
                     new_pwd: [
                         {required: true, message: '请输入新密码', trigger: 'change'},
                         {
-                            validator: (r, v, c) => {
-                                v !== this.form.old_pwd ? c() : c('新密码不得与旧密码相同')
-                            },
+                            validator: (r, v, c) => v !== this.form.old_pwd ? c() : c('新密码不得与旧密码相同'),
                             trigger: 'change'
                         },
                         {
@@ -45,13 +55,16 @@
                 }
             }
         },
+        props: {
+            value: Boolean
+        },
         methods: {
             clearForm() {
                 this.form.old_pwd = null
                 this.form.new_pwd = null
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
-            submit() {
+            confirm() {
                 if (this.loading) return
                 this.$refs.form.validate(v => {
                     if (!v) return
@@ -60,9 +73,13 @@
                         .then(() => elSuccess('修改成功'))
                         .finally(() => {
                             this.loading = false
-                            this.clearForm()
+                            this.cancel()
                         })
                 })
+            },
+            cancel() {
+                this.$emit('input', false)
+                this.clearForm()
             }
         }
     }

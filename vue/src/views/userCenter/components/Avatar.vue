@@ -1,52 +1,60 @@
 <template>
-    <el-row class="avatar-cropper" type="flex">
-        <div class="img-wrapper">
-            <vue-cropper
-                    ref="cropper"
-                    :img="img"
-                    :info="false"
-                    autoCrop
-                    autoCropHeight="200px"
-                    autoCropWidth="200px"
-                    centerBox
-                    fixedBox
-                    full
-                    outputType="png"
-                    @realTime="previews=$event"
-                    @wheel.native.prevent="scale"
-            />
-        </div>
-        <div class="operate-wrapper">
-            <div class="preview-container">
-                <div :style="previews.div">
-                    <img :src="previews.url" :style="previews.img">
-                </div>
+    <dialog-form :loading="loading" title="上传头像" :value="value" width="50%" @close="cancel">
+        <el-row class="avatar-cropper" type="flex">
+            <div class="img-wrapper">
+                <vue-cropper
+                        ref="cropper"
+                        :img="img"
+                        :info="false"
+                        autoCrop
+                        autoCropHeight="200px"
+                        autoCropWidth="200px"
+                        centerBox
+                        fixedBox
+                        full
+                        outputType="png"
+                        @realTime="previews=$event"
+                        @wheel.native.prevent="scale"
+                />
             </div>
-            <el-button size="small" type="primary" @click="$refs.input.click()">
-                选择图片
-                <input
-                        ref="input"
-                        accept="image/png, image/jpeg, image/gif, image/jpg"
-                        style="display: none"
-                        type="file"
-                        @change="chooseImage"
-                >
-            </el-button>
-            <el-button :loading="loading" size="small" type="primary" @click="upload">上 传</el-button>
-            <el-button plain size="small" @click="!loading&&clear()">取 消</el-button>
-        </div>
-    </el-row>
+            <div class="operate-wrapper">
+                <div class="preview-container">
+                    <div :style="previews.div">
+                        <img :src="previews.url" :style="previews.img">
+                    </div>
+                </div>
+                <el-button size="small" type="primary" @click="$refs.input.click()">
+                    选择图片
+                    <input
+                            ref="input"
+                            accept="image/png, image/jpeg, image/gif, image/jpg"
+                            style="display: none"
+                            type="file"
+                            @change="chooseImage"
+                    >
+                </el-button>
+            </div>
+        </el-row>
+        <template v-slot:footer>
+            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button size="small" type="primary" @click="confirm">确 定</el-button>
+        </template>
+    </dialog-form>
 </template>
 
 <script>
     import {VueCropper} from 'vue-cropper'
+    import DialogForm from '@/bizComponents/DialogForm'
     import {elError, elSuccess} from "@/utils/message"
     import {autoCompleteUrl, upload} from "@/utils/file"
     import {updateAvatar} from "@/api/system/user"
 
     export default {
         name: "Avatar",
-        components: {VueCropper},
+        components: {VueCropper, DialogForm},
+        props: {
+            value: Boolean
+        },
         data() {
             return {
                 loading: false,
@@ -74,7 +82,7 @@
                 reader.readAsArrayBuffer(file)
             },
 
-            upload() {
+            confirm() {
                 if (!this.img) return elError('请先上传图片')
                 if (this.loading) return
                 this.loading = true
@@ -86,7 +94,7 @@
                             this.$store.dispatch('user/refresh')
                             elSuccess(msg)
                         })
-                        .finally(() => this.clear())
+                        .finally(() => this.cancel())
                 })
             },
 
@@ -101,10 +109,12 @@
             scale(e) {
                 const eventDelta = e.wheelDelta || -(e.detail || 0) * 40
                 this.$refs.cropper.changeScale(eventDelta / 120)
+            },
+
+            cancel() {
+                this.$emit('input', false)
+                this.clear()
             }
-        },
-        beforeDestroy() {
-            this.clear()
         }
     }
 </script>

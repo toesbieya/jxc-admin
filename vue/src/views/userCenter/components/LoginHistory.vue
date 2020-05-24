@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column align="center" label="说明" width="80">
                 <template v-slot="{row}">
-                    <el-tag :type="row.type===1?'success':'danger'" effect="dark">
+                    <el-tag :type="row.type===1?'success':'danger'" size="small" effect="dark">
                         {{getInfo(row.type)}}
                     </el-tag>
                 </template>
@@ -67,9 +67,9 @@
             getInfo(type) {
                 switch (type) {
                     case 0:
-                        return '登录'
-                    case 1:
                         return '登出'
+                    case 1:
+                        return '登陆'
                 }
                 return null
             }

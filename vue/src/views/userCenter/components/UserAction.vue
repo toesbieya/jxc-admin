@@ -17,7 +17,7 @@
                                 <p>{{row.error}}</p>
                             </el-scrollbar>
                         </div>
-                        <el-tag :type="row.type===1?'success':'danger'" effect="dark">
+                        <el-tag :type="row.type===1?'success':'danger'" size="small" effect="dark">
                             {{getInfo(row.type)}}
                         </el-tag>
                     </el-tooltip>

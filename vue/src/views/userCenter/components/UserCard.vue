@@ -1,28 +1,37 @@
 <template>
-    <el-card class="user-card" header="用户信息">
-        <div class="user-profile">
-            <div class="box-center">
-                <el-avatar :size="200" :src="avatar" icon="el-icon-user-solid"/>
-                <div class="user-name text-center">{{name}}</div>
-                <div class="user-role text-center text-muted">{{role_name}}</div>
-            </div>
-        </div>
+    <el-card class="user-card" header="个人信息">
+        <el-avatar :size="200" :src="avatar" icon="el-icon-user-solid" @click.native="uploadAvatarDialog=true"/>
 
-        <!--<div class="user-bio">
-            <div class="user-bio-section">
-                <div class="user-bio-section-header">
-                    <i class="el-icon-lock"/>
-                    <span>修改锁屏密码</span>
-                </div>
-            </div>
-        </div>-->
+        <ul class="user-info">
+            <li>登录账号
+                <div class="user-right">{{ name }}</div>
+            </li>
+            <li>用户角色
+                <div class="user-right">{{ role_name }}</div>
+            </li>
+            <li>安全设置
+                <div class="user-right"><a @click="modifyPasswordDialog=true">修改密码</a></div>
+            </li>
+        </ul>
+
+        <user-account v-model="modifyPasswordDialog"/>
+        <upload-avatar v-model="uploadAvatarDialog"/>
     </el-card>
 </template>
 
 <script>
+    import UserAccount from './Account'
+    import UploadAvatar from './Avatar'
     import {mapState} from 'vuex'
 
     export default {
+        components: {UserAccount, UploadAvatar},
+        data() {
+            return {
+                modifyPasswordDialog: false,
+                uploadAvatarDialog: false
+            }
+        },
         computed: {
             ...mapState('user', {
                 name: state => state.name,
@@ -30,56 +39,39 @@
                 role_name: state => state.role_name,
                 admin: state => state.admin
             })
-        }
+        },
+        methods: {}
     }
 </script>
 
 <style lang="scss">
     .user-card {
-        .el-avatar i {
-            line-height: 180px;
-            font-size: 150px;
-        }
+        .el-avatar {
+            margin: 0 auto;
+            display: block;
+            cursor: pointer;
 
-        .text-muted {
-            color: #777;
-        }
-
-        .user-profile {
-            .user-name {
-                font-weight: bold;
-            }
-
-            .box-center {
-                margin: 0 auto;
-                display: table;
-                padding-top: 10px;
-            }
-
-            .user-role {
-                padding-top: 10px;
-                font-weight: 400;
-                font-size: 14px;
+            i {
+                line-height: 180px;
+                font-size: 150px;
             }
         }
 
-        .user-bio {
-            margin-top: 20px;
-            color: #606266;
+        .user-info {
+            padding-left: 0;
+            list-style: none;
 
-            span {
-                padding-left: 4px;
+            li {
+                border-bottom: 1px solid #F0F3F4;
+                padding: 11px 0;
+                font-size: 13px;
             }
 
-            .user-bio-section {
-                font-size: 14px;
-                padding: 15px 0;
+            .user-right {
+                float: right;
 
-                .user-bio-section-header {
-                    border-bottom: 1px solid #dfe6ec;
-                    padding-bottom: 10px;
-                    margin-bottom: 10px;
-                    font-weight: bold;
+                a {
+                    color: #317EF3;
                 }
             }
         }

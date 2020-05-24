@@ -1,9 +1,9 @@
 <template>
     <el-row :gutter="20">
-        <el-col :span="6">
+        <el-col :xs="24" :sm="24" :md="8" :lg="6" :xl="5" style="margin-bottom: 10px">
             <user-card/>
         </el-col>
-        <el-col :span="18">
+        <el-col :xs="24" :sm="24" :md="16" :lg="18" :xl="19">
             <el-card>
                 <el-tabs v-model="activeTab">
                     <el-tab-pane v-for="i in tabs" v-once :key="i.label" :name="i.name">
@@ -27,22 +27,18 @@
 
 <script>
     import UserCard from './components/UserCard'
-    import UserAvatar from "@/views/userCenter/components/Avatar"
-    import UserAccount from './components/Account'
     import LoginHistory from './components/LoginHistory'
     import UserAction from './components/UserAction'
 
     export default {
         name: 'userCenter',
-        components: {UserCard, UserAvatar, UserAccount, LoginHistory, UserAction},
+        components: {UserCard, LoginHistory, UserAction},
         data() {
             return {
-                activeTab: 'user-avatar',
+                activeTab: 'login-history',
                 tabs: [
-                    {label: '上传头像', name: 'user-avatar'},
-                    {label: '修改密码', name: 'user-account'},
-                    {label: '登录历史', name: 'login-history', intro: '只保留最近7天的记录，想查询全部请联系管理员'},
-                    {label: '操作记录', name: 'user-action', intro: '只保留最近7天的记录，想查询全部请联系管理员'},
+                    {label: '登录历史', name: 'login-history', intro: '只保留最近7天的记录'},
+                    {label: '操作记录', name: 'user-action', intro: '只保留最近7天的记录'},
                 ]
             }
         }
