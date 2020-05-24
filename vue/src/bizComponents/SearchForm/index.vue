@@ -1,4 +1,6 @@
 <script type="text/jsx">
+    import {debounce} from "@/utils"
+
     export default {
         name: "SearchForm",
         provide() {
@@ -36,6 +38,7 @@
             }
         },
         mounted() {
+            this.resize = debounce(this.resize)
             this.resize()
             window.addEventListener('resize', this.resize)
         },
@@ -44,7 +47,7 @@
         },
         render() {
             const slots = this.$slots.default
-            let collapseChildren = []
+            const collapseChildren = []
             if (this.showCollapse) {
                 collapseChildren.push(
                     <el-collapse-transition>
@@ -86,6 +89,8 @@
 
 <style lang="scss">
     .searchForm {
+        margin-bottom: -15px;
+
         .searchForm__collapse {
             position: relative;
             bottom: 20px;

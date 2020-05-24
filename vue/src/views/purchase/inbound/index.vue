@@ -39,7 +39,7 @@
                 </el-select>
             </search-form-item>
         </search-form>
-        <el-row>
+        <el-row class="button-group">
             <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
             <el-button icon="el-icon-view" size="small" type="primary" @click="see">查 看</el-button>

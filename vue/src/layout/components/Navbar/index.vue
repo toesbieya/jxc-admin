@@ -5,11 +5,11 @@
         <breadcrumb v-if="showBreadcrumb"/>
 
         <div class="right-menu">
-            <search id="header-search" class="right-menu-item"/>
+            <search id="header-search" class="right-menu-item hidden-xs"/>
 
-            <fullscreen v-model="fullscreen" class="fullscreen-btn right-menu-item" title="全屏开关"/>
+            <fullscreen v-model="fullscreen" class="fullscreen-btn right-menu-item hidden-xs" title="全屏开关"/>
 
-            <div class="setting-btn right-menu-item" @click="settingDrawer=true">
+            <div class="setting-btn right-menu-item hidden-xs" @click="settingDrawer=true">
                 <i class="el-icon-s-operation navbar-icon" title="个性设置"/>
             </div>
 
@@ -20,24 +20,22 @@
             >
                 <div class="avatar-wrapper">
                     <el-avatar :size="30" :src="avatar" icon="el-icon-user-solid"/>
-                    <span>{{name}}</span>
+                    <span class="hidden-xs">{{name}}</span>
                 </div>
                 <el-dropdown-menu class="user-dropdown" slot="dropdown">
                     <router-link to="/user/index">
                         <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
                     </router-link>
-                    <el-dropdown-item icon="el-icon-guide" @click.native="$guide(0,steps)">新手指引</el-dropdown-item>
+                    <el-dropdown-item class="hidden-xs" icon="el-icon-guide" @click.native="$guide(0,steps)">
+                        新手指引
+                    </el-dropdown-item>
                     <router-link v-if="showSystemMonitor" to="/system/monitor">
                         <el-dropdown-item icon="el-icon-monitor">系统监控</el-dropdown-item>
                     </router-link>
                     <router-link v-if="showSystemResource" to="/system/resource">
                         <el-dropdown-item icon="el-icon-setting">接口设置</el-dropdown-item>
                     </router-link>
-                    <el-dropdown-item
-                            divided
-                            icon="el-icon-switch-button"
-                            @click.native="logout"
-                    >
+                    <el-dropdown-item divided icon="el-icon-switch-button" @click.native="logout">
                         退出登录
                     </el-dropdown-item>
                 </el-dropdown-menu>

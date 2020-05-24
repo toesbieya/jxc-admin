@@ -32,7 +32,7 @@
                 />
             </search-form-item>
         </search-form>
-        <el-row>
+        <el-row class="button-group">
             <el-button size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canAdd" size="small" type="primary" @click="add">添 加</el-button>
             <el-button v-if="canUpdate" size="small" type="primary" @click="edit">编 辑</el-button>

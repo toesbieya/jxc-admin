@@ -1,5 +1,6 @@
 @import "variables";
 @import "~element-ui/packages/theme-chalk/src/index";
+@import 'display';
 @import "transition";
 @import "element-ui";
 @import "nprogress";
@@ -178,6 +179,17 @@ a:hover {
 
     & + & {
         margin-left: 20px;
+    }
+}
+
+.button-group {
+    .el-button {
+        margin-top: 10px;
+        margin-right: 10px;
+
+        & + .el-button {
+            margin-left: 0;
+        }
     }
 }
 

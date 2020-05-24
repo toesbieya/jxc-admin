@@ -30,6 +30,8 @@ $iconSize: 17px;
     //自动隐藏
     &.hide-sidebar {
         width: 0;
+        pointer-events: none;
+        transform: translateX(-$sideBarWidth);
     }
 
     .sidebar-logo-container {
