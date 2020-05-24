@@ -37,7 +37,6 @@
     .app-breadcrumb.el-breadcrumb {
         display: inline-block;
         line-height: 50px;
-        margin-left: 15px;
 
         .no-redirect {
             color: $--color-gray;

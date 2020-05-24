@@ -39,83 +39,30 @@
 </template>
 
 <script>
+    const states = ['showLogo', 'showBreadcrumb', 'sidebarUniqueOpen', 'sidebarCollapse',
+        'sidebarAutoHidden', 'sidebarShowParent', 'headerAutoHidden', 'showBackToTop']
+
+    function createStateComputed() {
+        const obj = {}
+        states.forEach(key => {
+            obj[key] = {
+                get() {
+                    return this.$store.state.setting[key]
+                },
+                set(v) {
+                    this.$store.commit(`setting/${key}`, v)
+                }
+            }
+        })
+        return obj
+    }
+
     export default {
         name: "SettingDrawer",
         props: {
             value: Boolean
         },
-        computed: {
-            showLogo: {
-                get() {
-                    return this.$store.state.setting.showLogo
-                },
-                set(v) {
-                    this.$store.commit('setting/showLogo', v)
-                }
-            },
-            showBreadcrumb: {
-                get() {
-                    return this.$store.state.setting.showBreadcrumb
-                },
-                set(v) {
-                    this.$store.commit('setting/showBreadcrumb', v)
-                }
-            },
-            sidebarUniqueOpen: {
-                get() {
-                    return this.$store.state.setting.sidebarUniqueOpen
-                },
-                set(v) {
-                    this.$store.commit('setting/sidebarUniqueOpen', v)
-                }
-            },
-            sidebarCollapse: {
-                get() {
-                    return this.$store.state.setting.sidebarCollapse
-                },
-                set(v) {
-                    this.$store.commit('setting/sidebarCollapse', v)
-                    if (v && this.sidebarAutoHidden) {
-                        this.$store.commit('setting/sidebarAutoHidden', false)
-                    }
-                }
-            },
-            sidebarShowParent: {
-                get() {
-                    return this.$store.state.setting.sidebarShowParent
-                },
-                set(v) {
-                    this.$store.commit('setting/sidebarShowParent', v)
-                }
-            },
-            sidebarAutoHidden: {
-                get() {
-                    return this.$store.state.setting.sidebarAutoHidden
-                },
-                set(v) {
-                    this.$store.commit('setting/sidebarAutoHidden', v)
-                    if (v && this.sidebarCollapse) {
-                        this.$store.commit('setting/sidebarCollapse', false)
-                    }
-                }
-            },
-            headerAutoHidden: {
-                get() {
-                    return this.$store.state.setting.headerAutoHidden
-                },
-                set(v) {
-                    this.$store.commit('setting/headerAutoHidden', v)
-                }
-            },
-            showBackToTop: {
-                get() {
-                    return this.$store.state.setting.showBackToTop
-                },
-                set(v) {
-                    this.$store.commit('setting/showBackToTop', v)
-                }
-            },
-        }
+        computed: createStateComputed()
     }
 </script>
 

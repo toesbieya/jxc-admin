@@ -9,6 +9,14 @@ $iconSize: 17px;
     overflow: hidden;
     flex-shrink: 0;
     transition: all .3s;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+
+    //移动端时为fixed
+    &.mobile {
+        position: fixed;
+    }
 
     //折叠设置
     &.collapse-sidebar {

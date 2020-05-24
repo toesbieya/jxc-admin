@@ -4,6 +4,7 @@ import {createMutations} from "@/utils"
 const localSettings = getLocalPersonalSettings()
 
 const state = {
+    //区分pc和移动端（mobile）
     device: 'pc',
     //登陆页背景动画
     loginPageBackgroundAnimation: 'firework',

@@ -1,17 +1,16 @@
 <template>
     <aside
-            :class="{'collapse-sidebar':sidebarCollapse,'hide-sidebar':hideSidebar}"
-            class="sidebar-container"
+            :class="sidebarClass"
             @mouseenter="mouseOutside=false"
             @mouseleave="mouseOutside=true"
     >
-        <logo v-if="showLogo" :collapse="sidebarCollapse"/>
+        <logo v-if="showLogo" :collapse="collapse"/>
         <el-scrollbar>
             <el-menu
                     ref="menu"
                     :active-text-color="variables.primary"
                     :background-color="variables.menuBg"
-                    :collapse="sidebarCollapse"
+                    :collapse="collapse"
                     :collapse-transition="false"
                     :default-active="$route.path"
                     :text-color="variables.menuText"
@@ -47,18 +46,34 @@
             }
         },
         computed: {
+            ...mapState('app', {
+                device: state => state.device
+            }),
             ...mapState('resource', {
                 routes: state => state.sidebarMenus
             }),
             ...mapState('setting', {
                 showLogo: state => state.showLogo,
-                sidebarUniqueOpen: state => state.sidebarUniqueOpen,
                 sidebarCollapse: state => state.sidebarCollapse,
+                sidebarUniqueOpen: state => state.sidebarUniqueOpen,
                 sidebarShowParent: state => state.sidebarShowParent,
                 sidebarAutoHidden: state => state.sidebarAutoHidden
             }),
+            //仅在pc端可折叠
+            collapse() {
+                return this.sidebarCollapse && this.device === 'pc'
+            },
             hideSidebar() {
                 return this.sidebarAutoHidden && this.mouseOutside
+                    || this.sidebarCollapse && this.device === 'mobile'
+            },
+            sidebarClass() {
+                return {
+                    'sidebar-container': true,
+                    'mobile': this.device === 'mobile',
+                    'collapse-sidebar': this.collapse,
+                    'hide-sidebar': this.hideSidebar
+                }
             }
         },
         watch: {
@@ -89,3 +104,7 @@
         }
     }
 </script>
+
+<style lang="scss">
+    @import "~@/assets/styles/sidebar";
+</style>

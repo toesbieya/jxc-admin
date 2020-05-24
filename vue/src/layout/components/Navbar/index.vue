@@ -1,5 +1,7 @@
 <template>
     <nav class="navbar">
+        <hamburger :is-active="!sidebarCollapse" @click="clickHamburger"/>
+
         <breadcrumb v-if="showBreadcrumb"/>
 
         <div class="right-menu">
@@ -41,11 +43,13 @@
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
+
         <setting-drawer v-model="settingDrawer"/>
     </nav>
 </template>
 
 <script>
+    import Hamburger from './components/Hamburger'
     import Breadcrumb from './components/Breadcrumb'
     import Search from './components/HeaderSearch'
     import Fullscreen from "./components/Fullscreen"
@@ -53,12 +57,12 @@
     import {mapState} from 'vuex'
     import GuideMixin from '@/mixins/guide'
     import {auth} from "@/utils/auth"
-    import {elAlert, elConfirm} from "@/utils/message"
+    import {elConfirm} from "@/utils/message"
 
     export default {
         name: 'navbar',
         mixins: [GuideMixin.navbar],
-        components: {Breadcrumb, Search, Fullscreen, SettingDrawer},
+        components: {Hamburger, Breadcrumb, Search, Fullscreen, SettingDrawer},
         data() {
             return {
                 fullscreen: false,
@@ -72,6 +76,7 @@
                 prepare_logout: state => state.prepare_logout
             }),
             ...mapState('setting', {
+                sidebarCollapse: state => state.sidebarCollapse,
                 showBreadcrumb: state => state.showBreadcrumb
             }),
             showSystemMonitor() {
@@ -82,6 +87,9 @@
             }
         },
         methods: {
+            clickHamburger() {
+                this.$store.commit('setting/sidebarCollapse', !this.sidebarCollapse)
+            },
             logout() {
                 if (this.prepare_logout) return
                 elConfirm('确认退出?')

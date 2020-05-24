@@ -7,6 +7,16 @@ import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/utils/localS
 
 const localSettings = getLocalPersonalSettings()
 
+function createMutations(state) {
+    return Object.keys(state).reduce((mutations, key) => {
+        mutations[key] = (ref, data) => {
+            ref[key] = data
+            setLocalPersonalSettings(ref)
+        }
+        return mutations
+    }, {})
+}
+
 const state = {
     //是否显示logo
     showLogo: true,
@@ -31,16 +41,22 @@ Object.keys(state).forEach(key => {
     if (!isEmpty(localSettings[key])) state[key] = localSettings[key]
 })
 
-const mutations = createMutations(state)
-
-function createMutations(state) {
-    return Object.keys(state).reduce((mutations, key) => {
-        mutations[key] = (ref, data) => {
-            ref[key] = data
-            setLocalPersonalSettings(ref)
+const mutations = {
+    ...createMutations(state),
+    sidebarCollapse(state, v) {
+        if (v && state.sidebarAutoHidden) {
+            state.sidebarAutoHidden = false
         }
-        return mutations
-    }, {})
+        state.sidebarCollapse = v
+        setLocalPersonalSettings(state)
+    },
+    sidebarAutoHidden(state, v) {
+        if (v && state.sidebarCollapse) {
+            state.sidebarCollapse = false
+        }
+        state.sidebarAutoHidden = v
+        setLocalPersonalSettings(state)
+    }
 }
 
 export default {
