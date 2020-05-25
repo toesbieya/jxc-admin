@@ -1,10 +1,14 @@
 <template>
     <div class="login-page">
         <canvas id="login-background"/>
-        <div class="login-container">
+        <div class="login-container" @click.stop>
             <div class="title">
                 用户注册
-                <set-animation :value="registerPageBackgroundAnimation" class="set-animation" @select="setAnimation"/>
+                <set-animation
+                        :value="registerPageBackgroundAnimation"
+                        custom-class="set-animation"
+                        @select="setAnimation"
+                />
             </div>
             <el-form ref="form" :model="form" :rules="rules" label-position="left">
                 <el-form-item prop="username">
