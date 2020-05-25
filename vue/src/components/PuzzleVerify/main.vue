@@ -30,7 +30,7 @@
                 <div class="slider-track">
                     <div class="slider-tip" :style="stat==='ready'?'opacity: 1':''">拖动滑块完成拼图</div>
                 </div>
-                <div class="slider-btn" :style="sliderBtnStyle" @mousedown.prevent.stop="moveStart"/>
+                <div class="slider-btn" :style="sliderBtnStyle" @mousedown="moveStart" @touchstart="moveStart"/>
             </div>
 
             <div class="puzzle-footer">
@@ -237,12 +237,15 @@
                 c_s.setAttribute("height", c.getAttribute("height"))
             },
             moveStart(e) {
-                this.moveStartAtX = e.pageX
+                e.preventDefault()
+                e.stopPropagation()
+                this.moveStartAtX = e.type === 'mousedown' ? e.pageX : e.changedTouches[0].pageX
                 this.addListener()
             },
             moving(e) {
                 this.stat = 'move'
-                const distance = e.pageX - this.moveStartAtX
+                const pageX = e.type === 'mousedown' ? e.pageX : e.changedTouches[0].pageX
+                const distance = pageX - this.moveStartAtX
                 if (this.moveStartAtX === null
                     || distance < 0
                     || distance > this.width - this.blockSize) {
@@ -252,7 +255,8 @@
                 this.sliderStyle.transition = "inherit"
             },
             moveEnd(e) {
-                const distance = e.pageX - this.moveStartAtX
+                const pageX = e.type === 'mousedown' ? e.pageX : e.changedTouches[0].pageX
+                const distance = pageX - this.moveStartAtX
                 const ver_Num = this.randomX - 10
                 const minLeft = ver_Num - this.deviation
                 const maxLeft = ver_Num + this.deviation
@@ -277,10 +281,14 @@
                 if (this.image.loading) return
                 document.addEventListener("mousemove", this.moving)
                 document.addEventListener("mouseup", this.moveEnd)
+                document.addEventListener("touchmove", this.moving)
+                document.addEventListener("touchend", this.moveEnd)
             },
             removeListener() {
                 document.removeEventListener("mousemove", this.moving)
                 document.removeEventListener("mouseup", this.moveEnd)
+                document.addEventListener("touchmove", this.moving)
+                document.addEventListener("touchend", this.moveEnd)
             },
             handleAfterLeave() {
                 this.$destroy(true)

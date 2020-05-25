@@ -101,7 +101,7 @@
                 this.$refs.form.validate(valid => {
                     if (!valid) return
                     this.loading = true
-                    this.$puzzleVerify({left: pageX, top: pageY})
+                    this.$puzzleVerify()
                         .then(() => this.$store.dispatch('user/login', {
                             ...this.form,
                             password: md5(this.form.password)
