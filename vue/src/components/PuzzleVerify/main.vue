@@ -244,7 +244,7 @@
             },
             moving(e) {
                 this.stat = 'move'
-                const pageX = e.type === 'mousedown' ? e.pageX : e.changedTouches[0].pageX
+                const pageX = e.type === 'mousemove' ? e.pageX : e.changedTouches[0].pageX
                 const distance = pageX - this.moveStartAtX
                 if (this.moveStartAtX === null
                     || distance < 0
@@ -255,7 +255,7 @@
                 this.sliderStyle.transition = "inherit"
             },
             moveEnd(e) {
-                const pageX = e.type === 'mousedown' ? e.pageX : e.changedTouches[0].pageX
+                const pageX = e.type === 'mouseup' ? e.pageX : e.changedTouches[0].pageX
                 const distance = pageX - this.moveStartAtX
                 const ver_Num = this.randomX - 10
                 const minLeft = ver_Num - this.deviation
