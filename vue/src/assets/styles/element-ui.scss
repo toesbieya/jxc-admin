@@ -146,6 +146,7 @@
     @include deep-shadow;
 
     margin-bottom: 0;
+    min-width: 384px;
 
     .el-dialog__header {
         border-bottom: 1px solid #ebeef5;
