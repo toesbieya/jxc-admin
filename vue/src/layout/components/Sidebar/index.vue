@@ -92,6 +92,8 @@
                     this.$nextTick(() => this.$router.replace({path: '/redirect' + this.$route.fullPath}))
                 }
                 else this.$router.push(index)
+                //mobile时激活隐藏侧边栏
+                this.device === 'mobile' && this.$store.commit('setting/sidebarCollapse', true)
             }
         },
         mounted() {

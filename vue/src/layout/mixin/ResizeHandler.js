@@ -1,20 +1,13 @@
 import {debounce} from '@/utils'
-
-const {body} = document
-const WIDTH = 768
-
-function $_isMobile() {
-    const rect = body.getBoundingClientRect()
-    return rect.width - 1 < WIDTH
-}
+import {isMobile} from "@/utils/browser"
 
 export default {
     methods: {
         $_resizeHandler() {
             if (!document.hidden) {
-                const isMobile = $_isMobile()
-                this.$store.commit('app/device', isMobile ? 'mobile' : 'pc')
-                isMobile && this.$store.commit('setting/sidebarCollapse', true)
+                const mobile = isMobile()
+                this.$store.commit('app/device', mobile ? 'mobile' : 'pc')
+                mobile && this.$store.commit('setting/sidebarCollapse', true)
             }
         }
     },

@@ -62,8 +62,9 @@
 </template>
 
 <script>
-    import {isEmpty} from "@/utils"
+    import {mapState} from 'vuex'
     import md5 from "js-md5"
+    import {isEmpty} from "@/utils"
     import {elSuccess} from "@/utils/message"
     import SetAnimation from "./components/SetAnimation"
 
@@ -90,17 +91,16 @@
                 animation: null
             }
         },
-        computed: {
-            loginPageBackgroundAnimation() {
-                return this.$store.state.app.loginPageBackgroundAnimation
-            }
-        },
+        computed: mapState('app', {
+            device: state => state.device,
+            loginPageBackgroundAnimation: state => state.loginPageBackgroundAnimation
+        }),
         methods: {
             showPwd() {
                 this.passwordType = this.passwordType === 'password' ? '' : 'password'
                 this.$nextTick(() => this.$refs.password.focus())
             },
-            login({pageX, pageY}) {
+            login() {
                 if (this.loading) return
                 this.$refs.form.validate(valid => {
                     if (!valid) return
@@ -144,7 +144,8 @@
             }
         },
         mounted() {
-            this.setAnimation(this.loginPageBackgroundAnimation)
+            //移动端关闭动画，太卡
+            this.device !== 'mobile' && this.setAnimation(this.loginPageBackgroundAnimation)
             this.addCapsLockEvent()
             if (isEmpty(this.form.username)) this.$refs.username.focus()
             else this.$refs.password.focus()

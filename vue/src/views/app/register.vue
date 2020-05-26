@@ -48,6 +48,7 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     import md5 from "js-md5"
     import {register} from "@/api/account"
     import {checkName} from "@/api/system/user"
@@ -93,11 +94,10 @@
                 animation: null
             }
         },
-        computed: {
-            registerPageBackgroundAnimation() {
-                return this.$store.state.app.registerPageBackgroundAnimation
-            }
-        },
+        computed: mapState('app', {
+            device: state => state.device,
+            registerPageBackgroundAnimation: state => state.registerPageBackgroundAnimation
+        }),
         methods: {
             register() {
                 if (this.loading) return
@@ -136,7 +136,8 @@
             }
         },
         mounted() {
-            this.setAnimation(this.registerPageBackgroundAnimation)
+            //移动端关闭动画，太卡
+            this.device !== 'mobile' && this.setAnimation(this.registerPageBackgroundAnimation)
             this.addEvent()
             this.$nextTick(() => this.$refs.username.focus())
         },
