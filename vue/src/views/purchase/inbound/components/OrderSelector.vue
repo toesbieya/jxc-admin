@@ -12,7 +12,7 @@
         <el-scrollbar>
             <el-row>
                 <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
-                <el-button plain size="small" @click="cancel">取 消</el-button>
+                <el-button plain size="small" @click="closeDialog">取 消</el-button>
             </el-row>
             <el-table
                     v-loading="config.loading"
@@ -69,13 +69,14 @@
 
 <script>
     import LinerProgress from '@/components/LinerProgress'
+    import dialogMixin from "@/mixins/dialogMixin"
     import tableMixin from '@/mixins/tablePageMixin'
     import {getSubById, search} from "@/api/purchase/order"
     import {elError} from "@/utils/message"
 
     export default {
         name: "OrderSelector",
-        mixins: [tableMixin],
+        mixins: [dialogMixin, tableMixin],
         components: {LinerProgress},
         props: {value: Boolean},
         data() {
@@ -119,7 +120,7 @@
                 this.cancel()
             },
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.tableData = []
             }
         }

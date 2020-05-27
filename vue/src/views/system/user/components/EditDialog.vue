@@ -22,7 +22,7 @@
             </el-form-item>
         </el-form>
         <template v-slot:footer>
-            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
     </dialog-form>
@@ -31,12 +31,14 @@
 <script>
     import DialogForm from '@/bizComponents/DialogForm'
     import RoleSelector from './RoleSelector'
+    import dialogMixin from "@/mixins/dialogMixin"
     import {addUser, updateUser, checkName} from "@/api/system/user"
     import {isEmpty} from '@/utils'
     import {elConfirm} from "@/utils/message"
 
     export default {
         name: "EditDialog",
+        mixins: [dialogMixin],
         components: {DialogForm, RoleSelector},
         props: {
             value: {type: Boolean, default: false},
@@ -113,7 +115,7 @@
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.clearForm()
             },
             confirm() {
@@ -125,9 +127,7 @@
                             this.loading = true
                             return this.type === 'add' ? addUser(this.form) : updateUser(this.form)
                         })
-                        .then(({msg}) => {
-                            this.$emit('success', msg)
-                        })
+                        .then(({msg}) => this.$emit('success', msg))
                         .finally(() => this.loading = false)
                 })
             }

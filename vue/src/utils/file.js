@@ -4,8 +4,15 @@ import {isEmpty, timeFormat} from "@/utils"
 
 const baseUrl = '/file'
 
-const formConfig = {
-    headers: {"Content-Type": "multipart/form-data"}
+const defaultOptions = {
+    headers: {"Content-Type": "multipart/form-data"},
+    generateKey(filename) {
+        const now = new Date()
+        return timeFormat('yyyy/MM/dd/') + now.getTime() + '/' + filename
+    },
+    onUploadProgress(e) {
+
+    }
 }
 
 //获取七牛云直传需要的token
@@ -31,17 +38,17 @@ export function deleteUpload(url) {
 }
 
 //七牛云直传
-export function upload(blob, filename = '快照.png') {
+export function upload(blob, filename = '快照.png', options = defaultOptions) {
     return getToken()
         .then(token => {
-            let now = new Date()
-            let param = new FormData()
+            const param = new FormData()
+            options = {...options, ...defaultOptions}
             param.append('token', token)
-            param.append('key', timeFormat('yyyy/MM/dd/') + now.getTime() + '/' + filename)
+            param.append('key', options.generateKey(filename))
             param.append('file', blob, filename)
-            return request.post(attachmentUploadUrl, param, {...formConfig, baseUrl: ''})
+            return request.post(attachmentUploadUrl, param, options)
         })
-        .then(({data}) => data.key)
+        .then(({data}) => data)
 }
 
 //自动补全附件链接前缀

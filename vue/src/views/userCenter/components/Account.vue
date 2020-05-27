@@ -17,7 +17,7 @@
             </el-form-item>
         </el-form>
         <template v-slot:footer>
-            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
     </dialog-form>
@@ -25,10 +25,12 @@
 
 <script>
     import DialogForm from '@/bizComponents/DialogForm'
+    import dialogMixin from "@/mixins/dialogMixin"
     import {updateUserPwd} from "@/api/system/user"
     import {elSuccess} from "@/utils/message"
 
     export default {
+        mixins: [dialogMixin],
         components: {DialogForm},
         data() {
             return {
@@ -73,12 +75,12 @@
                         .then(() => elSuccess('修改成功'))
                         .finally(() => {
                             this.loading = false
-                            this.cancel()
+                            this.closeDialog()
                         })
                 })
             },
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.clearForm()
             }
         }

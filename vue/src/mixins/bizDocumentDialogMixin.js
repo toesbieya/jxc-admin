@@ -3,6 +3,7 @@ import DialogForm from '@/bizComponents/DialogForm'
 import DialogFormItem from "@/bizComponents/DialogForm/DialogFormItem"
 import DocumentSteps from '@/bizComponents/DocumentSteps'
 import DocumentHistory from '@/bizComponents/DocumentHistory'
+import dialogMixin from "@/mixins/dialogMixin"
 import {commonMethods} from "@/mixins/bizDocumentTableMixin"
 import {isEmpty, mergeObj, resetObj, timeFormat} from '@/utils'
 import {elAlert, elConfirm, elPrompt, elSuccess} from "@/utils/message"
@@ -11,6 +12,7 @@ import {deleteUpload} from "@/utils/file"
 import {auth} from "@/utils/auth"
 
 export default {
+    mixins: [dialogMixin],
     components: {DialogForm, DialogFormItem, DocumentSteps, DocumentHistory, UploadFile},
     props: {
         //dialog显隐
@@ -172,7 +174,7 @@ export default {
                     elSuccess(msg)
                     this.$emit('success', 'pass')
                     this.needSearch = true
-                    this.cancel()
+                    this.closeDialog()
                 })
                 .finally(() => this.loading = false)
         },
@@ -189,7 +191,7 @@ export default {
                     elSuccess(msg)
                     this.$emit('success', 'reject')
                     this.needSearch = true
-                    this.cancel()
+                    this.closeDialog()
                 })
                 .finally(() => this.loading = false)
         },
@@ -226,7 +228,7 @@ export default {
         init(id) {
             this.loading = true
             if (isEmpty(id)) {
-                return elAlert(`获取${this.documentName}数据失败，请传入id`, () => this.cancel())
+                return elAlert(`获取${this.documentName}数据失败，请传入id`, this.closeDialog)
             }
             this.api.getById(id)
                 .then(data => {
@@ -250,7 +252,7 @@ export default {
 
         //关闭dialog并清除单据数据
         cancel() {
-            this.$emit('input', false)
+            this.closeDialog()
             if (this.needSearch) this.$emit('search')
             //删除未保存的上传附件
             let deleteArr = []
@@ -260,7 +262,7 @@ export default {
             if (deleteArr.length > 0) {
                 deleteUpload(deleteArr).catch(e => ({}))
             }
-            setTimeout(() => this.clearForm(), 500)
+            setTimeout(() => this.clearForm(), 200)
             this.loading = false
         },
 

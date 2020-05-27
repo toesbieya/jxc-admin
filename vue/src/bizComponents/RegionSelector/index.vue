@@ -6,7 +6,7 @@
             title="选择行政区域"
             width="30%"
             top="50px"
-            @close="$emit('input', false)"
+            @close="closeDialog"
     >
         <el-scrollbar>
             <el-tree
@@ -28,10 +28,12 @@
 
 <script>
     import {mapState} from 'vuex'
+    import dialogMixin from "@/mixins/dialogMixin"
     import {createLimitTree, getNodeId} from "@/utils/tree"
 
     export default {
         name: "RegionSelector",
+        mixins: [dialogMixin],
         props: {
             value: Boolean,
             limit: Boolean,
@@ -53,7 +55,7 @@
                 let ids = getNodeId(obj.children)
                 ids.unshift(obj.id)
                 this.$emit('select', obj, ids)
-                this.$emit('input', false)
+                this.closeDialog()
             },
             init() {
                 this.loading = true

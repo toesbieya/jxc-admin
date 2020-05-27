@@ -33,11 +33,13 @@
 <script>
     import LinerProgress from '@/components/LinerProgress'
     import DialogForm from "@/bizComponents/DialogForm"
+    import dialogMixin from "@/mixins/dialogMixin"
     import {isEmpty, mul, plus} from "@/utils"
     import {getDetail} from "@/api/stock/current"
 
     export default {
         name: "DetailDialog",
+        mixins: [dialogMixin],
         components: {LinerProgress, DialogForm},
         props: {value: Boolean, title: String, cid: Number},
         data() {
@@ -95,7 +97,7 @@
                 }
             },
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.tableData = []
             }
         }

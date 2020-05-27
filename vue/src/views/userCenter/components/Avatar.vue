@@ -36,7 +36,7 @@
             </div>
         </el-row>
         <template v-slot:footer>
-            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
     </dialog-form>
@@ -45,12 +45,14 @@
 <script>
     import {VueCropper} from 'vue-cropper'
     import DialogForm from '@/bizComponents/DialogForm'
+    import dialogMixin from "@/mixins/dialogMixin"
     import {elError, elSuccess} from "@/utils/message"
     import {autoCompleteUrl, upload} from "@/utils/file"
     import {updateAvatar} from "@/api/system/user"
 
     export default {
         name: "Avatar",
+        mixins: [dialogMixin],
         components: {VueCropper, DialogForm},
         props: {
             value: Boolean
@@ -88,7 +90,7 @@
                 this.loading = true
                 this.$refs.cropper.getCropBlob(data => {
                     upload(new Blob([data]), this.name)
-                        .then(key => updateAvatar(key))
+                        .then(({key}) => updateAvatar(key))
                         .then(({key, msg}) => {
                             this.$store.commit('user/avatar', autoCompleteUrl(key))
                             this.$store.dispatch('user/refresh')
@@ -112,7 +114,7 @@
             },
 
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.clear()
             }
         }

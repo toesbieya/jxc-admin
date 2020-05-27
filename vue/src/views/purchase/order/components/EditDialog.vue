@@ -103,7 +103,7 @@
         <template v-slot:footer>
             <span v-if="form.status===2" class="seal">已审核</span>
             <span v-if="form.finish===2" class="seal">已完成</span>
-            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canSave" size="small" type="primary" @click="save">保 存</el-button>
             <el-button v-if="canCommit" size="small" type="primary" @click="commit">提 交</el-button>
             <el-button v-if="canWithdraw" size="small" type="danger" @click="withdraw">撤 回</el-button>
@@ -111,7 +111,7 @@
             <el-button v-if="canReject" size="small" type="danger" @click="reject">驳 回</el-button>
         </template>
 
-        <supplier-selector v-model="supplierDialog" @select="selectSupplier" @jump="$emit('input',false)"/>
+        <supplier-selector v-model="supplierDialog" @select="selectSupplier" @jump="closeDialog"/>
     </dialog-form>
 </template>
 

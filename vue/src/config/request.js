@@ -64,7 +64,7 @@ service.interceptors.response.use(
         return Promise.reject(res)
     },
     error => {
-        console.log(error)
+        if (axios.isCancel(error)) return
         error && Notification.error({
             title: '错误',
             message: '请求错误，请稍后重试'

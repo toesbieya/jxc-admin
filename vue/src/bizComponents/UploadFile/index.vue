@@ -44,11 +44,12 @@
     * 传入fileList自动拼接七牛云外链前缀
     * success、remove事件中的file.url均不带七牛云外链前缀
     * */
-    import {attachmentPrefix, attachmentUploadUrl} from '@/config'
+    import axios from 'axios'
+    import {attachmentPrefix} from '@/config'
     import {elError} from "@/utils/message"
-    import {isEmpty, timeFormat} from '@/utils'
+    import {isEmpty} from '@/utils'
     import {isImage} from "@/utils/validate"
-    import {deleteUpload, download, getToken, autoCompleteUrl} from "@/utils/file"
+    import {deleteUpload, download, upload, autoCompleteUrl} from "@/utils/file"
     import {numberFormatter} from "@/filter"
 
     export default {
@@ -117,8 +118,10 @@
             //附件移除时，仅当非本次上传时触发remove事件
             remove(file) {
                 //区分是否为本次新上传，以及是否上传成功
+                //若不是新上传的
                 if (!file.raw) this.$emit('remove', {...file, url: file.url.replace(attachmentPrefix, '')})
-                else if (!file.response.err) deleteUpload(file.raw.key)
+                //判断是否上传成功（有可能是正在上传）
+                else if (file.response && !file.response.err) deleteUpload(file.raw.key)
 
                 this.$refs.upload.handleRemove(file)
                 let index = this.data.findIndex(i => i.url === file.url)
@@ -141,8 +144,9 @@
                 elError(`最多只能上传${this.limit}个文件`)
             },
 
-            //新附件上传成功，触发success事件
+            //新附件上传成功，触发success事件，记录文件key
             success(res, file) {
+                file.raw.key = res.key
                 this.data.push(file)
                 this.$emit('success', file, res)
             },
@@ -165,73 +169,29 @@
                     elError(`${file.name}的大小超出${numberFormatter(maxSize)}`)
                     return false
                 }
-                return getToken()
+                /*return getToken()
                     .then(token => {
                         let now = new Date()
                         file.token = token
                         file.key = timeFormat('yyyy/MM/dd/', now) + now.getTime() + '/' + file.name
-                    })
+                    })*/
             },
 
-            //由element源码修改，https://github.com/ElemeFE/element/blob/dev/packages/upload/src/ajax.js
             httpRequest(option) {
-                const xhr = new XMLHttpRequest()
-
-                xhr.upload.onprogress = function progress(e) {
-                    if (e.total > 0) {
-                        e.percent = (Number)((e.loaded / e.total * 100).toFixed(2))
-                    }
-                    option.onProgress(e)
-                }
-
-                const formData = new FormData()
-
-                //设置七牛云的要求字段
-                formData.append("token", option.file.token)
-                formData.append("key", option.file.key)
-
-                formData.append(option.filename, option.file, option.file.name)
-
-                xhr.onerror = function error(e) {
-                    option.onError(e)
-                }
-
-                xhr.onload = function onload() {
-                    if (xhr.status < 200 || xhr.status >= 300) {
-                        return option.onError(getError(attachmentUploadUrl, option, xhr))
-                    }
-
-                    option.onSuccess(getBody(xhr))
-                }
-
-                xhr.open('post', attachmentUploadUrl, true)
-
-                xhr.send(formData)
-                return xhr
+                const CancelToken = axios.CancelToken
+                const source = CancelToken.source()
+                const promise = upload(option.file, option.file.name, {
+                    onUploadProgress(e) {
+                        if (e.total > 0) {
+                            e.percent = (Number)((e.loaded / e.total * 100).toFixed(2))
+                        }
+                        option.onProgress(e)
+                    },
+                    cancelToken: source.token
+                })
+                promise.abort = source.cancel
+                return promise
             }
-        }
-    }
-
-    function getError(action, option, xhr) {
-        let msg
-        if (xhr.response) msg = `${xhr.response.error || xhr.response}`
-        else if (xhr.responseText) msg = `${xhr.responseText}`
-        else msg = `fail to post ${action} ${xhr.status}`
-        const err = new Error(msg)
-        err.status = xhr.status
-        err.method = 'post'
-        err.url = action
-        return err
-    }
-
-    function getBody(xhr) {
-        const text = xhr.responseText || xhr.response
-        if (!text) return text
-        try {
-            return JSON.parse(text)
-        }
-        catch (e) {
-            return text
         }
     }
 </script>

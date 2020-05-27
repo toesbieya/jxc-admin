@@ -40,7 +40,7 @@
                     <el-dropdown-item :command="{action:'expand',level:1}">仅展开一级</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
-            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
     </dialog-form>
@@ -48,12 +48,14 @@
 
 <script>
     import DialogForm from '@/bizComponents/DialogForm'
+    import dialogMixin from "@/mixins/dialogMixin"
     import {addRole, updateRole} from "@/api/system/role"
     import {isEmpty, mergeObj} from '@/utils'
     import {elTreeControl} from '@/utils/tree'
 
     export default {
         name: "EditDialog",
+        mixins: [dialogMixin],
         components: {DialogForm},
         props: {
             value: {type: Boolean, default: false},
@@ -120,7 +122,7 @@
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.clearForm()
             },
             confirm() {

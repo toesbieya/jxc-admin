@@ -12,7 +12,7 @@
         <el-row>
             <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
-            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button
                     v-if="canGoToSysCustomerPage"
                     plain
@@ -66,6 +66,7 @@
 
 <script>
     import LinerProgress from '@/components/LinerProgress'
+    import dialogMixin from "@/mixins/dialogMixin"
     import tableMixin from '@/mixins/tablePageMixin'
     import {getCustomers} from "@/api/system/customer"
     import {elError} from "@/utils/message"
@@ -73,7 +74,7 @@
 
     export default {
         name: "CustomerSelector",
-        mixins: [tableMixin],
+        mixins: [dialogMixin, tableMixin],
         components: {LinerProgress},
         props: {value: Boolean},
         data() {
@@ -109,11 +110,11 @@
                 this.$emit('select', this.row)
             },
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.tableData = []
             },
             goToSysCustomerPage() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.$emit('jump')
                 this.$nextTick(() => this.$router.push('/system/customer'))
             }

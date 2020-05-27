@@ -13,7 +13,7 @@
             <el-row>
                 <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
                 <el-button size="small" type="primary" @click="confirm">确 定</el-button>
-                <el-button plain size="small" @click="cancel">取 消</el-button>
+                <el-button plain size="small" @click="closeDialog">取 消</el-button>
             </el-row>
             <el-row class="table-container">
                 <liner-progress :show="loading"/>
@@ -36,12 +36,14 @@
 </template>
 
 <script>
+    import dialogMixin from "@/mixins/dialogMixin"
     import LinerProgress from '@/components/LinerProgress'
     import {getDetail} from "@/api/stock/current"
     import {elError} from "@/utils/message"
 
     export default {
         name: "StockSelector",
+        mixins: [dialogMixin],
         components: {LinerProgress},
         props: {
             value: Boolean,
@@ -69,7 +71,7 @@
                 this.$emit('select', this.selection)
             },
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 this.$refs.table.clearSelection()
                 this.tableData = []
             }

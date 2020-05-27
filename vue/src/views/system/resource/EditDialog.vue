@@ -22,7 +22,7 @@
             </el-form-item>
         </el-form>
         <template v-slot:footer>
-            <el-button plain size="small" @click="cancel">取 消</el-button>
+            <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
     </dialog-form>
@@ -30,11 +30,13 @@
 
 <script>
     import DialogForm from '@/bizComponents/DialogForm'
+    import dialogMixin from "@/mixins/dialogMixin"
     import {updateResource} from "@/api/system/resource"
     import {mergeObj, resetObj} from '@/utils'
 
     export default {
         name: "EditDialog",
+        mixins: [dialogMixin],
         components: {DialogForm},
         props: {
             value: {type: Boolean, default: false},
@@ -61,7 +63,7 @@
                 this.$nextTick(() => mergeObj(this.form, this.data))
             },
             cancel() {
-                this.$emit('input', false)
+                this.closeDialog()
                 resetObj(this.form)
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
