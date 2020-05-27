@@ -42,7 +42,7 @@ export function upload(blob, filename = '快照.png', options = defaultOptions) 
     return getToken()
         .then(token => {
             const param = new FormData()
-            options = {...options, ...defaultOptions}
+            options = {...defaultOptions, ...options}
             param.append('token', token)
             param.append('key', options.generateKey(filename))
             param.append('file', blob, filename)

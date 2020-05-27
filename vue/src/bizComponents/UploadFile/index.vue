@@ -63,9 +63,7 @@
         },
         data() {
             return {
-                data: this.fileList,
-                index: 0,
-                show: false
+                data: this.fileList
             }
         },
         computed: {
@@ -89,11 +87,6 @@
                         return
                     }
                     this.data = [...this.fileList.map(file => ({...file, url: autoCompleteUrl(file.url)}))]
-
-                    //更新前保留预览图片的index
-                    if (this.data[this.index]) {
-                        this.index = this.data.findIndex(i => i === this.data[this.index])
-                    }
                 }
             }
         },
@@ -169,23 +162,17 @@
                     elError(`${file.name}的大小超出${numberFormatter(maxSize)}`)
                     return false
                 }
-                /*return getToken()
-                    .then(token => {
-                        let now = new Date()
-                        file.token = token
-                        file.key = timeFormat('yyyy/MM/dd/', now) + now.getTime() + '/' + file.name
-                    })*/
             },
 
-            httpRequest(option) {
+            httpRequest({file, onProgress}) {
                 const CancelToken = axios.CancelToken
                 const source = CancelToken.source()
-                const promise = upload(option.file, option.file.name, {
+                const promise = upload(file, file.name, {
                     onUploadProgress(e) {
                         if (e.total > 0) {
                             e.percent = (Number)((e.loaded / e.total * 100).toFixed(2))
                         }
-                        option.onProgress(e)
+                        onProgress(e)
                     },
                     cancelToken: source.token
                 })
