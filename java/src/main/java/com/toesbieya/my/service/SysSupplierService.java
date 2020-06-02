@@ -1,10 +1,10 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageSerializable;
 import com.toesbieya.my.annoation.UserAction;
 import com.toesbieya.my.mapper.SysSupplierMapper;
 import com.toesbieya.my.model.entity.SysSupplier;
+import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.result.RegionValueResult;
 import com.toesbieya.my.model.vo.search.SupplierSearch;
 import com.toesbieya.my.utils.Result;
@@ -26,10 +26,10 @@ public class SysSupplierService {
         return supplierMapper.get();
     }
 
-    public PageSerializable<SysSupplier> search(SupplierSearch vo) {
+    public PageResult<SysSupplier> search(SupplierSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
         List<SysSupplier> sysSuppliers = supplierMapper.search(vo);
-        return new PageSerializable<>(sysSuppliers);
+        return new PageResult<>(sysSuppliers);
     }
 
     @UserAction("'添加供应商：'+ #supplier.name")

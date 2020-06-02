@@ -5,7 +5,7 @@ const router = {
     path: '/sell',
     component: Layout,
     alwaysShow: true,
-    meta: {title: '销售管理', icon: 'sell', breadcrumb: false},
+    meta: {title: '销售管理', icon: 'sell'},
     children: [
         {
             path: 'order',

@@ -22,7 +22,8 @@ public class HttpSessionConfig {
     public HttpSessionListener httpSessionEventPublisher() {
         return new HttpSessionListener() {
             @Override
-            public void sessionCreated(HttpSessionEvent se) { }
+            public void sessionCreated(HttpSessionEvent se) {
+            }
 
             @Override
             public void sessionDestroyed(HttpSessionEvent se) {
@@ -43,7 +44,7 @@ public class HttpSessionConfig {
 
         private final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-        private Class<T> clazz;
+        private final Class<T> clazz;
 
         public JsonRedisSerializer(Class<T> clazz) {
             this.clazz = clazz;

@@ -32,7 +32,7 @@
 
 <script>
     import LinerProgress from '@/components/LinerProgress'
-    import DialogForm from "@/bizComponents/DialogForm"
+    import DialogForm from "@/components/DialogForm"
     import dialogMixin from "@/mixins/dialogMixin"
     import {isEmpty, mul, plus} from "@/utils"
     import {getDetail} from "@/api/stock/current"

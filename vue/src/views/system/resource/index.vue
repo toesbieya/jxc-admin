@@ -25,8 +25,8 @@
 </template>
 
 <script>
-    import SearchForm from "@/bizComponents/SearchForm"
-    import SearchFormItem from "@/bizComponents/SearchForm/SearchFormItem"
+    import SearchForm from "@/components/SearchForm"
+    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import EditDialog from './EditDialog'
     import {getAllResources} from "@/api/system/resource"
     import {elError, elSuccess} from "@/utils/message"

@@ -7,6 +7,6 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class BizSellOutbound extends BizDocument<BizSellOutboundSub>{
+public class BizSellOutbound extends BizDocument<BizSellOutboundSub> {
     private String pid;
 }

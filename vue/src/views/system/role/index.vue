@@ -69,8 +69,8 @@
 </template>
 
 <script>
-    import SearchForm from "@/bizComponents/SearchForm"
-    import SearchFormItem from "@/bizComponents/SearchForm/SearchFormItem"
+    import SearchForm from "@/components/SearchForm"
+    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import EditDialog from './components/EditDialog'
     import RoleResource from "./components/RoleResource"
     import {delRole, searchRoles} from "@/api/system/role"

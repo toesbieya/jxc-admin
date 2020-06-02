@@ -21,7 +21,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HttpSession session = request.getSession();
+        HttpSession httpSession = request.getSession();
         String url = request.getServletPath();
         String method = request.getMethod();
         String ip = IpUtil.getIp(request);
@@ -33,10 +33,10 @@ public class SecurityInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        SysUser sysUser = Util.getUser(session);
+        SysUser sysUser = Util.getUser(httpSession);
         if (sysUser == null
                 || request.getHeader(SessionConstant.TOKEN_KEY) == null
-                || !request.getHeader(SessionConstant.TOKEN_KEY).equals(session.getAttribute(SessionConstant.TOKEN_KEY))) {
+                || !request.getHeader(SessionConstant.TOKEN_KEY).equals(httpSession.getAttribute(SessionConstant.TOKEN_KEY))) {
             Util.responseJson(response, Result.requireLogin());
             ThreadUtil.clearUser();
             return false;

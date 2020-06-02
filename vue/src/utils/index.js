@@ -134,18 +134,27 @@ export function zip(str) {
  * @param success 判断是否成功，true or false
  * @param callback 成功后的回调
  * @param interval 循环间隔，毫秒
+ * @param maxTryTime 最大循环次数，超出reject，小于1视为Infinity
  */
-export function waitUntilSuccess(success, callback, interval = 1000) {
-    return new Promise(resolve => {
-        let fun = null
-        let check = () => {
+export function waitUntilSuccess(success, callback, interval = 1000, maxTryTime = 0) {
+    return new Promise((resolve, reject) => {
+        let fun,
+            count = 0
+
+        const check = () => {
             if (success()) {
-                clearInterval(fun)
+                window.clearInterval(fun)
                 typeof callback === 'function' && callback()
                 return resolve()
             }
+            if (maxTryTime >= 1) {
+                count++
+                if (count >= maxTryTime) return reject()
+            }
         }
+
         if (success()) return check()
+
         fun = setInterval(check, interval)
     })
 }

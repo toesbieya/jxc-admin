@@ -1,7 +1,6 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageSerializable;
 import com.toesbieya.my.annoation.Lock;
 import com.toesbieya.my.annoation.Tx;
 import com.toesbieya.my.annoation.UserAction;
@@ -12,6 +11,7 @@ import com.toesbieya.my.mapper.BizSellOrderMapper;
 import com.toesbieya.my.mapper.BizStockMapper;
 import com.toesbieya.my.model.entity.*;
 import com.toesbieya.my.model.vo.export.SellOrderExport;
+import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.result.StockSearchResult;
 import com.toesbieya.my.model.vo.search.SellOrderSearch;
 import com.toesbieya.my.model.vo.search.StockSearch;
@@ -57,9 +57,9 @@ public class BizSellOrderService {
         return sellOrderMapper.getSubById(id);
     }
 
-    public PageSerializable<BizSellOrder> search(SellOrderSearch vo) {
+    public PageResult<BizSellOrder> search(SellOrderSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
-        return new PageSerializable<>(sellOrderMapper.search(vo));
+        return new PageResult<>(sellOrderMapper.search(vo));
     }
 
     public void export(SellOrderSearch vo, HttpServletResponse response) throws Exception {

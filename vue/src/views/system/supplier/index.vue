@@ -78,8 +78,8 @@
 </template>
 
 <script>
-    import SearchForm from "@/bizComponents/SearchForm"
-    import SearchFormItem from "@/bizComponents/SearchForm/SearchFormItem"
+    import SearchForm from "@/components/SearchForm"
+    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import RegionSelector from "@/bizComponents/RegionSelector"
     import EditDialog from './EditDialog'
     import {delSupplier, getLimitRegion, getSuppliers} from "@/api/system/supplier"

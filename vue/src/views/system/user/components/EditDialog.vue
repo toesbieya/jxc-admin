@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import DialogForm from '@/bizComponents/DialogForm'
+    import DialogForm from '@/components/DialogForm'
     import RoleSelector from './RoleSelector'
     import dialogMixin from "@/mixins/dialogMixin"
     import {addUser, updateUser, checkName} from "@/api/system/user"

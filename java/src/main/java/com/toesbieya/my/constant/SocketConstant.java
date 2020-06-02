@@ -8,4 +8,5 @@ public class SocketConstant {
     public static final int MAX_FRAME_PAYLOAD = (int) YmlUtil.get("socket.max-frame-payload");
     public static final int MAX_HTTP_CONTENT = (int) YmlUtil.get("socket.max-http-content");
     public static final String EVENT_LOGOUT = (String) YmlUtil.get("socket.event.logout");
+    public static final String EVENT_NEW_MESSAGE = (String) YmlUtil.get("socket.event.new-message");
 }

@@ -3,42 +3,27 @@ import {socketUrl} from '@/config'
 import SocketIO from 'socket.io-client'
 import {createMutations} from "@/utils"
 
+let socket
+
 const state = {
-    socket: null,
     online: true
 }
 
 const mutations = createMutations(state)
 
 const actions = {
-    init({state, commit, dispatch, rootState}, user) {
+    init(context, user) {
         if (!user || !user.id || !user.session_id) return
 
-        const socket = initSocket(user)
+        socket = initSocket(user)
 
-        defaultEventBind(socket, {state, commit, dispatch})
-
-        socket.on('logout', msg => {
-            if (rootState.user.prepare_logout) return
-            return MessageBox.alert(msg || '你已被强制下线，请重新登陆', {
-                type: 'warning',
-                beforeClose: (action, instance, done) => {
-                    dispatch('user/logout', null, {root: true})
-                        .then(() => {
-                            done()
-                            location.reload()
-                        })
-                }
-            })
-        })
-
-        commit('socket', socket)
+        defaultEventBind(socket, context)
+        customEventBind(socket, context)
     },
-    close({state, commit}) {
+    close() {
         return new Promise(resolve => {
-            if (!state.socket) return resolve()
-            state.socket.close()
-            commit('socket', null)
+            if (!socket) return resolve()
+            socket.close()
             resolve()
         })
     }
@@ -85,6 +70,26 @@ function defaultEventBind(socket, {state, commit, dispatch}) {
 
     socket.on('error', (error) => {
         // ...
+    })
+}
+
+function customEventBind(socket, {state, commit, dispatch, rootState}) {
+    socket.on('logout', msg => {
+        if (rootState.user.prepare_logout) return
+        return MessageBox.alert(msg || '你已被强制下线，请重新登陆', {
+            type: 'warning',
+            beforeClose: (action, instance, done) => {
+                dispatch('user/logout', null, {root: true})
+                    .then(() => {
+                        done()
+                        location.reload()
+                    })
+            }
+        })
+    })
+
+    socket.on('new-message', () => {
+        dispatch('message/refresh', null, {root: true})
     })
 }
 

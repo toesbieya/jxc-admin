@@ -17,7 +17,7 @@ module.exports = {
     assetsDir: 'static',
     runtimeCompiler: true,
     lintOnSave: false,
-    productionSourceMap: false,
+    productionSourceMap: process.env.NODE_ENV === 'development',
     parallel: true,
     devServer: {
         port,
@@ -89,12 +89,6 @@ module.exports = {
                 return options
             })
             .end()
-
-        config
-            // https://webpack.js.org/configuration/devtool/#development
-            .when(process.env.NODE_ENV === 'development',
-                config => config.devtool('cheap-source-map')
-            )
 
         config
             .when(process.env.NODE_ENV !== 'development',

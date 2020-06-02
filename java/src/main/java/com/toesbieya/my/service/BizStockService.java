@@ -1,10 +1,10 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageSerializable;
 import com.toesbieya.my.mapper.BizStockMapper;
 import com.toesbieya.my.model.entity.BizStock;
 import com.toesbieya.my.model.vo.export.StockExport;
+import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.result.StockSearchResult;
 import com.toesbieya.my.model.vo.search.StockSearch;
 import com.toesbieya.my.utils.ExcelUtil;
@@ -21,13 +21,13 @@ public class BizStockService {
     @Resource
     private BizStockMapper stockMapper;
 
-    private ExcelUtil.CommonMergeOptions mergeOptions =
+    private final ExcelUtil.CommonMergeOptions mergeOptions =
             new ExcelUtil.CommonMergeOptions(
                     new String[]{"id", "cname", "total_num", "total_price", "cgddid", "cg_price", "cg_num"}, "cid", "id");
 
-    public PageSerializable<StockSearchResult> search(StockSearch vo) {
+    public PageResult<StockSearchResult> search(StockSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
-        return new PageSerializable<>(stockMapper.search(vo));
+        return new PageResult<>(stockMapper.search(vo));
     }
 
     public List<BizStock> getDetail(String cid) {

@@ -36,11 +36,12 @@ public class SysRoleController {
                 || role.getStatus() == null) {
             return Result.fail("添加失败，参数错误");
         }
-        SysUser user = Util.getUser(session);
-        assert user != null;
+
+        SysUser user = Util.getUser();
         role.setCid(user.getId());
         role.setCname(user.getName());
         role.setCtime(System.currentTimeMillis());
+
         return roleService.add(role);
     }
 

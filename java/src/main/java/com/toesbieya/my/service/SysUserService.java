@@ -1,7 +1,6 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageSerializable;
 import com.toesbieya.my.annoation.Tx;
 import com.toesbieya.my.annoation.UserAction;
 import com.toesbieya.my.constant.SessionConstant;
@@ -11,6 +10,7 @@ import com.toesbieya.my.mapper.SysUserMapper;
 import com.toesbieya.my.model.entity.RecUserAction;
 import com.toesbieya.my.model.entity.SysResource;
 import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.UserSearch;
 import com.toesbieya.my.model.vo.update.UserUpdatePwd;
 import com.toesbieya.my.module.SocketModule;
@@ -109,13 +109,13 @@ public class SysUserService {
         return Result.success("注册成功");
     }
 
-    public PageSerializable<SysUser> search(UserSearch vo) {
+    public PageResult<SysUser> search(UserSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
         List<SysUser> users = userMapper.search(vo);
         for (SysUser user : users) {
             user.setOnline(SocketModule.online(user.getId()));
         }
-        return new PageSerializable<>(users);
+        return new PageResult<>(users);
     }
 
     @UserAction("'添加用户：'+#user.name")

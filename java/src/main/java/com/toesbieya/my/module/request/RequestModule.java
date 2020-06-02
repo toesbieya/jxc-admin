@@ -112,7 +112,7 @@ public class RequestModule {
         }
     }
 
-    public static void updateRate(String url,int totalRate,int ipRate) {
+    public static void updateRate(String url, int totalRate, int ipRate) {
         limitMap.remove(url);
         limitMap.put(url, new RateLimiterHelper(totalRate, ipRate));
     }

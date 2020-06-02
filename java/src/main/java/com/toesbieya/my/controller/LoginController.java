@@ -51,7 +51,7 @@ public class LoginController {
 
     @GetMapping("logout")
     public Result logout(HttpServletRequest request) {
-        SysUser user = Util.getUser(session);
+        SysUser user = Util.getUser();
         if (user != null) {
             recService.insertLoginHistory(user, IpUtil.getIp(request), RecLoginHistoryEnum.LOGOUT);
         }

@@ -1,10 +1,10 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageSerializable;
 import com.toesbieya.my.annoation.UserAction;
 import com.toesbieya.my.mapper.SysRoleMapper;
 import com.toesbieya.my.model.entity.SysRole;
+import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.RoleSearch;
 import com.toesbieya.my.utils.Result;
 import org.springframework.stereotype.Service;
@@ -25,9 +25,9 @@ public class SysRoleService {
         return roleMapper.getAll();
     }
 
-    public PageSerializable<SysRole> search(RoleSearch vo) {
+    public PageResult<SysRole> search(RoleSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
-        return new PageSerializable<>(roleMapper.search(vo));
+        return new PageResult<>(roleMapper.search(vo));
     }
 
     @UserAction("'添加角色：'+#role.name")

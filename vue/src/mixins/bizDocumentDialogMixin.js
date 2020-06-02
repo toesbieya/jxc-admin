@@ -1,6 +1,6 @@
-import UploadFile from '@/bizComponents/UploadFile'
-import DialogForm from '@/bizComponents/DialogForm'
-import DialogFormItem from "@/bizComponents/DialogForm/DialogFormItem"
+import UploadFile from '@/components/UploadFile'
+import DialogForm from '@/components/DialogForm'
+import DialogFormItem from "@/components/DialogForm/DialogFormItem"
 import DocumentSteps from '@/bizComponents/DocumentSteps'
 import DocumentHistory from '@/bizComponents/DocumentHistory'
 import dialogMixin from "@/mixins/dialogMixin"
@@ -16,12 +16,12 @@ export default {
     components: {DialogForm, DialogFormItem, DocumentSteps, DocumentHistory, UploadFile},
     props: {
         //dialog显隐
-        value: {type: Boolean, default: false},
+        value: Boolean,
         //编辑模式,see,add,edit
         type: {type: String, default: 'see'},
         //单据id
         id: String,
-        baseUrl: String,
+        baseUrl: String
     },
     data() {
         return {
@@ -103,7 +103,7 @@ export default {
             this.$refs.form.validate(v => {
                 if (!v) return
                 if (this.validate) {
-                    let valid = this.validate()
+                    const valid = this.validate()
                     if (!isEmpty(valid)) return elAlert(valid)
                 }
                 this.loading = true
@@ -112,7 +112,6 @@ export default {
                     .then(({data, msg}) => {
                         this.needSearch = true
                         elSuccess(msg)
-                        this.$emit('success', this.type)
                         const id = this.type === 'add' ? data : this.form.id
                         this.$emit('update:type', 'edit')
                         this.init(id)
@@ -136,7 +135,6 @@ export default {
                     .then(({data, msg}) => {
                         elSuccess(msg)
                         this.needSearch = true
-                        this.$emit('success', 'commit')
                         const id = this.type === 'add' ? data : this.form.id
                         this.$emit('update:type', 'edit')
                         this.init(id)
@@ -156,7 +154,6 @@ export default {
                 .then(({msg}) => {
                     elSuccess(msg)
                     this.needSearch = true
-                    this.$emit('success', 'withdraw')
                     this.init(this.form.id)
                 })
                 .catch(() => this.loading = false)
@@ -172,7 +169,6 @@ export default {
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
-                    this.$emit('success', 'pass')
                     this.needSearch = true
                     this.closeDialog()
                 })
@@ -189,7 +185,6 @@ export default {
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
-                    this.$emit('success', 'reject')
                     this.needSearch = true
                     this.closeDialog()
                 })
@@ -253,7 +248,8 @@ export default {
         //关闭dialog并清除单据数据
         cancel() {
             this.closeDialog()
-            if (this.needSearch) this.$emit('search')
+            this.needSearch && this.$emit('search')
+
             //删除未保存的上传附件
             let deleteArr = []
             if (this.form.uploadImageList.length > 0) {
@@ -262,6 +258,8 @@ export default {
             if (deleteArr.length > 0) {
                 deleteUpload(deleteArr).catch(e => ({}))
             }
+
+            //延时清除表单数据
             setTimeout(() => this.clearForm(), 200)
             this.loading = false
         },

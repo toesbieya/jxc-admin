@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="config.loading">
         <el-table :data="tableData">
             <el-table-column align="center" type="index" width="60">
                 <el-button icon="el-icon-refresh-right" slot="header" style="padding: 0" type="text" @click="search"/>
@@ -29,19 +29,17 @@
 </template>
 
 <script>
+    import tablePageMixin from '@/mixins/tablePageMixin'
     import {getLoginHistory} from "@/api/system/user"
 
     export default {
         name: "LoginHistory",
+        mixins: [tablePageMixin],
         data() {
             return {
                 searchForm: {
-                    page: 1,
-                    pageSize: 10,
-                    total: 0
+                    pageSize: 10
                 },
-                loading: false,
-                tableData: [],
             }
         },
         computed: {
@@ -50,19 +48,15 @@
             }
         },
         methods: {
-            pageChange(v) {
-                this.searchForm.page = v
-                this.search()
-            },
             search() {
-                if (this.loading) return
-                this.loading = true
+                if (this.config.loading) return
+                this.config.loading = true
                 getLoginHistory({...this.searchForm, uid: this.uid})
                     .then(({list, total}) => {
                         this.searchForm.total = total
                         this.tableData = list
                     })
-                    .finally(() => this.loading = false)
+                    .finally(() => this.config.loading = false)
             },
             getInfo(type) {
                 switch (type) {
@@ -73,9 +67,6 @@
                 }
                 return null
             }
-        },
-        mounted() {
-            this.search()
         }
     }
 </script>

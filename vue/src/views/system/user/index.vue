@@ -85,8 +85,8 @@
 </template>
 
 <script>
-    import SearchForm from "@/bizComponents/SearchForm"
-    import SearchFormItem from "@/bizComponents/SearchForm/SearchFormItem"
+    import SearchForm from "@/components/SearchForm"
+    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import RoleSelector from './components/RoleSelector'
     import EditDialog from './components/EditDialog'
     import {delUser, getUsers, kick, resetUserPwd} from "@/api/system/user"
@@ -128,9 +128,6 @@
             },
             canResetPwd() {
                 return auth(baseUrl + '/resetPwd')
-            },
-            socket() {
-                return this.$store.state.socket.socket
             },
         },
         methods: {

@@ -96,7 +96,6 @@
         </el-row>
 
         <edit-dialog
-                ref="editDialog"
                 v-model="editDialog"
                 :base-url="baseUrl"
                 :id="row?row.id:null"
@@ -108,8 +107,8 @@
 
 <script>
     import EditDialog from './components/EditDialog'
-    import SearchForm from '@/bizComponents/SearchForm'
-    import SearchFormItem from "@/bizComponents/SearchForm/SearchFormItem"
+    import SearchForm from '@/components/SearchForm'
+    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import documentTableMixin from '@/mixins/bizDocumentTableMixin'
     import {del, getSubById, search} from "@/api/sell/outbound"
 

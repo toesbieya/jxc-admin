@@ -4,7 +4,7 @@ import Layout from '@/layout'
 const router = {
     path: '/example',
     component: Layout,
-    meta: {title: '演示用例', icon: 'show', noCache: true, breadcrumb: false},
+    meta: {title: '演示用例', icon: 'show', noCache: true},
     children: [
         {
             path: 'style-page',

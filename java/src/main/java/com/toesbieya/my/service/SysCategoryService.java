@@ -47,7 +47,7 @@ public class SysCategoryService {
     @UserAction("'删除分类：'+#category.name")
     @Lock("'category'+#category.id")
     public Result del(SysCategory category) {
-        Integer cid=category.getId();
+        Integer cid = category.getId();
         if (categoryMapper.hasChildren(cid)) {
             return Result.fail("请先删除该分类下的子节点");
         }

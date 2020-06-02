@@ -72,8 +72,8 @@
 </template>
 
 <script>
-    import SearchForm from "@/bizComponents/SearchForm"
-    import SearchFormItem from "@/bizComponents/SearchForm/SearchFormItem"
+    import SearchForm from "@/components/SearchForm"
+    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import CategoryTree from '@/bizComponents/CategoryTree'
     import DetailDialog from "./DetailDialog"
     import {search} from "@/api/stock/current"

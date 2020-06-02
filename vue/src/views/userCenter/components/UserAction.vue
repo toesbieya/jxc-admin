@@ -1,5 +1,5 @@
 <template>
-    <div v-loading="loading">
+    <div v-loading="config.loading">
         <el-table :data="tableData">
             <el-table-column align="center" label="#" type="index" width="60">
                 <el-button icon="el-icon-refresh-right" slot="header" style="padding: 0" type="text" @click="search"/>
@@ -36,19 +36,17 @@
 </template>
 
 <script>
+    import tablePageMixin from '@/mixins/tablePageMixin'
     import {getUserAction} from "@/api/system/user"
 
     export default {
         name: "UserAction",
+        mixins: [tablePageMixin],
         data() {
             return {
                 searchForm: {
-                    page: 1,
                     pageSize: 10,
-                    total: 0
-                },
-                loading: false,
-                tableData: []
+                }
             }
         },
         computed: {
@@ -57,19 +55,15 @@
             }
         },
         methods: {
-            pageChange(v) {
-                this.searchForm.page = v
-                this.search()
-            },
             search() {
-                if (this.loading) return
-                this.loading = true
+                if (this.config.loading) return
+                this.config.loading = true
                 getUserAction({...this.searchForm, uid: this.uid})
                     .then(({list, total}) => {
                         this.searchForm.total = total
                         this.tableData = list
                     })
-                    .finally(() => this.loading = false)
+                    .finally(() => this.config.loading = false)
             },
             getInfo(type) {
                 switch (type) {
@@ -80,9 +74,6 @@
                 }
                 return null
             }
-        },
-        mounted() {
-            this.search()
         }
     }
 </script>

@@ -17,6 +17,7 @@ const state = {
     routes: [],
     sidebarMenus: [],
     data: localResource,
+    dataMap: {},
     tree: createTree(localResource),
     hasInitRoutes: false
 }
@@ -32,7 +33,11 @@ const mutations = {
     },
     data(state, data) {
         state.data = data || []
-        state.tree = createTree(data)
+        state.dataMap = state.data.reduce((map, item) => {
+            map[item.url] = item.id
+            return map
+        }, {})
+        state.tree = createTree(state.data)
         setLocalResource(data)
     },
     hasInitRoutes(state, sign) {
@@ -56,7 +61,7 @@ const actions = {
             resolve()
         })
     },
-    initResource({state, commit}) {
+    initResource({commit}) {
         return new Promise(resolve => {
             //if (state.data.length > 0) return resolve();
             getResources()

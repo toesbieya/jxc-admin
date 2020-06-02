@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -23,8 +22,6 @@ import java.util.List;
 public class BizSellOrderController {
     @Resource
     private BizSellOrderService sellOrderService;
-    @Resource
-    private HttpSession session;
 
     @GetMapping("getById")
     public Result getById(@RequestParam String id) {
@@ -59,11 +56,10 @@ public class BizSellOrderController {
         String errMsg = validateSub(order.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser sysUser = Util.getUser(session);
-        assert sysUser != null;
+        SysUser user = Util.getUser();
 
-        order.setCid(sysUser.getId());
-        order.setCname(sysUser.getName());
+        order.setCid(user.getId());
+        order.setCname(user.getName());
         order.setCtime(System.currentTimeMillis());
         order.setStatus(BizDocumentStatusEnum.DRAFT.getCode());
 
@@ -90,10 +86,9 @@ public class BizSellOrderController {
         order.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
 
         if (isFirst) {
-            SysUser sysUser = Util.getUser(session);
-            assert sysUser != null;
-            order.setCid(sysUser.getId());
-            order.setCname(sysUser.getName());
+            SysUser user = Util.getUser();
+            order.setCid(user.getId());
+            order.setCname(user.getName());
             order.setCtime(System.currentTimeMillis());
         }
 
@@ -102,17 +97,17 @@ public class BizSellOrderController {
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.withdraw(vo, Util.getUser(session));
+        return sellOrderService.withdraw(vo, Util.getUser());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.pass(vo, Util.getUser(session));
+        return sellOrderService.pass(vo, Util.getUser());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.reject(vo, Util.getUser(session));
+        return sellOrderService.reject(vo, Util.getUser());
     }
 
     @GetMapping("del")

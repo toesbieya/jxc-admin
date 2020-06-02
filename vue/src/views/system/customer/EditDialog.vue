@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import DialogForm from '@/bizComponents/DialogForm'
+    import DialogForm from '@/components/DialogForm'
     import RegionSelector from '@/bizComponents/RegionSelector'
     import dialogMixin from "@/mixins/dialogMixin"
     import {addCustomer, updateCustomer} from "@/api/system/customer"
@@ -66,8 +66,7 @@
             type: {type: String, default: 'see'},
             data: {
                 type: Object,
-                default: () => {
-                }
+                default: () => ({})
             },
         },
         data() {

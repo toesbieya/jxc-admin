@@ -1,10 +1,10 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageSerializable;
 import com.toesbieya.my.annoation.UserAction;
 import com.toesbieya.my.mapper.SysCustomerMapper;
 import com.toesbieya.my.model.entity.SysCustomer;
+import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.result.RegionValueResult;
 import com.toesbieya.my.model.vo.search.CustomerSearch;
 import com.toesbieya.my.utils.Result;
@@ -26,10 +26,10 @@ public class SysCustomerService {
         return customerMapper.get();
     }
 
-    public PageSerializable<SysCustomer> search(CustomerSearch vo) {
+    public PageResult<SysCustomer> search(CustomerSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
         List<SysCustomer> SysCustomers = customerMapper.search(vo);
-        return new PageSerializable<>(SysCustomers);
+        return new PageResult<>(SysCustomers);
     }
 
     @UserAction("'添加客户：'+ #customer.name")

@@ -90,7 +90,7 @@ export default class ParticleNetwork {
             window.clearInterval(this.timer)
             this.timer = setInterval(() => {
                 if (counter < quantity - 1) this.particles.push(new Particle(this))
-                else clearInterval(this.timer)
+                else window.clearInterval(this.timer)
                 counter++
             }, 250)
         }

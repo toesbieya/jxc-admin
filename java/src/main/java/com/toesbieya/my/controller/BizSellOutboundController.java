@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -23,8 +22,6 @@ import java.util.List;
 public class BizSellOutboundController {
     @Resource
     private BizSellOutboundService sellOutboundService;
-    @Resource
-    private HttpSession session;
 
     @GetMapping("getById")
     public Result getById(@RequestParam String id) {
@@ -54,10 +51,9 @@ public class BizSellOutboundController {
         String errMsg = validateSub(outbound.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser sysUser = Util.getUser(session);
-        assert sysUser != null;
-        outbound.setCid(sysUser.getId());
-        outbound.setCname(sysUser.getName());
+        SysUser user = Util.getUser();
+        outbound.setCid(user.getId());
+        outbound.setCname(user.getName());
         outbound.setCtime(System.currentTimeMillis());
         outbound.setStatus(BizDocumentStatusEnum.DRAFT.getCode());
 
@@ -83,8 +79,7 @@ public class BizSellOutboundController {
 
         outbound.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
         if (isFirst) {
-            SysUser sysUser = Util.getUser(session);
-            assert sysUser != null;
+            SysUser sysUser = Util.getUser();
             outbound.setCid(sysUser.getId());
             outbound.setCname(sysUser.getName());
             outbound.setCtime(System.currentTimeMillis());
@@ -94,18 +89,18 @@ public class BizSellOutboundController {
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return sellOutboundService.withdraw(vo, Util.getUser(session));
+        return sellOutboundService.withdraw(vo, Util.getUser());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
         if (StringUtils.isEmpty(vo.getPid())) return Result.fail("参数错误");
-        return sellOutboundService.pass(vo, Util.getUser(session));
+        return sellOutboundService.pass(vo, Util.getUser());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return sellOutboundService.reject(vo, Util.getUser(session));
+        return sellOutboundService.reject(vo, Util.getUser());
     }
 
     @GetMapping("del")

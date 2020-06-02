@@ -22,7 +22,7 @@ import java.util.ArrayList;
 @Slf4j
 @Order(Integer.MAX_VALUE - 1)
 public class LockAspect {
-    private ThreadLocal<ArrayList<LockHelper>> lockHelperThreadLocal = new ThreadLocal<>();
+    private final ThreadLocal<ArrayList<LockHelper>> lockHelperThreadLocal = new ThreadLocal<>();
 
     @Pointcut("@annotation(com.toesbieya.my.annoation.Lock)&&execution(com.toesbieya.my.utils.Result com.toesbieya.my..*.*(..))")
     public void pointCut() {

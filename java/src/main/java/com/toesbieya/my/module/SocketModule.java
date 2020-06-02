@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 
 @Component
 @Slf4j
@@ -31,15 +32,21 @@ public class SocketModule {
         server.start();
     }
 
-    public static void logout(Integer uid, String msg) {
+    public static void sendEvent(String event, Integer uid, Object... data) {
+        sendEvent(event, uid, data, null);
+    }
+
+    public static void sendEvent(String event, Integer uid, Object data, BiConsumer<UserObject, SocketIOClient> consumer) {
         UserObject obj = socketMap.get(uid);
         if (obj == null) return;
         SocketIOClient client = server.getClient(obj.getUuid());
         if (client == null) return;
-        client.sendEvent(SocketConstant.EVENT_LOGOUT, msg);
-        RedisUtil.expire(SessionConstant.REDIS_NAMESPACE + obj.getSessionID());
-        client.disconnect();
-        socketMap.remove(uid);
+        client.sendEvent(event, data);
+        if (consumer != null) consumer.accept(obj, client);
+    }
+
+    public static void broadcast(String event, Object... data) {
+        server.getBroadcastOperations().sendEvent(event, data);
     }
 
     public static boolean online(Integer uid) {
@@ -70,6 +77,14 @@ public class SocketModule {
     public void onEvent(SocketIOClient client, AckRequest ackRequest, String data) {
         System.out.println(getIp(client) + "：客户端：************" + data);
         client.sendEvent("response", "后台得到了数据");
+    }
+
+    public static void logout(Integer uid, String msg) {
+        sendEvent(SocketConstant.EVENT_LOGOUT, uid, msg, (obj, client) -> {
+            RedisUtil.expire(SessionConstant.REDIS_NAMESPACE + obj.getSessionID());
+            client.disconnect();
+            socketMap.remove(uid);
+        });
     }
 
     public static int getOnlineNum() {

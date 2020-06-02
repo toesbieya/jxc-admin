@@ -19,7 +19,7 @@ import java.time.temporal.ChronoUnit;
 @Slf4j
 @Order(1)
 public class TimeCostAspect {
-    private ThreadLocal<Instant> instantThreadLocal = new ThreadLocal<>();
+    private final ThreadLocal<Instant> instantThreadLocal = new ThreadLocal<>();
 
     @Pointcut("@annotation(com.toesbieya.my.annoation.TimeCost)")
     public void pointCut() {

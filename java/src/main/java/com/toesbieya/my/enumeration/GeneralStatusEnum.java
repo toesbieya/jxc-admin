@@ -3,7 +3,7 @@ package com.toesbieya.my.enumeration;
 public enum GeneralStatusEnum {
     DISABLED(0), ENABLED(1);
 
-    private int code;
+    private final int code;
 
     GeneralStatusEnum(int code) {
         this.code = code;

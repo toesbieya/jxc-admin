@@ -5,7 +5,7 @@ const router = {
     path: '/system',
     component: Layout,
     alwaysShow: true,
-    meta: {title: '系统管理', icon: 'system', breadcrumb: false},
+    meta: {title: '系统管理', icon: 'system'},
     children: [
         {
             path: 'department',

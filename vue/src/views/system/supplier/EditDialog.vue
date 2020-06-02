@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import DialogForm from '@/bizComponents/DialogForm'
+    import DialogForm from '@/components/DialogForm'
     import RegionSelector from '@/bizComponents/RegionSelector'
     import dialogMixin from "@/mixins/dialogMixin"
     import {addSupplier, updateSupplier} from "@/api/system/supplier"

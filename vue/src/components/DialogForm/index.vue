@@ -12,7 +12,7 @@
         <div class="dialog-form-container">
             <loading-mask :show="loading"/>
             <el-scrollbar>
-                <div style="padding: 20px 20px 0">
+                <div class="dialog-form-body">
                     <slot/>
                 </div>
                 <div style="margin-bottom: 17px"/>
@@ -47,6 +47,10 @@
         .dialog-form-container {
             position: relative;
             width: 100%;
+
+            .dialog-form-body {
+                padding: 24px 24px 0
+            }
 
             .el-form {
                 padding: 0;

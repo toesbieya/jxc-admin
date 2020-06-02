@@ -48,7 +48,7 @@ const actions = {
     delView({commit}, view) {
         commit('delVisitedView', view)
         commit('delCachedView', view)
-        commit('iframe/delIframe', view.meta ? view.meta.iframe : null, {root: true})
+        commit('iframe/del', view.meta ? view.meta.iframe : null, {root: true})
     },
 
     delOthersViews({state, commit}, view) {

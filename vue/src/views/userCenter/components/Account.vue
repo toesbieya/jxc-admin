@@ -24,7 +24,7 @@
 </template>
 
 <script>
-    import DialogForm from '@/bizComponents/DialogForm'
+    import DialogForm from '@/components/DialogForm'
     import dialogMixin from "@/mixins/dialogMixin"
     import {updateUserPwd} from "@/api/system/user"
     import {elSuccess} from "@/utils/message"

@@ -9,6 +9,7 @@ import com.toesbieya.my.utils.ThreadUtil;
 import com.toesbieya.my.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -26,6 +27,12 @@ public class GlobalExceptionHandler {
     public Result handleJsonResultException(JsonResultException e) {
         recordUserAction(e);
         return Result.fail(e.getMessage());
+    }
+
+    //请求方法有误
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return Result.fail("请求方法有误");
     }
 
     //上传文件过大

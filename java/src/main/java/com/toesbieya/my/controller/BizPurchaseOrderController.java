@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -23,8 +22,6 @@ import java.util.List;
 public class BizPurchaseOrderController {
     @Resource
     private BizPurchaseOrderService purchaseOrderService;
-    @Resource
-    private HttpSession session;
 
     @GetMapping("getById")
     public Result getById(@RequestParam String id) {
@@ -59,9 +56,7 @@ public class BizPurchaseOrderController {
         String errMsg = validateSub(order.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser sysUser = Util.getUser(session);
-        assert sysUser != null;
-
+        SysUser sysUser = Util.getUser();
         order.setCid(sysUser.getId());
         order.setCname(sysUser.getName());
         order.setCtime(System.currentTimeMillis());
@@ -90,8 +85,7 @@ public class BizPurchaseOrderController {
         order.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
 
         if (isFirst) {
-            SysUser sysUser = Util.getUser(session);
-            assert sysUser != null;
+            SysUser sysUser = Util.getUser();
             order.setCid(sysUser.getId());
             order.setCname(sysUser.getName());
             order.setCtime(System.currentTimeMillis());
@@ -102,17 +96,17 @@ public class BizPurchaseOrderController {
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.withdraw(vo, Util.getUser(session));
+        return purchaseOrderService.withdraw(vo, Util.getUser());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.pass(vo, Util.getUser(session));
+        return purchaseOrderService.pass(vo, Util.getUser());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.reject(vo, Util.getUser(session));
+        return purchaseOrderService.reject(vo, Util.getUser());
     }
 
     @GetMapping("del")

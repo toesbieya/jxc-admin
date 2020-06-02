@@ -106,10 +106,10 @@ public class ExcelUtil {
     private static class CommonMerge extends AbstractMergeStrategy {
         private boolean finish = false;
         private int ignoreRows = 1;
-        private Field[] attrs;
-        private Field primaryField;
-        private int[][] merge;
-        private int[] temp;
+        private final Field[] attrs;
+        private final Field primaryField;
+        private final int[][] merge;
+        private final int[] temp;
 
         public CommonMerge(List data, CommonMergeOptions mergeOptions) throws Exception {
             String[] attrs = mergeOptions.getAttrs();

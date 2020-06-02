@@ -7,7 +7,7 @@
         <div class="right-menu">
             <search id="header-search" class="right-menu-item hidden-xs"/>
 
-            <fullscreen v-model="fullscreen" class="fullscreen-btn right-menu-item hidden-xs" title="全屏开关"/>
+            <bell class="right-menu-item"/>
 
             <div class="setting-btn right-menu-item hidden-xs" @click="settingDrawer=true">
                 <i class="el-icon-s-operation navbar-icon" title="个性设置"/>
@@ -50,7 +50,7 @@
     import Hamburger from './components/Hamburger'
     import Breadcrumb from './components/Breadcrumb'
     import Search from './components/HeaderSearch'
-    import Fullscreen from "./components/Fullscreen"
+    import Bell from "./components/Bell"
     import SettingDrawer from './components/SettingDrawer'
     import {mapState} from 'vuex'
     import GuideMixin from '@/mixins/guide'
@@ -60,7 +60,7 @@
     export default {
         name: 'navbar',
         mixins: [GuideMixin.navbar],
-        components: {Hamburger, Breadcrumb, Search, Fullscreen, SettingDrawer},
+        components: {Hamburger, Breadcrumb, Search, Bell, SettingDrawer},
         data() {
             return {
                 fullscreen: false,
@@ -122,6 +122,7 @@
 
             .right-menu-item {
                 display: inline-block;
+                position: relative;
                 padding: 0 8px;
                 height: 100%;
                 font-size: 18px;
@@ -136,8 +137,6 @@
             }
 
             .avatar-container {
-                margin-right: 30px;
-
                 .avatar-wrapper {
                     margin-top: 5px;
                     position: relative;

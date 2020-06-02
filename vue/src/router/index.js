@@ -5,7 +5,6 @@
 * 左侧菜单显示：name && !hidden && meta.title
 * 左侧菜单不折叠只有一个children的路由：alwaysShow
 * 面包屑显示：meta.title
-* 面包屑不跳转：!meta.breadcrumb
 * 搜索选项显示：name && meta.title
 * tab栏固定显示：meta.affix
 * 页面不缓存：!name || meta.noCache
@@ -13,8 +12,8 @@
 * */
 import Vue from 'vue'
 import Router from 'vue-router'
+import {pathToRegexp} from 'path-to-regexp'
 import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
 import {isUserExist} from "@/utils/sessionStorage"
 import {auth, needAuth} from "@/utils/auth"
 import {isEmpty} from "@/utils"
@@ -28,30 +27,27 @@ Vue.use(Router)
 NProgress.configure({showSpinner: false})
 
 const endRoute = [{path: '*', redirect: '/404', hidden: true}]
-const urlNoNeedLogin = {
-    '/login': 1,
-    '/register': 1,
-    '/404': 1,
-    '/403': 1,
-}
+
+const urlNoNeedLogin = [
+    '/login', '/register', '/404', '/403'
+].map(url => pathToRegexp(url))
 
 metaExtend(constantRoutes)
 metaExtend(authorityRoutes)
 
-const createRouter = () => new Router({
+const router = new Router({
     scrollBehavior: () => ({y: 0}),
     routes: constantRoutes.concat(authorityRoutes, endRoute)
 })
 
-const router = createRouter()
-
 router.beforeEach(async (to, from, next) => {
-    NProgress.start()
+    //使用redirect进行跳转时不显示进度条
+    !to.path.startsWith('/redirect') && NProgress.start()
 
     document.title = getPageTitle(to.meta.title)
 
     //不需要登录的页面也不需要进行权限控制
-    if (urlNoNeedLogin[to.path]) return next()
+    if (urlNoNeedLogin.some(reg => reg.test(to.path))) return next()
 
     const isLogin = isUserExist()
 
@@ -74,9 +70,7 @@ router.beforeEach(async (to, from, next) => {
     next({path: '/403'})
 })
 
-router.afterEach(() => {
-    NProgress.done()
-})
+router.afterEach(() => NProgress.done())
 
 //初始化菜单和权限
 function initMenu() {

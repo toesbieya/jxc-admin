@@ -5,7 +5,7 @@ const router = {
     path: '/purchase',
     component: Layout,
     alwaysShow: true,
-    meta: {title: '采购管理', icon: 'shopping', breadcrumb: false},
+    meta: {title: '采购管理', icon: 'shopping'},
     children: [
         {
             path: 'order',

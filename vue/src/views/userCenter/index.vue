@@ -5,7 +5,7 @@
         </el-col>
         <el-col :xs="24" :sm="24" :md="16" :lg="18" :xl="19">
             <el-card>
-                <el-tabs v-model="activeTab">
+                <el-tabs v-model="activeTab" stretch>
                     <el-tab-pane v-for="i in tabs" v-once :key="i.label" :name="i.name">
                         <span slot="label">
                             {{i.label}}
@@ -26,13 +26,16 @@
 </template>
 
 <script>
-    import UserCard from './components/UserCard'
-    import LoginHistory from './components/LoginHistory'
-    import UserAction from './components/UserAction'
+    import UserCard from "./components/UserCard"
+    import LoginHistory from "./components/LoginHistory"
 
     export default {
         name: 'userCenter',
-        components: {UserCard, LoginHistory, UserAction},
+        components: {
+            UserCard,
+            LoginHistory,
+            UserAction: () => import('./components/UserAction')
+        },
         data() {
             return {
                 activeTab: 'login-history',

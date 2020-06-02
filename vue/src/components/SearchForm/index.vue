@@ -1,6 +1,4 @@
 <script type="text/jsx">
-    import {debounce} from "@/utils"
-
     export default {
         name: "SearchForm",
         provide() {
@@ -38,7 +36,6 @@
             }
         },
         mounted() {
-            this.resize = debounce(this.resize)
             this.resize()
             window.addEventListener('resize', this.resize)
         },

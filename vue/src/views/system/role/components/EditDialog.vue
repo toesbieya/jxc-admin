@@ -47,7 +47,7 @@
 </template>
 
 <script>
-    import DialogForm from '@/bizComponents/DialogForm'
+    import DialogForm from '@/components/DialogForm'
     import dialogMixin from "@/mixins/dialogMixin"
     import {addRole, updateRole} from "@/api/system/role"
     import {isEmpty, mergeObj} from '@/utils'

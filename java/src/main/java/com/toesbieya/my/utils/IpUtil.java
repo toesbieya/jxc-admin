@@ -14,7 +14,7 @@ import java.util.function.Function;
 public class IpUtil {
     private static final RestTemplate restTemplate = new RestTemplate();
 
-    private static List<Function<String, String>> handlerList = new ArrayList<>();
+    private static final List<Function<String, String>> handlerList = new ArrayList<>();
 
     static {
         handlerList.add(new PconlineApi());
@@ -50,7 +50,6 @@ public class IpUtil {
         if (!StringUtils.isEmpty(cache)) {
             return cache;
         }
-        if (handlerList.size() == 0) return null;
         for (Function<String, String> handler : handlerList) {
             try {
                 cache = handler.apply(ip);

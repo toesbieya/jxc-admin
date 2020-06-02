@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import DialogForm from '@/bizComponents/DialogForm'
+    import DialogForm from '@/components/DialogForm'
     import dialogMixin from "@/mixins/dialogMixin"
     import {updateResource} from "@/api/system/resource"
     import {mergeObj, resetObj} from '@/utils'

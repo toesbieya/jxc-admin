@@ -61,7 +61,7 @@
 
 <script>
     import LinerProgress from '@/components/LinerProgress'
-    import DialogForm from "@/bizComponents/DialogForm"
+    import DialogForm from "@/components/DialogForm"
 
     export default {
         name: "stylePage",

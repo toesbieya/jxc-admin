@@ -30,7 +30,7 @@ const mixin = {
             this.search()
         },
     },
-    activated() {
+    mounted() {
         this.search()
     }
 }

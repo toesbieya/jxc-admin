@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -30,8 +29,6 @@ public class SysUserController {
     private SysUserService userService;
     @Resource
     private RecService recService;
-    @Resource
-    private HttpSession session;
 
     @PostMapping("search")
     public Result search(@RequestBody UserSearch vo) {
@@ -40,19 +37,19 @@ public class SysUserController {
 
     @PostMapping("getLoginHistory")
     public Result getLoginHistory(@RequestBody LoginHistorySearch vo) {
-        SysUser user = Util.getUser(session);
-        assert user != null;
+        SysUser user = Util.getUser();
         vo.setUid(user.getId());
         vo.setStartTime(DateUtil.getTimestampBeforeNow(7));
+
         return Result.success(recService.searchLoginHistory(vo));
     }
 
     @PostMapping("getUserAction")
     public Result getUserAction(@RequestBody UserActionSearch vo) {
-        SysUser user = Util.getUser(session);
-        assert user != null;
+        SysUser user = Util.getUser();
         vo.setUid(user.getId());
         vo.setStartTime(DateUtil.getTimestampBeforeNow(7));
+
         return Result.success(recService.searchUserAction(vo));
     }
 
@@ -97,15 +94,15 @@ public class SysUserController {
 
     @PostMapping("updatePwd")
     public Result updatePwd(@RequestBody UserUpdatePwd vo) {
-        SysUser user = Util.getUser(session);
-        assert user != null;
+        SysUser user = Util.getUser();
         vo.setId(user.getId());
+
         String errMsg = validateUpdatePwdParam(vo);
-        if (errMsg != null) {
-            return Result.fail(errMsg);
-        }
+        if (errMsg != null) return Result.fail(errMsg);
+
         vo.setOld_pwd(DigestUtils.md5DigestAsHex(vo.getOld_pwd().getBytes()));
         vo.setNew_pwd(DigestUtils.md5DigestAsHex(vo.getNew_pwd().getBytes()));
+
         return userService.updatePwd(vo);
     }
 
@@ -120,14 +117,13 @@ public class SysUserController {
     @GetMapping("updateAvatar")
     public Result updateAvatar(@RequestParam String key) throws UnsupportedEncodingException {
         if (StringUtils.isEmpty(key)) return Result.fail("参数错误");
-        SysUser user = Util.getUser(session);
-        assert user != null;
-        return userService.updateAvatar(user, URLDecoder.decode(key, "utf-8"), session);
+
+        return userService.updateAvatar(Util.getUser(), URLDecoder.decode(key, "utf-8"), Util.getSession());
     }
 
     @GetMapping("validate")
     public Result validate(@RequestParam String pwd) {
-        SysUser current = Util.getUser(session);
+        SysUser current = Util.getUser();
         if (!pwd.equals(current.getPwd())) return Result.fail("校验失败");
         return Result.success("校验通过");
     }

@@ -1,7 +1,6 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageSerializable;
 import com.toesbieya.my.annoation.Lock;
 import com.toesbieya.my.annoation.Tx;
 import com.toesbieya.my.annoation.UserAction;
@@ -15,6 +14,7 @@ import com.toesbieya.my.mapper.BizPurchaseOrderMapper;
 import com.toesbieya.my.mapper.BizStockMapper;
 import com.toesbieya.my.model.entity.*;
 import com.toesbieya.my.model.vo.export.PurchaseInboundExport;
+import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.PurchaseInboundSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
 import com.toesbieya.my.utils.ExcelUtil;
@@ -58,10 +58,10 @@ public class BizPurchaseInboundService {
         return purchaseInboundMapper.getSubById(id);
     }
 
-    public PageSerializable<BizPurchaseInbound> search(PurchaseInboundSearch vo) {
+    public PageResult<BizPurchaseInbound> search(PurchaseInboundSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
         List<BizPurchaseInbound> list = purchaseInboundMapper.search(vo);
-        return new PageSerializable<>(list);
+        return new PageResult<>(list);
     }
 
     public void export(PurchaseInboundSearch vo, HttpServletResponse response) throws Exception {
@@ -101,7 +101,7 @@ public class BizPurchaseInboundService {
                         .build()
         );
 
-        result.setMsg(result.isSuccess()?"提交成功":"提交失败，" + result.getMsg());
+        result.setMsg(result.isSuccess() ? "提交成功" : "提交失败，" + result.getMsg());
         return result;
     }
 

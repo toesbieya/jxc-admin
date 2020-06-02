@@ -46,6 +46,7 @@ socket:
   max-http-content: 1048576
   event:
     logout: logout
+    new-message: new-message
 
 file:
   #临时文件保存目录

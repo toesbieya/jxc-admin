@@ -1,7 +1,6 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageSerializable;
 import com.toesbieya.my.enumeration.RecLoginHistoryEnum;
 import com.toesbieya.my.enumeration.UserActionEnum;
 import com.toesbieya.my.mapper.RecAttachmentMapper;
@@ -11,6 +10,7 @@ import com.toesbieya.my.model.entity.RecAttachment;
 import com.toesbieya.my.model.entity.RecLoginHistory;
 import com.toesbieya.my.model.entity.RecUserAction;
 import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.LoginHistorySearch;
 import com.toesbieya.my.model.vo.search.UserActionSearch;
 import com.toesbieya.my.utils.IpUtil;
@@ -32,16 +32,16 @@ public class RecService {
     @Resource
     private RecAttachmentMapper attachmentMapper;
 
-    public PageSerializable<RecLoginHistory> searchLoginHistory(LoginHistorySearch vo) {
+    public PageResult<RecLoginHistory> searchLoginHistory(LoginHistorySearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
         List<RecLoginHistory> list = loginHistoryMapper.search(vo);
-        return new PageSerializable<>(list);
+        return new PageResult<>(list);
     }
 
-    public PageSerializable<RecUserAction> searchUserAction(UserActionSearch vo) {
+    public PageResult<RecUserAction> searchUserAction(UserActionSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
         List<RecUserAction> list = userActionMapper.search(vo);
-        return new PageSerializable<>(list);
+        return new PageResult<>(list);
     }
 
     public List<RecAttachment> getAttachmentByPid(String pid) {

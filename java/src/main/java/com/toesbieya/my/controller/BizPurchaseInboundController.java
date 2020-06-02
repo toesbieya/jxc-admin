@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -23,8 +22,6 @@ import java.util.List;
 public class BizPurchaseInboundController {
     @Resource
     private BizPurchaseInboundService purchaseInboundService;
-    @Resource
-    private HttpSession session;
 
     @GetMapping("getById")
     public Result getById(@RequestParam String id) {
@@ -54,10 +51,9 @@ public class BizPurchaseInboundController {
         String errMsg = validateSub(inbound.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser sysUser = Util.getUser(session);
-        assert sysUser != null;
-        inbound.setCid(sysUser.getId());
-        inbound.setCname(sysUser.getName());
+        SysUser user = Util.getUser();
+        inbound.setCid(user.getId());
+        inbound.setCname(user.getName());
         inbound.setCtime(System.currentTimeMillis());
         inbound.setStatus(BizDocumentStatusEnum.DRAFT.getCode());
 
@@ -83,10 +79,9 @@ public class BizPurchaseInboundController {
 
         inbound.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
         if (isFirst) {
-            SysUser sysUser = Util.getUser(session);
-            assert sysUser != null;
-            inbound.setCid(sysUser.getId());
-            inbound.setCname(sysUser.getName());
+            SysUser user = Util.getUser();
+            inbound.setCid(user.getId());
+            inbound.setCname(user.getName());
             inbound.setCtime(System.currentTimeMillis());
         }
         return purchaseInboundService.commit(inbound);
@@ -94,18 +89,18 @@ public class BizPurchaseInboundController {
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseInboundService.withdraw(vo, Util.getUser(session));
+        return purchaseInboundService.withdraw(vo, Util.getUser());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
         if (StringUtils.isEmpty(vo.getPid())) return Result.fail("参数错误");
-        return purchaseInboundService.pass(vo, Util.getUser(session));
+        return purchaseInboundService.pass(vo, Util.getUser());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseInboundService.reject(vo, Util.getUser(session));
+        return purchaseInboundService.reject(vo, Util.getUser());
     }
 
     @GetMapping("del")

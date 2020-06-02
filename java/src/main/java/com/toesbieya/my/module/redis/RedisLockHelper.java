@@ -11,10 +11,10 @@ import java.util.Objects;
 
 @Slf4j
 public class RedisLockHelper implements LockHelper {
-    private StringRedisTemplate template = RedisUtil.getStringRedisTemplate();
-    private String key;
-    private String value;
-    private String expire;
+    private final StringRedisTemplate template = RedisUtil.getStringRedisTemplate();
+    private final String key;
+    private final String value;
+    private final String expire;
 
     public RedisLockHelper(String key) {
         this.key = "lock:" + key;

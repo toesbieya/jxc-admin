@@ -44,7 +44,7 @@
 
 <script>
     import {VueCropper} from 'vue-cropper'
-    import DialogForm from '@/bizComponents/DialogForm'
+    import DialogForm from '@/components/DialogForm'
     import dialogMixin from "@/mixins/dialogMixin"
     import {elError, elSuccess} from "@/utils/message"
     import {autoCompleteUrl, upload} from "@/utils/file"

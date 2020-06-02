@@ -8,7 +8,7 @@
 </template>
 
 <script>
-    import UploadFile from '@/bizComponents/UploadFile'
+    import UploadFile from '@/components/UploadFile'
     import request from '@/config/request'
 
     export default {
