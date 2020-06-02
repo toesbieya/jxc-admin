@@ -11,7 +11,7 @@
  Target Server Version : 80018
  File Encoding         : 65001
 
- Date: 23/02/2020 14:14:35
+ Date: 03/06/2020 00:28:56
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,7 @@ CREATE TABLE `biz_document_history`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `pid_time_idx`(`pid`, `time`) USING BTREE,
   INDEX `uid_idx`(`uid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for biz_purchase_inbound
@@ -51,7 +51,11 @@ CREATE TABLE `biz_purchase_inbound`  (
   `vtime` bigint(20) NULL DEFAULT NULL COMMENT '审核时间',
   `status` int(11) NOT NULL COMMENT '0拟定、1待审核、2已审核',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `pid_idx`(`pid`) USING BTREE,
+  INDEX `cid_idx`(`cid`) USING BTREE,
+  INDEX `ctime_idx`(`ctime`) USING BTREE,
+  INDEX `status_idx`(`status`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -66,7 +70,7 @@ CREATE TABLE `biz_purchase_inbound_sub`  (
   `num` decimal(10, 2) NOT NULL COMMENT '入库数量',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `pid_cid_unique_idx`(`pid`, `cid`) USING BTREE COMMENT '同一采购入库单不能有重复分类的商品'
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for biz_purchase_order
@@ -87,7 +91,12 @@ CREATE TABLE `biz_purchase_order`  (
   `ftime` bigint(20) NULL DEFAULT NULL COMMENT '完成时间',
   `total` decimal(10, 2) NULL DEFAULT NULL COMMENT '总额',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `sid_idx`(`sid`) USING BTREE,
+  INDEX `cid_idx`(`cid`) USING BTREE,
+  INDEX `ctime_idx`(`ctime`) USING BTREE,
+  INDEX `status_idx`(`status`) USING BTREE,
+  INDEX `finish_idx`(`finish`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -104,7 +113,7 @@ CREATE TABLE `biz_purchase_order_sub`  (
   `remain_num` decimal(10, 2) NOT NULL COMMENT '剩余未入库的数量',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `pid_cid_unique_idx`(`pid`, `cid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for biz_sell_order
@@ -125,7 +134,12 @@ CREATE TABLE `biz_sell_order`  (
   `ftime` bigint(20) NULL DEFAULT NULL COMMENT '完成时间',
   `total` decimal(10, 2) NULL DEFAULT NULL COMMENT '总额',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `customer_id_idx`(`customer_id`) USING BTREE,
+  INDEX `cid_idx`(`cid`) USING BTREE,
+  INDEX `ctime_idx`(`ctime`) USING BTREE,
+  INDEX `status_idx`(`status`) USING BTREE,
+  INDEX `finish_idx`(`finish`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -142,7 +156,7 @@ CREATE TABLE `biz_sell_order_sub`  (
   `remain_num` decimal(10, 2) NOT NULL COMMENT '剩余未出库的数量',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `pid_cid_unique_idx`(`pid`, `cid`) USING BTREE COMMENT '同一张销售订单内不能有重复分类的商品'
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for biz_sell_outbound
@@ -159,7 +173,11 @@ CREATE TABLE `biz_sell_outbound`  (
   `vtime` bigint(20) NULL DEFAULT NULL COMMENT '审核时间',
   `status` int(11) NOT NULL COMMENT '0拟定、1待审核、2已审核',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `pid_idx`(`pid`) USING BTREE,
+  INDEX `cid_idx`(`cid`) USING BTREE,
+  INDEX `ctime_idx`(`ctime`) USING BTREE,
+  INDEX `status_idx`(`status`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -174,7 +192,7 @@ CREATE TABLE `biz_sell_outbound_sub`  (
   `cname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '商品分类名称',
   `num` decimal(10, 2) NOT NULL COMMENT '出库数量',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for biz_stock
@@ -192,6 +210,48 @@ CREATE TABLE `biz_stock`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `cid_cgrkid_unique_idx`(`cid`, `cgrkid`) USING BTREE,
   INDEX `cdate_idx`(`ctime`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for msg
+-- ----------------------------
+DROP TABLE IF EXISTS `msg`;
+CREATE TABLE `msg`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '消息表',
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '消息内容',
+  `type` tinyint(1) NOT NULL COMMENT '消息类型，0通知提醒、1系统公告',
+  `cid` int(11) NOT NULL COMMENT '创建人id',
+  `cname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建人名称',
+  `ctime` bigint(20) NOT NULL COMMENT '创建时间',
+  `pid` int(11) NULL DEFAULT NULL COMMENT '发布人id',
+  `pname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '发布人名称',
+  `ptime` bigint(20) NULL DEFAULT NULL COMMENT '发布时间',
+  `wid` int(11) NULL DEFAULT NULL COMMENT '撤回人id',
+  `wname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '撤回人名称',
+  `wtime` bigint(20) NULL DEFAULT NULL COMMENT '撤回时间',
+  `status` tinyint(1) NOT NULL COMMENT '消息状态，0拟定、1已发布、2已撤回',
+  `all` tinyint(1) NOT NULL COMMENT '是否向全体用户发送，0否1是',
+  `recipient` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '接收人，以逗号隔开的用户id字符串',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `type_idx`(`type`) USING BTREE,
+  INDEX `cid_idx`(`cid`) USING BTREE,
+  INDEX `ctime_idx`(`ctime`) USING BTREE,
+  INDEX `status_idx`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for msg_state
+-- ----------------------------
+DROP TABLE IF EXISTS `msg_state`;
+CREATE TABLE `msg_state`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '消息已读状态表',
+  `mid` int(11) NOT NULL COMMENT '消息id',
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `time` bigint(20) NOT NULL COMMENT '已读时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `mid_idx`(`mid`) USING BTREE,
+  INDEX `uid_idx`(`uid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -206,7 +266,9 @@ CREATE TABLE `rec_attachment`  (
   `order` int(11) NOT NULL DEFAULT 0 COMMENT '排序',
   `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `size` bigint(20) NULL DEFAULT NULL COMMENT '大小，单位byte',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `pid_idx`(`pid`) USING BTREE,
+  INDEX `url_idx`(`url`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -219,16 +281,13 @@ CREATE TABLE `rec_login_history`  (
   `uname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '用户名称',
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'ip',
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '地址',
-  `type` int(11) NOT NULL COMMENT '0登录，1登出',
+  `type` int(11) NOT NULL COMMENT '0登出，1登陆',
   `time` bigint(20) NOT NULL COMMENT '操作时间',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of rec_login_history
--- ----------------------------
-INSERT INTO `rec_login_history` VALUES (41, 1, 'admin', '127.0.0.1', NULL, 1, 1582438334814);
-INSERT INTO `rec_login_history` VALUES (42, 1, 'admin', '127.0.0.1', NULL, 0, 1582438340549);
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `uid_idx`(`uid`) USING BTREE,
+  INDEX `type_idx`(`type`) USING BTREE,
+  INDEX `time_idx`(`time`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 243 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for rec_user_action
@@ -245,7 +304,7 @@ CREATE TABLE `rec_user_action`  (
   `error` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '错误信息',
   `type` int(11) NOT NULL COMMENT '0失败、1成功',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for stat_finish_order
@@ -257,12 +316,7 @@ CREATE TABLE `stat_finish_order`  (
   `sell` int(11) NOT NULL COMMENT '销售订单完成数',
   `time` bigint(20) NOT NULL COMMENT '完成时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of stat_finish_order
--- ----------------------------
-INSERT INTO `stat_finish_order` VALUES (4, 0, 0, 1582300800000);
+) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for stat_profit_goods
@@ -276,7 +330,7 @@ CREATE TABLE `stat_profit_goods`  (
   `profit` decimal(10, 2) NOT NULL COMMENT '毛利润',
   `time` bigint(20) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for stat_profit_total
@@ -289,12 +343,7 @@ CREATE TABLE `stat_profit_total`  (
   `profit` decimal(10, 2) NOT NULL COMMENT '毛利润',
   `time` bigint(20) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of stat_profit_total
--- ----------------------------
-INSERT INTO `stat_profit_total` VALUES (4, 0.00, 0.00, 0.00, 1582300800000);
+) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_category
@@ -307,14 +356,21 @@ CREATE TABLE `sys_category`  (
   `type` int(11) NOT NULL COMMENT '0为分类，1为实体，只有分类才能有下级节点',
   `ctime` bigint(20) NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `name_unique_idx`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+  UNIQUE INDEX `name_unique_idx`(`name`) USING BTREE,
+  INDEX `pid_idx`(`pid`) USING BTREE,
+  INDEX `type_idx`(`type`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_category
 -- ----------------------------
 INSERT INTO `sys_category` VALUES (1, 0, '马良铅笔', 1, 1582204211500);
 INSERT INTO `sys_category` VALUES (2, 0, '水桶', 1, 1582204211500);
+INSERT INTO `sys_category` VALUES (3, 0, '旺旺饼干', 1, 1582878418713);
+INSERT INTO `sys_category` VALUES (4, 0, '肥宅快乐水', 1, 1582878429869);
+INSERT INTO `sys_category` VALUES (5, 0, '康帅傅红烧牛肉面', 1, 1582878461760);
+INSERT INTO `sys_category` VALUES (6, 0, '神光棒', 1, 1582878512292);
+INSERT INTO `sys_category` VALUES (7, 0, '黑框眼镜', 1, 1582878543136);
 
 -- ----------------------------
 -- Table structure for sys_customer
@@ -330,7 +386,10 @@ CREATE TABLE `sys_customer`  (
   `status` int(11) NOT NULL COMMENT '0禁用，1启用',
   `ctime` bigint(20) NOT NULL COMMENT '创建时间',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `name_unique_idx`(`name`) USING BTREE,
+  INDEX `status_idx`(`status`) USING BTREE,
+  INDEX `ctime_idx`(`ctime`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -349,12 +408,14 @@ CREATE TABLE `sys_department`  (
   `status` int(11) NOT NULL DEFAULT 1 COMMENT '0禁用，1正常',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `pid_name_unique_idx`(`pid`, `name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_department
 -- ----------------------------
 INSERT INTO `sys_department` VALUES (1, 0, '组织机构', 1);
+INSERT INTO `sys_department` VALUES (2, 1, 'AA', 1);
+INSERT INTO `sys_department` VALUES (3, 1, 'BB', 1);
 
 -- ----------------------------
 -- Table structure for sys_region
@@ -366,7 +427,8 @@ CREATE TABLE `sys_region`  (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `fullname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '全名，不同级别间以逗号隔开',
   `level` int(10) NOT NULL COMMENT '节点级别，省、市、区',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `pid_idx`(`pid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3872,6 +3934,13 @@ INSERT INTO `sys_resource` VALUES (107, 90, '导出', '/export', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (120, 0, '库存管理', '/stock', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (121, 120, '当前库存', '/current', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (122, 121, '导出', '/export', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (140, 0, '消息中心', '/message', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (141, 140, '消息管理', '/manage', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (142, 141, '添加', '/add', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (143, 141, '修改', '/update', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (144, 141, '删除', '/del', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (145, 141, '发布', '/publish', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (146, 141, '撤回', '/withdraw', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (200, 0, '系统管理', '/system', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (201, 200, '部门管理', '/department', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (202, 201, '添加', '/add', 0, 100, 1);
@@ -3880,13 +3949,13 @@ INSERT INTO `sys_resource` VALUES (204, 201, '删除', '/del', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (220, 200, '角色管理', '/role', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (221, 220, '添加', '/add', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (222, 220, '修改', '/update', 0, 100, 1);
-INSERT INTO `sys_resource` VALUES (223, 220, '删除', '/del', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (223, 220, '删除', '/del', 1, 100, 1);
 INSERT INTO `sys_resource` VALUES (240, 200, '用户管理', '/user', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (241, 240, '添加', '/add', 0, 100, 1);
-INSERT INTO `sys_resource` VALUES (242, 240, '修改', '/update', 0, 100, 1);
-INSERT INTO `sys_resource` VALUES (243, 240, '删除', '/del', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (242, 240, '修改', '/update', 1, 100, 1);
+INSERT INTO `sys_resource` VALUES (243, 240, '删除', '/del', 1, 100, 1);
 INSERT INTO `sys_resource` VALUES (244, 240, '踢出', '/kick', 0, 100, 1);
-INSERT INTO `sys_resource` VALUES (245, 240, '重置密码', '/resetPwd', 0, 100, 1);
+INSERT INTO `sys_resource` VALUES (245, 240, '重置密码', '/resetPwd', 1, 100, 1);
 INSERT INTO `sys_resource` VALUES (260, 200, '商品分类', '/category', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (261, 260, '添加', '/add', 0, 100, 1);
 INSERT INTO `sys_resource` VALUES (262, 260, '修改', '/update', 0, 100, 1);
@@ -3910,19 +3979,20 @@ DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role`  (
   `id` int(20) NOT NULL AUTO_INCREMENT COMMENT '角色表',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色名称',
-  `resource_id` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '角色具有的权限ID串',
+  `resource_id` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '角色具有的权限ID串',
   `cid` int(11) NOT NULL COMMENT '创建人',
   `cname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '创建人名称',
   `ctime` bigint(20) NOT NULL COMMENT '创建时间',
   `status` int(11) NOT NULL DEFAULT 1 COMMENT '0禁用，1正常',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `name_unique_idx`(`name`) USING BTREE
+  UNIQUE INDEX `name_unique_idx`(`name`) USING BTREE,
+  INDEX `status_idx`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (1, '默认管理员', '1,2,10,11,12,13,14,15,16,17,30,40,41,42,43,44,45,46,47,60,61,70,71,72,73,74,75,76,77,90,100,101,102,103,104,105,106,107,120,121,122,200,201,202,203,204,220,221,222,223,240,241,242,243,244,245,260,261,262,263,280,281,282,283,300,301,302,303', 1, 'admin', 1582184632922, 1);
+INSERT INTO `sys_role` VALUES (1, '默认管理员', '1,2,10,11,12,13,14,15,16,17,30,40,41,42,43,44,45,46,47,60,61,70,71,72,73,74,75,76,77,90,100,101,102,103,104,105,106,107,120,121,122,140,141,142,143,144,145,146,200,201,202,203,204,220,221,222,240,241,244,260,261,262,263,280,281,282,283,300,301,302,303', 1, 'admin', 1582184632922, 1);
 
 -- ----------------------------
 -- Table structure for sys_supplier
@@ -3939,7 +4009,9 @@ CREATE TABLE `sys_supplier`  (
   `ctime` bigint(20) NOT NULL COMMENT '创建时间',
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `name_unique_idx`(`name`) USING BTREE
+  UNIQUE INDEX `name_unique_idx`(`name`) USING BTREE,
+  INDEX `ctime_idx`(`ctime`) USING BTREE,
+  INDEX `status_idx`(`status`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -3962,12 +4034,12 @@ CREATE TABLE `sys_user`  (
   `status` int(1) NOT NULL DEFAULT 1 COMMENT '状态 1正常 0禁用',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `name_pwd_unique`(`name`, `pwd`) USING BTREE COMMENT '登录名和密码唯一'
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', NULL, 'http://b-ssl.duitang.com/uploads/item/201707/26/20170726102254_J4MH5.jpeg', 1582184632922, 1, 1);
+INSERT INTO `sys_user` VALUES (1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', NULL, NULL, 1582184632922, 1, 1);
 
 -- ----------------------------
 -- Function structure for check_category_use
