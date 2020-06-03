@@ -1,40 +1,23 @@
-/*
-* 不需要权限控制的路由表
-* */
+/**
+ * 不需要权限控制的路由表
+ * constant/modules下的所有route都会加上noAuth:true
+ */
 import Layout from '@/layout'
-import exampleRouter from '@/router/modules/example'
 
-const constantRoutes = [
-    {
-        path: '/redirect',
-        component: Layout,
-        children: [
-            {
-                path: '/redirect/:path(.*)',
-                component: () => import('@/views/app/redirect')
-            }
-        ]
-    },
-    {
-        path: '/login',
-        component: () => import('@/views/app/login')
-    },
-    {
-        path: '/register',
-        component: () => import('@/views/app/register')
-    },
-    {
-        path: '/404',
-        component: () => import('@/views/app/404')
-    },
-    {
-        path: '/403',
-        component: () => import('@/views/app/403')
-    },
+const modulesFiles = require.context('./modules', false, /\.js$/)
+const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+    const value = modulesFiles(modulePath).default
+    Array.isArray(value) ? modules.push(...value) : modules.push(value)
+    return modules
+}, [])
+
+const routes = [
+    ...modules,
     {
         path: '/',
         component: Layout,
         redirect: '/index',
+        sort: 0,
         children: [
             {
                 path: 'index',
@@ -57,8 +40,7 @@ const constantRoutes = [
             }
         ],
         hidden: true
-    },
-    exampleRouter
+    }
 ]
 
 function addNoAuth(routes) {
@@ -69,6 +51,6 @@ function addNoAuth(routes) {
     })
 }
 
-addNoAuth(constantRoutes)
+addNoAuth(routes)
 
-export default constantRoutes
+export default routes

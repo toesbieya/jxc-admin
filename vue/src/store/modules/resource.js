@@ -1,10 +1,11 @@
 import path from 'path'
-import constantRoutes from '@/router/constantRoutes'
-import authorityRoutes from '@/router/authorityRoutes'
+import constantRoutes from '@/router/constant'
+import authorityRoutes from '@/router/authority'
 import {needAuth} from "@/utils/auth"
 import {createTree} from "@/utils/tree"
 import {getLocalResource, setLocalResource} from "@/utils/localStorage"
 import {getResources} from "@/api/system/resource"
+import {isEmpty} from "@/utils"
 
 const finalConstantRoutes = transformOriginRoutes(constantRoutes)
 const finalAuthorityRoutes = transformOriginRoutes(authorityRoutes)
@@ -26,10 +27,15 @@ const mutations = {
     routes(state, routes) {
         let tempConstantRoutes = JSON.parse(JSON.stringify(finalConstantRoutes))
         let tempAuthorityRoutes = JSON.parse(JSON.stringify(routes))
+
         clean(tempConstantRoutes)
         clean(tempAuthorityRoutes)
+
         state.routes = finalConstantRoutes.concat(routes)
-        state.sidebarMenus = tempConstantRoutes.concat(tempAuthorityRoutes)
+
+        const sidebarMenus = tempConstantRoutes.concat(tempAuthorityRoutes)
+        sort(sidebarMenus)
+        state.sidebarMenus = sidebarMenus
     },
     data(state, data) {
         state.data = data || []
@@ -138,6 +144,39 @@ function filter(arr, fun) {
             i--
         }
     }
+}
+
+//菜单排序
+function sort(routes, getSortValue = defaultGetSortValue) {
+    routes.sort((pre, next) => {
+        const preSort = getSortValue(pre),
+            nextSort = getSortValue(next)
+        if (preSort < nextSort) return -1
+        else if (preSort === nextSort) return 0
+        else return 1
+    })
+    routes.forEach(route => {
+        if (route.children && route.children.length > 1) {
+            sort(route.children, getSortValue)
+        }
+    })
+}
+
+const defaultGetSortValue = item => {
+    item = deepTap(item)
+    return !item || isEmpty(item.sort) ? 10000 : item.sort
+}
+
+const deepTap = item => {
+    if (item.hidden) return null
+    if (!isEmpty(item.sort)) return item
+    if (isEmpty(item.name, item.meta.title)) {
+        //如果是类似首页那样的路由层级
+        if (item.children && item.children.length === 1) {
+            return deepTap(item.children[0])
+        }
+    }
+    return null
 }
 
 export default {

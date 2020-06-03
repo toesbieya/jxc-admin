@@ -3,6 +3,7 @@
 *
 * 需要鉴权的路由：meta && !meta.noAuth
 * 左侧菜单显示：name && !hidden && meta.title
+* 左侧菜单排序：能显示 && sort，升序排列
 * 左侧菜单不折叠只有一个children的路由：alwaysShow
 * 面包屑显示：meta.title
 * 搜索选项显示：name && meta.title
@@ -12,14 +13,13 @@
 * */
 import Vue from 'vue'
 import Router from 'vue-router'
-import {pathToRegexp} from 'path-to-regexp'
 import NProgress from 'nprogress'
 import {isUserExist} from "@/utils/sessionStorage"
 import {auth, needAuth} from "@/utils/auth"
-import {isEmpty} from "@/utils"
-import {title, routerMode} from '@/config'
-import constantRoutes from '@/router/constantRoutes'
-import authorityRoutes from '@/router/authorityRoutes'
+import {getPageTitle, transformWhiteList, metaExtend} from './util'
+import {routerMode} from '@/config'
+import constantRoutes from '@/router/constant'
+import authorityRoutes from '@/router/authority'
 import store from "@/store"
 
 Vue.use(Router)
@@ -28,9 +28,7 @@ NProgress.configure({showSpinner: false})
 
 const endRoute = [{path: '*', redirect: '/404', hidden: true}]
 
-const urlNoNeedLogin = [
-    '/login', '/register', '/404', '/403'
-].map(url => pathToRegexp(url))
+const whiteList = transformWhiteList(['/login', '/register', '/404', '/403'])
 
 metaExtend(constantRoutes)
 metaExtend(authorityRoutes)
@@ -47,8 +45,8 @@ router.beforeEach(async (to, from, next) => {
 
     document.title = getPageTitle(to.meta.title)
 
-    //不需要登录的页面也不需要进行权限控制
-    if (urlNoNeedLogin.some(reg => reg.test(to.path))) return next()
+    //白名单内不需要进行权限控制
+    if (whiteList.some(reg => reg.test(to.path))) return next()
 
     const isLogin = isUserExist()
 
@@ -81,32 +79,10 @@ function initMenu() {
     return Promise.resolve()
 }
 
-//拼接页面标题
-function getPageTitle(pageTitle) {
-    return pageTitle ? `${pageTitle} - ${title}` : title
-}
-
 //判断是否需要打开iframe
 function iframeControl(route) {
     let operate = route.meta.iframe ? 'open' : 'close'
     store.dispatch(`iframe/${operate}`, route.meta.iframe)
-}
-
-//子路由继承父路由meta上的{affix,noAuth,noCache}，优先使用子路由的值
-function metaExtend(routes, meta) {
-    routes.forEach(route => {
-        if (meta) {
-            const keys = ['affix', 'noAuth', 'noCache']
-            Object.keys(meta).forEach(key => {
-                if (keys.includes(key) && !isEmpty(meta[key]) && isEmpty(route.meta[key])) {
-                    route.meta[key] = meta[key]
-                }
-            })
-        }
-        if (route.children) {
-            metaExtend(route.children, route.meta)
-        }
-    })
 }
 
 export default router

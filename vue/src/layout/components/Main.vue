@@ -29,8 +29,6 @@
     import {mapState} from 'vuex'
     import Footer from "./Footer"
 
-    const FooterConstructor = Vue.extend(Footer)
-
     export default {
         name: 'AppMain',
         computed: {
@@ -52,13 +50,13 @@
         },
         watch: {
             scrollTop(v) {
-                if (v >= 0) this.$refs.scrollbar.$refs['wrap'].scrollTop = v
+                if (v >= 0) this.$refs.scrollbar.$refs.wrap.scrollTop = v
             }
         },
         mounted() {
             //插入footer
-            const footerInstance = new FooterConstructor()
-            footerInstance.$mount()
+            const FooterConstructor = Vue.extend(Footer)
+            const footerInstance = new FooterConstructor().$mount()
             this.$refs.scrollbar.$refs.wrap.appendChild(footerInstance.$el)
         }
     }
