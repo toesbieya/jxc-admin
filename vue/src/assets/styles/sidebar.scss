@@ -40,7 +40,6 @@ $iconSize: 17px;
         height: 50px;
         line-height: 50px;
         text-align: center;
-        overflow: hidden;
 
         & .sidebar-logo-link {
             height: 100%;
@@ -121,6 +120,12 @@ $iconSize: 17px;
         display: inline-block;
         width: 100%;
         overflow: hidden;
+    }
+
+    &.el-menu--popup {
+        max-height: 88vh;
+        margin-bottom: 0.5vh;
+        overflow-y: auto;
     }
 
     .el-submenu__title i {

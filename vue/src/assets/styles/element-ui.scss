@@ -52,6 +52,10 @@
 
 .el-scrollbar {
     height: 100%;
+
+    .el-scrollbar__wrap {
+        -webkit-overflow-scrolling: touch;
+    }
 }
 
 .el-tree {
@@ -67,6 +71,7 @@
 
 .el-message {
     @include deep-shadow;
+    @include max-mobile-width;
     border-width: 0;
     overflow: visible;
 
@@ -122,6 +127,7 @@
 .el-message-box {
     position: relative;
     @include deep-shadow;
+    @include max-mobile-width;
 }
 
 .el-notification {

@@ -116,9 +116,9 @@
             },
             success() {
                 elSuccess('登陆成功')
-                let redirect = this.$route.query.redirect || '/'
-                //由于清除消息时会造成卡顿，所以延迟0.5s跳转
-                setTimeout(() => window.location.href = '/#' + redirect, 500)
+                const redirect = this.$route.query.redirect || '/'
+                //由于清除消息时会造成卡顿，所以延迟0.2s跳转
+                setTimeout(() => this.$router.push(redirect), 200)
             },
             capsLockTip({keyCode}) {
                 if (keyCode === 20) this.capsTooltip = !this.capsTooltip

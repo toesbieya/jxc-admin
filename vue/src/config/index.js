@@ -4,6 +4,9 @@ module.exports = {
     //全局axios的baseUrl
     apiPrefix: '/api',
 
+    //路由模式，['hash','history']
+    routerMode: 'history',
+
     //socket连接地址
     //socketUrl: 'wss://toesbieya.cn',
     socketUrl: 'localhost:12580',

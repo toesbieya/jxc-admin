@@ -17,7 +17,7 @@ import NProgress from 'nprogress'
 import {isUserExist} from "@/utils/sessionStorage"
 import {auth, needAuth} from "@/utils/auth"
 import {isEmpty} from "@/utils"
-import {title} from '@/config'
+import {title, routerMode} from '@/config'
 import constantRoutes from '@/router/constantRoutes'
 import authorityRoutes from '@/router/authorityRoutes'
 import store from "@/store"
@@ -36,6 +36,7 @@ metaExtend(constantRoutes)
 metaExtend(authorityRoutes)
 
 const router = new Router({
+    mode: routerMode,
     scrollBehavior: () => ({y: 0}),
     routes: constantRoutes.concat(authorityRoutes, endRoute)
 })

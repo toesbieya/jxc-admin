@@ -12,7 +12,7 @@ const port = process.env.port || 8079 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-    publicPath: './',
+    publicPath: settings.routerMode === 'history' ? '/' : './',
     outputDir: 'dist',
     assetsDir: 'static',
     runtimeCompiler: true,
