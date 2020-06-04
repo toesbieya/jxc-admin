@@ -25,14 +25,14 @@
 </template>
 
 <script>
-    import PhotoSwipe from "./components/PhotoSwipe"
+    import PhotoSwipe from "./PhotoSwipe"
     import Vue from 'vue'
     import Viewer from 'v-viewer'
 
     Vue.use(Viewer)
 
     export default {
-        name: "picturePreview",
+        name: "picturePreviewExample",
         components: {PhotoSwipe},
         data() {
             return {

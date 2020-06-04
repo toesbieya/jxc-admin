@@ -26,7 +26,7 @@
     import {skeletonAnimations, skeletonTypes} from '@/components/Skeleton/constant'
 
     export default {
-        name: "skeleton",
+        name: "skeletonExample",
         components: {QSkeleton},
         data() {
             return {

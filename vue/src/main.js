@@ -14,6 +14,7 @@ import Guide from '@/components/Guide'
 import ImageViewer from '@/components/ImageViewer'
 import Message from '@/components/Message'
 import PuzzleVerify from '@/components/PuzzleVerify'
+import Signature from '@/components/SignautreBoard'
 
 Vue.use(Element)
 
@@ -31,6 +32,7 @@ Vue.prototype.$guide = Guide
 Vue.prototype.$image = ImageViewer
 Vue.prototype.$message = Message
 Vue.prototype.$puzzleVerify = PuzzleVerify
+Vue.prototype.$signature = Signature
 
 Vue.config.productionTip = false
 

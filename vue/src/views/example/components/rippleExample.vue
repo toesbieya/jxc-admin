@@ -6,6 +6,6 @@
 
 <script>
     export default {
-        name: "ripple"
+        name: "rippleExample"
     }
 </script>

@@ -48,28 +48,34 @@ const router = {
             meta: {title: '组件'},
             children: [
                 {
-                    path: 'upload',
-                    name: 'upload',
-                    component: () => import('@/views/example/components/upload'),
+                    path: 'uploadExample',
+                    name: 'uploadExample',
+                    component: () => import('@/views/example/components/uploadExample'),
                     meta: {title: '上传文件'}
                 },
                 {
-                    path: 'picture-preview',
-                    name: 'picturePreview',
-                    component: () => import('@/views/example/components/picturePreview'),
+                    path: 'picturePreviewExample',
+                    name: 'picturePreviewExample',
+                    component: () => import('@/views/example/components/picturePreviewExample'),
                     meta: {title: '图片预览'}
                 },
                 {
-                    path: 'skeleton',
-                    name: 'skeleton',
-                    component: () => import('@/views/example/components/skeleton'),
+                    path: 'skeletonExample',
+                    name: 'skeletonExample',
+                    component: () => import('@/views/example/components/skeletonExample'),
                     meta: {title: '骨架屏'}
                 },
                 {
-                    path: 'ripple',
-                    name: 'ripple',
-                    component: () => import('@/views/example/components/ripple'),
+                    path: 'rippleExample',
+                    name: 'rippleExample',
+                    component: () => import('@/views/example/components/rippleExample'),
                     meta: {title: '波纹'}
+                },
+                {
+                    path: 'signatureExample',
+                    name: 'signatureExample',
+                    component: () => import('@/views/example/components/signatureExample'),
+                    meta: {title: '手写签名'}
                 }
             ]
         },

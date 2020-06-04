@@ -12,10 +12,16 @@
             </div>
             <el-form ref="form" :model="form" :rules="rules" label-position="left">
                 <el-form-item prop="username">
-                <span class="svg-container">
-                    <svg-icon icon="user"/>
-                </span>
-                    <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入用户名"/>
+                    <span class="svg-container">
+                        <svg-icon icon="user"/>
+                    </span>
+                    <el-input
+                            ref="username"
+                            v-model="form.username"
+                            :maxlength="20"
+                            placeholder="请输入用户名"
+                            autocomplete="off"
+                    />
                 </el-form-item>
                 <el-form-item prop="pwd">
                     <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">

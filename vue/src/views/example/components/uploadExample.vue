@@ -12,7 +12,7 @@
     import request from '@/config/request'
 
     export default {
-        name: "upload",
+        name: "uploadExample",
         components: {UploadFile},
         methods: {
             change(e) {

@@ -12,14 +12,14 @@
             </div>
             <el-form ref="form" :model="form" :rules="rules" autocomplete="on" label-position="left">
                 <el-form-item prop="username">
-                <span class="svg-container">
-                    <svg-icon icon="user"/>
-                </span>
+                    <span class="svg-container">
+                        <svg-icon icon="user"/>
+                    </span>
                     <el-input
                             ref="username"
                             v-model="form.username"
                             :maxlength="20"
-                            autocomplete="on"
+                            autocomplete="off"
                             name="username"
                             placeholder="请输入用户名"
                             type="text"
@@ -37,14 +37,14 @@
                             :key="passwordType"
                             :type="passwordType"
                             :maxlength="20"
-                            autocomplete="on"
+                            autocomplete="off"
                             name="password"
                             placeholder="请输入密码"
                             @keyup.enter.native="login"
                     />
                     <span @click="showPwd" class="show-pwd">
-                    <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'"/>
-                </span>
+                        <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'"/>
+                    </span>
                 </el-form-item>
                 <el-button :loading="loading" style="width: 100%" type="primary" @click="login">登 录</el-button>
                 <div class="flex" style="margin-top: 20px">
