@@ -1,7 +1,7 @@
 <template>
     <dialog-form :value="value" :loading="false" :title="title" width="70%" @close="cancel" @open="search">
         <liner-progress :show="loading"/>
-        <el-table :data="tableData" border show-summary :summary-method="summary" :span-method="span">
+        <abstract-table :data="tableData" border show-summary :summary-method="summary" :span-method="span">
             <el-table-column align="center" label="采购订单" show-overflow-tooltip>
                 <router-link
                         slot-scope="{row}"
@@ -26,11 +26,12 @@
             </el-table-column>
             <el-table-column align="center" label="库存数量" prop="num" show-overflow-tooltip/>
             <el-table-column align="center" label="总 值" prop="total" show-overflow-tooltip/>
-        </el-table>
+        </abstract-table>
     </dialog-form>
 </template>
 
 <script>
+    import AbstractTable from '@/components/AbstractTable'
     import LinerProgress from '@/components/LinerProgress'
     import DialogForm from "@/components/DialogForm"
     import dialogMixin from "@/mixins/dialogMixin"
@@ -40,7 +41,7 @@
     export default {
         name: "DetailDialog",
         mixins: [dialogMixin],
-        components: {LinerProgress, DialogForm},
+        components: {AbstractTable, LinerProgress, DialogForm},
         props: {value: Boolean, title: String, cid: Number},
         data() {
             return {

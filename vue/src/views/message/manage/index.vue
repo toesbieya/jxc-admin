@@ -1,16 +1,16 @@
 <template>
     <el-card v-loading="config.operating">
         <search-form>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="标 题：">
+            <search-form-item label="标 题：">
                 <el-input v-model="searchForm.title" clearable maxlength="100"/>
             </search-form-item>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="消息类型：">
+            <search-form-item label="消息类型：">
                 <el-select v-model="searchForm.type" clearable @clear="searchForm.type=null">
                     <el-option :value="0" label="通知提醒"/>
                     <el-option :value="1" label="系统公告"/>
                 </el-select>
             </search-form-item>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="状 态：">
+            <search-form-item label="状 态：">
                 <el-select v-model="searchForm.status" clearable @clear="searchForm.status=null">
                     <el-option :value="0" label="拟定"/>
                     <el-option :value="1" label="已发布"/>
@@ -26,14 +26,7 @@
             <el-button v-if="canDel" icon="el-icon-delete" size="small" type="danger" @click="del">删 除</el-button>
         </el-row>
         <el-row v-loading="config.loading" class="table-container">
-            <el-table
-                    ref="table"
-                    :data="tableData"
-                    current-row-key="id"
-                    highlight-current-row
-                    row-key="id"
-                    @row-click="row=$event"
-            >
+            <abstract-table :data="tableData" @row-click="row=$event">
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="标 题" prop="title" show-overflow-tooltip/>
                 <el-table-column align="center" label="类 型" show-overflow-tooltip>
@@ -49,7 +42,7 @@
                 <el-table-column align="center" label="发布时间" width="150" show-overflow-tooltip>
                     <template v-slot="{row}">{{row.ptime | timestamp2Date}}</template>
                 </el-table-column>
-            </el-table>
+            </abstract-table>
             <el-pagination
                     background
                     :current-page="searchForm.page"

@@ -49,12 +49,8 @@
             </el-button>
         </el-row>
         <el-row v-loading="config.loading" class="table-container">
-            <el-table
-                    ref="table"
+            <abstract-table
                     :data="tableData"
-                    current-row-key="id"
-                    highlight-current-row
-                    row-key="id"
                     @row-click="row=$event"
                     @expand-change="getSubList"
             >
@@ -84,7 +80,7 @@
                         {{getStatus(row.status)}}
                     </template>
                 </el-table-column>
-            </el-table>
+            </abstract-table>
             <el-pagination
                     background
                     :current-page="searchForm.page"

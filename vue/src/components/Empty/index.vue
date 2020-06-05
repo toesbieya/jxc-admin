@@ -34,6 +34,7 @@
 
 <style lang="scss">
     .ant-empty {
+        padding: 20px;
         margin: 0 8px;
         font-size: 14px;
         line-height: 22px;

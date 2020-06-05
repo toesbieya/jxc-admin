@@ -33,12 +33,12 @@
             </el-row>
             <el-row class="table-container">
                 <liner-progress show/>
-                <el-table :data="tableData" highlight-current-row>
+                <abstract-table :data="tableData">
                     <el-table-column label="姓名" prop="name"/>
                     <el-table-column label="住址" prop="address"/>
                     <el-table-column label="电话" prop="tel"/>
                     <el-table-column label="年龄" prop="age"/>
-                </el-table>
+                </abstract-table>
             </el-row>
             <el-row style="min-height: 50px">
                 <el-tree
@@ -60,12 +60,13 @@
 </template>
 
 <script>
+    import AbstractTable from '@/components/AbstractTable'
     import LinerProgress from '@/components/LinerProgress'
     import DialogForm from "@/components/DialogForm"
 
     export default {
         name: "stylePage",
-        components: {LinerProgress, DialogForm},
+        components: {AbstractTable, LinerProgress, DialogForm},
         data() {
             return {
                 dialog: false,

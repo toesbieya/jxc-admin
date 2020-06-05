@@ -1,6 +1,6 @@
 <template>
     <div v-loading="config.loading">
-        <el-table :data="tableData">
+        <abstract-table :data="tableData" :highlight-current-row="false">
             <el-table-column align="center" label="#" type="index" width="60">
                 <el-button icon="el-icon-refresh-right" slot="header" style="padding: 0" type="text" @click="search"/>
             </el-table-column>
@@ -23,7 +23,7 @@
                     </el-tooltip>
                 </template>
             </el-table-column>
-        </el-table>
+        </abstract-table>
         <el-pagination
                 background
                 :current-page="searchForm.page"

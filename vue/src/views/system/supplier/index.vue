@@ -1,28 +1,28 @@
 <template>
     <el-card v-loading="config.operating">
         <search-form>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="供应商：">
+            <search-form-item label="供应商：">
                 <el-input v-model="searchForm.name" clearable maxlength="50"/>
             </search-form-item>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="行政区域：">
+            <search-form-item label="行政区域：">
                 <el-input :value="temp.region_name" clearable @clear="clearSidSearch" @focus="regionDialog=true"/>
             </search-form-item>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="地 址：">
+            <search-form-item label="地 址：">
                 <el-input v-model="searchForm.address" clearable maxlength="100"/>
             </search-form-item>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="联系人：">
+            <search-form-item label="联系人：">
                 <el-input v-model="searchForm.linkman" clearable maxlength="50"/>
             </search-form-item>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="联系电话：">
+            <search-form-item label="联系电话：">
                 <el-input v-model="searchForm.linkphone" clearable maxlength="20"/>
             </search-form-item>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="状 态：">
+            <search-form-item label="状 态：">
                 <el-select v-model="searchForm.status" clearable @clear="searchForm.status=null">
                     <el-option :value="1" label="启用"/>
                     <el-option :value="0" label="禁用"/>
                 </el-select>
             </search-form-item>
-            <search-form-item :sm="24" :lg="12" :xl="8" label="创建时间：">
+            <search-form-item label="创建时间：">
                 <el-date-picker
                         v-model="temp.ctime"
                         format="yyyy-MM-dd"
@@ -39,14 +39,7 @@
             <el-button v-if="canDel" size="small" type="danger" @click="del">删 除</el-button>
         </el-row>
         <el-row v-loading="config.loading" class="table-container">
-            <el-table
-                    ref="table"
-                    :data="tableData"
-                    current-row-key="id"
-                    highlight-current-row
-                    row-key="id"
-                    @row-click="row=$event"
-            >
+            <abstract-table :data="tableData" @row-click="row=$event">
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="供应商" prop="name" show-overflow-tooltip/>
                 <el-table-column align="center" label="行政区域" prop="region_name" show-overflow-tooltip/>
@@ -62,7 +55,7 @@
                         <span>{{row.status===1?'启用':'禁用'}}</span>
                     </template>
                 </el-table-column>
-            </el-table>
+            </abstract-table>
             <el-pagination
                     background
                     :current-page="searchForm.page"

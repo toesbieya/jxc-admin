@@ -34,14 +34,7 @@
             </el-button>
         </el-row>
         <el-row v-loading="config.loading" class="table-container">
-            <el-table
-                    ref="table"
-                    :data="tableData"
-                    current-row-key="id"
-                    highlight-current-row
-                    row-key="id"
-                    @row-click="row=$event"
-            >
+            <abstract-table :data="tableData" @row-click="row=$event">
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="头像" width="100">
                     <img
@@ -69,7 +62,7 @@
                         <span>{{row.status===1?'启用':'禁用'}}</span>
                     </template>
                 </el-table-column>
-            </el-table>
+            </abstract-table>
             <el-pagination
                     background
                     :current-page="searchForm.page"

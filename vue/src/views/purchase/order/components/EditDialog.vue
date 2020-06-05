@@ -57,7 +57,7 @@
                 </dialog-form-item>
             </el-row>
         </el-form>
-        <el-table :data="form.data" ref="table">
+        <el-table ref="table" :data="form.data">
             <el-table-column align="center" label="#" type="index" width="80"/>
             <el-table-column align="center" label="商 品">
                 <template v-slot="{row}">

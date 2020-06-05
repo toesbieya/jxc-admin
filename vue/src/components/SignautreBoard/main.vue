@@ -128,7 +128,7 @@
         mounted() {
             window.addEventListener('resize', this.resize)
         },
-        destroyed() {
+        beforeDestroy() {
             this.clear()
             window.removeEventListener('resize', this.resize)
         }

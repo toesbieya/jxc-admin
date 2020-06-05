@@ -14,16 +14,16 @@
 
         <el-card>
             <search-form>
-                <search-form-item :sm="24" :lg="12" :xl="8" label="商品分类：">
+                <search-form-item label="商品分类：">
                     <el-input :value="temp.cname" maxlength="100" clearable @clear="clearCidSearch"/>
                 </search-form-item>
-                <search-form-item :sm="24" :lg="12" :xl="8" label="采购订单：">
+                <search-form-item label="采购订单：">
                     <el-input v-model="searchForm.cgddid" maxlength="100" clearable/>
                 </search-form-item>
-                <search-form-item :sm="24" :lg="12" :xl="8" label="采购入库单：">
+                <search-form-item label="采购入库单：">
                     <el-input v-model="searchForm.cgrkid" maxlength="100" clearable/>
                 </search-form-item>
-                <search-form-item :sm="24" :lg="12" :xl="8" label="入库时间：">
+                <search-form-item label="入库时间：">
                     <el-date-picker
                             v-model="temp.ctime"
                             format="yyyy-MM-dd"
@@ -38,14 +38,7 @@
                 <el-button icon="el-icon-download" size="small" type="info" @click="downloadExcel">导 出</el-button>
             </el-row>
             <el-row v-loading="config.loading" class="table-container">
-                <el-table
-                        ref="table"
-                        :data="tableData"
-                        current-row-key="id"
-                        row-key="id"
-                        show-summary
-                        :summary-method="summary"
-                >
+                <abstract-table :data="tableData" show-summary :summary-method="summary">
                     <el-table-column align="center" label="#" type="index" width="80"/>
                     <el-table-column align="center" label="商品分类" prop="cname" show-overflow-tooltip/>
                     <el-table-column align="center" label="库存数量" prop="total_num" show-overflow-tooltip/>
@@ -55,7 +48,7 @@
                             <el-button size="small" type="primary" @click="more(row)">详细</el-button>
                         </template>
                     </el-table-column>
-                </el-table>
+                </abstract-table>
                 <el-pagination
                         background
                         :current-page="searchForm.page"

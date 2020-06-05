@@ -21,16 +21,16 @@
                     <el-card
                             v-for="child in msg.children"
                             :key="child.id"
-                            :class="{'message-stream__item':true,viewed:child.read}"
+                            :class="{'message-stream__item':true,viewed:child.__read}"
                             @click.native="read(child)"
                     >
                         <div class="message-stream__item__title">
-                            <span v-if="!child.read" class="dot success"/>
+                            <span v-if="!child.__read" class="dot success"/>
                             <b>【{{transformType(child.type)}}】</b>
                             {{child.title}}
                         </div>
-                        <div v-html="child.content"/>
-                        <div class="message-stream__item__footer">by: {{child.pname}}</div>
+                        <auto-hidden :html="child.content"/>
+                        <div class="message-stream__item__footer"><b>By:</b> {{child.pname}}</div>
                     </el-card>
                 </el-timeline-item>
             </el-timeline>
@@ -51,13 +51,14 @@
 <script>
     import tablePageMixin from '@/mixins/tablePageMixin'
     import Empty from '@/components/Empty'
+    import AutoHidden from "./AutoHidden"
     import {search, read, readAll} from "@/api/message/user"
     import {isEmpty} from "@/utils"
 
     export default {
         name: "MessageStream",
         mixins: [tablePageMixin],
-        components: {Empty},
+        components: {Empty, AutoHidden},
         props: {
             mode: String,
         },
@@ -84,6 +85,7 @@
         methods: {
             search() {
                 if (this.config.loading) return
+                this.tableData = []
                 this.config.loading = true
                 search({...this.searchForm, unread: this.mode === 'unread'})
                     .then(({list, total, data}) => {
@@ -105,7 +107,8 @@
                         year = time.getFullYear(),
                         month = time.getMonth() + 1,
                         day = time.getDate()
-                    item.read = this.mode === 'read'
+                    //根据模式判断是未读还是已读
+                    item.__read = this.mode === 'read'
                     time = (year === thisYear ? '' : `${year}年`) + `${month}月${day}日`
                     const already = map[time]
                     if (!already) {
@@ -135,9 +138,9 @@
             transformType(type) {
                 switch (type) {
                     case 0:
-                        return '通知提醒'
+                        return '提醒'
                     case 1:
-                        return '系统公告'
+                        return '公告'
                 }
             },
         }

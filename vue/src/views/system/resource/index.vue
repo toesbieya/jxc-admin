@@ -5,19 +5,12 @@
             <el-button v-if="canUpdate" icon="el-icon-edit" size="small" type="primary" @click="edit">编 辑</el-button>
         </el-row>
         <el-row v-loading="config.loading" class="table-container">
-            <el-table
-                    ref="table"
-                    :data="tableData"
-                    current-row-key="id"
-                    highlight-current-row
-                    row-key="id"
-                    @row-click="row=$event"
-            >
+            <abstract-table :data="tableData" @row-click="row=$event">
                 <el-table-column label="名称" prop="fullName" show-overflow-tooltip/>
                 <el-table-column label="访问路径" prop="url" show-overflow-tooltip/>
                 <el-table-column label="总频率" prop="total_rate" show-overflow-tooltip/>
                 <el-table-column label="单个IP频率" prop="ip_rate" show-overflow-tooltip/>
-            </el-table>
+            </abstract-table>
         </el-row>
 
         <edit-dialog v-model="editDialog" :data="row" :type="type" @success="success"/>

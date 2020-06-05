@@ -30,12 +30,8 @@
             <el-button v-if="canDel" icon="el-icon-delete" size="small" type="danger" @click="del">删 除</el-button>
         </el-row>
         <el-row v-loading="config.loading" class="table-container">
-            <el-table
-                    ref="table"
+            <abstract-table
                     :data="tableData"
-                    current-row-key="id"
-                    highlight-current-row
-                    row-key="id"
                     @row-click="row=$event"
             >
                 <el-table-column align="center" type="expand">
@@ -53,7 +49,7 @@
                         <span>{{row.status===1?'启用':'禁用'}}</span>
                     </template>
                 </el-table-column>
-            </el-table>
+            </abstract-table>
             <el-pagination
                     background
                     :current-page="searchForm.page"

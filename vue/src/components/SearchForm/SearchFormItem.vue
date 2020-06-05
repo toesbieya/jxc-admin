@@ -3,14 +3,14 @@
         name: "SearchFormItem",
         inject: {
             searchForm: {
-                default: () => ({sm: 12, lg: 8, xl: 6})
+                default: () => ({width: 'auto'})
             }
         },
         props: {label: String},
         render() {
-            const {sm, lg, xl} = this.searchForm
+            const {width} = this.searchForm
             return (
-                <el-col {...{attrs: {sm, lg, xl}}}>
+                <el-col style={{width}} span={100}>
                     <el-form-item label={this.label}>
                         {this.$slots.default}
                     </el-form-item>

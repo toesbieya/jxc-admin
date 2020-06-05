@@ -26,15 +26,7 @@
         <el-scrollbar>
             <el-row class="table-container">
                 <liner-progress :show="config.loading"/>
-                <el-table
-                        ref="table"
-                        :data="tableData"
-                        current-row-key="id"
-                        highlight-current-row
-                        row-key="id"
-                        @row-click="row=$event"
-                        @row-dblclick="dbclick"
-                >
+                <abstract-table :data="tableData" @row-click="row=$event" @row-dblclick="dbclick">
                     <el-table-column align="center" label="#" type="index" width="80"/>
                     <el-table-column align="center" label="客 户" prop="name" show-overflow-tooltip/>
                     <el-table-column align="center" label="行政区域" prop="region_name" show-overflow-tooltip/>
@@ -50,7 +42,7 @@
                             <span>{{row.status===1?'启用':'禁用'}}</span>
                         </template>
                     </el-table-column>
-                </el-table>
+                </abstract-table>
                 <el-pagination
                         background
                         :current-page="searchForm.page"

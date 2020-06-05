@@ -98,7 +98,7 @@
         mounted() {
             !this.readonly && this.init()
         },
-        destroyed() {
+        beforeDestroy() {
             this.destroy()
         },
     }
