@@ -95,5 +95,23 @@ $cursor: #fff;
             background: rgba(0, 0, 0, 0.1);
             margin-bottom: 22px;
         }
+
+        .submit-btn {
+            width: 100%;
+        }
+
+        .other-ways {
+            color: #fff;
+            font-size: 14px;
+
+            svg {
+                cursor: pointer;
+                margin-left: 10px;
+
+                &:hover {
+                    color: $--color-primary;
+                }
+            }
+        }
     }
 }

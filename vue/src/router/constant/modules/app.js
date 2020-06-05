@@ -14,11 +14,8 @@ const router = [
     },
     {
         path: '/login',
+        alias: '/register',
         component: () => import('@/views/app/login')
-    },
-    {
-        path: '/register',
-        component: () => import('@/views/app/register')
     },
     {
         path: '/404',
