@@ -55,7 +55,7 @@
         },
         mounted() {
             //移动端关闭动画，太卡
-            this.device !== 'mobile' && this.setAnimation(this.loginBackgroundAnimation)
+            this.device !== 'mobile' && this.setAnimation(this.animation)
         },
         beforeDestroy() {
             this.clearAnimation()
