@@ -1,4 +1,4 @@
-import Message from '@/components/Message'
+import Message from '@ele/components/Message'
 import {MessageBox} from 'element-ui'
 import {isEmpty} from "@/utils"
 

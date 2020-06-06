@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {apiPrefix} from '@/config'
 import {MessageBox, Notification} from 'element-ui'
-import Message from '@/components/Message'
+import Message from '@ele/components/Message'
 import store from '@/store'
 
 const service = axios.create({

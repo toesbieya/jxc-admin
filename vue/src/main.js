@@ -12,11 +12,16 @@ import * as filters from './filter'
 import BottomTip from '@/components/BottomTip'
 import Guide from '@/components/Guide'
 import ImageViewer from '@/components/ImageViewer'
-import Message from '@/components/Message'
+import Message from '@ele/components/Message'
+import Select from '@ele/components/Select/Select'
 import PuzzleVerify from '@/components/PuzzleVerify'
 import Signature from '@/components/SignautreBoard'
 
+//popper老是弹，我还不知道咋整，只能这样，吔屎啦
+console.warn = () => ({})
+
 Vue.use(Element)
+Vue.component('el-select', Select)
 
 //注册过滤器
 Object.keys(filters).forEach(key => {

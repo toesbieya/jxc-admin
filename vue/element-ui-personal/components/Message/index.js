@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Main from './main.vue'
 import {PopupManager} from 'element-ui/lib/utils/popup'
 import {isVNode} from 'element-ui/lib/utils/vdom'
-import {isEmpty} from "@/utils"
 
 let MessageConstructor = Vue.extend(Main)
 
@@ -18,7 +17,7 @@ const Message = function (options) {
     if (typeof options === 'string') {
         options = {message: options}
     }
-    if (isEmpty(options.type)) {
+    if (!options.type) {
         options.type = 'info'
     }
     const group = options.type + '|' + options.message

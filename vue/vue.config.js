@@ -45,7 +45,8 @@ module.exports = {
         name: settings.title,
         resolve: {
             alias: {
-                '@': resolve('src')
+                '@': resolve('src'),
+                '@ele': resolve('element-ui-personal'),
             }
         },
         plugins: [
