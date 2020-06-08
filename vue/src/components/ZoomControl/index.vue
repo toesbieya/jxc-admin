@@ -6,7 +6,7 @@
     </div>
 </template>
 
-<script type="text/jsx">
+<script>
     export default {
         name: "ZoomControl",
         props: {

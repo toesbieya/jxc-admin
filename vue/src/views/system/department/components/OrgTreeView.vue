@@ -13,7 +13,7 @@
     </div>
 </template>
 
-<script type="text/jsx">
+<script>
     import OrgTree from '@/components/OrgTree'
 
     export default {

@@ -106,7 +106,7 @@
                    @click="handleClearClick"/>
             </template>
         </el-input>
-        <transition name="el-zoom-in-top" @before-enter="handleMenuEnter" @after-leave="doDestroy">
+        <transition :name="transition" @before-enter="handleMenuEnter" @after-leave="doDestroy">
             <el-select-menu
                     v-show="visible && emptyText !== false"
                     placement="bottom"
@@ -176,13 +176,9 @@
         props: {
             name: String,
             id: String,
-            value: {
-                required: true
-            },
-            autocomplete: {
-                type: String,
-                default: 'off'
-            },
+            value: {required: true},
+            transition: {type: String, default: 'el-zoom-in-top'},
+            autocomplete: {type: String, default: 'off'},
             automaticDropdown: Boolean,
             size: String,
             disabled: Boolean,
@@ -198,10 +194,7 @@
             remoteMethod: Function,
             filterMethod: Function,
             multiple: Boolean,
-            multipleLimit: {
-                type: Number,
-                default: 0
-            },
+            multipleLimit: {type: Number, default: 0},
             placeholder: {
                 type: String,
                 default() {
@@ -210,10 +203,7 @@
             },
             defaultFirstOption: Boolean,
             reserveKeyword: Boolean,
-            valueKey: {
-                type: String,
-                default: 'value'
-            },
+            valueKey: {type: String, default: 'value'},
             collapseTags: Boolean,
             popperAppendToBody: Boolean
         },

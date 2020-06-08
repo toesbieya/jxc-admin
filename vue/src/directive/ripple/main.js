@@ -82,7 +82,7 @@ function showRipple(evt, el, ctx, forceCenter) {
 
     const abort = () => {
         node.remove()
-        clearTimeout(timer)
+        window.clearTimeout(timer)
     }
     ctx.abort.push(abort)
 

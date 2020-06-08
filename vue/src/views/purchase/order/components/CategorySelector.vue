@@ -1,5 +1,5 @@
 <template>
-    <el-select :value="value" :disabled="disabled" size="small" @change="change" @input="emit">
+    <el-select :value="value" :disabled="disabled" size="small" popper-append-to-body @change="change" @input="emit">
         <el-option
                 v-for="item in selectableCategories"
                 :key="item.id"

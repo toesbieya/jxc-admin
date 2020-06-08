@@ -8,9 +8,9 @@
     </el-row>
 </template>
 
-<script type="text/jsx">
+<script>
     import PieChart from "@/components/Charts/PieChart"
-    import {getTotalProfitGoods} from '@/api/statistic/index'
+    import {getTotalProfitGoods} from '@/api/statistic'
 
     export default {
         name: "TotalProfitGoods",

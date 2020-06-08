@@ -15,7 +15,8 @@
                 <region-selector
                         :value="form.region_name"
                         get-children-on-click
-                        readonly
+                        :readonly="!canEdit"
+                        @clear="clearRegion"
                         @select="selectRegion"
                 />
             </el-form-item>
@@ -123,6 +124,10 @@
             }
         },
         methods: {
+            clearRegion() {
+                this.form.region = null
+                this.form.region_name = null
+            },
             selectRegion(obj) {
                 this.form.region = obj.id
                 this.form.region_name = obj.fullname

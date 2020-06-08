@@ -1,9 +1,9 @@
 <template>
     <div
-            ref="popper"
             class="el-select-dropdown el-popper"
             :class="[{ 'is-multiple': $parent.multiple }, popperClass]"
-            :style="{ minWidth }">
+            :style="{ minWidth }"
+    >
         <slot/>
     </div>
 </template>
@@ -42,6 +42,7 @@
             this.$on('updatePopper', () => {
                 this.$parent.visible && this.updatePopper()
             })
+            this.$on('destroyPopper', this.destroyPopper)
         }
     }
 </script>

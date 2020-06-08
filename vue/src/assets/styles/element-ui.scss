@@ -19,6 +19,53 @@
     }
 }
 
+.el-card {
+    .el-card__body {
+        height: 100%;
+    }
+
+    .el-card__header + .el-card__body {
+        height: calc(100% - 55px);
+    }
+}
+
+.el-date-editor.el-input,
+.el-date-editor--daterange {
+    width: 100% !important;
+}
+
+.el-dialog {
+    @include deep-shadow;
+
+    margin-bottom: 0;
+    min-width: 384px;
+
+    .el-dialog__header {
+        border-bottom: 1px solid #ebeef5;
+        padding: 17px;
+
+        .el-dialog__title {
+            line-height: inherit;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        .el-dialog__headerbtn {
+            top: 18px;
+        }
+    }
+
+    .el-dialog__footer {
+        border-top: 1px solid #ebeef5;
+        padding: 10px 16px;
+    }
+
+    .el-scrollbar__wrap {
+        //53 for dialog header,53 for dialog footer,100 for up+down
+        max-height: calc(100vh - 53px - 53px - 100px);
+    }
+}
+
 .el-form {
     .el-row {
         display: flex;
@@ -27,46 +74,9 @@
     }
 }
 
-.el-table {
-    thead {
-        color: rgba(0, 0, 0, .85)
-    }
-
-    thead > tr > th {
-        background: #fbfbfb;
-    }
-
-    .el-table__body tr.current-row > td {
-        background-color: $--color-primary;
-        color: #fff;
-
-        .el-table__expand-icon {
-            color: #fff;
-        }
-    }
-}
-
-.el-pagination {
-    padding-top: 20px;
-}
-
-.el-scrollbar {
-    height: 100%;
-
-    .el-scrollbar__wrap {
-        -webkit-overflow-scrolling: touch;
-    }
-}
-
-.el-tree {
-    &.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
-        background-color: $--color-primary;
-        color: #fff;
-    }
-}
-
-.el-select {
-    width: 100%;
+.el-loading-mask {
+    background: #fff;
+    color: $--color-primary;
 }
 
 .el-message {
@@ -109,45 +119,49 @@
     }
 }
 
-.el-card {
-    .el-card__body {
-        height: 100%;
-    }
+.el-pagination {
+    padding-top: 20px;
+    text-align: right;
 
-    .el-card__header + .el-card__body {
-        height: calc(100% - 55px);
+    .el-pagination__editor.el-input {
+        margin: 0 5px;
     }
 }
 
-.el-dialog {
-    @include deep-shadow;
-
-    margin-bottom: 0;
-    min-width: 384px;
-
-    .el-dialog__header {
-        border-bottom: 1px solid #ebeef5;
-        padding: 17px;
-
-        .el-dialog__title {
-            line-height: inherit;
-            color: inherit;
-            font-size: inherit;
-        }
-
-        .el-dialog__headerbtn {
-            top: 18px;
-        }
-    }
-
-    .el-dialog__footer {
-        border-top: 1px solid #ebeef5;
-        padding: 10px 16px;
-    }
+.el-scrollbar {
+    height: 100%;
 
     .el-scrollbar__wrap {
-        //53 for dialog header,53 for dialog footer,100 for up+down
-        max-height: calc(100vh - 53px - 53px - 100px);
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+.el-select {
+    width: 100%;
+}
+
+.el-table {
+    thead {
+        color: rgba(0, 0, 0, .85)
+    }
+
+    thead > tr > th {
+        background: #fbfbfb;
+    }
+
+    .el-table__body tr.current-row > td {
+        background-color: $--color-primary;
+        color: #fff;
+
+        .el-table__expand-icon {
+            color: #fff;
+        }
+    }
+}
+
+.el-textarea {
+    .el-input__count {
+        background: transparent;
     }
 }
 
@@ -172,33 +186,9 @@
     }
 }
 
-.el-textarea {
-    .el-input__count {
-        background: transparent;
+.el-tree {
+    &.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+        background-color: $--color-primary;
+        color: #fff;
     }
 }
-
-.el-pagination {
-    text-align: right;
-
-    .el-pagination__editor.el-input {
-        margin: 0 5px;
-    }
-}
-
-.el-loading-mask {
-    background: #fff;
-    color: $--color-primary;
-}
-
-.el-date-editor.el-input,
-.el-date-editor--daterange {
-    width: 100% !important;
-}
-
-
-
-
-
-
-

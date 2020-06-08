@@ -87,7 +87,7 @@
             clearTimer(reset) {
                 this.pause = true
                 this.remainTime = reset === true ? this.duration : this.remainTime - (Date.now() - this.startAt)
-                clearTimeout(this.timer)
+                window.clearTimeout(this.timer)
             },
             startTimer() {
                 if (this.duration > 0 && !this.closed) {

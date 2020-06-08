@@ -6,10 +6,10 @@
     </el-row>
 </template>
 
-<script type="text/jsx">
+<script>
     import PanelGroupItem from './PanelGroupItem'
     import variables from '@/assets/styles/variables.scss'
-    import {getFourBlock} from '@/api/statistic/index'
+    import {getFourBlock} from '@/api/statistic'
     import {isEmpty, mergeObj} from "@/utils"
     import {auth} from "@/utils/auth"
 

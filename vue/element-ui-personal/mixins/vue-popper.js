@@ -1,51 +1,33 @@
 import {PopupManager} from 'element-ui/lib/utils/popup'
 
-const PopperJS = require('@popperjs/core')
+import PopperJS from 'popper.js'
+//import * as PopperJS from '@popperjs/core'
+
+const POPPER_VERSION = 'v1'
+
+if (POPPER_VERSION === 'v2') {
+    console.warn = () => ({})
+}
 
 const stop = e => e.stopPropagation()
 
-/**
- * @param {HTMLElement} [reference=$refs.reference] - The reference element used to position the popper.
- * @param {HTMLElement} [popper=$refs.popper] - The HTML element used as popper, or a configuration used to generate the popper.
- * @param {String} [placement=button] - Placement of the popper accepted values: top(-start, -end), right(-start, -end), bottom(-start, -end), left(-start, -end)
- * @param {Number} [offset=0] - Amount of pixels the popper will be shifted (can be negative).
- * @param {Boolean} [visible=false] Visibility of the popup element.
- * @param {Boolean} [visible-arrow=false] Visibility of the arrow, no style.
- */
+const defaultOptions = () => {
+    return POPPER_VERSION === 'v2' ? {modifiers: []} : {modifiers: {computeStyle: {gpuAcceleration: false}}}
+}
+
 export default {
     props: {
-        transformOrigin: {
-            type: [Boolean, String],
-            default: true
-        },
-        placement: {
-            type: String,
-            default: 'bottom'
-        },
-        boundariesPadding: {
-            type: Number,
-            default: 5
-        },
+        transformOrigin: {type: [Boolean, String], default: true},
+        placement: {type: String, default: 'bottom'},
+        boundariesPadding: {type: Number, default: 5},
         reference: {},
         popper: {},
-        offset: {
-            type: Number,
-            default: 12
-        },
+        offset: {type: Number, default: POPPER_VERSION === 'v2' ? 12 : 0},
         value: Boolean,
-        visibleArrow: {
-            type: Boolean,
-            default: true
-        },
-        arrowOffset: {
-            type: Number,
-            default: 35
-        },
-        appendToBody: Boolean,
-        popperOptions: {
-            type: Object,
-            default: () => ({modifiers: []})
-        }
+        visibleArrow: {type: Boolean, default: true},
+        arrowOffset: {type: Number, default: 35},
+        appendToBody: {type: Boolean, default: true},
+        popperOptions: {type: Object, default: defaultOptions}
     },
 
     data() {
@@ -58,10 +40,10 @@ export default {
         value: {
             immediate: true,
             handler(val) {
-                if (this.disabled) return
-                val && this.updatePopper()
                 this.showPopper = val
                 this.$emit('input', val)
+                if (this.disabled) return
+                val && this.updatePopper()
             }
         }
     },
@@ -88,16 +70,19 @@ export default {
 
             if (this.appendToBody) document.body.appendChild(this.popperElm)
             if (this.visibleArrow) this.setArrow()
-            this.setOffset()
+            this.setOffset(options)
 
             options.placement = this.placement
-            options.onFirstUpdate = () => {
+            const createEvent = POPPER_VERSION === 'v2' ? 'onFirstUpdate' : 'onCreate'
+            options[createEvent] = () => {
                 this.$emit('created', this)
+                this.resetTransformOrigin()
                 this.$nextTick(this.updatePopper)
             }
 
-
-            this.popperJS = PopperJS.createPopper(reference, popper, options)
+            this.popperJS = POPPER_VERSION === 'v2' ?
+                PopperJS.createPopper(reference, popper, options)
+                : new PopperJS(reference, popper, options)
 
             popper.style.zIndex = PopupManager.nextZIndex()
             this.popperElm.addEventListener('click', stop)
@@ -118,34 +103,57 @@ export default {
             this.popperJS = null
         },
 
+        destroyPopper() {
+            this.popperJS && this.resetTransformOrigin()
+        },
+
+        setOffset(options) {
+            if (POPPER_VERSION === 'v2') {
+                const modifier = this.popperOptions.modifiers.find(modifier => modifier.name === 'offset'),
+                    offset = {offset: [0, this.offset]}
+
+                if (!modifier) {
+                    this.popperOptions.modifiers.push({name: 'offset', options: offset})
+                }
+                else modifier.options = offset
+            }
+            else {
+                if (!options.modifiers.offset) {
+                    options.modifiers.offset = {}
+                }
+                options.modifiers.offset.offset = this.offset
+            }
+        },
+
         setArrow() {
             if (this.appended) return
             this.appended = true
 
             const arrow = document.createElement('div')
             arrow.className = 'popper__arrow'
-            arrow.setAttribute('data-popper-arrow', '')
+            arrow.setAttribute(POPPER_VERSION === 'v2' ? 'data-popper-arrow' : 'x-arrow', '')
+            const attributes = this.popperElm.attributes
+            const key = Object.keys(attributes).find(key => /^_v-/.test(attributes[key].name))
+            if (key) arrow.setAttribute(attributes[key].name, '')
 
             this.popperElm.appendChild(arrow)
-
-            const modifier = this.popperOptions.modifiers.find(modifier => modifier.name === 'arrow'),
-                options = {element: '[data-popper-arrow]', padding: this.arrowOffset}
-
-            if (!modifier) {
-                this.popperOptions.modifiers.push({name: 'arrow', options})
-            }
-            else modifier.options = options
         },
 
-        setOffset() {
-            const modifier = this.popperOptions.modifiers.find(modifier => modifier.name === 'offset'),
-                options = {offset: [0, this.offset]}
-
-            if (!modifier) {
-                this.popperOptions.modifiers.push({name: 'offset', options})
-            }
-            else modifier.options = options
+        resetTransformOrigin() {
+            if (!this.transformOrigin) return
+            const placementMap = {top: 'bottom', bottom: 'top', left: 'right', right: 'left'}
+            const attr = POPPER_VERSION === 'v2' ? 'data-popper-placement' : 'x-placement'
+            const placement = this.popperElm.getAttribute(attr).split('-')[0]
+            const origin = placementMap[placement]
+            this.popperElm.style.transformOrigin =
+                typeof this.transformOrigin === 'string'
+                    ? this.transformOrigin
+                    : ['top', 'bottom'].includes(placement) ? `center ${origin}` : `${origin} center`
         }
+    },
+
+    deactivated() {
+        this.$options.beforeDestroy[0].call(this)
     },
 
     beforeDestroy() {
@@ -154,10 +162,5 @@ export default {
             this.popperElm.removeEventListener('click', stop)
             document.body.removeChild(this.popperElm)
         }
-    },
-
-    // call destroy in keep-alive mode
-    deactivated() {
-        this.$options.beforeDestroy[0].call(this)
     }
 }

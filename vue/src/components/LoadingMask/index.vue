@@ -13,7 +13,7 @@
                         <svg viewBox="25 25 50 50" class="circular">
                             <circle cx="50" cy="50" r="20" fill="none" class="path"/>
                         </svg>
-                        <p>拼命加载中</p>
+                        <p>加载中...</p>
                     </div>
                 </div>
             )
