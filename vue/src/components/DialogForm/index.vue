@@ -2,11 +2,9 @@
     <el-dialog
             v-drag-dialog
             custom-class="dialog-form"
-            :top="top"
+            v-bind="$props"
             :visible="value"
-            :width="width"
-            @close="$emit('close')"
-            @open="$emit('open')"
+            v-on="$listeners"
     >
         <slot slot="title" name="title">{{title}}</slot>
         <div class="dialog-form-container">
@@ -29,11 +27,12 @@
         name: "DialogForm",
         components: {LoadingMask},
         props: {
-            value: {type: Boolean, default: false},
+            value: Boolean,
+            appendToBody: Boolean,
             top: {type: String, default: '50px'},
             width: {type: String, default: '30%'},
             loading: {type: Boolean, default: true},
-            title: {type: String, default: ''},
+            title: String,
         }
     }
 </script>

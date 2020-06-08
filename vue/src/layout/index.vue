@@ -1,7 +1,7 @@
 <template>
     <section class="el-container app-wrapper">
         <v-sidebar/>
-        <section class="el-container main-container" :class="{'has-header':hasHeader}">
+        <section class="el-container main-container" :class="{'has-header':hasHeader,'has-tags-view':useTagsView}">
             <v-header/>
             <v-main/>
         </section>
@@ -32,6 +32,7 @@
                 hasHeader: state => state.hasHeader
             }),
             ...mapState('setting', {
+                useTagsView: state => state.useTagsView,
                 sidebarCollapse: state => state.sidebarCollapse
             }),
             ...mapState('socket', {

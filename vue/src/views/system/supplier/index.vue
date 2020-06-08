@@ -5,7 +5,14 @@
                 <el-input v-model="searchForm.name" clearable maxlength="50"/>
             </search-form-item>
             <search-form-item label="行政区域：">
-                <el-input :value="temp.region_name" clearable @clear="clearSidSearch" @focus="regionDialog=true"/>
+                <region-selector
+                        :value="temp.region_name"
+                        limit
+                        :limit-api="getLimitRegion"
+                        get-children-on-click
+                        @clear="clearSidSearch"
+                        @select="selectRegion"
+                />
             </search-form-item>
             <search-form-item label="地 址：">
                 <el-input v-model="searchForm.address" clearable maxlength="100"/>
@@ -66,14 +73,13 @@
             />
         </el-row>
         <edit-dialog v-model="editDialog" :data="row" :type="type" @success="success"/>
-        <region-selector v-model="regionDialog" limit :limit-api="getLimitRegion" @select="selectRegion"/>
     </el-card>
 </template>
 
 <script>
     import SearchForm from "@/components/SearchForm"
     import SearchFormItem from "@/components/SearchForm/SearchFormItem"
-    import RegionSelector from "@/bizComponents/RegionSelector"
+    import RegionSelector from "@/components/RegionSelector/Tree"
     import EditDialog from './EditDialog'
     import {delSupplier, getLimitRegion, getSuppliers} from "@/api/system/supplier"
     import {isEmpty} from '@/utils'
@@ -101,8 +107,7 @@
                     region_name: null,
                     ctime: []
                 },
-                editDialog: false,
-                regionDialog: false
+                editDialog: false
             }
         },
         computed: {

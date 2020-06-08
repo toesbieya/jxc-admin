@@ -26,7 +26,14 @@
                     @keyup.enter.native="register"
             />
         </el-form-item>
-        <el-button :loading="loading" class="submit-btn" type="primary" @click="register">注 册</el-button>
+        <el-button
+                :loading="loading"
+                class="submit-btn"
+                type="primary"
+                @click="register"
+        >
+            {{loading ? '注 册 中...' : '注 册'}}
+        </el-button>
         <div class="flex" style="margin-top: 20px">
             <p/>
             <el-button type="text" @click="login">已有账户登陆</el-button>

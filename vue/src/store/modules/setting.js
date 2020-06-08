@@ -7,31 +7,31 @@ import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/utils/localS
 
 const localSettings = getLocalPersonalSettings()
 
-function createMutations(state) {
-    return Object.keys(state).reduce((mutations, key) => {
-        mutations[key] = (ref, data) => {
-            ref[key] = data
-            setLocalPersonalSettings(ref)
-        }
-        return mutations
-    }, {})
-}
-
 const state = {
     //是否显示logo
     showLogo: true,
+
     //是否显示面包屑
     showBreadcrumb: true,
+
+    //是否使用多页签
+    useTagsView: true,
+
     //左侧菜单手风琴效果
     sidebarUniqueOpen: true,
+
     //左侧菜单是否折叠
     sidebarCollapse: false,
+
     //左侧菜单折叠时，弹出菜单是否显示上级
     sidebarShowParent: false,
+
     //是否自动隐藏左侧菜单
     sidebarAutoHidden: false,
+
     //是否自动隐藏头部
     headerAutoHidden: false,
+
     //是否显示返回顶部按钮
     showBackToTop: true,
 }
@@ -57,6 +57,16 @@ const mutations = {
         state.sidebarAutoHidden = v
         setLocalPersonalSettings(state)
     }
+}
+
+function createMutations(state) {
+    return Object.keys(state).reduce((mutations, key) => {
+        mutations[key] = (ref, data) => {
+            ref[key] = data
+            setLocalPersonalSettings(ref)
+        }
+        return mutations
+    }, {})
 }
 
 export default {

@@ -89,7 +89,11 @@ a:hover {
 
 .has-header {
     .max-view-height {
-        height: calc(100vh - #{$headerHeight} - #{$pageViewMargin * 2});
+        height: calc(100vh - #{$navHeight} - #{$pageViewMargin * 2});
+    }
+
+    &.has-tags-view .max-view-height {
+        height: calc(100vh - #{$navHeight} - #{$tagsViewHeight} - #{$pageViewMargin * 2});
     }
 }
 

@@ -53,13 +53,9 @@ const actions = {
 
     delOthersViews({state, commit}, view) {
         const visitedViews = state.visitedViews.filter(v => v.meta.affix || v.path === view.path)
-        let cachedViews = []
-        const index = state.cachedViews.indexOf(view.name)
-        if (index > -1) {
-            cachedViews = state.cachedViews.slice(index, index + 1)
-        }
+        const name = state.cachedViews.find(name => name === view.name)
         commit('visitedViews', visitedViews)
-        commit('cachedViews', cachedViews)
+        commit('cachedViews', name ? [name] : [])
     },
     delAllViews({state, commit}) {
         commit('visitedViews', state.visitedViews.filter(tag => tag.meta.affix))

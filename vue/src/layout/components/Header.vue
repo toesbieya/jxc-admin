@@ -6,7 +6,7 @@
             @mouseleave="mouseOutside=true"
     >
         <v-navbar @menu-show="navbarMenuShow=$event"/>
-        <tags-view @menu-show="tagsViewMenuShow=$event"/>
+        <tags-view v-if="useTagsView" @menu-show="tagsViewMenuShow=$event"/>
     </header>
 </template>
 
@@ -28,7 +28,8 @@
         },
         computed: {
             ...mapState('setting', {
-                headerAutoHidden: state => state.headerAutoHidden,
+                useTagsView: state => state.useTagsView,
+                headerAutoHidden: state => state.headerAutoHidden
             }),
             hideHeader() {
                 return this.mouseOutside
@@ -38,6 +39,9 @@
             },
         },
         watch: {
+            useTagsView(v) {
+                !v && this.$store.dispatch('tagsView/delAllViews')
+            },
             hideHeader(v) {
                 this.$store.commit('app/hasHeader', !v)
                 v ? this.addEvent() : this.removeEvent()
@@ -64,19 +68,15 @@
     }
 </script>
 <style lang="scss">
+    .has-tags-view .header-container {
+        height: calc(#{$navHeight} + #{$tagsViewHeight});
+    }
+
     .header-container {
         position: relative;
-        height: $headerHeight;
+        height: $navHeight;
         transition: height .3s ease-in-out;
         flex-shrink: 0;
-
-        .awake-area {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 15px;
-            opacity: 0;
-        }
 
         &.hide-header {
             height: 0;

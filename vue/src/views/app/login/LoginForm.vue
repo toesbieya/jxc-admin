@@ -33,7 +33,14 @@
                 <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'"/>
             </span>
         </el-form-item>
-        <el-button :loading="loading" class="submit-btn" type="primary" @click="login">登 录</el-button>
+        <el-button
+                :loading="loading"
+                class="submit-btn"
+                type="primary"
+                @click="login"
+        >
+            {{loading ? '登 录 中...' : '登 录'}}
+        </el-button>
         <div class="flex" style="margin-top: 20px">
             <p class="other-ways">
                 其他方式登录

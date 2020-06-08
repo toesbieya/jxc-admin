@@ -20,7 +20,7 @@
 
             vnodes.push(iconComponent)
 
-            if (title) vnodes.push(<span slot="title" class="sidebar-item-content">{(title)}</span>)
+            if (title) vnodes.push(<span slot="title" class="sidebar-item-content">{title}</span>)
 
             return vnodes
         }

@@ -12,7 +12,12 @@
                 <el-input v-model="form.name" :readonly="!canEdit" maxlength="20"/>
             </el-form-item>
             <el-form-item label="行政区域：" prop="region_name">
-                <el-input :value="form.region_name" readonly @focus="regionDialog=true"/>
+                <region-selector
+                        :value="form.region_name"
+                        get-children-on-click
+                        readonly
+                        @select="selectRegion"
+                />
             </el-form-item>
             <el-form-item label="地 址：" prop="address">
                 <el-input v-model="form.address" :readonly="!canEdit" maxlength="100"/>
@@ -44,14 +49,12 @@
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
-
-        <region-selector v-model="regionDialog" @select="selectRegion"/>
     </dialog-form>
 </template>
 
 <script>
     import DialogForm from '@/components/DialogForm'
-    import RegionSelector from '@/bizComponents/RegionSelector'
+    import RegionSelector from '@/components/RegionSelector/Tree'
     import dialogMixin from "@/mixins/dialogMixin"
     import {addCustomer, updateCustomer} from "@/api/system/customer"
     import {isEmpty, mergeObj, resetObj} from '@/utils'
@@ -72,7 +75,6 @@
         data() {
             return {
                 loading: false,
-                regionDialog: false,
                 form: {
                     id: null,
                     name: null,
