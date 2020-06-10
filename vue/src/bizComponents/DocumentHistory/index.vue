@@ -11,7 +11,7 @@
             if (type === 'add') return ''
             return (
                 <el-popover
-                    onShow={context.listeners.show}
+                    v-on:show={context.listeners.show}
                     placement="bottom"
                     width="250"
                     trigger="click"

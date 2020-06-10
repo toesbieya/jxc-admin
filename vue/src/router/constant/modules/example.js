@@ -76,6 +76,12 @@ const router = {
                     name: 'signatureExample',
                     component: () => import('@/views/example/components/signatureExample'),
                     meta: {title: '手写签名'}
+                },
+                {
+                    path: 'regionSelectorExample',
+                    name: 'regionSelectorExample',
+                    component: () => import('@/views/example/components/regionSelectorExample'),
+                    meta: {title: '行政区划选择'}
                 }
             ]
         },

@@ -20,6 +20,8 @@
 }
 
 .el-card {
+    overflow: visible;
+
     .el-card__body {
         height: 100%;
     }

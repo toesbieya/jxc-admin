@@ -14,7 +14,6 @@
             <el-form-item label="行政区域：" prop="region_name">
                 <region-selector
                         :value="form.region_name"
-                        get-children-on-click
                         :readonly="!canEdit"
                         @clear="clearRegion"
                         @select="selectRegion"
@@ -55,7 +54,7 @@
 
 <script>
     import DialogForm from '@/components/DialogForm'
-    import RegionSelector from '@/components/RegionSelector/Tree'
+    import RegionSelector from '@/components/RegionSelector'
     import dialogMixin from "@/mixins/dialogMixin"
     import {addCustomer, updateCustomer} from "@/api/system/customer"
     import {isEmpty, mergeObj, resetObj} from '@/utils'

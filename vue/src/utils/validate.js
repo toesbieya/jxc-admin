@@ -57,7 +57,7 @@ export function isString(str) {
 
 export function isInteger(v) {
     let t = parseFloat(v)
-    return t.toString() !== 'Nan' && t < 2147483647 && t > -2147483648
+    return t.toString() !== 'NaN' && t < 2147483647 && t > -2147483648
 }
 
 export function isImage(str) {

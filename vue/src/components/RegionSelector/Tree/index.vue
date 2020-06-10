@@ -1,6 +1,7 @@
 <script type="text/jsx">
     import Vue from 'vue'
     import TreeDialog from "./TreeDialog"
+    import common from '../mixin'
 
     const TreeDialogConstructor = Vue.extend(TreeDialog)
 
@@ -9,14 +10,7 @@
     export default {
         name: "RegionTreeSelector",
 
-        props: {
-            value: String,
-            readonly: Boolean,
-            size: String,
-            getChildrenOnClick: Boolean,
-            limit: Boolean,
-            limitApi: Function
-        },
+        mixins: [common],
 
         data() {
             return {
@@ -43,7 +37,7 @@
 
             initLimit() {
                 if (limit) {
-                    limit.getChildrenOnClick = this.getChildrenOnClick
+                    limit.getChildrenOnSelect = this.getChildrenOnSelect
                     limit.limit = this.limit
                     limit.limitApi = this.limitApi
                     return limit.init()
@@ -58,10 +52,10 @@
 
             initFull() {
                 if (full) {
-                    return full.getChildrenOnClick = this.getChildrenOnClick
+                    return full.getChildrenOnSelect = this.getChildrenOnSelect
                 }
 
-                const data = {getChildrenOnClick: this.getChildrenOnClick, handler: this.handler}
+                const data = {getChildrenOnSelect: this.getChildrenOnSelect, handler: this.handler}
                 full = new TreeDialogConstructor({data}).$mount()
                 document.body.appendChild(full.$el)
 

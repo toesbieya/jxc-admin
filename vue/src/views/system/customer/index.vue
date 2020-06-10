@@ -9,7 +9,7 @@
                         :value="temp.region_name"
                         limit
                         :limit-api="getLimitRegion"
-                        get-children-on-click
+                        get-children-on-select
                         @clear="clearSidSearch"
                         @select="selectRegion"
                 />
@@ -79,7 +79,7 @@
 <script>
     import SearchForm from "@/components/SearchForm"
     import SearchFormItem from "@/components/SearchForm/SearchFormItem"
-    import RegionSelector from "@/components/RegionSelector/Tree"
+    import RegionSelector from "@/components/RegionSelector"
     import EditDialog from './EditDialog'
     import {delCustomer, getCustomers, getLimitRegion} from "@/api/system/customer"
     import {isEmpty} from '@/utils'

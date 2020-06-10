@@ -1,8 +1,7 @@
 import Message from "./components/Message"
-import Popover from './components/Popover'
 import Select from './components/Select/Select'
 
-const components = [Popover, Select]
+const components = [Select]
 
 export default function (Vue) {
     components.forEach(component => {

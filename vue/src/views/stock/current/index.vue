@@ -156,7 +156,7 @@
                 exportExcel(baseUrl + '/export', this.mergeSearchForm(), this.excel)
             },
             nodeClick(obj) {
-                let ids = getNodeId(obj.children)
+                const ids = getNodeId(obj.children)
                 ids.unshift(obj.id)
                 this.searchForm.cids = ids.join(',')
                 this.temp.cname = obj.name

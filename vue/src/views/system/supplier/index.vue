@@ -9,7 +9,7 @@
                         :value="temp.region_name"
                         limit
                         :limit-api="getLimitRegion"
-                        get-children-on-click
+                        get-children-on-select
                         @clear="clearSidSearch"
                         @select="selectRegion"
                 />

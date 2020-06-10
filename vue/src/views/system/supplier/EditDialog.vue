@@ -14,7 +14,6 @@
             <el-form-item label="行政区域：" prop="region_name">
                 <region-selector
                         :value="form.region_name"
-                        get-children-on-click
                         :readonly="!canEdit"
                         @clear="clearRegion"
                         @select="selectRegion"

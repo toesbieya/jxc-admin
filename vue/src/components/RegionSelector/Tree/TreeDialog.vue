@@ -1,4 +1,5 @@
 <script type="text/jsx">
+    import store from '@/store'
     import DialogForm from "@/components/DialogForm"
     import {createLimitTree, getNodeId} from "@/utils/tree"
 
@@ -11,7 +12,7 @@
                 visible: false,
                 handler: null,
                 limitTree: [],
-                getChildrenOnClick: false,
+                getChildrenOnSelect: false,
                 limit: false,
                 limitApi: null
             }
@@ -19,7 +20,7 @@
 
         computed: {
             regionTree() {
-                return this.$store.state.dataCache.regionTree
+                return store.state.dataCache.regionTree
             }
         },
 
@@ -30,8 +31,8 @@
 
             nodeClick(obj) {
                 const payload = [obj]
-                if (this.getChildrenOnClick) {
-                    let ids = getNodeId(obj.children)
+                if (this.getChildrenOnSelect) {
+                    const ids = getNodeId(obj.children)
                     ids.unshift(obj.id)
                     payload.push(ids)
                 }
@@ -44,7 +45,7 @@
             init() {
                 this.loading = true
                 const hasInit = this.regionTree.length > 0
-                const promise = () => hasInit ? Promise.resolve() : this.$store.dispatch('dataCache/initRegion')
+                const promise = () => hasInit ? Promise.resolve() : store.dispatch('dataCache/initRegion')
                 return promise()
                     .then(() => this.limit ? this.limitApi() : Promise.resolve())
                     .then(data => data && (this.limitTree = createLimitTree(this.regionTree, data)))
