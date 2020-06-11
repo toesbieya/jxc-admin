@@ -1,5 +1,5 @@
 //从quasar处搬运 https://quasar.dev/vue-directives/material-ripple
-import './style.sass'
+import './style.scss'
 
 let lastKeyCompositionStatus = false
 

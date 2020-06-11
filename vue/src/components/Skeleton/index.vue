@@ -44,4 +44,4 @@
     }
 </script>
 
-<style lang="sass" src="./QSkeleton.sass"></style>
+<style lang="scss" src="./QSkeleton.scss"></style>

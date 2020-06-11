@@ -72,7 +72,7 @@
 <style lang="scss" scoped>
     .contextmenu {
         margin: 0;
-        background: $menuBg;
+        background: $menu-background;
         z-index: 10;
         position: absolute;
         list-style-type: none;
@@ -89,7 +89,7 @@
             cursor: pointer;
 
             &:hover {
-                background: $menuHover;
+                background: $menu-hover;
                 color: $--color-primary;
             }
         }

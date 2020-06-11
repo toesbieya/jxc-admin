@@ -8,8 +8,7 @@ module.exports = {
     routerMode: 'history',
 
     //socket连接地址
-    //socketUrl: 'wss://toesbieya.cn',
-    socketUrl: 'localhost:12580',
+    socketUrl: process.env.NODE_ENV === 'development' ? 'localhost:12580' : 'wss://toesbieya.cn',
 
     sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
 

@@ -96,9 +96,9 @@
             const menu = (
                 <el-menu
                     ref="menu"
-                    active-text-color={variables['primary']}
-                    background-color={variables['menuBg']}
-                    text-color={variables['menuText']}
+                    text-color={variables['menu-text-color']}
+                    active-text-color={variables['menu-active-text-color']}
+                    background-color={variables['menu-background']}
                     collapse={this.collapse}
                     collapse-transition={false}
                     default-active={this.$route.path}
@@ -131,6 +131,4 @@
     }
 </script>
 
-<style lang="scss">
-    @import "~@/assets/styles/sidebar";
-</style>
+<style lang="scss" src="./style.scss"></style>

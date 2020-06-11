@@ -172,6 +172,4 @@
     }
 </script>
 
-<style lang="scss">
-    @import "~@/assets/styles/tagsView.scss";
-</style>
+<style lang="scss" src="./style.scss"></style>

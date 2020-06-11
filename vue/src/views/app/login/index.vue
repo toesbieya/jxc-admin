@@ -64,6 +64,4 @@
     }
 </script>
 
-<style lang="scss">
-    @import "src/assets/styles/login";
-</style>
+<style lang="scss" src="./style.scss"></style>

@@ -37,15 +37,15 @@ $--color-info: $--color-teal;
 }
 
 // sidebar
-//$menuText: #bfcbd9;
-$menuText: #D6E2F0;
-$menuBg: #304156;
-$menuHover: #263445;
-$subMenuBg: #1f2d3d;
-$subMenuHover: #001528;
+$menu-text-color: #D6E2F0;
+$menu-active-text-color: $--color-primary;
+$menu-background: #304156;
+$menu-hover: #263445;
+$sub-menu-background: #1f2d3d;
+$sub-menu-hover: #001528;
 
 //侧边栏宽度
-$sideBarWidth: 210px;
+$side-bar-width: 210px;
 //头部导航栏高度
 $navHeight: 50px;
 //头部多页签栏高度
@@ -60,8 +60,9 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
-    menuText: $menuText;
-    menuBg: $menuBg;
+    menu-text-color: $menu-text-color;
+    menu-active-text-color: $menu-active-text-color;
+    menu-background: $menu-background;
     primary: $--color-primary;
     info: $--color-info;
     success: $--color-success;

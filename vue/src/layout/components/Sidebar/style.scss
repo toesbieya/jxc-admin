@@ -3,15 +3,14 @@ $iconSize: 17px;
 .sidebar-container {
     display: flex;
     flex-direction: column;
-    width: $sideBarWidth;
-    background-color: $menuBg;
+    width: $side-bar-width;
+    background-color: $menu-background;
     font-size: 0;
-    overflow: hidden;
     flex-shrink: 0;
-    transition: all .3s;
-    top: 0;
-    bottom: 0;
+    height: 100vh;
     z-index: 10;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    transition: all 0.2s ease-in-out;
 
     //移动端时为fixed
     &.mobile {
@@ -31,7 +30,7 @@ $iconSize: 17px;
     &.hide-sidebar {
         width: 0;
         pointer-events: none;
-        transform: translateX(-$sideBarWidth);
+        transform: translateX(-$side-bar-width);
     }
 
     .sidebar-logo-container {
@@ -83,6 +82,7 @@ $iconSize: 17px;
         }
     }
 
+    //子级菜单激活时，父级同样高亮
     .is-active > .el-submenu__title {
         color: $--color-primary !important;
     }
@@ -91,16 +91,16 @@ $iconSize: 17px;
     .submenu-title-noDropdown,
     .el-submenu__title {
         &:hover {
-            background-color: $menuHover !important;
+            background-color: $menu-hover !important;
         }
     }
 
     .nest-menu > .el-submenu__title,
     .el-submenu .el-menu-item {
-        background-color: $subMenuBg !important;
+        background-color: $sub-menu-background !important;
 
         &:hover {
-            background-color: $subMenuHover !important;
+            background-color: $sub-menu-hover !important;
         }
     }
 }
@@ -136,11 +136,11 @@ $iconSize: 17px;
     .popover-menu__title {
         cursor: auto;
         text-align: center;
-        color: $menuText;
-        border-bottom: 1px solid $subMenuBg;
+        color: $menu-text-color;
+        border-bottom: 1px solid $sub-menu-background;
 
         &.el-menu-item:hover {
-            background-color: $menuBg;
+            background-color: $menu-background;
         }
     }
 }
