@@ -36,8 +36,8 @@ $iconSize: 17px;
     .sidebar-logo-container {
         position: relative;
         width: 100%;
-        height: $navHeight;
-        line-height: $navHeight;
+        height: $nav-height;
+        line-height: $nav-height;
         text-align: center;
 
         & .sidebar-logo-link {
@@ -56,7 +56,7 @@ $iconSize: 17px;
                 margin: 0;
                 color: #fff;
                 font-weight: 600;
-                line-height: $navHeight;
+                line-height: $nav-height;
                 font-size: 14px;
                 font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
                 vertical-align: middle;

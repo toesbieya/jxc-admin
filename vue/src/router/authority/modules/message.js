@@ -1,5 +1,6 @@
 /*路由表：消息中心*/
 import Layout from '@/layout'
+import {lazyLoadView} from "@/router/util"
 
 const router = {
     path: '/message',
@@ -10,13 +11,13 @@ const router = {
         {
             path: 'manage',
             name: 'messageManagement',
-            component: () => import('@/views/message/manage'),
+            component: () => lazyLoadView(import('@/views/message/manage')),
             meta: {title: '消息管理'}
         },
         {
             path: 'user',
             name: 'userMessage',
-            component: () => import('@/views/message/user'),
+            component: () => lazyLoadView(import('@/views/message/user')),
             meta: {title: '个人消息', noAuth: true, noCache: true}
         }
     ]

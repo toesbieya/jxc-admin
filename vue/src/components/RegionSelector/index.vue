@@ -1,6 +1,6 @@
 <script>
-    import Tree from './Tree'
-    import Tab from './Tab'
+    const Tree = () => import('./Tree').then(_ => _.default)
+    const Tab = () => import('./Tab').then(_ => _.default)
 
     export default {
         name: "RegionSelector",

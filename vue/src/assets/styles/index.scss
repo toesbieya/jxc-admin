@@ -84,16 +84,16 @@ a:hover {
 }
 
 .max-view-height {
-    height: calc(100vh - #{$pageViewMargin * 2});
+    height: calc(100vh - #{$page-view-margin * 2});
 }
 
 .has-header {
     .max-view-height {
-        height: calc(100vh - #{$navHeight} - #{$pageViewMargin * 2});
+        height: calc(100vh - #{$nav-height} - #{$page-view-margin * 2});
     }
 
     &.has-tags-view .max-view-height {
-        height: calc(100vh - #{$navHeight} - #{$tagsViewHeight} - #{$pageViewMargin * 2});
+        height: calc(100vh - #{$nav-height} - #{$tags-view-height} - #{$page-view-margin * 2});
     }
 }
 

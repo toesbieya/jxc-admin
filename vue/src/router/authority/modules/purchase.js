@@ -1,5 +1,6 @@
 /*路由表：采购管理*/
 import Layout from '@/layout'
+import {lazyLoadView} from "@/router/util"
 
 const router = {
     path: '/purchase',
@@ -10,13 +11,13 @@ const router = {
         {
             path: 'order',
             name: 'purchaseOrder',
-            component: () => import('@/views/purchase/order'),
+            component: () => lazyLoadView(import('@/views/purchase/order')),
             meta: {title: '采购订单'}
         },
         {
             path: 'inbound',
             name: 'purchaseInbound',
-            component: () => import('@/views/purchase/inbound'),
+            component: () => lazyLoadView(import('@/views/purchase/inbound')),
             meta: {title: '采购入库'}
         }
     ]

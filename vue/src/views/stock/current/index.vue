@@ -1,6 +1,6 @@
 <template>
-    <el-row>
-        <el-card class="card-container max-view-height" style="width: 250px;float: left;margin-right: 15px">
+    <el-row type="flex">
+        <el-card class="card-container max-view-height" style="width: 250px;margin-right: 15px">
             <el-input
                     v-model="temp.filter"
                     size="small"
@@ -12,7 +12,7 @@
             <category-tree ref="tree" :filter-node-method="filterNode" @node-click="nodeClick"/>
         </el-card>
 
-        <el-card>
+        <el-card style="width: calc(100% - 250px)">
             <search-form>
                 <search-form-item label="商品分类：">
                     <el-input :value="temp.cname" maxlength="100" clearable @clear="clearCidSearch"/>

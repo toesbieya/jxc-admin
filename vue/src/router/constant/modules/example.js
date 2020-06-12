@@ -1,5 +1,6 @@
 /*路由表：演示用例*/
 import Layout from '@/layout'
+import {lazyLoadView} from "@/router/util"
 
 const router = {
     path: '/example',
@@ -7,15 +8,15 @@ const router = {
     meta: {title: '演示用例', icon: 'show', noCache: true},
     children: [
         {
-            path: 'style-page',
+            path: 'stylePage',
             name: 'stylePage',
-            component: () => import('@/views/example/stylePage'),
+            component: () => lazyLoadView(import('@/views/example/stylePage')),
             meta: {title: '样 式'}
         },
         {
             path: 'icons',
             name: 'icons',
-            component: () => import('@/views/example/icons'),
+            component: () => lazyLoadView(import('@/views/example/icons')),
             meta: {title: '图 标'}
         },
         {
@@ -31,13 +32,13 @@ const router = {
                 {
                     path: 'fluid',
                     name: 'fluid',
-                    component: () => import('@/views/example/cool/fluid'),
+                    component: () => lazyLoadView(import('@/views/example/cool/fluid')),
                     meta: {title: '流体动画'}
                 },
                 {
                     path: 'l2d',
                     name: 'l2d',
-                    component: () => import('@/views/example/cool/l2d'),
+                    component: () => lazyLoadView(import('@/views/example/cool/l2d')),
                     meta: {title: '看板娘'}
                 },
             ]
@@ -50,45 +51,45 @@ const router = {
                 {
                     path: 'uploadExample',
                     name: 'uploadExample',
-                    component: () => import('@/views/example/components/uploadExample'),
+                    component: () => lazyLoadView(import('@/views/example/components/uploadExample')),
                     meta: {title: '上传文件'}
                 },
                 {
                     path: 'picturePreviewExample',
                     name: 'picturePreviewExample',
-                    component: () => import('@/views/example/components/picturePreviewExample'),
+                    component: () => lazyLoadView(import('@/views/example/components/picturePreviewExample')),
                     meta: {title: '图片预览'}
                 },
                 {
                     path: 'skeletonExample',
                     name: 'skeletonExample',
-                    component: () => import('@/views/example/components/skeletonExample'),
+                    component: () => lazyLoadView(import('@/views/example/components/skeletonExample')),
                     meta: {title: '骨架屏'}
                 },
                 {
                     path: 'rippleExample',
                     name: 'rippleExample',
-                    component: () => import('@/views/example/components/rippleExample'),
+                    component: () => lazyLoadView(import('@/views/example/components/rippleExample')),
                     meta: {title: '波纹'}
                 },
                 {
                     path: 'signatureExample',
                     name: 'signatureExample',
-                    component: () => import('@/views/example/components/signatureExample'),
+                    component: () => lazyLoadView(import('@/views/example/components/signatureExample')),
                     meta: {title: '手写签名'}
                 },
                 {
                     path: 'regionSelectorExample',
                     name: 'regionSelectorExample',
-                    component: () => import('@/views/example/components/regionSelectorExample'),
+                    component: () => lazyLoadView(import('@/views/example/components/regionSelectorExample')),
                     meta: {title: '行政区划选择'}
                 }
             ]
         },
         {
-            path: 'developing-test',
+            path: 'developingTest',
             name: 'developingTest',
-            component: () => import('@/views/example/developingTest'),
+            component: () => lazyLoadView(import('@/views/example/developingTest')),
             meta: {title: '开发测试'}
         }
     ]

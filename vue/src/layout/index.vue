@@ -1,16 +1,14 @@
 <template>
     <section class="el-container app-wrapper">
         <v-sidebar/>
+
         <section class="el-container main-container" :class="{'has-header':hasHeader,'has-tags-view':useTagsView}">
             <v-header/>
             <v-main/>
         </section>
+
         <!--移动端侧边栏展开时的遮罩-->
-        <div
-                v-show="showSidebarMask"
-                class="drawer-bg"
-                @click.stop.prevent="$store.commit('setting/sidebarCollapse',true)"
-        />
+        <div v-show="showSidebarMask" class="drawer-bg" @click.stop.prevent="collapseSidebar"/>
     </section>
 </template>
 
@@ -51,6 +49,11 @@
         watch: {
             showOfflineTip(v) {
                 v ? this.$bottomTip('与服务器失去连接') : this.$bottomTip.close()
+            }
+        },
+        methods: {
+            collapseSidebar() {
+                this.$store.commit('setting/sidebarCollapse', true)
             }
         }
     }

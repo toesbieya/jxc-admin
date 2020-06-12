@@ -1,6 +1,7 @@
 import {pathToRegexp} from 'path-to-regexp'
 import {isEmpty} from "@/utils"
 import {title} from "@/config"
+import PageSkeleton from "@/components/Skeleton/PageSkeleton"
 
 //拼接页面标题
 export function getPageTitle(pageTitle) {
@@ -25,6 +26,16 @@ export function metaExtend(routes, meta) {
         }
         if (route.children) {
             metaExtend(route.children, route.meta)
+        }
+    })
+}
+
+export function lazyLoadView(component) {
+    const AsyncHandler = () => ({component, loading: PageSkeleton})
+    return Promise.resolve({
+        functional: true,
+        render(h, {data, children}) {
+            return h(AsyncHandler, data, children)
         }
     })
 }

@@ -69,12 +69,12 @@
 </script>
 <style lang="scss">
     .has-tags-view .header-container {
-        height: calc(#{$navHeight} + #{$tagsViewHeight});
+        height: calc(#{$nav-height} + #{$tags-view-height});
     }
 
     .header-container {
         position: relative;
-        height: $navHeight;
+        height: $nav-height;
         transition: height .3s ease-in-out;
         flex-shrink: 0;
 

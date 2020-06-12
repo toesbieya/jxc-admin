@@ -9,10 +9,11 @@
                 </transition>
             </div>
         </el-scrollbar>
+
         <!--跨域iframe无法调整高度，只能使用原生滚动条-->
         <iframe
                 v-for="src in iframeList"
-                v-show="showIframe&&src===currentIframe"
+                v-show="showIframe && src === currentIframe"
                 :id="src"
                 :key="src"
                 :src="src"
@@ -20,6 +21,7 @@
                 height="100%"
                 width="100%"
         />
+
         <el-backtop v-if="showBackToTop" target=".app-main .el-scrollbar__wrap" :visibility-height="400"/>
     </main>
 </template>
@@ -32,6 +34,12 @@
     export default {
         name: 'AppMain',
         computed: {
+            ...mapState('app', {
+                scrollTop: state => state.scrollTop,
+            }),
+            ...mapState('setting', {
+                showBackToTop: state => state.showBackToTop
+            }),
             ...mapState('tagsView', {
                 cachedViews: state => state.cachedViews,
                 transitionName: state => state.transitionName
@@ -40,12 +48,6 @@
                 showIframe: state => state.show,
                 currentIframe: state => state.current,
                 iframeList: state => state.list
-            }),
-            ...mapState('app', {
-                scrollTop: state => state.scrollTop
-            }),
-            ...mapState('setting', {
-                showBackToTop: state => state.showBackToTop
             })
         },
         watch: {
@@ -74,7 +76,7 @@
             height: 100%;
 
             .page-view {
-                margin: $pageViewMargin;
+                margin: $page-view-margin;
             }
 
             > .el-scrollbar__bar.is-horizontal {

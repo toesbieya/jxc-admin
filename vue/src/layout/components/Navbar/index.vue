@@ -99,7 +99,7 @@
 
 <style lang="scss">
     .navbar {
-        height: $navHeight;
+        height: $nav-height;
         overflow: hidden;
         position: relative;
         background: #fff;
@@ -114,7 +114,7 @@
         .right-menu {
             float: right;
             height: 100%;
-            line-height: $navHeight;
+            line-height: $nav-height;
 
             &:focus {
                 outline: none;

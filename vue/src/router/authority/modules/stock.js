@@ -1,5 +1,6 @@
 /*路由表：库存管理*/
 import Layout from '@/layout'
+import {lazyLoadView} from "@/router/util"
 
 const router = {
     path: '/stock',
@@ -10,7 +11,7 @@ const router = {
         {
             path: 'current',
             name: 'currentStock',
-            component: () => import('@/views/stock/current'),
+            component: () => lazyLoadView(import('@/views/stock/current')),
             meta: {title: '当前库存'}
         }
     ]

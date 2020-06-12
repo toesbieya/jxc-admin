@@ -13,6 +13,7 @@
 * */
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from "@/store"
 import NProgress from 'nprogress'
 import {isUserExist} from "@/utils/sessionStorage"
 import {auth, needAuth} from "@/utils/auth"
@@ -20,7 +21,6 @@ import {getPageTitle, transformWhiteList, metaExtend} from './util'
 import {routerMode} from '@/config'
 import constantRoutes from '@/router/constant'
 import authorityRoutes from '@/router/authority'
-import store from "@/store"
 
 Vue.use(Router)
 
@@ -64,7 +64,6 @@ router.beforeEach(async (to, from, next) => {
         iframeControl(to)
         return next()
     }
-
     //用户无权限访问时的动作
     next({path: '/403'})
 })
