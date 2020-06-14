@@ -34,8 +34,8 @@
                 animation: state => state.loginBackgroundAnimation
             }),
             component() {
-                const {path} = this.$route
-                return `${path.substring(1)}-form`
+                const formType = this.$route.path.substring(1)
+                return `${[...formType].join('')}-form`
             }
         },
         methods: {

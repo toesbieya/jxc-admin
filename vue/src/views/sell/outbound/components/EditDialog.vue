@@ -105,7 +105,8 @@
     import {getDetailById as getStockDetail} from "@/api/stock/current"
     import {getSubById as getParentSubById} from "@/api/sell/order"
     import {add, commit, getById, pass, reject, update, withdraw} from "@/api/sell/outbound"
-    import {isEmpty, plus, sub} from "@/utils"
+    import {isEmpty} from "@/utils"
+    import {plus, sub} from "@/utils/math"
     import {isInteger} from "@/utils/validate"
     import {elAlert} from "@/utils/message"
 

@@ -120,7 +120,8 @@
     import CategorySelector from './CategorySelector'
     import bizDocumentDialogMixin from "@/mixins/bizDocumentDialogMixin"
     import {add, commit, getById, pass, reject, update, withdraw} from "@/api/purchase/order"
-    import {isEmpty, mul, plus} from "@/utils"
+    import {isEmpty} from "@/utils"
+    import {plus, mul} from "@/utils/math"
     import {isInteger} from "@/utils/validate"
 
     export default {

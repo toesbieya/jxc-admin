@@ -118,6 +118,6 @@
     }
 
     .tox-tinymce-aux {
-        z-index: 10000!important;
+        z-index: 10000 !important;
     }
 </style>

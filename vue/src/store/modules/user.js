@@ -1,7 +1,7 @@
 import {login, logout} from '@/api/account'
 import {createMutations, isEmpty} from "@/utils"
 import {autoCompleteUrl} from "@/utils/file"
-import {getUser, setUser} from "@/utils/sessionStorage"
+import {getUser, setUser} from "@/utils/storage"
 
 //刷新时从本地存储中获取用户信息
 const user = getUser()

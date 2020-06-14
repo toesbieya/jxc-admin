@@ -73,7 +73,7 @@
     import {elError, elSuccess} from "@/utils/message"
     import compressJPG from '@/plugin/imageCompress/cjpeg'
     import compressPNG from '@/plugin/imageCompress/pngquant'
-    import {div, mul, sub} from "@/utils"
+    import {sub, mul, div} from "@/utils/math"
 
     const commonData = () => ({
         loading: false,

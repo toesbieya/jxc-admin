@@ -108,7 +108,8 @@
     import CustomerSelector from './CustomerSelector'
     import bizDocumentDialogMixin from "@/mixins/bizDocumentDialogMixin"
     import {add, commit, getById, pass, reject, update, withdraw} from "@/api/sell/order"
-    import {isEmpty, mul, plus} from "@/utils"
+    import {isEmpty} from "@/utils"
+    import {mul, plus} from "@/utils/math"
     import {isInteger} from "@/utils/validate"
 
     export default {

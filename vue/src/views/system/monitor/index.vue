@@ -21,7 +21,8 @@
     import CpuInfo from './components/Cpu'
     import MemoryInfo from './components/Memory'
     import JvmInfo from './components/Jvm'
-    import {sub, timeFormat} from "@/utils"
+    import {timeFormat} from "@/utils"
+    import {sub} from "@/utils/math"
 
     export default {
         name: "systemMonitor",

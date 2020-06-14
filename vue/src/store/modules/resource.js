@@ -3,7 +3,7 @@ import constantRoutes from '@/router/constant'
 import authorityRoutes from '@/router/authority'
 import {needAuth} from "@/utils/auth"
 import {createTree} from "@/utils/tree"
-import {getLocalResource, setLocalResource} from "@/utils/localStorage"
+import {getLocalResource, setLocalResource} from "@/utils/storage"
 import {getResources} from "@/api/system/resource"
 import {isEmpty} from "@/utils"
 

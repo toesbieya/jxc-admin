@@ -1,4 +1,4 @@
-import {getLocalPersonalSettings} from "@/utils/localStorage"
+import {getLocalPersonalSettings} from "@/utils/storage"
 import {createMutations} from "@/utils"
 import {isMobile} from "@/utils/browser"
 

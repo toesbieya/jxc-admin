@@ -3,7 +3,7 @@
 * */
 
 import {isEmpty} from "@/utils"
-import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/utils/localStorage"
+import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/utils/storage"
 
 const localSettings = getLocalPersonalSettings()
 

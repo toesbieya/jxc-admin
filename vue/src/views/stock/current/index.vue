@@ -70,7 +70,8 @@
     import CategoryTree from '@/bizComponents/CategoryTree'
     import DetailDialog from "./DetailDialog"
     import {search} from "@/api/stock/current"
-    import {debounce, isEmpty, plus} from "@/utils"
+    import {isEmpty, debounce} from "@/utils"
+    import {plus} from "@/utils/math"
     import {exportExcel} from "@/utils/excel"
     import {getNodeId} from "@/utils/tree"
     import tableMixin from '@/mixins/tablePageMixin'

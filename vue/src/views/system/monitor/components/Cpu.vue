@@ -26,8 +26,7 @@
 </template>
 
 <script>
-    import resize from '@/mixins/chartResizeMixin'
-    import logic from '@/mixins/chartLogicMixin'
+    import {logic, resize} from "@/mixins/chart"
     import CountTo from 'vue-count-to'
 
     export default {

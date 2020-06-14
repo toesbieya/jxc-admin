@@ -3,8 +3,7 @@
 </template>
 
 <script>
-    import resize from '@/mixins/chartResizeMixin'
-    import logic from '@/mixins/chartLogicMixin'
+    import {logic, resize} from "@/mixins/chart"
     import {getDailyFinishOrder} from '@/api/statistic/index'
     import {timeFormat} from "@/utils"
 

@@ -35,7 +35,8 @@
     import LinerProgress from '@/components/LinerProgress'
     import DialogForm from "@/components/DialogForm"
     import dialogMixin from "@/mixins/dialogMixin"
-    import {isEmpty, mul, plus} from "@/utils"
+    import {isEmpty} from "@/utils"
+    import {plus, mul} from "@/utils/math"
     import {getDetail} from "@/api/stock/current"
 
     export default {

@@ -1,6 +1,3 @@
-import pako from 'pako'
-import Decimal from 'decimal.js'
-
 export function isEmpty(...str) {
     return str.some(i => i === undefined || i === null || i === '')
 }
@@ -34,9 +31,10 @@ export function mergeObj(target, source) {
     })
 }
 
-export function timeFormat(fmt = 'yyyy-MM-dd HH:mm:ss', date = new Date()) {
+export function timeFormat(fmt, date = new Date()) {
     if (isEmpty(fmt)) fmt = 'yyyy-MM-dd HH:mm:ss'
-    let o = {
+
+    const o = {
         "M+": date.getMonth() + 1, //月份
         "d+": date.getDate(), //日
         "H+": date.getHours(), //小时
@@ -45,9 +43,20 @@ export function timeFormat(fmt = 'yyyy-MM-dd HH:mm:ss', date = new Date()) {
         "q+": Math.floor((date.getMonth() + 3) / 3), //季度
         "S": date.getMilliseconds() //毫秒
     }
-    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length))
-    for (let k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)))
+
+    if (/(y+)/.test(fmt)) {
+        const replace = (date.getFullYear() + "").substring(4 - RegExp.$1.length)
+        fmt = fmt.replace(RegExp.$1, [...replace].join(''))
+    }
+
+    for (let k in o) {
+        if (new RegExp(`(${k})`).test(fmt)) {
+            const firstMatch = RegExp.$1
+            const replace = firstMatch.length === 1 ? o[k] : ("00" + o[k]).substring(("" + o[k]).length)
+            fmt = fmt.replace(firstMatch, [...replace].join(''))
+        }
+    }
+
     return fmt
 }
 
@@ -111,24 +120,6 @@ export function throttle(func, delay = 100) {
     return wrapper
 }
 
-export function unzip(b64Data) {
-    let strData = atob(b64Data)
-    // Convert binary string to character-number array
-    let charData = strData.split('').map(x => x.charCodeAt(0))
-    // Turn number array into byte-array
-    let binData = new Uint8Array(charData)
-    // unzip
-    let data = pako.inflate(binData)
-    // Convert gunzipped byteArray back to ascii string:
-    strData = String.fromCharCode.apply(null, new Uint16Array(data))
-    return decodeURIComponent(strData)
-}
-
-export function zip(str) {
-    let binaryString = pako.gzip(encodeURIComponent(str), {to: 'string'})
-    return btoa(binaryString)
-}
-
 /**
  * 循环等待成功事件
  * @param success 判断是否成功，true or false
@@ -170,67 +161,14 @@ export function createMutations(state, all = false) {
     return obj
 }
 
-//将引导步骤中函数的this绑定为组件实例
-export function transformGuideSteps(instance, steps) {
-    steps.forEach(step => {
-        Object.keys(step).forEach(key => {
-            if (typeof step[key] === 'function') {
-                step[key] = step[key].bind(instance)
-            }
-        })
-    })
-}
-
 //删除所有url参数
 export function delAllUrlParam() {
     let paramStartIndex = location.href.indexOf('?')
     if (paramStartIndex > -1) {
-        history.replaceState(null, null, location.href.substring(0, paramStartIndex))
+        const href = location.href.substring(0, paramStartIndex)
+        history.replaceState(null, null, [...href].join(''))
     }
 }
-
-
-/*基于decimal.js的运算封装*/
-export function plus(...val) {
-    if (val.length === 0) return 0
-    else if (val.length === 1) return new Decimal(val[0]).toNumber()
-    let f = new Decimal(val[0])
-    for (let i = 1; i < val.length; i++) {
-        f = f.add(new Decimal(val[i]))
-    }
-    return f.toNumber()
-}
-
-export function sub(...val) {
-    if (val.length === 0) return 0
-    else if (val.length === 1) return new Decimal(val[0]).toNumber()
-    let f = new Decimal(val[0])
-    for (let i = 1; i < val.length; i++) {
-        f = f.sub(new Decimal(val[i]))
-    }
-    return f.toNumber()
-}
-
-export function mul(...val) {
-    if (val.length === 0) return 0
-    else if (val.length === 1) return new Decimal(val[0]).toNumber()
-    let f = new Decimal(val[0])
-    for (let i = 1; i < val.length; i++) {
-        f = f.mul(new Decimal(val[i]))
-    }
-    return f.toNumber()
-}
-
-export function div(...val) {
-    if (val.length === 0) return 0
-    else if (val.length === 1) return new Decimal(val[0]).toNumber()
-    let f = new Decimal(val[0])
-    for (let i = 1; i < val.length; i++) {
-        f = f.div(new Decimal(val[i]))
-    }
-    return f.toNumber()
-}
-
 
 export function deepClone(data) {
     if (data === null || data === undefined) {

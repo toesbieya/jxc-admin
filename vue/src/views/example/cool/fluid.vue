@@ -26,7 +26,7 @@
                 window.removeEventListener('resize', this.$_resizeHandler)
             },
             start() {
-                import('@/plugin/fluid').then(_ => _.default(this.$el.querySelector('#canvas-fluid')))
+                import('@/plugin/webgl/fluid').then(_ => _.default(this.$el.querySelector('#canvas-fluid')))
             },
             close() {
                 window.location.reload()

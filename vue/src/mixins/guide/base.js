@@ -1,4 +1,15 @@
-import {delAllUrlParam, transformGuideSteps} from "@/utils"
+import {delAllUrlParam} from "@/utils"
+
+//将引导步骤中函数的this绑定为组件实例
+function transformGuideSteps(instance, steps) {
+    steps.forEach(step => {
+        Object.keys(step).forEach(key => {
+            if (typeof step[key] === 'function') {
+                step[key] = step[key].bind(instance)
+            }
+        })
+    })
+}
 
 export default {
     methods: {
