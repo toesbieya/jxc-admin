@@ -24,9 +24,6 @@ Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
 })
 
-//刷新时socket重连
-store.dispatch('socket/init', store.state.user).then()
-
 //注册插件
 Vue.prototype.$bottomTip = BottomTip
 Vue.prototype.$guide = Guide
@@ -42,3 +39,6 @@ new Vue({
     store,
     render: h => h(App)
 })
+
+//页面刷新时socket重连
+store.dispatch('socket/init', store.state.user).catch()

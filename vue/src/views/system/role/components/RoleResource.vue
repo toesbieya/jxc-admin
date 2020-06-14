@@ -9,12 +9,16 @@
             map: {type: Object, default: () => ({})}
         },
         render(h, context) {
-            let {ids, map} = context.props
+            const {ids, map} = context.props
             let tree = []
+
             for (let id of ids) map[id] && tree.push(map[id])
+
             tree = createTree(tree)
-            let nodes = []
-            let fun = (arr, left) => {
+
+            const nodes = []
+
+            const fun = (arr, left) => {
                 for (let r of arr) {
                     nodes.push(
                         <span style={'margin-left:' + left + 'px'}>
@@ -29,7 +33,9 @@
                 }
                 nodes.push(<p/>)
             }
+
             fun(tree, 0)
+
             return nodes
         }
     }

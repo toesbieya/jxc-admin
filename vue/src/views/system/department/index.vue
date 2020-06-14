@@ -54,7 +54,7 @@
     import ContextMenuItem from "@/components/ContextMenu/ContextMenuItem"
     import EditDialog from "./components/EditDialog"
     import {auth} from "@/utils/auth"
-    import {createTree} from "@/utils/tree"
+    import {createTreeByWorker} from "@/utils/tree"
     import {isEmpty} from '@/utils'
     import {elConfirm, elError, elSuccess} from "@/utils/message"
     import {delDepartment, getAllDepartments} from "@/api/system/department"
@@ -141,20 +141,9 @@
                 this.currentNode = null
                 this.loading = true
                 getAllDepartments()
+                    .then(data => createTreeByWorker(data))
                     .then(data => {
-                        data = createTree(data)
-
-                        function handler(arr, name) {
-                            arr.forEach(i => {
-                                i.label = i.name
-                                i.parentName = name
-                                if (isEmpty(name)) i.fullname = i.name
-                                else i.fullname = name + ' > ' + i.name
-                                if (i.children) handler(i.children, i.fullname)
-                            })
-                        }
-
-                        handler(data)
+                        completeDepartment(data)
                         this.data = data[0]
                     })
                     .finally(() => this.loading = false)
@@ -163,6 +152,19 @@
         mounted() {
             this.search()
         }
+    }
+
+    //将部门树转换为页面需要的结构
+    function completeDepartment(arr, name) {
+        arr.forEach(i => {
+            i.label = i.name
+            i.parentName = name
+
+            if (isEmpty(name)) i.fullname = i.name
+            else i.fullname = name + ' > ' + i.name
+
+            if (i.children) completeDepartment(i.children, i.fullname)
+        })
     }
 </script>
 

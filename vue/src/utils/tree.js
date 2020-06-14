@@ -11,11 +11,14 @@ import {createWorker} from '@/utils/worker'
  */
 export function createTree(list, rootSign = 0, idKey = 'id', pidKey = 'pid', childrenKey = 'children') {
     if (!list || list.length <= 0) return []
-    let info = {}
+
+    const info = {}
+
     list.forEach(i => {
         i[childrenKey] = []
         info[i[idKey]] = i
     })
+
     return list.filter(node => {
         info[node[pidKey]] && info[node[pidKey]][childrenKey].push(node)
         return node[pidKey] === rootSign
@@ -33,9 +36,10 @@ export function createLimitTree(full, limit) {
         m[n.id] = n.value
         return m
     }, {})
+
     full = JSON.parse(JSON.stringify(full))
 
-    const result = shapeTree(full, node => {
+    const result = shakeTree(full, node => {
         const value = map[node.id]
         if (value !== undefined) {
             node.value = value
@@ -93,20 +97,25 @@ export function createLimitTreeByMap(fullMap, limit) {
  * @param childrenKey
  * @returns {*[]} 经过裁剪后的树
  */
-export function shapeTree(tree = [], predicate = () => true, childrenKey = 'children') {
+export function shakeTree(tree = [], predicate = () => true, childrenKey = 'children') {
     return tree.filter(data => {
-        data[childrenKey] = shapeTree(data[childrenKey], predicate)
+        data[childrenKey] = shakeTree(data[childrenKey], predicate)
         return predicate(data) || data[childrenKey].length
     })
 }
 
 export function calc(node, valueKey = 'value', childrenKey = 'children') {
     if (!node) return 0
+
     const children = node[childrenKey]
     const childValue = node[valueKey] || 0
+
     if (!children) return childValue
+
     const value = childValue + children.reduce((v, child) => v + calc(child), 0)
+
     node[valueKey] = value
+
     return value
 }
 
@@ -119,54 +128,62 @@ export function calc(node, valueKey = 'value', childrenKey = 'children') {
  */
 export function elTreeControl(ref, action = 'expand', level = 1) {
     ref.store._getAllNodes().forEach(node => {
-        let value = action === 'expand'
+        const value = action === 'expand'
         node.expanded = level === 0 || node.level <= level ? value : !value
     })
 }
 
 export function getNodeId(arr) {
     if (!arr) return []
-    let res = []
+
+    const res = []
+
     arr.forEach(i => {
         res.push(i.id)
         if (i.children && i.children.length > 0) {
             res.push(...getNodeId(i.children))
         }
     })
+
     return res
 }
 
 export function getNodesByDfs(node) {
-    let nodes = []
-    let stack = []
+    const nodes = []
+    const stack = []
+
     stack.push(node)
+
     while (stack.length > 0) {
-        let item = stack.pop()
+        const item = stack.pop()
         nodes.push(item)
-        let children = item.children
+        const children = item.children
         for (let i = children.length - 1; i >= 0; i--) {
             stack.push(children[i])
         }
     }
+
     return nodes
 }
 
 export function getNodesByBfs(node) {
-    let nodes = []
-    let queue = []
+    const nodes = []
+    const queue = []
     queue.unshift(node)
+
     while (queue.length > 0) {
-        let item = queue.shift()
+        const item = queue.shift()
         nodes.push(item)
         queue.push(...item.children)
     }
+
     return nodes
 }
 
 //借助worker生成树
 export function createTreeByWorker(list) {
     return new Promise(resolve => {
-        let worker = createWorker(workerTree, list, ({data}) => {
+        const worker = createWorker(workerTree, list, ({data}) => {
             resolve(data)
             worker.terminate()
         })

@@ -24,7 +24,7 @@
     import {getAllResources} from "@/api/system/resource"
     import {elError, elSuccess} from "@/utils/message"
     import {auth} from "@/utils/auth"
-    import {createTree} from "@/utils/tree"
+    import {createTreeByWorker} from "@/utils/tree"
     import tableMixin from '@/mixins/tablePageMixin'
 
     const baseUrl = '/system/resource'
@@ -49,7 +49,8 @@
                 this.config.loading = true
                 this.row = null
                 getAllResources()
-                    .then(data => this.tableData = createTree(data))
+                    .then(data => createTreeByWorker(data))
+                    .then(data => this.tableData = data)
                     .finally(() => this.config.loading = false)
             },
             edit() {
