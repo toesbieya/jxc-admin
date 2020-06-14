@@ -12,11 +12,20 @@ public class QiniuUtil {
     private static final String ACCESS_KEY = (String) YmlUtil.get("qiniu.access-key");
     private static final String SECRET_KEY = (String) YmlUtil.get("qiniu.secret-key");
     private static final String BUCKET = (String) YmlUtil.get("qiniu.bucket");
+    private static final int TOKEN_EXPIRES = (int) YmlUtil.get("qiniu.token-expires");
+    private static final String REDIS_CACHE_KEY = (String) YmlUtil.get("qiniu.redis-cache-key");
     private static final Auth AUTH = Auth.create(ACCESS_KEY, SECRET_KEY);
     private static final BucketManager BUCKET_MANAGER = new BucketManager(AUTH, new Configuration(Region.huadong()));
 
     public static String getToken() {
-        return AUTH.uploadToken(BUCKET);
+        String token = (String) RedisUtil.get(REDIS_CACHE_KEY);
+
+        if (token == null) {
+            token = AUTH.uploadToken(BUCKET);
+            RedisUtil.set(REDIS_CACHE_KEY, token, TOKEN_EXPIRES);
+        }
+
+        return token;
     }
 
     public static void delete(String key) {

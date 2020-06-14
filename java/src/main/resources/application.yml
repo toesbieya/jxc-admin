@@ -58,6 +58,10 @@ qiniu:
   access-key: your key
   secret-key: your key
   bucket: your bucket
+  #七牛的临时上传凭证的有效期，单位秒
+  token-expires: 3600
+  #七牛的临时上传凭证的redis键名
+  redis-cache-key: qiniu-token
 
 #logging:
 #  level:
