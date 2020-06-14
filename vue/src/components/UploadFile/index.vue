@@ -2,7 +2,7 @@
     <el-upload
             ref="upload"
             :before-upload="beforeUpload"
-            :class="{disabled:hideUploader}"
+            :class="{disabled: hideUploader}"
             :file-list="data"
             :http-request="httpRequest"
             :limit="limit"
@@ -14,30 +14,48 @@
             list-type="picture-card"
     >
         <i class="el-icon-plus" slot="default"/>
+
         <template v-slot:file="{file}">
-            <el-tooltip :content="file.name" effect="dark" placement="bottom">
-                    <span class="el-upload-list__item-actions">
-                        <span v-if="showPreview(file)" class="el-upload-list__item-preview" @click="preview(file)">
-                            <i class="el-icon-zoom-in"/>
-                        </span>
-                        <span v-if="showDownload(file)" class="el-upload-list__item-delete" @click="download(file)">
-                            <i class="el-icon-download"/>
-                        </span>
-                        <span v-if="!disabled" class="el-upload-list__item-delete" @click="remove(file)">
-                            <i class="el-icon-delete"/>
-                        </span>
-                    </span>
-            </el-tooltip>
-            <img :src="file.url" class="el-upload-list__item-thumbnail">
+            <span
+                    class="el-upload-list__item-actions"
+                    @mouseenter="e => handleBlockMouseEnter(e,file)"
+                    @mouseleave="handleBlockMouseLeave"
+            >
+                <span
+                        v-if="showPreview(file)"
+                        class="el-upload-list__item-preview"
+                        @click="() => preview(file)"
+                >
+                    <i class="el-icon-zoom-in"/>
+                </span>
+                <span
+                        v-if="showDownload(file)"
+                        class="el-upload-list__item-delete"
+                        @click="() => download(file)"
+                >
+                    <i class="el-icon-download"/>
+                </span>
+                <span
+                        v-if="!disabled"
+                        class="el-upload-list__item-delete"
+                        @click="() => remove(file)"
+                >
+                    <i class="el-icon-delete"/>
+                </span>
+            </span>
+            <img v-if="file.status === 'success'" :src="file.url" class="el-upload-list__item-thumbnail">
             <label class="el-upload-list__item-status-label">
                 <i class="el-icon-upload-success el-icon-check"/>
             </label>
-            <div v-if="file.status==='uploading'" class="progress-mask">
+            <div v-if="file.status === 'uploading'" class="progress-mask">
                 <el-progress :percentage="file.percentage" type="circle"/>
             </div>
         </template>
+
+        <el-tooltip ref="tooltip" :content="tooltipContent" popper-class="upload-tooltip"/>
     </el-upload>
 </template>
+
 <script>
     /*
     * 直传七牛云
@@ -47,13 +65,14 @@
     import axios from 'axios'
     import {attachmentPrefix} from '@/config'
     import {elError} from "@/utils/message"
-    import {isEmpty} from '@/utils'
+    import {debounce, isEmpty} from '@/utils'
     import {isImage} from "@/utils/validate"
     import {deleteUpload, download, upload, autoCompleteUrl} from "@/utils/file"
     import {numberFormatter} from "@/filter"
 
     export default {
         name: 'UploadFile',
+
         props: {
             disabled: {type: Boolean, default: false},
             multiple: {type: Boolean, default: true},
@@ -61,11 +80,14 @@
             limit: {type: Number, default: 10},
             maxSize: {type: Number | String, default: '10MB'}
         },
+
         data() {
             return {
-                data: this.fileList
+                data: this.fileList,
+                tooltipContent: null
             }
         },
+
         computed: {
             count() {
                 return this.data.length
@@ -74,10 +96,10 @@
                 return this.disabled || this.count >= this.limit
             },
             previewUrlList() {
-                if (!this.data) return []
-                return this.data.map(i => i.url)
+                return this.data ? this.data.map(i => i.url) : []
             }
         },
+
         watch: {
             fileList: {
                 immediate: true,
@@ -90,6 +112,7 @@
                 }
             }
         },
+
         methods: {
             showPreview(file) {
                 return file.name && isImage(file.name)
@@ -106,6 +129,24 @@
                 let num = upper.replace(/[^0-9]/ig, "")
                 let unit = upper.replace(num, "")
                 return parseInt(num) * (map[unit] || 1)
+            },
+
+            //模仿el-table的tooltip
+            handleBlockMouseEnter(event, file) {
+                const tooltip = this.$refs.tooltip
+                this.tooltipContent = file.name
+                tooltip.referenceElm = event.target
+                tooltip.$refs.popper && (tooltip.$refs.popper.style.display = 'none')
+                tooltip.doDestroy()
+                tooltip.setExpectedState(true)
+                this.activateTooltip(tooltip)
+            },
+            handleBlockMouseLeave() {
+                const tooltip = this.$refs.tooltip
+                if (tooltip) {
+                    tooltip.setExpectedState(false)
+                    tooltip.handleClosePopper()
+                }
             },
 
             //附件移除时，仅当非本次上传时触发remove事件
@@ -151,7 +192,7 @@
                 this.remove(file)
             },
 
-            //上传前获取七牛的上传凭证，并指定key
+            //上传前过滤文件
             beforeUpload(file) {
                 if (!file.type.includes('image')) {
                     elError('暂时只支持图片上传')
@@ -176,12 +217,18 @@
                     },
                     cancelToken: source.token
                 })
+                //由于ele原有的上传方法是原生ajax，所以取消上传时会调用一次abort方法
                 promise.abort = source.cancel
                 return promise
             }
+        },
+
+        created() {
+            this.activateTooltip = debounce(tooltip => tooltip.handleShowPopper(), 100)
         }
     }
 </script>
+
 <style lang="scss">
     .disabled .el-upload--picture-card {
         display: none;
@@ -214,5 +261,9 @@
 
     .el-upload-list__item-thumbnail {
         object-fit: cover;
+    }
+
+    .upload-tooltip {
+        max-width: 146px;
     }
 </style>

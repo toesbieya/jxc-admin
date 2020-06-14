@@ -1,5 +1,5 @@
 <template>
-    <el-image-viewer v-show="value" :initial-index="index" :on-close="close" :url-list="urlList" :z-index="200000"/>
+    <el-image-viewer v-if="value" :initial-index="index" :on-close="close" :url-list="urlList" :z-index="200000"/>
 </template>
 
 <script>

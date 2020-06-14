@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="tip-row">根据业务需求简单封装了upload，集成自带预览组件</div>
-        <upload-file/>
+        <upload-file :file-list="fileList"/>
         <div class="tip-row">原始使用axios的上传</div>
         <input @change="change" type="file">
     </div>
@@ -14,6 +14,24 @@
     export default {
         name: "uploadExample",
         components: {UploadFile},
+        data() {
+            return {
+                fileList: [
+                    {
+                        url: 'https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=4018557288,1217151095&fm=26&gp=0.jpg',
+                        name: '1jpgjpgjpgjpgjpgjp1jpgjpgjpgjpgjpgjpgjpggjpg.jpg'
+                    },
+                    {
+                        url: 'https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3252521864,872614242&fm=26&gp=0.jpg',
+                        name: '2.jpg'
+                    },
+                    {
+                        url: 'https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg',
+                        name: '3.jpg'
+                    },
+                ]
+            }
+        },
         methods: {
             change(e) {
                 let file = e.target.files[0]
