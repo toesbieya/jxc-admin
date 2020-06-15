@@ -72,7 +72,7 @@
     import {search} from "@/api/stock/current"
     import {isEmpty, debounce} from "@/utils"
     import {plus} from "@/utils/math"
-    import {exportExcel} from "@/utils/excel"
+    import {exportExcel} from "@/utils/excel/xlsx"
     import {getNodeId} from "@/utils/tree"
     import tableMixin from '@/mixins/tablePageMixin'
 

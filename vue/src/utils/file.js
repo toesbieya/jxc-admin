@@ -7,8 +7,7 @@ const baseUrl = '/file'
 const defaultOptions = {
     headers: {"Content-Type": "multipart/form-data"},
     generateKey(filename) {
-        const now = new Date()
-        return timeFormat('yyyy/MM/dd/') + now.getTime() + '/' + filename
+        return timeFormat('yyyy/MM/dd/') + Date.now() + '/' + filename
     },
     onUploadProgress(e) {
 
@@ -22,31 +21,33 @@ export function getToken() {
 
 //下载文件
 export function download(url, name) {
-    let href = typeof url === 'object' ? window.URL.createObjectURL(url) : url
-    let anchor = document.createElement('a')
+    const href = typeof url === 'object' ? window.URL.createObjectURL(url) : url
+    const anchor = document.createElement('a')
+
     anchor.style.visibility = 'hidden'
     anchor.href = href
     anchor.download = name
     document.body.appendChild(anchor)
     anchor.click()
     document.body.removeChild(anchor)
+
     if (typeof url === 'object') window.URL.revokeObjectURL(url)
 }
 
+//删除已上传的文件
 export function deleteUpload(url) {
     return request.get(baseUrl + '/delete?url=' + encodeURIComponent(url))
 }
 
 //七牛云直传
-export function upload(blob, filename = '快照.png', options = defaultOptions) {
+export function upload(blob, filename, options = {}) {
     return getToken()
         .then(token => {
             const param = new FormData()
-            options = {...defaultOptions, ...options}
             param.append('token', token)
             param.append('key', options.generateKey(filename))
             param.append('file', blob, filename)
-            return request.post(attachmentUploadUrl, param, options)
+            return request.post(attachmentUploadUrl, param, {...defaultOptions, ...options})
         })
         .then(({data}) => data)
 }

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import {exportExcelByJs, json2sheet} from "@/utils/excel"
+    import {exportExcelByJs, json2workbook} from "@/utils/excel/exceljs"
 
     export default {
         name: "ExportExcelTest",
@@ -41,8 +41,11 @@
                 this.loading = true
                 const arr = new Array(this.rows).fill(this.row)
 
-                const sheet = json2sheet(this.column, arr, this.merge ? {primaryKey: 'name', orderKey: 'no'} : null)
-                exportExcelByJs(sheet, '测试导出.xlsx')
+                const workbook = json2workbook(this.column, arr, this.merge ? {
+                    primaryKey: 'name',
+                    orderKey: 'no'
+                } : null)
+                exportExcelByJs(workbook, '测试导出.xlsx')
 
                 this.loading = false
                 const end = Date.now()
