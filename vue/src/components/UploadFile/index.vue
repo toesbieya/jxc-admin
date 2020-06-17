@@ -52,7 +52,8 @@
     /*
     * 直传七牛云
     * 传入fileList自动拼接七牛云外链前缀，并增加downloadUrl属性（图片类型的文件url与downloadUrl相同）
-    * success、remove事件中的file.downloadUrl均不带七牛云外链前缀
+    * 非图片类型的文件使用kkFileView预览
+    * success、remove事件中的file.url均不带七牛云外链前缀
     * */
     import axios from 'axios'
     import {attachmentPrefix} from '@/config'

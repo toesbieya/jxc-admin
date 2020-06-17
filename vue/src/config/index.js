@@ -32,7 +32,7 @@ module.exports = {
     attachmentPrefix: 'https://static.toesbieya.cn/',
 
     //文件预览接口前缀
-    filePreviewPrefix: isDevelopment ? 'http://localhost:8012/file/preview' : 'https://preview.toesbieya.cn',
+    filePreviewPrefix: isDevelopment ? 'http://localhost:8012' : 'https://preview.toesbieya.cn',
 
     //省市地区json数据请求地址
     regionDataUrl: '/static/json/region-pcas.json'

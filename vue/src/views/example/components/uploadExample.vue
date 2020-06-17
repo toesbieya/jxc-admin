@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div class="tip-row">根据业务需求简单封装了upload，集成自带预览组件</div>
+        <div class="tip-row">
+            根据业务需求简单封装了upload，集成自带预览组件<br/>
+            非图片类型的文件使用<a href="https://github.com/kekingcn/kkFileView" target="_blank">kkFileView</a>预览
+        </div>
         <upload-file :file-list="fileList"/>
         <div class="tip-row">原始使用axios的上传</div>
         <input @change="change" type="file">
