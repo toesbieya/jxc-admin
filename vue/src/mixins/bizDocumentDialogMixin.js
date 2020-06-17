@@ -126,7 +126,7 @@ export default {
             this.$refs.form.validate(v => {
                 if (!v) return
                 if (this.validate) {
-                    let valid = this.validate()
+                    const valid = this.validate()
                     if (!isEmpty(valid)) return elAlert(valid)
                 }
                 elConfirm('确认提交审核？')
@@ -251,7 +251,7 @@ export default {
             this.needSearch && this.$emit('search')
 
             //删除未保存的上传附件
-            let deleteArr = []
+            const deleteArr = []
             if (this.form.uploadImageList.length > 0) {
                 deleteArr.push(...this.form.uploadImageList.map(i => i.url))
             }
@@ -278,7 +278,7 @@ export default {
         },
         removeUpload(file) {
             this.form.deleteImageList.push(file.url)
-            let index = this.form.uploadImageList.findIndex(i => i.url === file.url)
+            const index = this.form.uploadImageList.findIndex(i => i.url === file.url)
             if (index > -1) this.form.uploadImageList.splice(index, 1)
         }
     }

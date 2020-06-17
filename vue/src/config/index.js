@@ -1,3 +1,5 @@
+const isDevelopment = process.env.NODE_ENV === 'development'
+
 module.exports = {
     title: 'BiuBiuBiu~',
 
@@ -8,7 +10,7 @@ module.exports = {
     routerMode: 'history',
 
     //socket连接地址
-    socketUrl: process.env.NODE_ENV === 'development' ? 'localhost:12580' : 'wss://toesbieya.cn',
+    socketUrl: isDevelopment ? 'localhost:12580' : 'wss://toesbieya.cn',
 
     sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
 
@@ -26,8 +28,11 @@ module.exports = {
     //七牛云上传地址
     attachmentUploadUrl: 'https://upload.qiniup.com',
 
-    //附件上传后的预览地址前缀
+    //附件上传后的存储地址前缀
     attachmentPrefix: 'https://static.toesbieya.cn/',
+
+    //文件预览接口前缀
+    filePreviewPrefix: isDevelopment ? 'http://localhost:8012/file/preview' : 'https://preview.toesbieya.cn',
 
     //省市地区json数据请求地址
     regionDataUrl: '/static/json/region-pcas.json'
