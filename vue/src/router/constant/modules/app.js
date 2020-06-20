@@ -1,5 +1,9 @@
 /*路由表：系统页面*/
 import Layout from '@/layout'
+import Redirect from '@/views/app/redirect'
+import Login from '@/views/app/login'
+import Page404 from '@/views/app/404'
+import Page403 from '@/views/app/403'
 
 const router = [
     {
@@ -8,22 +12,22 @@ const router = [
         children: [
             {
                 path: '/redirect/:path(.*)',
-                component: () => import('@/views/app/redirect')
+                component: Redirect
             }
         ]
     },
     {
         path: '/login',
         alias: '/register',
-        component: () => import('@/views/app/login')
+        component: Login
     },
     {
         path: '/404',
-        component: () => import('@/views/app/404')
+        component: Page404
     },
     {
         path: '/403',
-        component: () => import('@/views/app/403')
+        component: Page403
     }
 ]
 

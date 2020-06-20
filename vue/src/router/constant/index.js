@@ -3,6 +3,7 @@
  * constant/modules下的所有route都会加上noAuth:true
  */
 import Layout from '@/layout'
+import {lazyLoadView} from '@/router/util'
 
 const modulesFiles = require.context('./modules', false, /\.js$/)
 const modules = modulesFiles.keys().reduce((modules, modulePath) => {
@@ -21,7 +22,7 @@ const routes = [
         children: [
             {
                 path: 'index',
-                component: () => import('@/views/index'),
+                component: () => lazyLoadView(import('@/views/index')),
                 name: 'index',
                 meta: {title: '首页', affix: true, icon: 'home'}
             }
@@ -35,7 +36,7 @@ const routes = [
             {
                 path: 'index',
                 name: 'userCenter',
-                component: () => import('@/views/userCenter'),
+                component: () => lazyLoadView(import('@/views/userCenter')),
                 meta: {title: '个人中心', noCache: true, icon: 'user'},
             }
         ],
