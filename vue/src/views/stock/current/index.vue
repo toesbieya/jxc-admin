@@ -72,7 +72,7 @@
     import {search} from "@/api/stock/current"
     import {isEmpty, debounce} from "@/utils"
     import {plus} from "@/utils/math"
-    import {exportExcel} from "@/utils/excel/xlsx"
+    import {exportExcel} from "@/utils/excel"
     import {getNodeId} from "@/utils/tree"
     import tableMixin from '@/mixins/tablePageMixin'
 
@@ -97,7 +97,7 @@
                 },
                 detailDialog: false,
                 excel: {
-                    column: [
+                    columns: [
                         {header: '序号', prop: 'id', width: 20, merge: true},
                         {header: '分类名称', prop: 'cname', width: 20, merge: true},
                         {header: '库存总数', prop: 'total_num', width: 20, merge: true},

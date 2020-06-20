@@ -2,6 +2,7 @@ import {isEmpty} from "@/utils"
 import request from "@/config/request"
 import {elError} from "@/utils/message"
 import {download} from "@/utils/file"
+import {flatTree} from "@/utils/tree"
 
 /**
  * 搜索表格页导出excel
@@ -9,7 +10,7 @@ import {download} from "@/utils/file"
  *
  * @param url              搜索的请求地址
  * @param searchForm       搜索参数
- * @param options          合并选项{column, merge}，只有前端导出时才需要
+ * @param options          合并选项{columns, merge}，只有前端导出时才需要
  * @param json2workbook
  * @param exportExcelByJs
  */
@@ -25,8 +26,8 @@ export function abstractExportExcel(url, searchForm, options, json2workbook, exp
                 reader.onload = () => {
                     const response = JSON.parse(reader.result)
                     if (response.status !== 200) return elError(response.msg)
-                    const {column, merge} = options
-                    const workbook = json2workbook(column, response.data, merge)
+                    const {columns, merge} = options
+                    const workbook = json2workbook(response.data, columns, merge)
                     exportExcelByJs(workbook, filename)
                 }
                 reader.readAsText(data)
@@ -116,6 +117,104 @@ export function mergeExcel(props, data, primaryKey, orderKey, ignoreRows = 1) {
     merge.forEach((arr, index) => arr && mergeResultConstructor(arr, index))
 
     return result
+}
+
+/**
+ * 生成表头的二维数组以及合并结果
+ * 参考element的table-header
+ *
+ * @param columns     列配置
+ */
+export function generateHeaders(columns) {
+    const tree = []
+    let maxDepth = 1
+
+    for (let col of columns) {
+        const header = col.header, node = {depth: 1}
+
+        if (Array.isArray(header)) {
+            const depth = header.length
+            if (depth > maxDepth) maxDepth = depth
+
+            let arr = tree
+
+            for (let i = 0, temp = node; i < depth; i++) {
+                const value = header[i]
+
+                temp.depth = i + 1
+                temp.value = value
+
+                if (arr) {
+                    const already = arr.find(i => i.value === value)
+                    if (!already) {
+                        arr.push(temp)
+                        arr = null
+                    }
+                    else {
+                        if (!already.children) already.children = []
+                        arr = already.children
+                    }
+                }
+
+                if (i === depth - 1) break
+
+                temp.children = [{}]
+                temp = temp.children[0]
+            }
+        }
+        else {
+            node.value = header || ''
+            tree.push(node)
+        }
+    }
+
+    const traverse = column => {
+        if (column.children) {
+            let colSpan = 0
+            column.children.forEach(subColumn => {
+                traverse(subColumn)
+                colSpan += subColumn.colSpan
+            })
+            column.rowSpan = 1
+            column.colSpan = colSpan
+        }
+        else {
+            column.rowSpan = maxDepth - column.depth + 1
+            column.colSpan = 1
+        }
+    }
+
+    tree.forEach(node => traverse(node))
+
+    const headers = []
+    for (let i = 0; i < maxDepth; i++) headers.push([])
+
+    const headerMerge = []
+
+    let lastDepth = 0, colIndex = 0 //当前是第几列，从0开始
+
+    for (const node of flatTree(tree)) {
+        //判断是否是下一列，节点深度从1开始
+        if (node.depth <= lastDepth) colIndex++
+        lastDepth = node.depth
+
+        //填充表头
+        headers[node.depth - 1][colIndex] = node.value
+
+        //获取合并结果，要么rowSpan大于1要么colSpan大于1，两者不可能同时大于1
+        const startColHeader = number2excelColumnHeader(colIndex)
+        const startCell = startColHeader + node.depth
+        if (node.rowSpan > 1) {
+            const endCell = startColHeader + (node.depth + node.rowSpan - 1)
+            headerMerge.push(`${startCell}:${endCell}`)
+        }
+        if (node.colSpan > 1) {
+            const endCell = number2excelColumnHeader(colIndex + node.colSpan - 1) + node.depth
+            headerMerge.push(`${startCell}:${endCell}`)
+        }
+    }
+
+    return {headers, headerMerge}
 }
 
 /**

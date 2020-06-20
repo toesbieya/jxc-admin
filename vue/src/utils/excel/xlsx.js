@@ -1,7 +1,17 @@
+/**
+ * @deprecated
+ * xlsx问题多多，准备全面转向excelJS
+ */
+
 import {isEmpty} from "@/utils"
 import {download} from "@/utils/file"
 import {abstractExportExcel, jsonArray2rowArray, mergeExcel} from "./common"
 
+/**
+ * @param url
+ * @param searchForm
+ * @param options
+ */
 export function exportExcel(url, searchForm, options) {
     abstractExportExcel(url, searchForm, options, json2workbook, exportExcelByJs)
 }
@@ -17,30 +27,31 @@ export function exportExcelByJs(workbook, filename) {
 }
 
 /**
- * @param column      列配置
  * @param data        json数组
- * @param mergeOption 合并配置项
- * @param headerRows  表头占的行数，为0时表头不写入表格
+ * @param columns     列配置
+ * @param merge       合并配置项
  * @returns
  */
-export function json2workbook(column, data, mergeOption, headerRows = 1) {
+export function json2workbook(data, columns, merge) {
     const header = []    //表格头部
     const propMap = {}   //表头和字段名的映射表，propMap[字段名]=对应的表头的数组下标
-    const colWidth = []  //列宽配置，默认20
+    const columnSettings = []  //列宽配置，默认20
     const needMerge = [] //合并行配置，[i]=字段名
 
-    column.forEach((item, i) => {
-        if (!isEmpty(item.header)) header[i] = item.header
-        if (!isEmpty(item.prop)) propMap[item.prop] = i
-        if (item.merge) needMerge[i] = item.prop
-        colWidth[i] = {wch: item.width || 20}
+    columns.forEach((col, i) => {
+        if (!isEmpty(col.header)) header[i] = col.header
+        if (!isEmpty(col.prop)) propMap[col.prop] = i
+        if (col.merge) needMerge[i] = col.prop
+        columnSettings[i] = {wch: col.width || 20}
     })
 
-    let mergeResult = []
+    const headerRows = header.length > 0 ? 1 : 0
 
-    if (mergeOption && needMerge.length > 0) {
-        const {primaryKey, orderKey} = mergeOption
-        mergeResult = mergeExcel(needMerge, data, primaryKey, orderKey, headerRows)
+    let bodyMerge = []
+
+    if (merge && needMerge.length > 0) {
+        const {primaryKey, orderKey} = merge
+        bodyMerge = mergeExcel(needMerge, data, primaryKey, orderKey, headerRows)
     }
 
     const result = jsonArray2rowArray(data, propMap)
@@ -48,8 +59,8 @@ export function json2workbook(column, data, mergeOption, headerRows = 1) {
     headerRows && result.unshift(header)
 
     const sheet = aoa_to_sheet(result, headerRows)
-    sheet['!cols'] = colWidth
-    sheet['!merges'] = mergeResult.map(i => window.XLSX.utils.decode_range(i))
+    sheet['!cols'] = columnSettings
+    sheet['!merges'] = bodyMerge.map(i => window.XLSX.utils.decode_range(i))
     return {SheetNames: ['Sheet1'], Sheets: {Sheet1: sheet}}
 }
 

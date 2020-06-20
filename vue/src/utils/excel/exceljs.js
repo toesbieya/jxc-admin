@@ -1,6 +1,6 @@
 import {isEmpty} from "@/utils"
 import {download} from "@/utils/file"
-import {abstractExportExcel, jsonArray2rowArray, mergeExcel, number2excelColumnHeader} from "./common"
+import {abstractExportExcel, jsonArray2rowArray, mergeExcel, generateHeaders, number2excelColumnHeader} from "./common"
 
 //默认的excel单元格样式
 const defaultCellStyle = {
@@ -32,52 +32,56 @@ export function exportExcelByJs(workbook, filename) {
 }
 
 /**
- * @param column      列配置
  * @param data        json数组
- * @param mergeOption 合并配置项
- * @param headerRows  表头占的行数，为0时表头不写入表格
+ * @param columns     列配置
+ * @param merge       合并配置项
  * @returns
  */
-export function json2workbook(column, data, mergeOption, headerRows = 1) {
+export function json2workbook(data, columns, merge) {
     const workbook = new window.ExcelJS.Workbook()
     const sheet = workbook.addWorksheet('Sheet1')
-    const colWidth = []
-    const header = []    //表格头部
+    const columnSettings = []
     const propMap = {}   //表头和字段名的映射表，propMap[字段名]=对应的表头的数组下标
     const needMerge = [] //合并行配置，[i]=字段名
 
-    column.forEach((item, i) => {
-        if (!isEmpty(item.header)) header[i] = item.header
-        if (!isEmpty(item.prop)) propMap[item.prop] = i
-        if (item.merge) needMerge[i] = item.prop
-        colWidth[i] = {width: item.width || 20, style: defaultCellStyle}
+    columns.forEach((col, i) => {
+        if (!isEmpty(col.prop)) propMap[col.prop] = i
+        if (col.merge) needMerge[i] = col.prop
+        columnSettings[i] = {width: col.width || 20, style: defaultCellStyle}
     })
 
-    sheet.columns = colWidth
+    sheet.columns = columnSettings
 
-    let merge = []
+    const {headers, headerMerge} = generateHeaders(columns)
 
-    if (mergeOption && needMerge.length > 0) {
-        const {primaryKey, orderKey} = mergeOption
-        merge = mergeExcel(needMerge, data, primaryKey, orderKey, headerRows)
-    }
-
-    const result = jsonArray2rowArray(data, propMap)
-
-    if (headerRows > 0) {
-        sheet.addRow(header)
-        header.forEach((_, index) => {
-            const cell = sheet.getCell(number2excelColumnHeader(index) + '1')
-            Object.keys(defaultHeaderStyle).forEach(key => {
-                cell[key] = defaultHeaderStyle[key]
+    if (headers.length > 0) {
+        sheet.addRows(headers)
+        headers.forEach((rows, rowIndex) => {
+            rows.forEach((cellValue, colIndex) => {
+                if (cellValue !== undefined) {
+                    const cell = sheet.getCell(number2excelColumnHeader(colIndex) + (rowIndex + 1))
+                    Object.keys(defaultHeaderStyle).forEach(key => {
+                        cell[key] = defaultHeaderStyle[key]
+                    })
+                }
             })
         })
     }
 
+    let bodyMerge = []
+
+    if (merge && needMerge.length > 0) {
+        const {primaryKey, orderKey} = merge
+        bodyMerge = mergeExcel(needMerge, data, primaryKey, orderKey, headers.length)
+    }
+
+    const result = jsonArray2rowArray(data, propMap)
+
     sheet.addRows(result)
 
     //exceljs的合并行必须在数据添加后进行
-    merge.forEach(i => sheet.mergeCells(i))
+    headerMerge.forEach(i => sheet.mergeCells(i))
+    bodyMerge.forEach(i => sheet.mergeCells(i))
 
     return workbook
 }

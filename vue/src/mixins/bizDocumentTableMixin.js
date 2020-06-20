@@ -3,7 +3,7 @@ import LinerProgress from '@/components/LinerProgress'
 import {isEmpty} from "@/utils"
 import {elConfirm, elError, elSuccess} from "@/utils/message"
 import {auth} from "@/utils/auth"
-import {exportExcel} from "@/utils/excel/xlsx"
+import {exportExcel} from "@/utils/excel"
 
 export const commonMethods = {
     getStatus(status) {

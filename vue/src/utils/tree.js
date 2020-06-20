@@ -148,6 +148,19 @@ export function getNodeId(arr) {
     return res
 }
 
+//树转一维数组
+export function flatTree(tree, childrenKey = 'children') {
+    const result = []
+    tree.forEach(node => {
+        if (node[childrenKey]) {
+            result.push(node)
+            result.push.apply(result, flatTree(node[childrenKey], childrenKey))
+        }
+        else result.push(node)
+    })
+    return result
+}
+
 export function getNodesByDfs(node) {
     const nodes = []
     const stack = []
