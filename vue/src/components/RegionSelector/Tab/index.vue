@@ -4,13 +4,14 @@
             :value="value"
             :disabled="readonly"
             :size="size"
+            popper-append-to-body
             clearable
             @clear="() => $emit('clear')"
             @visible-change="visibleChange"
     >
         <template slot="empty">
             <div class="rg-header">
-                <span>行政区划选择器</span>
+                <h3>行政区划选择</h3>
                 <button class="rg-removeall-button" type="button" title="清除已选" @click="removeAll">
                     <i class="el-icon-delete"/>
                 </button>
@@ -24,8 +25,8 @@
                         v-model="searchText"
                         class="rg-input"
                         type="text"
-                        placeholder="输入地区id或名称，回车搜索"
-                        @keyup.enter="search"
+                        placeholder="输入地区id或名称搜索"
+                        @input="search"
                 >
             </div>
             <div class="rg-level-tabs">
@@ -53,6 +54,7 @@
 </template>
 
 <script>
+    import {debounce} from "@/utils"
     import {createLimitTree, getNodeId} from "@/utils/tree"
     import common from '../mixin'
 
@@ -185,7 +187,9 @@
                         parent = result[i - 1] || {children: this.treeData}
 
                     const node = parent.children.find(predicate(str))
+                    //只要有一次不满足就退出，保留之前的查找结果
                     if (!node) break
+
                     result.push(node)
                 }
 
@@ -196,6 +200,8 @@
                 this.maxLevel = DEFAULT_MAX_LEVEL
                 this.selected = JSON.parse(JSON.stringify(DEFAULT_TABS))
                 this.currentLevel = 1
+                this.searchText = ''
+                this.setItems(this.currentLevel)
             },
 
             done() {
@@ -236,6 +242,7 @@
         },
 
         created() {
+            this.search = debounce(this.search, 200)
             this.selected = JSON.parse(JSON.stringify(DEFAULT_TABS))
         },
 

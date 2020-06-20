@@ -13,7 +13,7 @@
             action=""
             list-type="picture-card"
     >
-        <i class="el-icon-plus" slot="default"/>
+        <i slot="default" class="el-icon-plus"/>
 
         <template v-slot:file="{file}">
             <span
@@ -157,6 +157,9 @@
 
             //附件移除时，仅当非本次上传时触发remove事件
             remove(file) {
+                //删除上传文件时隐藏tooltip
+                this.handleBlockMouseLeave()
+
                 //区分是否为本次新上传，以及是否上传成功
                 //若不是新上传的
                 if (!file.raw) this.$emit('remove', {url: file.downloadUrl.replace(attachmentPrefix, '')})
@@ -234,7 +237,7 @@
         },
 
         created() {
-            this.activateTooltip = debounce(tooltip => tooltip.handleShowPopper(), 100)
+            this.activateTooltip = debounce(tooltip => tooltip.handleShowPopper(), 200)
         }
     }
 </script>
