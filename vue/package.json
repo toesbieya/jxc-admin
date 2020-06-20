@@ -23,7 +23,7 @@
     "v-viewer": "^1.5.1",
     "vue": "^2.6.11",
     "vue-count-to": "^1.0.13",
-    "vue-cropper": "^0.5.3",
+    "vue-cropper": "^0.5.4",
     "vue-router": "^3.3.2",
     "vuex": "^3.4.0"
   },

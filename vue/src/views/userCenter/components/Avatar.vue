@@ -1,6 +1,6 @@
 <template>
     <dialog-form :loading="loading" title="上传头像" :value="value" width="50%" @close="cancel">
-        <el-row class="avatar-cropper" type="flex">
+        <el-row class="avatar-cropper">
             <div class="img-wrapper">
                 <vue-cropper
                         ref="cropper"
@@ -9,33 +9,22 @@
                         autoCrop
                         autoCropHeight="200px"
                         autoCropWidth="200px"
-                        centerBox
                         fixedBox
                         full
                         outputType="png"
-                        @realTime="previews=$event"
                         @wheel.native.prevent="scale"
                 />
             </div>
-            <div class="operate-wrapper">
-                <div class="preview-container">
-                    <div :style="previews.div">
-                        <img :src="previews.url" :style="previews.img">
-                    </div>
-                </div>
-                <el-button size="small" type="primary" @click="$refs.input.click()">
-                    选择图片
-                    <input
-                            ref="input"
-                            accept="image/png, image/jpeg, image/gif, image/jpg"
-                            style="display: none"
-                            type="file"
-                            @change="chooseImage"
-                    >
-                </el-button>
-            </div>
+            <input
+                    ref="input"
+                    accept="image/png, image/jpeg, image/gif, image/jpg"
+                    style="display: none"
+                    type="file"
+                    @change="chooseImage"
+            >
         </el-row>
         <template v-slot:footer>
+            <el-button plain size="small" @click="$refs.input.click()">选择图片</el-button>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
@@ -60,7 +49,6 @@
         data() {
             return {
                 loading: false,
-                previews: {},
                 img: '',
                 name: ''
             }
@@ -123,33 +111,17 @@
 
 <style lang="scss">
     .avatar-cropper {
+        .cropper-crop-box {
+            border: 1px solid #39f;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
         .img-wrapper {
             height: 360px;
             width: 640px;
             display: inline-block;
             border: 1px solid #ebebeb;
-        }
-
-        .operate-wrapper {
-            padding: 0 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .preview-container {
-                border: 1px solid #ebebeb;
-                height: 200px;
-                width: 200px;
-                overflow: hidden;
-                border-radius: 50%;
-                background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC");
-            }
-
-            .el-button {
-                margin-left: 0;
-                margin-top: 20px;
-                width: 100%;
-            }
         }
     }
 </style>
