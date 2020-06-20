@@ -30,10 +30,7 @@
         <qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
 
         <!--三方工具-->
-        <easyexcel.version>2.1.6</easyexcel.version>
-        <poi.version>4.1.1</poi.version>
-        <ehcache.version>3.8.1</ehcache.version>
-        <cglib.version>3.3.0</cglib.version>
+        <easyexcel.version>2.2.5</easyexcel.version>
     </properties>
 
     <dependencies>
@@ -135,26 +132,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>easyexcel</artifactId>
             <version>${easyexcel.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib</artifactId>
-            <version>${cglib.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>${ehcache.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
         </dependency>
     </dependencies>
 

@@ -31,7 +31,10 @@ public class ExcelUtil {
         defaultCellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
     }
 
-    public static void exportSimply(List list, HttpServletResponse response, String filename) throws Exception {
+    public static void exportSimply(
+            List list,
+            HttpServletResponse response,
+            String filename) throws Exception {
         export(list, response, filename, null, null);
     }
 
@@ -65,7 +68,9 @@ public class ExcelUtil {
 
         response.setContentType("application/vnd.ms-excel");
 
-        ExcelWriterBuilder builder = EasyExcel.write(response.getOutputStream(), list.get(0).getClass());
+        Class clazz = list.get(0).getClass();
+
+        ExcelWriterBuilder builder = EasyExcel.write(response.getOutputStream(), clazz);
 
         builder.registerWriteHandler(getDefaultStyle());
 
@@ -73,7 +78,7 @@ public class ExcelUtil {
             builder.needHead(false).withTemplate(EXCEL_TEMPLATE_DIR + template + ".xlsx");
         }
         if (mergeOptions != null) {
-            CommonMerge commonMerge = new CommonMerge(list, mergeOptions);
+            CommonMerge commonMerge = new CommonMerge(list, clazz, mergeOptions);
             builder.registerWriteHandler(commonMerge);
         }
 
@@ -111,18 +116,17 @@ public class ExcelUtil {
         private final int[][] merge;
         private final int[] temp;
 
-        public CommonMerge(List data, CommonMergeOptions mergeOptions) throws Exception {
+        public CommonMerge(List data, Class clazz, CommonMergeOptions mergeOptions) throws Exception {
             String[] attrs = mergeOptions.getAttrs();
             String primaryKey = mergeOptions.getPrimaryKey();
             String orderKey = mergeOptions.getOrderKey();
 
             int length = data.size();
             this.attrs = new Field[attrs.length];
-            Class t = data.get(0).getClass();
             this.merge = new int[attrs.length][];
             for (int i = 0; i < attrs.length; i++) {
                 if (StringUtils.isEmpty(attrs[i])) continue;
-                Field field = t.getDeclaredField(attrs[i]);
+                Field field = clazz.getDeclaredField(attrs[i]);
                 field.setAccessible(true);
 
                 //获取easyExcel的注解，根据值来确定字段在excel中的位置
@@ -138,10 +142,10 @@ public class ExcelUtil {
                 a[0] = 1;
                 this.merge[i] = a;
             }
-            Field primaryField = t.getDeclaredField(primaryKey);
+            Field primaryField = clazz.getDeclaredField(primaryKey);
             primaryField.setAccessible(true);
             this.primaryField = primaryField;
-            Field orderField = t.getDeclaredField(orderKey);
+            Field orderField = clazz.getDeclaredField(orderKey);
             orderField.setAccessible(true);
             this.temp = new int[attrs.length];
             Arrays.fill(this.temp, 1);
