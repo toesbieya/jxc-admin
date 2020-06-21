@@ -3,13 +3,16 @@
 
     export default {
         name: "PanelGroupItem",
+
         functional: true,
+
         props: {
             icon: String,
             color: String,
             text: String,
             value: Number
         },
+
         render(h, context) {
             const {icon, color, text, value} = context.props
             return (

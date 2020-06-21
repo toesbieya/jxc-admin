@@ -21,6 +21,7 @@
 
     export default {
         name: "TinymceEditor",
+
         props: {
             value: String,
             readonly: Boolean,
@@ -33,6 +34,7 @@
                 default: '100%'
             }
         },
+
         data() {
             return {
                 id: 'tinymce-' + Date.now(),
@@ -41,6 +43,7 @@
                 manualChange: false,
             }
         },
+
         watch: {
             value(value) {
                 if (!this.hasInit) return
@@ -51,6 +54,7 @@
                 this.hasInit && this.getInstance().mode.set(value ? 'readonly' : 'design')
             }
         },
+
         methods: {
             getInstance() {
                 return window.tinymce.get(this.id)
@@ -95,9 +99,11 @@
                 tinymce.destroy()
             }
         },
+
         mounted() {
             !this.readonly && this.init()
         },
+
         beforeDestroy() {
             this.destroy()
         },

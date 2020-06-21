@@ -21,6 +21,7 @@
                 </el-radio-group>
             </el-form-item>
         </el-form>
+
         <template v-slot:footer>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
@@ -37,13 +38,17 @@
 
     export default {
         name: "EditDialog",
+
         mixins: [dialogMixin],
+
         components: {DialogForm},
+
         props: {
             value: {type: Boolean, default: false},
             type: {type: String, default: 'add'},
             data: {type: Object, default: () => ({})},
         },
+
         data() {
             return {
                 loading: false,
@@ -59,6 +64,7 @@
                 }
             }
         },
+
         computed: {
             title() {
                 if (!this.data || isEmpty(this.type)) return ''
@@ -69,6 +75,7 @@
                         return `编辑部门【${this.data.name}】`
                 }
             },
+
             confirmMessage() {
                 if (!this.data || isEmpty(this.type)) return ''
                 switch (this.type) {
@@ -80,12 +87,14 @@
                         return ''
                 }
             },
+
             parentName() {
                 if (!this.data) return ''
                 if (this.type === 'add') return this.data.fullname
                 else return this.data.parentName
             }
         },
+
         methods: {
             open() {
                 this.$nextTick(() => {
@@ -97,6 +106,7 @@
                     else this.form.pid = this.data.id
                 })
             },
+
             clearForm() {
                 this.form.id = null
                 this.form.pid = null
@@ -104,10 +114,12 @@
                 this.form.status = 1
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
+
             cancel() {
                 this.closeDialog()
                 this.clearForm()
             },
+
             confirm() {
                 if (this.loading) return
                 this.$refs.form.validate(v => {

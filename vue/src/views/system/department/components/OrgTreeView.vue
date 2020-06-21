@@ -18,13 +18,16 @@
 
     export default {
         name: "OrgTreeView",
+
         components: {OrgTree},
+
         props: {
             data: {type: Object, default: () => ({})},
             horizontal: Boolean,
             collapsable: Boolean,
             zoom: {type: Number, default: 1},
         },
+
         data() {
             return {
                 orgTreeOffsetLeft: 0,
@@ -37,6 +40,7 @@
                 expandAll: true
             }
         },
+
         computed: {
             orgTreeStyle() {
                 return {
@@ -46,6 +50,7 @@
                 }
             }
         },
+
         methods: {
             mousedownView(event) {
                 this.canMove = true
@@ -56,12 +61,14 @@
                 document.addEventListener('mousemove', this.mousemoveView)
                 document.addEventListener('mouseup', this.mouseupView)
             },
+
             mousemoveView(event) {
                 if (!this.canMove) return
                 const {pageX, pageY} = event
                 this.orgTreeOffsetLeft = this.oldMarginLeft + pageX - this.initPageX
                 this.orgTreeOffsetTop = this.oldMarginTop + pageY - this.initPageY
             },
+
             mouseupView() {
                 this.canMove = false
                 document.removeEventListener('mousemove', this.mousemoveView)

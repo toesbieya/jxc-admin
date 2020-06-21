@@ -4,12 +4,14 @@
 
 <script>
     import {logic, resize} from "@/mixins/chart"
-    import {getDailyFinishOrder} from '@/api/statistic/index'
+    import {getDailyFinishOrder} from '@/api/statistic'
     import {timeFormat} from "@/utils"
 
     export default {
         name: "DailyFinishOrderStat",
+
         mixins: [resize, logic],
+
         methods: {
             init() {
                 if (this.loading) return
@@ -28,6 +30,7 @@
                     })
                     .finally(() => this.loading = false)
             },
+
             setOptions({time, purchase, sell}) {
                 this.chart.setOption({
                     title: {

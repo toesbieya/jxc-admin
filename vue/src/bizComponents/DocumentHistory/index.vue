@@ -1,11 +1,14 @@
 <script type="text/jsx">
     export default {
         name: "DocumentHistory",
+
         functional: true,
+
         props: {
             type: String,
             data: {type: Array, default: () => []}
         },
+
         render(h, context) {
             const {type, data = []} = context.props
             if (type === 'add') return ''

@@ -9,12 +9,15 @@
 
     export default {
         name: 'ScrollPane',
+
         data: () => ({rAF: null}),
+
         computed: {
             scrollWrapper() {
                 return this.$refs.scrollContainer.$refs.wrap
             },
         },
+
         methods: {
             handleScroll(e) {
                 const eventDelta = e.wheelDelta || -(e.detail || 0) * 40
@@ -22,6 +25,7 @@
                 if (eventDelta < 0 && this.scrollWrapper.scrollWidth <= this.scrollWrapper.scrollLeft + this.scrollWrapper.clientWidth) return
                 this.smoothScroll(-eventDelta * 2)
             },
+
             moveToTarget(currentTag) {
                 const $container = this.$refs.scrollContainer.$el
                 const $containerWidth = $container.offsetWidth
@@ -63,12 +67,14 @@
                     }
                 }
             },
+
             scrollLeft(val) {
                 this.scrollWrapper.scrollTo({
                     left: val,
                     behavior: 'smooth'
                 })
             },
+
             smoothScroll(val) {
                 if (this.rAF) window.cancelAnimationFrame(this.rAF)
                 let cost = 300, times = cost / 16, gap = val / times + 1

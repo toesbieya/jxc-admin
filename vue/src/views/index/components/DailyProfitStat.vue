@@ -4,12 +4,14 @@
 
 <script>
     import {logic, resize} from "@/mixins/chart"
-    import {getDailyProfitStat} from '@/api/statistic/index'
+    import {getDailyProfitStat} from '@/api/statistic'
     import {timeFormat} from "@/utils"
 
     export default {
         name: "DailyProfitStat",
+
         mixins: [resize, logic],
+
         methods: {
             init() {
                 if (this.loading) return
@@ -30,6 +32,7 @@
                     })
                     .finally(() => this.loading = false)
             },
+
             setOptions({time, purchase, sell, profit}) {
                 this.chart.setOption({
                     title: {

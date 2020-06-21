@@ -7,7 +7,9 @@
 
     export default {
         name: "ImageViewer",
+
         components: {ElImageViewer: ImageViewer},
+
         data() {
             return {
                 value: false,
@@ -15,6 +17,7 @@
                 urlList: []
             }
         },
+
         methods: {
             close() {
                 this.value = false

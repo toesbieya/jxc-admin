@@ -4,7 +4,7 @@
             :visible="value"
             append-to-body
             title="选择库存商品"
-            width="50%"
+            width="70%"
             top="50px"
             @close="cancel"
             @open="search"
@@ -15,8 +15,10 @@
                 <el-button size="small" type="primary" @click="confirm">确 定</el-button>
                 <el-button plain size="small" @click="closeDialog">取 消</el-button>
             </el-row>
+
             <el-row class="table-container">
                 <liner-progress :show="loading"/>
+
                 <el-table
                         ref="table"
                         :data="tableData"
@@ -43,13 +45,17 @@
 
     export default {
         name: "StockSelector",
+
         mixins: [dialogMixin],
+
         components: {LinerProgress},
+
         props: {
             value: Boolean,
             cid: Number,
             row: Object
         },
+
         data() {
             return {
                 loading: false,
@@ -57,6 +63,7 @@
                 selection: []
             }
         },
+
         methods: {
             search() {
                 if (!this.value || this.loading) return
@@ -66,10 +73,12 @@
                     .then(data => this.tableData = data)
                     .finally(() => this.loading = false)
             },
+
             confirm() {
                 if (this.selection.length <= 0) return elError('请选择商品')
                 this.$emit('select', this.selection)
             },
+
             cancel() {
                 this.closeDialog()
                 this.$refs.table.clearSelection()

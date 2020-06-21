@@ -23,6 +23,7 @@
                 />
             </search-form-item>
         </search-form>
+
         <el-row class="button-group">
             <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
@@ -33,6 +34,7 @@
             <el-button v-if="canKick" icon="el-icon-warning-outline" size="small" type="danger" @click="kick">踢 出
             </el-button>
         </el-row>
+
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table :data="tableData" @row-click="row=$event">
                 <el-table-column align="center" label="#" type="index" width="80"/>
@@ -63,6 +65,7 @@
                     </template>
                 </el-table-column>
             </abstract-table>
+
             <el-pagination
                     background
                     :current-page="searchForm.page"
@@ -93,8 +96,11 @@
 
     export default {
         name: "userManagement",
+
         mixins: [tableMixin],
+
         components: {SearchForm, SearchFormItem, RoleSelector, EditDialog},
+
         data() {
             return {
                 searchForm: {
@@ -106,23 +112,29 @@
                 editDialog: false
             }
         },
+
         computed: {
             canAdd() {
                 return auth(baseUrl + '/add')
             },
+
             canUpdate() {
                 return auth(baseUrl + '/update')
             },
+
             canDel() {
                 return auth(baseUrl + '/del')
             },
+
             canKick() {
                 return auth(baseUrl + '/kick')
             },
+
             canResetPwd() {
                 return auth(baseUrl + '/resetPwd')
             },
         },
+
         methods: {
             mergeSearchForm() {
                 return {
@@ -131,6 +143,7 @@
                     endTime: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null,
                 }
             },
+
             search() {
                 if (this.config.loading) return
                 this.config.loading = true
@@ -144,15 +157,18 @@
                     })
                     .finally(() => this.config.loading = false)
             },
+
             add() {
                 this.type = 'add'
                 this.editDialog = true
             },
+
             edit() {
                 if (isEmpty(this.row)) return elError('请选择要编辑的用户')
                 this.type = 'edit'
                 this.editDialog = true
             },
+
             resetPwd() {
                 if (isEmpty(this.row)) return elError('请选择要重置密码的用户')
                 if (this.config.operating) return
@@ -167,6 +183,7 @@
                     })
                     .finally(() => this.config.operating = false)
             },
+
             del() {
                 if (isEmpty(this.row)) return elError('请选择要删除的用户')
                 if (this.config.operating) return
@@ -181,6 +198,7 @@
                     })
                     .finally(() => this.config.operating = false)
             },
+
             kick() {
                 if (isEmpty(this.row)) return elError('请选择要踢出的用户')
                 if (!this.row.online) return elError('只有在线用户才可以踢出')
@@ -196,11 +214,13 @@
                     })
                     .finally(() => this.config.operating = false)
             },
+
             success(msg) {
                 elSuccess(msg)
                 this.editDialog = false
                 this.search()
             },
+
             previewAvatar(src) {
                 this.$image({index: 0, urlList: [src]})
             }

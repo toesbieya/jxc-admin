@@ -39,12 +39,14 @@
                 />
             </search-form-item>
         </search-form>
+
         <el-row class="button-group">
             <el-button size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canAdd" size="small" type="primary" @click="add">添 加</el-button>
             <el-button v-if="canUpdate" size="small" type="primary" @click="edit">编 辑</el-button>
             <el-button v-if="canDel" size="small" type="danger" @click="del">删 除</el-button>
         </el-row>
+
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table :data="tableData" @row-click="row=$event">
                 <el-table-column align="center" label="#" type="index" width="80"/>
@@ -72,6 +74,7 @@
                     @current-change="pageChange"
             />
         </el-row>
+
         <edit-dialog v-model="editDialog" :data="row" :type="type" @success="success"/>
     </el-card>
 </template>
@@ -91,8 +94,11 @@
 
     export default {
         name: "customerManagement",
+
         mixins: [tableMixin],
+
         components: {SearchForm, SearchFormItem, EditDialog, RegionSelector},
+
         data() {
             return {
                 searchForm: {
@@ -110,29 +116,36 @@
                 editDialog: false
             }
         },
+
         computed: {
             canAdd() {
                 return auth(baseUrl + '/add')
             },
+
             canUpdate() {
                 return auth(baseUrl + '/update')
             },
+
             canDel() {
                 return auth(baseUrl + '/del')
             }
         },
+
         methods: {
             getLimitRegion() {
                 return getLimitRegion()
             },
+
             clearSidSearch() {
                 this.searchForm.region = null
                 this.temp.region_name = null
             },
+
             selectRegion(obj, ids) {
                 this.searchForm.region = ids.join(',')
                 this.temp.region_name = obj.fullname
             },
+
             mergeSearchForm() {
                 return {
                     ...this.searchForm,
@@ -140,6 +153,7 @@
                     endTime: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null
                 }
             },
+
             search() {
                 if (this.config.loading) return
                 this.config.loading = true
@@ -152,15 +166,18 @@
                     })
                     .finally(() => this.config.loading = false)
             },
+
             add() {
                 this.type = 'add'
                 this.editDialog = true
             },
+
             edit() {
                 if (isEmpty(this.row)) return elError('请选择要编辑的客户')
                 this.type = 'edit'
                 this.editDialog = true
             },
+
             del() {
                 if (isEmpty(this.row)) return elError('请选择要删除的客户')
                 if (this.config.operating) return
@@ -172,6 +189,7 @@
                     .then(() => this.success('删除成功'))
                     .finally(() => this.config.operating = false)
             },
+
             success(msg) {
                 elSuccess(msg)
                 this.editDialog = false

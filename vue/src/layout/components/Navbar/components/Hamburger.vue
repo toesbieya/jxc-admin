@@ -1,10 +1,11 @@
 <script type="text/jsx">
     export default {
         name: 'Hamburger',
+
         functional: true,
-        props: {
-            isActive: Boolean
-        },
+
+        props: {isActive: Boolean},
+
         render(h, context) {
             const {isActive} = context.props
             return (

@@ -24,6 +24,7 @@
                 </template>
             </el-table-column>
         </abstract-table>
+
         <el-pagination
                 background
                 :current-page="searchForm.page"
@@ -41,7 +42,9 @@
 
     export default {
         name: "UserAction",
+
         mixins: [tablePageMixin],
+
         data() {
             return {
                 searchForm: {
@@ -49,11 +52,13 @@
                 }
             }
         },
+
         computed: {
             uid() {
                 return this.$store.state.user.id
             }
         },
+
         methods: {
             search() {
                 if (this.config.loading) return
@@ -65,6 +70,7 @@
                     })
                     .finally(() => this.config.loading = false)
             },
+
             getInfo(type) {
                 switch (type) {
                     case 0:

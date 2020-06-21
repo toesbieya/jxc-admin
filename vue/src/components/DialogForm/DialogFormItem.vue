@@ -1,8 +1,11 @@
 <script type="text/jsx">
     export default {
         name: "DialogFormItem",
+
         functional: true,
+
         props: {full: Boolean, dense: Boolean, label: String, prop: String},
+
         render(h, context) {
             let {full, dense, label, prop} = context.props
             let attrs = {xs: 24, sm: 12, lg: 8}

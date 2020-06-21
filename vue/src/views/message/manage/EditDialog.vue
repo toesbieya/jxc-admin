@@ -51,6 +51,7 @@
                 </dialog-form-item>
             </el-row>
         </el-form>
+
         <template v-slot:footer>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canSave" size="small" type="primary" @click="save">保 存</el-button>
@@ -73,8 +74,11 @@
 
     export default {
         name: "EditDialog",
+
         mixins: [dialogMixin],
+
         components: {DialogForm, DialogFormItem, TinymceEditor, UserSelector},
+
         props: {
             value: {type: Boolean, default: false},
             type: {type: String, default: 'see'},
@@ -84,6 +88,7 @@
             },
             baseUrl: String
         },
+
         data() {
             return {
                 loading: false,
@@ -111,6 +116,7 @@
                 }
             }
         },
+
         computed: {
             title() {
                 if (isEmpty(this.type)) return ''
@@ -142,6 +148,7 @@
                     && this.form.status === 1
             },
         },
+
         methods: {
             open() {
                 if (this.type === 'add') return

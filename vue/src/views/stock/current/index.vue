@@ -33,10 +33,12 @@
                     />
                 </search-form-item>
             </search-form>
+
             <el-row class="button-group">
                 <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
                 <el-button icon="el-icon-download" size="small" type="info" @click="downloadExcel">导 出</el-button>
             </el-row>
+
             <el-row v-loading="config.loading" class="table-container">
                 <abstract-table :data="tableData" show-summary :summary-method="summary">
                     <el-table-column align="center" label="#" type="index" width="80"/>
@@ -49,6 +51,7 @@
                         </template>
                     </el-table-column>
                 </abstract-table>
+
                 <el-pagination
                         background
                         :current-page="searchForm.page"
@@ -80,8 +83,11 @@
 
     export default {
         name: "currentStock",
+
         mixins: [tableMixin],
+
         components: {SearchForm, SearchFormItem, CategoryTree, DetailDialog},
+
         data() {
             return {
                 searchForm: {
@@ -113,14 +119,17 @@
                 }
             }
         },
+
         computed: {
             title() {
                 return this.row ? `库存详细(${this.row.cname})` : ''
             },
+
             cid() {
                 return this.row ? this.row.cid : null
             }
         },
+
         methods: {
             summary({data}) {
                 let sum = ['合计', '', '', 0]
@@ -129,13 +138,16 @@
                 })
                 return sum
             },
+
             filterNode(value, data) {
                 if (isEmpty(value)) return true
                 return data.name.includes(value)
             },
+
             filter(v) {
                 this.$refs.tree.$refs.tree.filter(v)
             },
+
             mergeSearchForm() {
                 return {
                     ...this.searchForm,
@@ -143,6 +155,7 @@
                     endTime: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null
                 }
             },
+
             search() {
                 if (this.config.loading) return
                 this.config.loading = true
@@ -153,26 +166,31 @@
                     })
                     .finally(() => this.config.loading = false)
             },
+
             downloadExcel() {
                 exportExcel(baseUrl + '/export', this.mergeSearchForm(), this.excel)
             },
+
             nodeClick(obj) {
                 const ids = getNodeId(obj.children)
                 ids.unshift(obj.id)
                 this.searchForm.cids = ids.join(',')
                 this.temp.cname = obj.name
             },
+
             clearCidSearch() {
                 this.searchForm.cids = null
                 this.temp.cname = null
                 let tree = this.$refs.tree.$refs.tree
                 tree.setCurrentKey()
             },
+
             more(row) {
                 this.row = row
                 this.detailDialog = true
             }
         },
+
         created() {
             this.filter = debounce(this.filter, 500)
         }

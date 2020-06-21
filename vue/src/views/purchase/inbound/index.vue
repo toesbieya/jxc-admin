@@ -39,6 +39,7 @@
                 </el-select>
             </search-form-item>
         </search-form>
+
         <el-row class="button-group">
             <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
@@ -48,6 +49,7 @@
             <el-button v-if="canExport" icon="el-icon-download" size="small" type="info" @click="downloadExcel">导 出
             </el-button>
         </el-row>
+
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table
                     :data="tableData"
@@ -110,8 +112,11 @@
 
     export default {
         name: "purchaseInbound",
+
         mixins: [documentTableMixin],
+
         components: {EditDialog, SearchForm, SearchFormItem},
+
         data() {
             return {
                 baseUrl: '/purchase/inbound',
@@ -133,6 +138,7 @@
                 },
             }
         },
+
         methods: {
             mergeSearchForm() {
                 return {

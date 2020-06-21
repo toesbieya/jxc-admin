@@ -3,6 +3,7 @@
         <el-col :xs="24" :sm="24" :md="8" :lg="6" :xl="5" style="margin-bottom: 10px">
             <user-card/>
         </el-col>
+
         <el-col :xs="24" :sm="24" :md="16" :lg="18" :xl="19">
             <el-card>
                 <el-tabs v-model="activeTab" stretch>
@@ -14,6 +15,7 @@
                             </el-tooltip>
                         </span>
                     </el-tab-pane>
+
                     <transition mode="out-in" name="el-fade-in-linear">
                         <keep-alive exclude="user-account">
                             <component :is="activeTab"/>
@@ -31,11 +33,13 @@
 
     export default {
         name: 'userCenter',
+
         components: {
             UserCard,
             LoginHistory,
             UserAction: () => import('./components/UserAction')
         },
+
         data() {
             return {
                 activeTab: 'login-history',

@@ -4,6 +4,7 @@
             {{title}}
             <document-history :data="history" :type="type" @show="getHistory"/>
         </template>
+
         <el-form
                 ref="form"
                 :model="form"
@@ -14,7 +15,7 @@
                 status-icon
         >
             <el-row :gutter="20">
-                <dialog-form-item label="单 号：" prop="id">
+                <dialog-form-item v-if="form.id" label="单 号：" prop="id">
                     <el-input :value="form.id" readonly/>
                 </dialog-form-item>
                 <dialog-form-item label="采购订单：" prop="pid">
@@ -22,16 +23,16 @@
                         <el-button slot="append" :disabled="!canSave" @click="parentDialog=true">选择</el-button>
                     </el-input>
                 </dialog-form-item>
-                <dialog-form-item label="创建人：" prop="cname">
+                <dialog-form-item v-if="form.id" label="创建人：" prop="cname">
                     <el-input :value="form.cname" readonly/>
                 </dialog-form-item>
-                <dialog-form-item label="创建时间：" prop="ctime">
+                <dialog-form-item v-if="form.id" label="创建时间：" prop="ctime">
                     <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
-                <dialog-form-item label="审核人：" prop="vname">
+                <dialog-form-item v-if="form.status===2" label="审核人：" prop="vname">
                     <el-input :value="form.vname" readonly/>
                 </dialog-form-item>
-                <dialog-form-item label="审核时间：" prop="vtime">
+                <dialog-form-item v-if="form.status===2" label="审核时间：" prop="vtime">
                     <el-date-picker :value="form.vtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
                 <dialog-form-item label="附 件：" full>
@@ -54,6 +55,7 @@
                 </dialog-form-item>
             </el-row>
         </el-form>
+
         <el-table :data="form.data">
             <el-table-column align="center" label="#" type="index" width="80"/>
             <el-table-column align="center" label="商 品" prop="cname"/>
@@ -62,6 +64,7 @@
                     <el-input-number
                             v-if="canSave"
                             v-model="row.num"
+                            controls-position="right"
                             :min="0"
                             size="small"
                             @change="(nv,ov)=>changeInboundNum(nv,ov,row)"
@@ -70,8 +73,9 @@
                 </template>
             </el-table-column>
         </el-table>
+
         <document-steps :status="form.status" :type="type"/>
-        <order-selector v-model="parentDialog" @select="selectParent"/>
+
         <template v-slot:footer>
             <span v-if="form.status===2" class="seal">已审核</span>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
@@ -81,6 +85,8 @@
             <el-button v-if="canPass" size="small" type="success" @click="pass">通 过</el-button>
             <el-button v-if="canReject" size="small" type="danger" @click="reject">驳 回</el-button>
         </template>
+
+        <order-selector v-model="parentDialog" @select="selectParent"/>
     </dialog-form>
 </template>
 
@@ -95,8 +101,11 @@
 
     export default {
         name: "EditDialog",
+
         mixins: [bizDocumentDialogMixin],
+
         components: {OrderSelector},
+
         data() {
             return {
                 documentName: '采购入库单',
@@ -113,11 +122,13 @@
                 parentSubList: []
             }
         },
+
         methods: {
             afterInit() {
                 if (this.type !== 'edit') return
                 return getParentSubById(this.form.pid).then(data => this.parentSubList = data)
             },
+
             selectParent(id, sub) {
                 this.parentSubList = sub
                 this.form.pid = id
@@ -128,12 +139,14 @@
                     num: i.remain_num
                 }))
             },
+
             changeInboundNum(nv, ov, row) {
                 let parentSub = this.parentSubList.find(i => i.cid === row.cid)
                 if (!parentSub || nv > parentSub.remain_num) {
                     return elAlert(`${row.cname}的入库数量超出采购数量`, () => row.num = ov)
                 }
             },
+
             validate() {
                 if (this.type === 'edit' && isEmpty(this.form.id)) {
                     return '属性缺失，请关闭弹窗刷新重试'

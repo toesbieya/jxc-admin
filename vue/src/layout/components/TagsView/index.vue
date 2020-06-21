@@ -16,6 +16,7 @@
                 <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
             </router-link>
         </scroll-pane>
+
         <context-menu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
             <context-menu-item @click="refreshSelectedTag(selectedTag)">刷新</context-menu-item>
             <context-menu-item v-show="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
@@ -36,7 +37,9 @@
 
     export default {
         mixins: [shortcutsMixin, decideRouterTransitionMixin],
+
         components: {ContextMenu, ContextMenuItem, ScrollPane},
+
         data() {
             return {
                 contextmenu: {
@@ -49,24 +52,29 @@
                 scroller: null
             }
         },
+
         computed: {
             visitedViews() {
                 return this.$store.state.tagsView.visitedViews
             },
+
             routes() {
                 return this.$store.state.resource.routes
             }
         },
+
         watch: {
             $route(to, from) {
                 this.decideRouteTransition && this.decideRouteTransition(to, from)
                 this.addTags(to)
                 this.moveToCurrentTag()
             },
+
             'contextmenu.show'(v) {
                 this.$emit('menu-show', v)
             }
         },
+
         methods: {
             isActive(route) {
                 return route.path === this.$route.path
@@ -165,6 +173,7 @@
                 this.selectedTag = tag
             }
         },
+
         mounted() {
             this.initTags()
             this.addTags()

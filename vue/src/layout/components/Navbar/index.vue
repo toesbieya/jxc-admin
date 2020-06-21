@@ -59,35 +59,44 @@
 
     export default {
         name: 'navbar',
+
         mixins: [GuideMixin.navbar],
+
         components: {Hamburger, Breadcrumb, Search, Bell, SettingDrawer},
+
         data() {
             return {
                 fullscreen: false,
                 settingDrawer: false
             }
         },
+
         computed: {
             ...mapState('user', {
                 avatar: state => state.avatar,
                 name: state => state.name,
                 prepare_logout: state => state.prepare_logout
             }),
+
             ...mapState('setting', {
                 sidebarCollapse: state => state.sidebarCollapse,
                 showBreadcrumb: state => state.showBreadcrumb
             }),
+
             showSystemMonitor() {
                 return auth('/system/monitor')
             },
+
             showSystemResource() {
                 return auth('/system/resource')
             }
         },
+
         methods: {
             clickHamburger() {
                 this.$store.commit('setting/sidebarCollapse', !this.sidebarCollapse)
             },
+
             logout() {
                 if (this.prepare_logout) return
                 elConfirm('确认退出?')
@@ -97,57 +106,4 @@
     }
 </script>
 
-<style lang="scss">
-    .navbar {
-        height: $nav-height;
-        overflow: hidden;
-        position: relative;
-        background: #fff;
-        box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
-
-        .navbar-icon {
-            font-size: 18px;
-            cursor: pointer;
-            vertical-align: middle;
-        }
-
-        .right-menu {
-            float: right;
-            height: 100%;
-            line-height: $nav-height;
-
-            &:focus {
-                outline: none;
-            }
-
-            .right-menu-item {
-                display: inline-block;
-                position: relative;
-                padding: 0 8px;
-                height: 100%;
-                font-size: 18px;
-                color: #5a5e66;
-                vertical-align: text-bottom;
-                transition: background .3s;
-                cursor: pointer;
-
-                &:hover:not(#header-search) {
-                    background: rgba(0, 0, 0, .025)
-                }
-            }
-
-            .avatar-container {
-                .avatar-wrapper {
-                    margin-top: 5px;
-                    position: relative;
-
-                    .el-avatar {
-                        position: relative;
-                        top: 5px;
-                        margin-right: 5px;
-                    }
-                }
-            }
-        }
-    }
-</style>
+<style lang="scss" src="./style.scss"></style>

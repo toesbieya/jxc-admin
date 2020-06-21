@@ -7,6 +7,7 @@
             v-on="$listeners"
     >
         <slot slot="title" name="title">{{title}}</slot>
+
         <div class="dialog-form-container">
             <loading-mask :show="loading"/>
             <el-scrollbar>
@@ -16,6 +17,7 @@
                 <div style="margin-bottom: 17px"/>
             </el-scrollbar>
         </div>
+
         <slot slot="footer" name="footer"/>
     </el-dialog>
 </template>
@@ -25,7 +27,9 @@
 
     export default {
         name: "DialogForm",
+
         components: {LoadingMask},
+
         props: {
             value: Boolean,
             appendToBody: Boolean,

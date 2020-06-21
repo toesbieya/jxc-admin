@@ -55,15 +55,24 @@
                 />
             </search-form-item>
         </search-form>
+
         <el-row class="button-group">
             <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
             <el-button icon="el-icon-view" size="small" type="primary" @click="see">查 看</el-button>
             <el-button v-if="canUpdate" icon="el-icon-edit" size="small" type="primary" @click="edit">编 辑</el-button>
             <el-button v-if="canDel" icon="el-icon-delete" size="small" type="danger" @click="del">删 除</el-button>
-            <el-button v-if="canExport" icon="el-icon-download" size="small" type="info" @click="downloadExcel">导 出
+            <el-button
+                    v-if="canExport"
+                    icon="el-icon-download"
+                    size="small"
+                    type="info"
+                    @click="downloadExcel"
+            >
+                导 出
             </el-button>
         </el-row>
+
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table :data="tableData" @row-click="row=$event" @expand-change="getSubList">
                 <el-table-column align="center" type="expand">
@@ -105,6 +114,7 @@
                     <template v-slot="{row}">{{row.ftime | timestamp2Date}}</template>
                 </el-table-column>
             </abstract-table>
+
             <el-pagination
                     background
                     :current-page="searchForm.page"
@@ -134,8 +144,11 @@
 
     export default {
         name: "sellOrder",
+
         mixins: [documentTableMixin],
+
         components: {EditDialog, SearchForm, SearchFormItem},
+
         data() {
             return {
                 baseUrl: '/sell/order',
@@ -163,6 +176,7 @@
                 }
             }
         },
+
         methods: {
             mergeSearchForm() {
                 return {

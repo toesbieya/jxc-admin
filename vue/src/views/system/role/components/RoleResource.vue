@@ -3,11 +3,14 @@
 
     export default {
         name: "RoleResource",
+
         functional: true,
+
         props: {
             ids: {type: Array, default: () => []},
             map: {type: Object, default: () => ({})}
         },
+
         render(h, context) {
             const {ids, map} = context.props
             let tree = []

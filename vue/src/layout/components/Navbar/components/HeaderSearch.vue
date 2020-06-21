@@ -1,6 +1,7 @@
 <template>
     <div :class="{'show':show}" class="header-search">
         <i class="el-icon-search navbar-icon" title="快捷搜索" @click.stop="click"/>
+
         <el-select
                 ref="headerSearchSelect"
                 v-model="search"
@@ -27,6 +28,7 @@
 
     export default {
         name: 'HeaderSearch',
+
         data() {
             return {
                 search: '',
@@ -36,36 +38,43 @@
                 fuse: null
             }
         },
+
         computed: {
             routes() {
                 return this.$store.state.resource.routes
             }
         },
+
         watch: {
             routes() {
                 this.searchPool = this.generateRoutes(this.routes)
                 this.initFuse(this.searchPool)
             },
+
             show(value) {
                 if (value) document.body.addEventListener('click', this.close)
                 else document.body.removeEventListener('click', this.close)
             }
         },
+
         methods: {
             click() {
                 this.show = !this.show
                 if (this.show) this.$refs.headerSearchSelect.focus()
             },
+
             close() {
                 this.$refs.headerSearchSelect.blur()
                 this.search = ''
                 this.options = []
                 this.show = false
             },
+
             change(val) {
                 this.close()
                 this.$router.push(val).catch(() => ({}))
             },
+
             initFuse(list) {
                 this.fuse = new Fuse(list, {
                     shouldSort: true,
@@ -77,6 +86,7 @@
                     keys: ['title']
                 })
             },
+
             generateRoutes(routes, prefixTitle = []) {
                 let res = []
                 for (const route of routes) {
@@ -94,10 +104,12 @@
                 }
                 return res
             },
+
             querySearch(query) {
                 this.options = query ? this.fuse.search(query) : []
             }
         },
+
         mounted() {
             this.searchPool = this.generateRoutes(this.routes)
             this.initFuse(this.searchPool)

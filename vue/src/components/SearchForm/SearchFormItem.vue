@@ -1,12 +1,15 @@
 <script type="text/jsx">
     export default {
         name: "SearchFormItem",
+
         inject: {
             searchForm: {
                 default: () => ({width: 'auto'})
             }
         },
+
         props: {label: String},
+
         render() {
             const {width} = this.searchForm
             return (

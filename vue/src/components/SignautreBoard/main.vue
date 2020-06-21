@@ -9,6 +9,7 @@
                 @touchmove.prevent="drawMove"
                 @touchend.prevent="drawEnd"
         />
+
         <div class="signature-board__footer">
             <el-button plain size="small" @click="clear">清 空</el-button>
             <el-button plain size="small" @click="close">关 闭</el-button>
@@ -37,12 +38,14 @@
 
     export default {
         name: 'SignatureBoard',
+
         props: {
             image: String,
             lineWidth: Number,
             lineColor: String,
             onConfirm: Function
         },
+
         data() {
             return {
                 visible: false,
@@ -52,6 +55,7 @@
                 startY: 0
             }
         },
+
         methods: {
             drawStart(e) {
                 const {x, y} = getEventPoint(e)
@@ -125,9 +129,11 @@
                 this.visible = false
             }
         },
+
         mounted() {
             window.addEventListener('resize', this.resize)
         },
+
         beforeDestroy() {
             this.clear()
             window.removeEventListener('resize', this.resize)

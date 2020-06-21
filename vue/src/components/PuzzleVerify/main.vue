@@ -9,18 +9,22 @@
             <div class="puzzle-view" :style="`width:${width}px;height:${height}px;`">
                 <div v-show="!image.loading" style="width: 100%;height: 100%">
                     <img :src="image.src"/>
+
                     <canvas ref="puzzleBox" :height="height" :width="width"/>
+
                     <div class="puzzle-lost-box" :style="`left:${leftNum}px`">
                         <canvas ref="puzzleShadow" :style="sliderStyle" :height="height" :width="width"/>
                         <canvas ref="puzzleLost" :style="sliderStyle" :height="height" :width="width"/>
                     </div>
                 </div>
+
                 <transition name="fade">
                     <div v-show="image.loading" class="puzzle-image-loading">
                         <div class="puzzle-image-loading__icon"/>
                         <div class="puzzle-image-loading__text">加载中...</div>
                     </div>
                 </transition>
+
                 <div :class="resultTipClass">
                     {{stat==='success'?'验证通过':'请正确拼合图像'}}
                 </div>
@@ -38,6 +42,7 @@
                     <a class="puzzle-text-container puzzle-close" @click="close">
                         <div class="puzzle-text-tip">关闭验证</div>
                     </a>
+
                     <a class="puzzle-text-container puzzle-refresh" @click="refresh">
                         <div class="puzzle-text-tip">刷新验证</div>
                     </a>
@@ -54,6 +59,7 @@
     * */
     export default {
         name: "PuzzleVerify",
+
         props: {
             //动画名称，具体请查看transition.scss
             transition: {
@@ -85,6 +91,7 @@
                 default: 80
             }
         },
+
         data() {
             return {
                 visible: false,
@@ -107,6 +114,7 @@
                 }
             }
         },
+
         computed: {
             resultTipClass() {
                 const showResultTip = ['success', 'fail'].includes(this.stat)
@@ -119,6 +127,7 @@
                 }
             }
         },
+
         methods: {
             close() {
                 this.visible = false
@@ -295,6 +304,7 @@
                 this.$el.parentNode.removeChild(this.$el)
             }
         },
+
         mounted() {
             this.initImage().then(() => this.initCanvas())
         },

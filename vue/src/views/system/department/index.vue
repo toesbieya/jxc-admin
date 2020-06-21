@@ -5,6 +5,7 @@
                 组织结构树演示，详情见iview-admin
             </a>
         </div>
+
         <div class="department-outer">
             <div class="view-box">
                 <org-tree-view
@@ -16,11 +17,13 @@
                         @wheel.native.prevent="wheel"
                 />
             </div>
+
             <div class="tooltip-box">
                 <el-radio-group v-model="horizontal" fill="#909399" size="small" style="margin-right: 20px">
                     <el-radio-button :label="true">横 向</el-radio-button>
                     <el-radio-button :label="false">垂 直</el-radio-button>
                 </el-radio-group>
+
                 <el-button
                         circle
                         icon="el-icon-refresh"
@@ -30,9 +33,11 @@
                         type="info"
                         @click="search"
                 />
+
                 <zoom-control v-model="zoom" :max="200" :min="20"/>
             </div>
         </div>
+
         <context-menu
                 v-if="canAdd||canUpdate||canDel"
                 v-model="contextmenu.show"
@@ -43,6 +48,7 @@
             <context-menu-item v-show="canUpdate" @click="update">编辑部门</context-menu-item>
             <context-menu-item v-show="canDel" @click="del">删除部门</context-menu-item>
         </context-menu>
+
         <edit-dialog v-model="editDialog" :data="currentNode" :type="type" @success="search"/>
     </el-card>
 </template>
@@ -63,7 +69,9 @@
 
     export default {
         name: "departmentManagement",
+
         components: {OrgTreeView, ZoomControl, ContextMenu, ContextMenuItem, EditDialog},
+
         data() {
             return {
                 loading: false,
@@ -80,20 +88,25 @@
                 }
             }
         },
+
         computed: {
             realZoom() {
                 return this.zoom / 100
             },
+
             canAdd() {
                 return auth(baseUrl + '/add')
             },
+
             canUpdate() {
                 return auth(baseUrl + '/update')
             },
+
             canDel() {
                 return auth(baseUrl + '/del')
             },
         },
+
         methods: {
             openMenu(e, obj) {
                 e.preventDefault()
@@ -103,6 +116,7 @@
                 this.contextmenu.top = e.clientY - top
                 this.contextmenu.show = true
             },
+
             wheel(e) {
                 const eventDelta = e.wheelDelta || -(e.detail || 0)
                 const zoom = this.zoom + eventDelta / 12 * 2
@@ -115,10 +129,12 @@
                 this.type = 'add'
                 this.editDialog = true
             },
+
             update() {
                 this.type = 'edit'
                 this.editDialog = true
             },
+
             del() {
                 if (this.loading || !this.currentNode) return
                 if (this.currentNode.id === 1) return elError('根节点不能删除')
@@ -149,6 +165,7 @@
                     .finally(() => this.loading = false)
             }
         },
+
         mounted() {
             this.search()
         }

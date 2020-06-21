@@ -22,7 +22,9 @@
 
     export default {
         components: {ContextMenuItem, ContextMenu, CategoryTree},
+
         props: ['form'],
+
         data() {
             return {
                 loading: false,
@@ -35,12 +37,14 @@
                 }
             }
         },
+
         computed: {
             canAdd() {
                 return !this.currentCategory
                     || this.currentCategory.type === 0 && this.currentCategory.level < this.maxLevel
             }
         },
+
         methods: {
             get() {
                 this.loading = true
@@ -50,16 +54,20 @@
                     .then(data => this.$store.commit('dataCache/categories', data))
                     .finally(() => this.loading = false)
             },
+
             add() {
                 this.$emit('add', this.currentCategory)
             },
+
             see(obj, node) {
                 this.currentCategory = {...obj, level: node.level}
                 this.$emit('see', this.currentCategory, node.parent ? node.parent.data : null)
             },
+
             edit() {
                 this.$emit('edit', this.currentCategory, this.currentCategory.parent)
             },
+
             del() {
                 if (isEmpty(this.currentCategory)) return elError('请选择要删除的分类')
                 if (this.currentCategory.children.length > 0) {
@@ -73,10 +81,12 @@
                     })
                     .then(() => this.commitSuccess('删除成功'))
             },
+
             commitSuccess(msg) {
                 elSuccess(msg)
                 this.get()
             },
+
             openContextMenu(e, obj, node) {
                 e.preventDefault()
                 this.currentCategory = obj ? {
@@ -91,6 +101,7 @@
                 this.contextmenu.show = true
             }
         },
+
         mounted() {
             this.$el.querySelector(".el-card__body").addEventListener('contextmenu', this.openContextMenu)
             waitUntilSuccess(
@@ -98,11 +109,13 @@
                 () => this.form().$on('commit-success', this.commitSuccess)
             )
         },
+
         beforeDestroy() {
             this.$el.querySelector(".el-card__body").removeEventListener('contextmenu', this.openContextMenu)
         }
     }
 </script>
+
 <style scoped>
     .card-container {
         min-width: 250px;

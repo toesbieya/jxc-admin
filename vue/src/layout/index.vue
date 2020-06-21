@@ -22,35 +22,45 @@
 
     export default {
         name: 'Layout',
+
         mixins: [ResizeHandler],
+
         components: {VMain, VSidebar, VHeader},
+
         computed: {
             ...mapState('app', {
                 device: state => state.device,
                 hasHeader: state => state.hasHeader
             }),
+
             ...mapState('setting', {
                 useTagsView: state => state.useTagsView,
                 sidebarCollapse: state => state.sidebarCollapse
             }),
+
             ...mapState('socket', {
                 online: state => state.online
             }),
+
             ...mapState('user', {
                 isLogin: state => !isEmpty(state.id) && !isEmpty(state.token)
             }),
+
             showOfflineTip() {
                 return !this.online && this.isLogin
             },
+
             showSidebarMask() {
                 return !this.sidebarCollapse && this.device === 'mobile'
             }
         },
+
         watch: {
             showOfflineTip(v) {
                 v ? this.$bottomTip('与服务器失去连接') : this.$bottomTip.close()
             }
         },
+
         methods: {
             collapseSidebar() {
                 this.$store.commit('setting/sidebarCollapse', true)

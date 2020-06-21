@@ -4,6 +4,7 @@
             {{title}}
             <document-history :data="history" :type="type" @show="getHistory"/>
         </template>
+
         <el-form
                 ref="form"
                 :model="form"
@@ -14,7 +15,7 @@
                 status-icon
         >
             <el-row :gutter="20">
-                <dialog-form-item label="单 号：" prop="id">
+                <dialog-form-item v-if="form.id" label="单 号：" prop="id">
                     <el-input :value="form.id" readonly/>
                 </dialog-form-item>
                 <dialog-form-item label="客 户：" prop="customer_name">
@@ -22,19 +23,19 @@
                         <el-button slot="append" :disabled="!canSave" @click="customerDialog=true">选择</el-button>
                     </el-input>
                 </dialog-form-item>
-                <dialog-form-item label="创建人：" prop="cname">
+                <dialog-form-item v-if="form.id" label="创建人：" prop="cname">
                     <el-input :value="form.cname" readonly/>
                 </dialog-form-item>
-                <dialog-form-item label="创建时间：" prop="ctime">
+                <dialog-form-item v-if="form.id" label="创建时间：" prop="ctime">
                     <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
-                <dialog-form-item label="审核人：" prop="vname">
+                <dialog-form-item v-if="form.status===2" label="审核人：" prop="vname">
                     <el-input :value="form.vname" readonly/>
                 </dialog-form-item>
-                <dialog-form-item label="审核时间：" prop="vtime">
+                <dialog-form-item v-if="form.status===2" label="审核时间：" prop="vtime">
                     <el-date-picker :value="form.vtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
-                <dialog-form-item label="完成时间：" prop="ftime">
+                <dialog-form-item v-if="form.finish===2" label="完成时间：" prop="ftime">
                     <el-date-picker :value="form.ftime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
                 <dialog-form-item label="附 件：" full>
@@ -57,36 +58,56 @@
                 </dialog-form-item>
             </el-row>
         </el-form>
+
         <el-table ref="table" :data="form.data">
             <el-table-column align="center" label="#" type="index" width="80"/>
-            <el-table-column align="center">
-                <template slot="header">
-                    商品
-                    <el-button v-if="canSave" size="small" type="text" icon="el-icon-plus" @click="stockDialog=true"/>
-                </template>
-                <template v-slot="{row}">{{row.cname}}</template>
-            </el-table-column>
+            <el-table-column align="center" label="商品" prop="cname"/>
             <el-table-column align="center" label="销售数量">
                 <template v-slot="{row}">
-                    <el-input-number v-if="canSave" v-model="row.num" :min="0" size="small"/>
+                    <el-input-number
+                            v-if="canSave"
+                            v-model="row.num"
+                            controls-position="right"
+                            :min="0"
+                            size="small"
+                    />
                     <span v-else>{{row.num}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="销售单价">
                 <template v-slot="{row}">
-                    <el-input-number v-if="canSave" v-model="row.price" :min="0" size="small"/>
+                    <el-input-number
+                            v-if="canSave"
+                            v-model="row.price"
+                            controls-position="right"
+                            :min="0"
+                            size="small"
+                    />
                     <span v-else>{{row.price}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="剩余未出库" prop="remain_num"/>
             <el-table-column v-if="form.id" align="center" label="出库情况" width="120">
-                <template slot-scope="{row}">
+                <template v-slot="{row}">
                     <span :class="{success:row.remain_num===0}" class="dot"/>
                     {{row.remain_num===0?'已全部出库':'未全部出库'}}
                 </template>
             </el-table-column>
+            <div v-if="canSave" slot="append" class="table-add-btn">
+                <el-button
+                        plain
+                        type="dashed"
+                        size="small"
+                        icon="el-icon-plus"
+                        @click="stockDialog=true"
+                >
+                    添加销售商品
+                </el-button>
+            </div>
         </el-table>
+
         <document-steps :status="form.status" :type="type"/>
+
         <template v-slot:footer>
             <span v-if="form.status===2" class="seal">已审核</span>
             <span v-if="form.finish===2" class="seal">已完成</span>
@@ -99,6 +120,7 @@
         </template>
 
         <stock-selector v-model="stockDialog" @select="selectStock"/>
+
         <customer-selector v-model="customerDialog" @select="selectCustomer" @jump="closeDialog"/>
     </dialog-form>
 </template>
@@ -114,8 +136,11 @@
 
     export default {
         name: "EditDialog",
+
         mixins: [bizDocumentDialogMixin],
+
         components: {StockSelector, CustomerSelector},
+
         data() {
             return {
                 documentName: '销售订单',
@@ -136,21 +161,25 @@
                 stockDialog: false
             }
         },
+
         computed: {
             selectedCategories() {
                 return this.form.data.map(i => i.cid)
             }
         },
+
         methods: {
             selectCustomer(row) {
                 this.form.customer_id = row.id
                 this.form.customer_name = row.name
                 this.customerDialog = false
             },
+
             selectStock(stocks) {
                 this.form.data = stocks.map(i => ({cid: i.cid, cname: i.cname, num: i.total_num, price: 0}))
                 this.stockDialog = false
             },
+
             addSub() {
                 this.form.data.push({
                     cid: null,
@@ -160,9 +189,11 @@
                     remain_num: 0
                 })
             },
+
             delSub(row, index) {
                 this.form.data.splice(index, 1)
             },
+
             validate() {
                 if (this.form.data.length <= 0) return '销售商品不能为空'
                 if (this.type === 'edit' && isEmpty(this.form.id)) {

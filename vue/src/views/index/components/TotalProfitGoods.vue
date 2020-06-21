@@ -14,7 +14,9 @@
 
     export default {
         name: "TotalProfitGoods",
+
         components: {PieChart},
+
         data() {
             return {
                 loading: false,
@@ -32,13 +34,16 @@
                 }
             }
         },
+
         methods: {
             getTitle(type) {
                 return this[type].title
             },
+
             getData(type) {
                 return this[type].data
             },
+
             init() {
                 if (this.loading) return
                 this.loading = true
@@ -59,6 +64,7 @@
                     .finally(() => this.loading = false)
             }
         },
+
         mounted() {
             this.init()
         }

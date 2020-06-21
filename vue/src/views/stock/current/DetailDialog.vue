@@ -1,6 +1,7 @@
 <template>
     <dialog-form :value="value" :loading="false" :title="title" width="70%" @close="cancel" @open="search">
         <liner-progress :show="loading"/>
+
         <abstract-table :data="tableData" border show-summary :summary-method="summary" :span-method="span">
             <el-table-column align="center" label="采购订单" show-overflow-tooltip>
                 <router-link
@@ -41,15 +42,20 @@
 
     export default {
         name: "DetailDialog",
+
         mixins: [dialogMixin],
+
         components: {AbstractTable, LinerProgress, DialogForm},
+
         props: {value: Boolean, title: String, cid: Number},
+
         data() {
             return {
                 loading: false,
                 tableData: []
             }
         },
+
         methods: {
             summary({data}) {
                 let sum = ['合计', '', '', '', 0, 0]
@@ -59,11 +65,13 @@
                 })
                 return sum
             },
+
             span({row, column, rowIndex, columnIndex}) {
                 if (columnIndex === 0 || columnIndex === 1) {
                     return row._span
                 }
             },
+
             search() {
                 this.tableData = []
                 if (!this.value || isEmpty(this.cid) || this.loading) return
@@ -75,6 +83,7 @@
                     })
                     .finally(() => this.loading = false)
             },
+
             prepareData(data) {
                 data.sort((a, b) => {
                     if (a.cgddid > b.cgddid) return -1
@@ -98,6 +107,7 @@
                     }
                 }
             },
+
             cancel() {
                 this.closeDialog()
                 this.tableData = []
@@ -105,6 +115,7 @@
         }
     }
 </script>
+
 <style lang="scss" scoped>
     .el-table {
         a {

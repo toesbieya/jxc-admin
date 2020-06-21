@@ -15,18 +15,21 @@
                 data: null
             }
         },
+
         watch: {
             $route(route) {
                 if (route.path.startsWith('/redirect')) return
                 this.getBreadcrumb()
             }
         },
+
         methods: {
             getBreadcrumb() {
                 // only show routes with meta.title
                 this.data = this.$route.matched.filter(item => item.meta.title)
             }
         },
+
         mounted() {
             this.getBreadcrumb()
         }

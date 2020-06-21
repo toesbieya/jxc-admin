@@ -4,7 +4,7 @@
             :visible="value"
             append-to-body
             title="选择采购订单"
-            width="50%"
+            width="70%"
             top="50px"
             @close="cancel"
             @open="search"
@@ -14,6 +14,7 @@
                 <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
                 <el-button plain size="small" @click="closeDialog">取 消</el-button>
             </el-row>
+
             <el-row v-loading="config.loading" class="table-container">
                 <abstract-table :data="tableData" @expand-change="getSubList">
                     <el-table-column align="center" type="expand">
@@ -73,9 +74,13 @@
 
     export default {
         name: "OrderSelector",
+
         mixins: [dialogMixin, tableMixin],
+
         components: {LinerProgress},
+
         props: {value: Boolean},
+
         data() {
             return {
                 searchForm: {
@@ -84,6 +89,7 @@
                 }
             }
         },
+
         methods: {
             search() {
                 if (!this.value || this.config.loading) return
@@ -101,6 +107,7 @@
                     })
                     .finally(() => this.config.loading = false)
             },
+
             getSubList(row) {
                 if (row._loaded || row._loading) return
                 row._loading = true
@@ -111,11 +118,13 @@
                     })
                     .finally(() => row._loading = false)
             },
+
             confirm(row) {
                 if (row._selection.length <= 0) return elError('请选择要入库的商品')
                 this.$emit('select', row.id, row._selection)
                 this.cancel()
             },
+
             cancel() {
                 this.closeDialog()
                 this.tableData = []
@@ -123,6 +132,7 @@
         }
     }
 </script>
+
 <style lang="scss" scoped>
     .el-table {
         .nets-table-btn {

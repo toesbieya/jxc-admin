@@ -4,6 +4,7 @@
             {{title}}
             <document-history :data="history" :type="type" @show="getHistory"/>
         </template>
+
         <el-form
                 ref="form"
                 :model="form"
@@ -14,7 +15,7 @@
                 status-icon
         >
             <el-row :gutter="20">
-                <dialog-form-item label="单 号：" prop="id">
+                <dialog-form-item v-if="form.id" label="单 号：" prop="id">
                     <el-input :value="form.id" readonly/>
                 </dialog-form-item>
                 <dialog-form-item label="供应商：" prop="sname">
@@ -22,19 +23,19 @@
                         <el-button slot="append" :disabled="!canSave" @click="supplierDialog=true">选择</el-button>
                     </el-input>
                 </dialog-form-item>
-                <dialog-form-item label="创建人：" prop="cname">
+                <dialog-form-item v-if="form.id" label="创建人：" prop="cname">
                     <el-input :value="form.cname" readonly/>
                 </dialog-form-item>
-                <dialog-form-item label="创建时间：" prop="ctime">
+                <dialog-form-item v-if="form.id" label="创建时间：" prop="ctime">
                     <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
-                <dialog-form-item label="审核人：" prop="vname">
+                <dialog-form-item v-if="form.status===2" label="审核人：" prop="vname">
                     <el-input :value="form.vname" readonly/>
                 </dialog-form-item>
-                <dialog-form-item label="审核时间：" prop="vtime">
+                <dialog-form-item v-if="form.status===2" label="审核时间：" prop="vtime">
                     <el-date-picker :value="form.vtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
-                <dialog-form-item label="完成时间：" prop="ftime">
+                <dialog-form-item v-if="form.finish===2" label="完成时间：" prop="ftime">
                     <el-date-picker :value="form.ftime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
                 <dialog-form-item label="附 件：" full>
@@ -57,12 +58,13 @@
                 </dialog-form-item>
             </el-row>
         </el-form>
+
         <el-table ref="table" :data="form.data">
             <el-table-column align="center" label="#" type="index" width="80"/>
             <el-table-column align="center" label="商 品">
                 <template v-slot="{row}">
                     <category-selector
-                            v-if="canSave"
+                            v-if="row._editable"
                             v-model="row.cid"
                             :selected="selectedCategories"
                             @get-name="row.cname=$event"
@@ -72,34 +74,49 @@
             </el-table-column>
             <el-table-column align="center" label="采购数量">
                 <template v-slot="{row}">
-                    <el-input-number v-if="canSave" v-model="row.num" :min="0" size="small"/>
+                    <el-input-number
+                            v-if="row._editable"
+                            v-model="row.num"
+                            controls-position="right"
+                            :min="0"
+                            size="small"
+                    />
                     <span v-else>{{row.num}}</span>
                 </template>
             </el-table-column>
             <el-table-column align="center" label="采购单价">
                 <template v-slot="{row}">
-                    <el-input-number v-if="canSave" v-model="row.price" :min="0" size="small"/>
+                    <el-input-number
+                            v-if="row._editable"
+                            v-model="row.price"
+                            controls-position="right"
+                            :min="0"
+                            size="small"
+                    />
                     <span v-else>{{row.price}}</span>
                 </template>
             </el-table-column>
-            <el-table-column align="center" label="剩余未入库" prop="remain_num"/>
+            <el-table-column v-if="form.id" align="center" label="剩余未入库" prop="remain_num"/>
             <el-table-column v-if="form.id" align="center" label="入库情况" width="120">
-                <template slot-scope="{row}">
+                <template v-slot="{row}">
                     <span :class="{success:row.remain_num===0}" class="dot"/>
                     {{row.remain_num===0?'已全部入库':'未全部入库'}}
                 </template>
             </el-table-column>
-            <el-table-column v-if="canSave" align="center" width="80">
-                <el-button slot="header" icon="el-icon-plus" size="small" type="text" @click="addSub"/>
-                <el-button
-                        slot-scope="d"
-                        icon="el-icon-delete"
-                        size="small" type="text"
-                        @click="delSub(d.row,d.$index)"
-                />
+            <el-table-column v-if="canSave" align="center" label="操作" width="140">
+                <template v-if="canSave" v-slot="{row,$index}">
+                    <el-button v-if="!row._editable" type="text" @click="()=>row._editable=true">编辑</el-button>
+                    <el-button v-else type="text" @click="()=>row._editable=false">保存</el-button>
+                    <el-button type="text" @click="()=>delSub(row,$index)">删除</el-button>
+                </template>
             </el-table-column>
+            <div v-if="canSave" slot="append" class="table-add-btn">
+                <el-button plain type="dashed" size="small" icon="el-icon-plus" @click="addSub">添加采购商品</el-button>
+            </div>
         </el-table>
+
         <document-steps :status="form.status" :type="type"/>
+
         <template v-slot:footer>
             <span v-if="form.status===2" class="seal">已审核</span>
             <span v-if="form.finish===2" class="seal">已完成</span>
@@ -162,7 +179,8 @@
                     cid: null,
                     cname: null,
                     num: 0,
-                    price: 0
+                    price: 0,
+                    _editable: true
                 })
             },
             delSub(row, index) {
@@ -184,6 +202,9 @@
                     index++
                 }
                 return null
+            },
+            afterInit() {
+                this.form.data.forEach(item => item.__editable = false)
             }
         }
     }

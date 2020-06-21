@@ -7,11 +7,13 @@
 <script>
     export default {
         name: "Bell",
+
         computed: {
             hidden() {
                 return this.$store.state.message.unreadCount < 1
             }
         },
+
         methods: {
             jump() {
                 let target = '/message/user'
@@ -19,11 +21,13 @@
                 this.$router.replace(target)
             }
         },
+
         mounted() {
             this.$store.dispatch('message/refresh')
         }
     }
 </script>
+
 <style>
     .bell-badge .el-badge__content {
         top: 15px !important;

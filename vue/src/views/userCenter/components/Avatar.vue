@@ -15,6 +15,7 @@
                         @wheel.native.prevent="scale"
                 />
             </div>
+
             <input
                     ref="input"
                     accept="image/png, image/jpeg, image/gif, image/jpg"
@@ -23,6 +24,7 @@
                     @change="chooseImage"
             >
         </el-row>
+
         <template v-slot:footer>
             <el-button plain size="small" @click="$refs.input.click()">选择图片</el-button>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
@@ -41,11 +43,15 @@
 
     export default {
         name: "Avatar",
+
         mixins: [dialogMixin],
+
         components: {VueCropper, DialogForm},
+
         props: {
             value: Boolean
         },
+
         data() {
             return {
                 loading: false,
@@ -53,6 +59,7 @@
                 name: ''
             }
         },
+
         methods: {
             chooseImage(e) {
                 if (this.loading) return

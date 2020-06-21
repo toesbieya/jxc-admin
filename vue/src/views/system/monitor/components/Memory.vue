@@ -22,6 +22,7 @@
                 />
             </span>
         </div>
+
         <div class="line-chart"/>
     </el-card>
 </template>
@@ -32,11 +33,15 @@
 
     export default {
         name: "Memory",
+
         mixins: [resize, logic],
+
         components: {CountTo},
+
         props: {
             data: Object
         },
+
         data() {
             return {
                 options: {
@@ -92,6 +97,7 @@
                 }
             }
         },
+
         watch: {
             data: {
                 deep: true,
@@ -101,13 +107,16 @@
                 }
             }
         },
+
         methods: {
             init() {
                 this.chart.setOption(this.options)
             },
+
             $_getChartDom() {
                 return this.$el.querySelector('.line-chart')
             },
+
             setOptions({xData, vData} = {}) {
                 this.chart.setOption({
                     xAxis: {data: xData},

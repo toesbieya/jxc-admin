@@ -15,7 +15,9 @@
 
     export default {
         name: 'panelGroup',
+
         components: {PanelGroupItem},
+
         data() {
             return {
                 loading: false,
@@ -34,6 +36,7 @@
                 ]
             }
         },
+
         methods: {
             init() {
                 if (this.loading) return
@@ -46,10 +49,12 @@
                     })
                     .finally(() => this.loading = false)
             },
+
             jump({path}) {
                 if (!isEmpty(path) && auth(path)) this.$router.push(path)
             }
         },
+
         mounted() {
             this.init()
         }

@@ -4,7 +4,7 @@
             :visible="value"
             append-to-body
             title="选择客户"
-            width="50%"
+            width="70%"
             top="50px"
             @close="cancel"
             @open="search"
@@ -23,9 +23,11 @@
                 添加客户
             </el-button>
         </el-row>
+
         <el-scrollbar>
             <el-row class="table-container">
                 <liner-progress :show="config.loading"/>
+
                 <abstract-table :data="tableData" @row-click="row=$event" @row-dblclick="dbclick">
                     <el-table-column align="center" label="#" type="index" width="80"/>
                     <el-table-column align="center" label="客 户" prop="name" show-overflow-tooltip/>
@@ -43,6 +45,7 @@
                         </template>
                     </el-table-column>
                 </abstract-table>
+
                 <el-pagination
                         background
                         :current-page="searchForm.page"
@@ -66,9 +69,13 @@
 
     export default {
         name: "CustomerSelector",
+
         mixins: [dialogMixin, tableMixin],
+
         components: {LinerProgress},
+
         props: {value: Boolean},
+
         data() {
             return {
                 searchForm: {
@@ -76,11 +83,13 @@
                 }
             }
         },
+
         computed: {
             canGoToSysCustomerPage() {
                 return auth('/system/customer')
             }
         },
+
         methods: {
             search() {
                 if (!this.value || this.config.loading) return
@@ -93,18 +102,22 @@
                     })
                     .finally(() => this.config.loading = false)
             },
+
             dbclick(row) {
                 this.row = row
                 this.confirm()
             },
+
             confirm() {
                 if (!this.row) return elError('请选择一个客户')
                 this.$emit('select', this.row)
             },
+
             cancel() {
                 this.closeDialog()
                 this.tableData = []
             },
+
             goToSysCustomerPage() {
                 this.closeDialog()
                 this.$emit('jump')

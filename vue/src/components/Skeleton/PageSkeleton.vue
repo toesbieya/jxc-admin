@@ -4,7 +4,9 @@
 
     export default {
         name: "PageSkeleton",
+
         functional: true,
+
         render() {
             const single = (
                 <div class="page-skeleton">

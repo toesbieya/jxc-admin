@@ -1,10 +1,11 @@
 <script type="text/jsx">
     export default {
         name: "LoadingMask",
+
         functional: true,
-        props: {
-            show: Boolean
-        },
+
+        props: {show: Boolean},
+
         render(h, context) {
             if (context.props.show === false) return ''
             return (

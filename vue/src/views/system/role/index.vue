@@ -23,12 +23,14 @@
                 />
             </search-form-item>
         </search-form>
+
         <el-row class="button-group">
             <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
             <el-button v-if="canUpdate" icon="el-icon-edit" size="small" type="primary" @click="edit">编 辑</el-button>
             <el-button v-if="canDel" icon="el-icon-delete" size="small" type="danger" @click="del">删 除</el-button>
         </el-row>
+
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table
                     :data="tableData"
@@ -50,6 +52,7 @@
                     </template>
                 </el-table-column>
             </abstract-table>
+
             <el-pagination
                     background
                     :current-page="searchForm.page"
@@ -79,8 +82,11 @@
 
     export default {
         name: "roleManagement",
+
         mixins: [tableMixin],
+
         components: {SearchForm, SearchFormItem, EditDialog, RoleResource},
+
         data() {
             return {
                 searchForm: {
@@ -94,16 +100,20 @@
                 editDialog: false
             }
         },
+
         computed: {
             canAdd() {
                 return auth(baseUrl + '/add')
             },
+
             canUpdate() {
                 return auth(baseUrl + '/update')
             },
+
             canDel() {
                 return auth(baseUrl + '/del')
             },
+
             resourceMap() {
                 const resource = this.$store.state.resource
                 if (resource.data.length <= 0) return {}
@@ -113,6 +123,7 @@
                 }, {})
             }
         },
+
         methods: {
             mergeSearchForm() {
                 return {
@@ -121,6 +132,7 @@
                     endTime: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null,
                 }
             },
+
             search() {
                 if (this.config.loading) return
                 this.config.loading = true
@@ -136,16 +148,19 @@
                     })
                     .finally(() => this.config.loading = false)
             },
+
             add() {
                 this.row = null
                 this.type = 'add'
                 this.editDialog = true
             },
+
             edit() {
                 if (!this.row) return elError('请选择要编辑的角色')
                 this.type = 'edit'
                 this.editDialog = true
             },
+
             del() {
                 if (!this.row) return elError('请选择要删除的角色')
                 if (this.row.status === 1) return elError('不能删除已启用的角色')
@@ -161,6 +176,7 @@
                     })
                     .finally(() => this.config.operating = false)
             },
+
             success(msg) {
                 elSuccess(msg)
                 this.editDialog = false

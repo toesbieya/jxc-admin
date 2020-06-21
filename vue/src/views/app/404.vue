@@ -7,12 +7,14 @@
                 <img alt="404" class="pic__child mid" src="static/img/404_cloud.png">
                 <img alt="404" class="pic__child right" src="static/img/404_cloud.png">
             </div>
+
             <div class="bullshit">
                 <div class="bullshit__oops">Oops!</div>
+
                 <div class="bullshit__headline">没有找到该页面...</div>
-                <div class="bullshit__info">
-                    请检查链接地址是否正确，或者点击下方按钮返回
-                </div>
+
+                <div class="bullshit__info">请检查链接地址是否正确，或者点击下方按钮返回</div>
+
                 <router-link class="bullshit__return-home" to="/index">返回首页</router-link>
             </div>
         </div>

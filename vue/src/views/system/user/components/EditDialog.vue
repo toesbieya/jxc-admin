@@ -21,6 +21,7 @@
                 </el-radio-group>
             </el-form-item>
         </el-form>
+
         <template v-slot:footer>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
@@ -38,13 +39,17 @@
 
     export default {
         name: "EditDialog",
+
         mixins: [dialogMixin],
+
         components: {DialogForm, RoleSelector},
+
         props: {
             value: {type: Boolean, default: false},
             type: {type: String, default: 'see'},
             data: {type: Object, default: () => ({})},
         },
+
         data() {
             const validateName = (r, v, c) => {
                 checkName(this.form.name)
@@ -70,6 +75,7 @@
                 }
             }
         },
+
         computed: {
             title() {
                 if (isEmpty(this.type)) return ''
@@ -82,6 +88,7 @@
                         return '编辑用户'
                 }
             },
+
             confirmMessage() {
                 switch (this.type) {
                     case 'add':
@@ -92,10 +99,12 @@
                         return ''
                 }
             },
+
             canEdit() {
                 return ['add', 'edit'].includes(this.type)
             }
         },
+
         methods: {
             open() {
                 this.$nextTick(() => {
@@ -106,6 +115,7 @@
                     }
                 })
             },
+
             clearForm() {
                 this.form.id = null
                 this.form.name = null
@@ -114,10 +124,12 @@
                 this.form.status = 1
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
+
             cancel() {
                 this.closeDialog()
                 this.clearForm()
             },
+
             confirm() {
                 if (this.loading) return
                 this.$refs.form.validate(v => {

@@ -3,7 +3,9 @@
 
     export default {
         name: 'Link',
+
         functional: true,
+
         render(h, context) {
             let to = context.props.to
             if (isExternal(to)) return (

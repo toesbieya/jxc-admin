@@ -8,6 +8,7 @@
             }
             else this.$router.replace({path: '/' + params.path, query})
         },
+
         render: h => h()
     }
 </script>

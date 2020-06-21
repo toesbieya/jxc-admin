@@ -6,6 +6,7 @@
             </span>
             <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入用户名"/>
         </el-form-item>
+
         <el-form-item prop="pwd">
             <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">
                 <span class="svg-container">
@@ -14,6 +15,7 @@
             </el-tooltip>
             <el-input v-model="form.pwd" placeholder="请输入密码" type="password" :maxlength="20"/>
         </el-form-item>
+
         <el-form-item prop="repwd">
             <span class="svg-container">
                 <svg-icon icon="password"/>
@@ -26,6 +28,7 @@
                     @keyup.enter.native="register"
             />
         </el-form-item>
+
         <el-button
                 :loading="loading"
                 class="submit-btn"
@@ -34,6 +37,7 @@
         >
             {{loading ? '注 册 中...' : '注 册'}}
         </el-button>
+
         <div class="flex" style="margin-top: 20px">
             <p/>
             <el-button type="text" @click="login">已有账户登陆</el-button>
@@ -49,6 +53,7 @@
 
     export default {
         name: "RegisterForm",
+
         data() {
             const validateName = (r, v, c) => {
                 checkName(this.form.username)
@@ -82,6 +87,7 @@
                 loading: false
             }
         },
+
         methods: {
             register() {
                 if (this.loading) return
@@ -96,23 +102,29 @@
                         .catch(() => this.loading = false)
                 })
             },
+
             login() {
                 !this.loading && this.$router.push('/login')
             },
+
             capsLockTip({keyCode}) {
                 if (keyCode === 20) this.capsTooltip = !this.capsTooltip
             },
+
             addEvent() {
                 document.addEventListener('keyup', this.capsLockTip)
             },
+
             removeEvent() {
                 document.removeEventListener('keyup', this.addCapsLockEvent)
             }
         },
+
         mounted() {
             this.addEvent()
             this.$nextTick(() => this.$refs.username.focus())
         },
+
         beforeDestroy() {
             this.removeEvent()
         }

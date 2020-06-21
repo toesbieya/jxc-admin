@@ -14,21 +14,25 @@
 
     export default {
         name: "RoleSelector",
+
         props: {
             value: Number,
             disabled: {
                 type: Boolean, default: false
             }
         },
+
         data() {
             return {
                 roles: []
             }
         },
+
         methods: {
             init() {
                 getRoles().then(data => this.roles = data)
             },
+
             emit(v) {
                 this.$emit('input', v)
                 if (v === 0 || v) {
@@ -40,6 +44,7 @@
                 }
             }
         },
+
         mounted() {
             this.init()
         }

@@ -28,6 +28,7 @@
                 />
             </el-form-item>
         </el-form>
+
         <template v-slot:footer>
             <el-dropdown placement="top" style="float: left" @command="treeCommand">
                 <el-button plain size="small">
@@ -55,13 +56,17 @@
 
     export default {
         name: "EditDialog",
+
         mixins: [dialogMixin],
+
         components: {DialogForm},
+
         props: {
             value: {type: Boolean, default: false},
             type: {type: String, default: 'add'},
             data: {type: Object, default: () => ({})},
         },
+
         data() {
             return {
                 loading: false,
@@ -77,6 +82,7 @@
                 }
             }
         },
+
         computed: {
             title() {
                 if (isEmpty(this.type)) return ''
@@ -87,6 +93,7 @@
                         return '编辑角色'
                 }
             },
+
             confirmMessage() {
                 switch (this.type) {
                     case 'add':
@@ -97,14 +104,17 @@
                         return ''
                 }
             },
+
             resource() {
                 return this.$store.state.resource.tree
             }
         },
+
         methods: {
             treeCommand({action, level}) {
                 elTreeControl(this.$refs.tree, action, level)
             },
+
             open() {
                 this.$nextTick(() => {
                     if (this.type === 'edit') {
@@ -113,6 +123,7 @@
                     }
                 })
             },
+
             clearForm() {
                 this.form.id = null
                 this.form.name = null
@@ -121,10 +132,12 @@
                 this.$refs.tree.setCheckedKeys([])
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
+
             cancel() {
                 this.closeDialog()
                 this.clearForm()
             },
+
             confirm() {
                 if (this.loading) return
                 this.$refs.form.validate(v => {

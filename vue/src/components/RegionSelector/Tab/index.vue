@@ -12,13 +12,16 @@
         <template slot="empty">
             <div class="rg-header">
                 <h3>行政区划选择</h3>
+
                 <button class="rg-removeall-button" type="button" title="清除已选" @click="removeAll">
                     <i class="el-icon-delete"/>
                 </button>
+
                 <button class="rg-done-button" type="button" title="完成" @click="done">
                     <i class="el-icon-check"/>
                 </button>
             </div>
+
             <div class="rg-search">
                 <input
                         ref="searchInput"
@@ -29,6 +32,7 @@
                         @input="search"
                 >
             </div>
+
             <div class="rg-level-tabs">
                 <ul>
                     <li v-for="(tab,index) in selected" :key="tab.name" :class="{active:index+1 === currentLevel}">
@@ -36,6 +40,7 @@
                     </li>
                 </ul>
             </div>
+
             <div v-loading="loading" class="rg-results-container">
                 <ul class="rg-results">
                     <li

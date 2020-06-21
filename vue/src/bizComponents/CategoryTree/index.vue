@@ -16,12 +16,15 @@
 
     export default {
         name: "CategoryTree",
+
         props: {filterNodeMethod: Function},
+
         computed: {
             data() {
                 return this.$store.state.dataCache.categoryTree
             }
         },
+
         mounted() {
             getAllCategories()
                 .then(data => this.$store.commit('dataCache/categories', data))

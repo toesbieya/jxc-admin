@@ -61,12 +61,14 @@
 
     export default {
         functional: true,
+
         props: {
             item: Object,
             isNest: Boolean,
             showParent: Boolean,
             collapse: Boolean
         },
+
         render(h, context) {
             return renderNode(h, context.props)
         }

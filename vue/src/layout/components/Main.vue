@@ -33,28 +33,34 @@
 
     export default {
         name: 'AppMain',
+
         computed: {
             ...mapState('app', {
                 scrollTop: state => state.scrollTop,
             }),
+
             ...mapState('setting', {
                 showBackToTop: state => state.showBackToTop
             }),
+
             ...mapState('tagsView', {
                 cachedViews: state => state.cachedViews,
                 transitionName: state => state.transitionName
             }),
+
             ...mapState('iframe', {
                 showIframe: state => state.show,
                 currentIframe: state => state.current,
                 iframeList: state => state.list
             })
         },
+
         watch: {
             scrollTop(v) {
                 if (v >= 0) this.$refs.scrollbar.$refs.wrap.scrollTop = v
             }
         },
+
         mounted() {
             //插入footer
             const FooterConstructor = Vue.extend(Footer)

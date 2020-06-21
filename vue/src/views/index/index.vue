@@ -22,6 +22,7 @@
 
     export default {
         name: 'index',
+
         components: {PanelGroup, DailyProfitStat, DailyFinishOrderStat, TotalProfitGoods}
     }
 </script>

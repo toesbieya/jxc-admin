@@ -15,6 +15,7 @@
         </ul>
 
         <user-account v-model="modifyPasswordDialog"/>
+
         <upload-avatar v-model="uploadAvatarDialog"/>
     </el-card>
 </template>
@@ -26,12 +27,14 @@
 
     export default {
         components: {UserAccount, UploadAvatar},
+
         data() {
             return {
                 modifyPasswordDialog: false,
                 uploadAvatarDialog: false
             }
         },
+
         computed: {
             ...mapState('user', {
                 name: state => state.name,
@@ -39,8 +42,7 @@
                 role_name: state => state.role_name,
                 admin: state => state.admin
             })
-        },
-        methods: {}
+        }
     }
 </script>
 

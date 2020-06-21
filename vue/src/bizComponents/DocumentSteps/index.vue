@@ -1,11 +1,14 @@
 <script type="text/jsx">
     export default {
         name: "DocumentSteps",
+
         functional: true,
+
         props: {
             status: Number,
             type: String
         },
+
         render(h, context) {
             let {status, type} = context.props
             let firstStatus = type === 'add' ? 'finish' : 'success'

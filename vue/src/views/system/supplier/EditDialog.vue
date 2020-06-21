@@ -45,6 +45,7 @@
                 />
             </el-form-item>
         </el-form>
+
         <template v-slot:footer>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
@@ -62,8 +63,11 @@
 
     export default {
         name: "EditDialog",
+
         mixins: [dialogMixin],
+
         components: {DialogForm, RegionSelector},
+
         props: {
             value: {type: Boolean, default: false},
             type: {type: String, default: 'see'},
@@ -72,6 +76,7 @@
                 default: () => ({})
             },
         },
+
         data() {
             return {
                 loading: false,
@@ -96,6 +101,7 @@
                 }
             }
         },
+
         computed: {
             title() {
                 if (isEmpty(this.type)) return ''
@@ -108,6 +114,7 @@
                         return '编辑供应商'
                 }
             },
+
             confirmMessage() {
                 switch (this.type) {
                     case 'add':
@@ -118,31 +125,38 @@
                         return ''
                 }
             },
+
             canEdit() {
                 return ['add', 'edit'].includes(this.type)
             }
         },
+
         methods: {
             clearRegion() {
                 this.form.region = null
                 this.form.region_name = null
             },
+
             selectRegion(obj) {
                 this.form.region = obj.id
                 this.form.region_name = obj.fullname
             },
+
             open() {
                 if (this.type !== 'add') mergeObj(this.form, this.data)
             },
+
             clearForm() {
                 resetObj(this.form)
                 this.form.status = 1
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
+
             cancel() {
                 this.closeDialog()
                 this.clearForm()
             },
+
             confirm() {
                 if (this.loading) return
                 this.$refs.form.validate(v => {

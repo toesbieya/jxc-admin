@@ -2,6 +2,7 @@
     <el-card class="chart-card">
         <div slot="header">
             <span><b>cpu监控</b></span>
+
             <span class="title-span">
                 当前使用率：
                 <count-to
@@ -11,6 +12,7 @@
                         suffix="%"
                 />
             </span>
+
             <span class="title-span">
                 峰值：
                 <count-to
@@ -21,6 +23,7 @@
                 />
             </span>
         </div>
+
         <div class="line-chart"/>
     </el-card>
 </template>
@@ -31,11 +34,15 @@
 
     export default {
         name: "Cpu",
+
         mixins: [resize, logic],
+
         components: {CountTo},
+
         props: {
             data: Object
         },
+
         data() {
             return {
                 options: {
@@ -91,6 +98,7 @@
                 }
             }
         },
+
         watch: {
             data: {
                 deep: true,
@@ -100,13 +108,16 @@
                 }
             }
         },
+
         methods: {
             init() {
                 this.chart.setOption(this.options)
             },
+
             $_getChartDom() {
                 return this.$el.querySelector('.line-chart')
             },
+
             setOptions({xData, vData} = {}) {
                 this.chart.setOption({
                     xAxis: {data: xData},

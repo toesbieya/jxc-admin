@@ -4,6 +4,7 @@
             {{title}}
             <document-history :data="history" :type="type" @show="getHistory"/>
         </template>
+
         <el-form
                 ref="form"
                 :model="form"
@@ -14,7 +15,7 @@
                 status-icon
         >
             <el-row :gutter="20">
-                <dialog-form-item label="单 号：" prop="id">
+                <dialog-form-item v-if="form.id" label="单 号：" prop="id">
                     <el-input :value="form.id" readonly/>
                 </dialog-form-item>
                 <dialog-form-item label="销售订单：" prop="pid">
@@ -22,16 +23,16 @@
                         <el-button slot="append" :disabled="!canSave" @click="parentDialog=true">选择</el-button>
                     </el-input>
                 </dialog-form-item>
-                <dialog-form-item label="创建人：" prop="cname">
+                <dialog-form-item v-if="form.id" label="创建人：" prop="cname">
                     <el-input :value="form.cname" readonly/>
                 </dialog-form-item>
-                <dialog-form-item label="创建时间：" prop="ctime">
+                <dialog-form-item v-if="form.id" label="创建时间：" prop="ctime">
                     <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
-                <dialog-form-item label="审核人：" prop="vname">
+                <dialog-form-item v-if="form.status===2" label="审核人：" prop="vname">
                     <el-input :value="form.vname" readonly/>
                 </dialog-form-item>
-                <dialog-form-item label="审核时间：" prop="vtime">
+                <dialog-form-item v-if="form.status===2" label="审核时间：" prop="vtime">
                     <el-date-picker :value="form.vtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
                 <dialog-form-item label="附 件：" full>
@@ -54,6 +55,7 @@
                 </dialog-form-item>
             </el-row>
         </el-form>
+
         <el-table :data="displayTableData">
             <el-table-column align="center" type="expand">
                 <el-table slot-scope="{row}" :data="row.data" border show-summary :summary-method="summaryStock(row)">
@@ -63,10 +65,11 @@
                             出库数量
                             <el-button v-if="canSave" type="text" size="small" @click="openStock(row)">选择库存</el-button>
                         </template>
-                        <template slot-scope="d">
+                        <template v-slot="d">
                             <el-input-number
                                     v-if="canSave"
                                     v-model="d.row.num"
+                                    controls-position="right"
                                     :min="0"
                                     size="small"
                                     @change="(nv,ov)=>changeOutboundNum(nv,ov,d.row,row)"
@@ -83,9 +86,9 @@
             <el-table-column align="center" label="出库数量" prop="num" width="150"/>
             <el-table-column align="center" label="订单剩余未出库数量" prop="remain_num" width="250"/>
         </el-table>
+
         <document-steps :status="form.status" :type="type"/>
-        <order-selector v-model="parentDialog" @select="selectParent"/>
-        <stock-selector v-model="stockDialog" :cid="row?row.cid:null" @select="selectStock"/>
+
         <template v-slot:footer>
             <span v-if="form.status===2" class="seal">已审核</span>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
@@ -95,6 +98,10 @@
             <el-button v-if="canPass" size="small" type="success" @click="pass">通 过</el-button>
             <el-button v-if="canReject" size="small" type="danger" @click="reject">驳 回</el-button>
         </template>
+
+        <order-selector v-model="parentDialog" @select="selectParent"/>
+
+        <stock-selector v-model="stockDialog" :cid="row?row.cid:null" @select="selectStock"/>
     </dialog-form>
 </template>
 
@@ -112,8 +119,11 @@
 
     export default {
         name: "EditDialog",
+
         mixins: [bizDocumentDialogMixin],
+
         components: {OrderSelector, StockSelector},
+
         data() {
             return {
                 documentName: '销售出库单',
@@ -132,6 +142,7 @@
                 displayTableData: []
             }
         },
+
         methods: {
             afterInit() {
                 if (this.type === 'add') return
@@ -142,6 +153,7 @@
                 ])
                     .then(([r1, r2]) => this.buildDisplayTableData(r1, r2))
             },
+
             //根据销售订单的子表、销售出库的子表、对应的库存来构造展示列表
             buildDisplayTableData(orderSubList, stockList) {
                 this.displayTableData = []
@@ -170,14 +182,17 @@
                     })
                 }
             },
+
             selectParent(id, sub) {
                 this.form.pid = id
                 this.displayTableData = sub.map(i => ({...i, num: 0, data: []}))
             },
+
             openStock(row) {
                 this.row = row
                 this.stockDialog = true
             },
+
             selectStock(stocks) {
                 let res = []
                 let outboundNum = 0
@@ -199,6 +214,7 @@
                 this.row.data = res
                 this.stockDialog = false
             },
+
             summaryStock(row) {
                 return ({data}) => {
                     let sum = ['合计', 0, '', '']
@@ -209,6 +225,7 @@
                     return sum
                 }
             },
+
             changeOutboundNum(nv, ov, row, displayTableRow) {
                 if (nv > row.max_num) {
                     return elAlert(`${row.cname}的出库数量超出库存数量`, () => row.num = ov)
@@ -226,6 +243,7 @@
                     return elAlert(`${displayTableRow.cname}的出库数量超出销售数量`, () => row.num = ov)
                 }
             },
+
             validate() {
                 if (this.type === 'edit' && isEmpty(this.form.id)) {
                     return '属性缺失，请关闭弹窗刷新重试'

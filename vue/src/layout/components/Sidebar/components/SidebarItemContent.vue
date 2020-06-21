@@ -1,11 +1,14 @@
 <script type="text/jsx">
     export default {
         name: "SidebarItemContent",
+
         functional: true,
+
         props: {
             icon: String,
             title: String
         },
+
         render(h, context) {
             const {icon, title} = context.props
             const vnodes = []

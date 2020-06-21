@@ -25,14 +25,18 @@
 
     export default {
         name: "SettingDrawer",
+
         props: {
             value: Boolean
         },
+
         data: () => ({settings}),
+
         methods: {
             getValue(key) {
                 return this.$store.state.setting[key]
             },
+
             setValue(value, key) {
                 this.$store.commit(`setting/${key}`, value)
             }

@@ -11,13 +11,17 @@
         {name: '流星雨', value: 'sparkRain'},
         {name: '阳光', value: 'sunlight'},
     ]
+
     export default {
         name: "SetAnimation",
+
         functional: true,
+
         props: {
             value: String,
             customClass: String
         },
+
         render(h, context) {
             const {value, customClass} = context.props
             return (

@@ -4,7 +4,7 @@
             :visible="value"
             append-to-body
             title="选择库存商品"
-            width="50%"
+            width="70%"
             top="50px"
             @close="cancel"
             @open="search"
@@ -15,8 +15,10 @@
                 <el-button size="small" type="primary" @click="confirm">确 定</el-button>
                 <el-button plain size="small" @click="closeDialog">取 消</el-button>
             </el-row>
+
             <el-row class="table-container">
                 <liner-progress :show="config.loading"/>
+
                 <el-table
                         ref="table"
                         :data="tableData"
@@ -28,6 +30,7 @@
                     <el-table-column align="center" label="商品分类" prop="cname" show-overflow-tooltip/>
                     <el-table-column align="center" label="库存数量" prop="total_num" show-overflow-tooltip/>
                 </el-table>
+
                 <el-pagination
                         background
                         :current-page="searchForm.page"
@@ -50,14 +53,19 @@
 
     export default {
         name: "StockSelector",
+
         mixins: [dialogMixin, tableMixin],
+
         components: {LinerProgress},
+
         props: {value: Boolean},
+
         data() {
             return {
                 selection: []
             }
         },
+
         methods: {
             search() {
                 if (!this.value || this.config.loading) return
@@ -70,10 +78,12 @@
                     })
                     .finally(() => this.config.loading = false)
             },
+
             confirm() {
                 if (this.selection.length <= 0) return elError('请选择商品')
                 this.$emit('select', this.selection)
             },
+
             cancel() {
                 this.closeDialog()
                 this.$refs.table.clearSelection()

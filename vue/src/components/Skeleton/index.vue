@@ -4,7 +4,9 @@
 
     export default {
         name: 'QSkeleton',
+
         functional: true,
+
         props: {
             type: {
                 type: String,
@@ -25,6 +27,7 @@
             width: String,
             height: String
         },
+
         render(h, context) {
             const {type, animation, className, tag, dark, square, bordered, size, width, height} = context.props
             const style = size !== undefined ? {width: size, height: size} : {width, height}

@@ -3,7 +3,9 @@
 
     export default {
         name: 'SvgIcon',
+
         functional: true,
+
         props: {
             icon: {
                 type: String,
@@ -14,6 +16,7 @@
                 default: ''
             }
         },
+
         render(h, context) {
             const {listeners} = context
             const {icon, className} = context.props

@@ -6,19 +6,24 @@
 
     export default {
         name: 'sidebar',
+
         components: {SidebarItem, Logo},
+
         data() {
             return {
                 mouseOutside: true
             }
         },
+
         computed: {
             ...mapState('app', {
                 device: state => state.device
             }),
+
             ...mapState('resource', {
                 routes: state => state.sidebarMenus
             }),
+
             ...mapState('setting', {
                 showLogo: state => state.showLogo,
                 sidebarCollapse: state => state.sidebarCollapse,
@@ -26,14 +31,17 @@
                 sidebarShowParent: state => state.sidebarShowParent,
                 sidebarAutoHidden: state => state.sidebarAutoHidden
             }),
+
             //仅在pc端可折叠
             collapse() {
                 return this.sidebarCollapse && this.device === 'pc'
             },
+
             hideSidebar() {
                 return this.sidebarAutoHidden && this.mouseOutside
                     || this.sidebarCollapse && this.device === 'mobile'
             },
+
             sidebarClass() {
                 return {
                     'sidebar-container': true,
@@ -43,6 +51,7 @@
                 }
             }
         },
+
         watch: {
             //由于elMenu的initOpenedMenu()不会触发select事件，所以手动实现菜单收起
             '$route.path'(nv, ov) {
@@ -55,15 +64,18 @@
                 if (!item) menu.openedMenus = []
                 else this.select(item.index, item.indexPath, item, false)
             },
+
             hideSidebar(v) {
                 if (v) document.addEventListener('mousemove', this.moveEvent)
                 else document.removeEventListener('mousemove', this.moveEvent)
             }
         },
+
         methods: {
             moveEvent(e) {
                 if (e.clientX <= 15) this.mouseOutside = false
             },
+
             select(index, indexPath, item, jump = true) {
                 //开启手风琴模式时，激活没有子级的菜单时收起其它展开项
                 if (this.sidebarUniqueOpen && indexPath.length === 1) {
@@ -84,14 +96,17 @@
                 else this.$router.push(index)
             }
         },
+
         mounted() {
             if (this.sidebarAutoHidden) {
                 document.addEventListener('mousemove', this.moveEvent)
             }
         },
+
         beforeDestroy() {
             document.removeEventListener('mousemove', this.moveEvent)
         },
+
         render() {
             const menu = (
                 <el-menu

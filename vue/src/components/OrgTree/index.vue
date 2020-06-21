@@ -24,12 +24,14 @@
 
     export default {
         name: 'OrgTree',
+
         components: {
             OrgTreeNode: {
                 render,
                 functional: true
             }
         },
+
         props: {
             data: {
                 type: Object,
@@ -55,12 +57,14 @@
                 default: false
             }
         },
+
         data() {
             return {
                 flatData: {},
                 dataCloned: {}
             }
         },
+
         watch: {
             data(newData) {
                 this._handleData(newData)
@@ -74,6 +78,7 @@
                 this._toggleExpand(this.dataCloned, status)
             }
         },
+
         computed: {
             prop_id() {
                 return this.props.id
@@ -88,6 +93,7 @@
                 return this.props.children
             }
         },
+
         methods: {
             _handleData(data) {
                 this._cloneData(data)
@@ -169,6 +175,7 @@
                 this._updateExpandStatus()
             }
         },
+
         mounted() {
             this._handleData(this.data)
             this._updateExpandStatus()

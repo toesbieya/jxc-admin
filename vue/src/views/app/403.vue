@@ -4,12 +4,14 @@
             <div class="pic">
                 <img alt="403" height="428" src="static/img/403.gif" width="313">
             </div>
+
             <div class="bullshit">
                 <div class="bullshit__oops">Oops!</div>
+
                 <div class="bullshit__headline">没有访问权限</div>
-                <div class="bullshit__info">
-                    请联系管理员，或者点击下方按钮返回
-                </div>
+
+                <div class="bullshit__info">请联系管理员，或者点击下方按钮返回</div>
+
                 <router-link class="bullshit__return-home" to="/index">返回首页</router-link>
             </div>
         </div>

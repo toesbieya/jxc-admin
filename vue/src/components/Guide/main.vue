@@ -2,6 +2,7 @@
     <div>
         <el-popover ref="popover" :value="showPopover" trigger="manual" width="300">
             <div v-html="step.content" style="padding: 10px"/>
+
             <div class="guide-popover-action">
                 <div class="action-close">
                     <el-button v-show="hasDone" size="small" @click="exit">
@@ -11,6 +12,7 @@
                         {{step.closeBtnText}}
                     </el-button>
                 </div>
+
                 <div class="action-step">
                     <el-button v-show="showPrevBtn" class="prev-btn" size="small" @click="previous">
                         {{step.prevBtnText}}
@@ -20,24 +22,27 @@
                     </el-button>
                 </div>
             </div>
+
             <div slot="reference" v-show="showStage" id="guide-stage" :style="stageStyle"/>
         </el-popover>
+
         <div v-show="showStage" id="guide-highlight-element-cover" :style="stageStyle" @click.prevent.stop/>
+
         <div v-show="showOverlay" id="guide-overlay"/>
     </div>
 </template>
 
 <script>
-    /*
-* 由driver.js改造而来
-* vue里交互型的导航不太行，太多东西做不到，换成引导手册吧
-* */
+    /**
+     * 由driver.js改造而来
+     * vue里交互型的导航不太行，太多东西做不到，换成引导手册吧
+     */
     import {debounce, isEmpty} from "@/utils"
-
     import {addHighlightClasses, getCalculatedPosition, inAppView, jump, removeHighlightClasses} from "./utils"
 
     export default {
         name: "Guide",
+
         data() {
             return {
                 steps: [],
@@ -59,6 +64,7 @@
                 lastHighlightedElement: null
             }
         },
+
         computed: {
             showPopover() {
                 return !this.moving && this.showStage
@@ -83,11 +89,13 @@
                 }
             }
         },
+
         watch: {
             isActive(v) {
                 v ? document.body.classList.add('overflow-hidden') : document.body.classList.remove('overflow-hidden')
             }
         },
+
         methods: {
             start(index = 0) {
                 if (!this.steps || this.steps.length === 0) throw new Error('请传入步骤')
@@ -207,84 +215,16 @@
                     `backgroundColor:${this.step.stageBackground}`
             }
         },
+
         mounted() {
             this.resize = debounce(this.resize)
             window.addEventListener('resize', this.resize)
         },
+
         beforeDestroy() {
             window.removeEventListener('resize', this.resize)
         }
     }
 </script>
 
-<style lang="scss">
-    .guide-highlighted-element {
-        z-index: 1002 !important;
-    }
-
-    .guide-position-relative {
-        position: relative !important;
-    }
-
-    .guide-fix-stacking {
-        z-index: auto !important;
-        opacity: 1.0 !important;
-        transform: none !important;
-        filter: none !important;
-        perspective: none !important;
-        transform-style: flat !important;
-        will-change: unset !important;
-    }
-
-    .guide-popover-action {
-        position: relative;
-        height: 100%;
-        width: 100%;
-
-        .action-close {
-            display: inline-block;
-        }
-
-        .action-step {
-            display: inline-block;
-            right: 0;
-            position: absolute;
-
-            .prev-btn {
-                position: absolute;
-                right: 90px;
-            }
-
-            .next-btn {
-
-            }
-        }
-    }
-
-    #guide-stage {
-        position: absolute;
-        background: white;
-        transition: all 0.3s;
-        z-index: 1001 !important;
-        border-radius: 2px;
-        /*background: transparent !important;
-        outline: 5000px solid rgba(0, 0, 0, 0.75);*/
-    }
-
-    #guide-overlay {
-        background: black;
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        opacity: 0.75;
-        z-index: 1000 !important;
-    }
-
-    #guide-highlight-element-cover {
-        position: absolute;
-        background: transparent !important;
-        z-index: 1003 !important;
-    }
-</style>
+<style lang="scss" src="./style.scss"></style>

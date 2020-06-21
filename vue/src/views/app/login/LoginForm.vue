@@ -4,6 +4,7 @@
             <span class="svg-container">
                 <svg-icon icon="user"/>
             </span>
+
             <el-input
                     ref="username"
                     v-model="form.username"
@@ -13,12 +14,14 @@
                     type="text"
             />
         </el-form-item>
+
         <el-form-item prop="password">
             <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">
                 <span class="svg-container">
                     <svg-icon icon="password"/>
                 </span>
             </el-tooltip>
+
             <el-input
                     ref="password"
                     v-model="form.password"
@@ -29,10 +32,12 @@
                     placeholder="请输入密码"
                     @keyup.enter.native="login"
             />
+
             <span @click="showPwd" class="show-pwd">
                 <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'"/>
             </span>
         </el-form-item>
+
         <el-button
                 :loading="loading"
                 class="submit-btn"
@@ -41,11 +46,13 @@
         >
             {{loading ? '登 录 中...' : '登 录'}}
         </el-button>
+
         <div class="flex" style="margin-top: 20px">
             <p class="other-ways">
                 其他方式登录
                 <svg-icon v-for="i in otherWays" :key="i" :icon="i" @click="thirdPartyLogin(i)"/>
             </p>
+
             <el-button type="text" @click="register">注册账户</el-button>
         </div>
     </el-form>
@@ -58,6 +65,7 @@
 
     export default {
         name: "LoginForm",
+
         data() {
             return {
                 loading: false,
@@ -77,11 +85,13 @@
                 otherWays: ['qq']
             }
         },
+
         methods: {
             showPwd() {
                 this.passwordType = this.passwordType === 'password' ? '' : 'password'
                 this.$nextTick(() => this.$refs.password.focus())
             },
+
             login() {
                 if (this.loading) return
                 this.$refs.form.validate(valid => {
@@ -96,33 +106,41 @@
                         .catch(() => this.loading = false)
                 })
             },
+
             register() {
                 !this.loading && this.$router.push('/register')
             },
+
             success() {
                 elSuccess('登陆成功')
                 const redirect = this.$route.query.redirect || '/'
                 //由于清除消息时会造成卡顿，所以延迟0.2s跳转
                 setTimeout(() => this.$router.push(redirect), 200)
             },
+
             thirdPartyLogin(channel) {
                 this.$message.info('假装可以第三方登录')
             },
+
             capsLockTip({keyCode}) {
                 if (keyCode === 20) this.capsTooltip = !this.capsTooltip
             },
+
             addCapsLockEvent() {
                 document.addEventListener('keyup', this.capsLockTip)
             },
+
             removeEvent() {
                 document.removeEventListener('keyup', this.addCapsLockEvent)
             }
         },
+
         mounted() {
             this.addCapsLockEvent()
             if (isEmpty(this.form.username)) this.$refs.username.focus()
             else this.$refs.password.focus()
         },
+
         beforeDestroy() {
             this.removeEvent()
         }

@@ -7,6 +7,7 @@
 <script>
     export default {
         name: "ContextMenu",
+
         props: {
             value: {
                 type: Boolean,
@@ -19,12 +20,14 @@
                 type: Number
             }
         },
+
         data() {
             return {
                 realLeft: '0px',
                 realTop: '0px'
             }
         },
+
         watch: {
             value(v) {
                 document.body[v ? 'addEventListener' : 'removeEventListener']('click', this.closeContextMenu)
@@ -39,6 +42,7 @@
                 this.autoAdaptTop(v)
             }
         },
+
         methods: {
             closeContextMenu() {
                 this.$emit('input', false)

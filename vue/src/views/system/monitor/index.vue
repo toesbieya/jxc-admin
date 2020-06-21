@@ -4,7 +4,9 @@
             <span>启动时间：{{operatingInfo.bootedTime}}</span>
             <span style="margin-left: 20px">运行时间：{{operatingInfo.upTime|timePass}}</span>
         </div>
+
         <cpu-info :data="cpuInfo"/>
+
         <el-row :gutter="40" style="margin-top: 32px">
             <el-col :span="12">
                 <memory-info :data="memoryInfo"/>
@@ -26,7 +28,9 @@
 
     export default {
         name: "systemMonitor",
+
         components: {CpuInfo, MemoryInfo, JvmInfo},
+
         data() {
             return {
                 loading: false,
@@ -79,6 +83,7 @@
                 }
             }
         },
+
         methods: {
             getData() {
                 if (this.loading) return
@@ -94,10 +99,12 @@
                     })
                     .finally(() => this.loading = false)
             },
+
             handleOperatingInfo(info) {
                 this.operatingInfo.bootedTime = timeFormat(null, new Date(info.bootedTime * 1000))
                 this.operatingInfo.upTime = info.upTime
             },
+
             handleCpuInfo(info) {
                 let used = (Number)(sub(100, info.idle).toFixed(2))
                 this.cpuInfo.name = info.name
@@ -111,6 +118,7 @@
                 this.cpuInfo.xData.push(this.time)
                 this.cpuInfo.vData.push(used)
             },
+
             handleMemoryInfo(info) {
                 info.utilizationRate = (Number)(info.utilizationRate.toFixed(2))
                 this.memoryInfo.total = info.total
@@ -125,6 +133,7 @@
                 this.memoryInfo.xData.push(this.time)
                 this.memoryInfo.vData.push(info.utilizationRate)
             },
+
             handleJvmInfo(info) {
                 info.utilizationRate = (Number)(info.utilizationRate.toFixed(2))
                 this.jvmInfo.total = info.total
@@ -140,6 +149,7 @@
                 this.jvmInfo.vData.push(info.utilizationRate)
             },
         },
+
         mounted() {
             this.getData()
             this.refreshTimer = setInterval(() => this.getData(), 40000)

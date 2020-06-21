@@ -3,11 +3,13 @@
 
     export default {
         name: "SearchForm",
+
         provide() {
             return {
                 searchForm: this
             }
         },
+
         props: {
             labelWidth: {type: String, default: '120px'},
             xs: {type: Number, default: 24},// <768px
@@ -15,6 +17,7 @@
             md: {type: Number, default: 8}, // >=998px
             lg: {type: Number, default: 6}  // >=1200px
         },
+
         data() {
             return {
                 showCollapse: false,
@@ -23,6 +26,7 @@
                 width: 'auto'
             }
         },
+
         methods: {
             handleCollapse() {
                 this.collapse = !this.collapse
@@ -45,13 +49,16 @@
                 this.showCollapse = num < this.$slots.default.length
             }
         },
+
         mounted() {
             this.resize()
             window.addEventListener('resize', this.resize)
         },
+
         beforeDestroy() {
             window.removeEventListener('resize', this.resize)
         },
+
         render() {
             const slots = this.$slots.default
             const collapseChildren = []

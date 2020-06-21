@@ -10,12 +10,14 @@
 <script>
     export default {
         name: "BottomTip",
+
         data() {
             return {
                 value: false,
                 message: null
             }
         },
+
         methods: {
             handleAfterLeave() {
                 this.$destroy(true)

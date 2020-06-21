@@ -4,6 +4,7 @@
             <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canUpdate" icon="el-icon-edit" size="small" type="primary" @click="edit">编 辑</el-button>
         </el-row>
+
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table :data="tableData" @row-click="row=$event">
                 <el-table-column label="名称" prop="fullName" show-overflow-tooltip/>
@@ -31,18 +32,23 @@
 
     export default {
         name: "resourceManagement",
+
         mixins: [tableMixin],
+
         components: {SearchForm, SearchFormItem, EditDialog},
+
         data() {
             return {
                 editDialog: false
             }
         },
+
         computed: {
             canUpdate() {
                 return auth(baseUrl + '/update')
             }
         },
+
         methods: {
             search() {
                 if (this.config.loading) return
@@ -53,10 +59,12 @@
                     .then(data => this.tableData = data)
                     .finally(() => this.config.loading = false)
             },
+
             edit() {
                 if (!this.row) return elError('请选择要编辑的资源')
                 this.editDialog = true
             },
+
             success(msg) {
                 elSuccess(msg)
                 this.editDialog = false

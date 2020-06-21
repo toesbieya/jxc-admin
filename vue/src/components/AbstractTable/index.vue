@@ -3,7 +3,9 @@
 
     export default {
         name: "AbstractTable",
+
         functional: true,
+
         render(h, context) {
             const {data, children} = context
             return (

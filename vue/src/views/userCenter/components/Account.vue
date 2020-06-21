@@ -16,6 +16,7 @@
                 <el-input v-model.trim="form.new_pwd" maxlength="100" type="password"/>
             </el-form-item>
         </el-form>
+
         <template v-slot:footer>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
@@ -31,7 +32,9 @@
 
     export default {
         mixins: [dialogMixin],
+
         components: {DialogForm},
+
         data() {
             return {
                 loading: false,
@@ -57,15 +60,18 @@
                 }
             }
         },
+
         props: {
             value: Boolean
         },
+
         methods: {
             clearForm() {
                 this.form.old_pwd = null
                 this.form.new_pwd = null
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
+
             confirm() {
                 if (this.loading) return
                 this.$refs.form.validate(v => {
@@ -79,6 +85,7 @@
                         })
                 })
             },
+
             cancel() {
                 this.closeDialog()
                 this.clearForm()

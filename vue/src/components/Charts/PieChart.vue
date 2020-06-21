@@ -7,10 +7,12 @@
 
     export default {
         mixins: [resize, logic],
+
         props: {
             title: String,
             data: Array
         },
+
         watch: {
             data: {
                 deep: true,
@@ -19,6 +21,7 @@
                 }
             }
         },
+
         methods: {
             init(data) {
                 this.chart.setOption({

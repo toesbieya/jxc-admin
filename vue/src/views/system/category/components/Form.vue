@@ -43,6 +43,7 @@
 
     export default {
         props: ['list'],
+
         data() {
             let typeValidate = (r, v, c) => {
                 if (v === 1 && this.hasChildren) c('该分类下已有子节点')
@@ -69,10 +70,12 @@
                 }
             }
         },
+
         computed: {
             show() {
                 return this.list() && (this.type === 'add' || ['see', 'edit'].includes(this.type) && this.list().currentCategory)
             },
+
             confirmMessage() {
                 switch (this.type) {
                     case 'add':
@@ -84,6 +87,7 @@
                 }
             }
         },
+
         methods: {
             add(parent) {
                 this.title = '添加新分类'
@@ -94,12 +98,14 @@
                 this.form.type = 0
                 this.hasChildren = false
             },
+
             see(current, parent) {
                 this.title = `分类信息(${current.name})`
                 this.parentObj = parent
                 this.type = 'see'
                 mergeObj(this.form, current)
             },
+
             edit(current, parent) {
                 this.title = `编辑分类(${current.name})`
                 this.parentObj = parent
@@ -107,6 +113,7 @@
                 mergeObj(this.form, current)
                 this.hasChildren = current.children.length > 0
             },
+
             confirm() {
                 this.$refs.form.validate(v => {
                     if (!v) return
@@ -118,11 +125,13 @@
                         })
                 })
             },
+
             cancel() {
                 this.type = 'none'
                 this.clearForm()
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
+
             clearForm() {
                 this.form.id = null
                 this.form.pid = 0
@@ -132,6 +141,7 @@
                 this.hasChildren = false
             }
         },
+
         mounted() {
             waitUntilSuccess(
                 () => !isEmpty(this.list()),
@@ -140,6 +150,7 @@
         }
     }
 </script>
+
 <style lang="scss" scoped>
     .edit-form {
         width: 85%;
