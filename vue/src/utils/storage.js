@@ -25,26 +25,6 @@ export function setUser(user) {
     sessionStorage.setItem(sessionUserKey, zip(JSON.stringify(user)))
 }
 
-export function getLocalResource() {
-    let obj = localStorage.getItem(localResourceKey)
-    if (isEmpty(obj)) return []
-    try {
-        obj = JSON.parse(unzip(obj))
-    }
-    catch (e) {
-        console.error('权限数据异常！', e)
-        removeLocalResource()
-        return []
-    }
-    return obj
-}
-
-export function setLocalResource(resource) {
-    isEmpty(resource) ?
-        removeLocalResource() :
-        localStorage.setItem(localResourceKey, zip(JSON.stringify(resource)))
-}
-
 export function getLocalPersonalSettings() {
     let obj = localStorage.getItem(localPersonalSettingsKey)
     if (isEmpty(obj)) return {}

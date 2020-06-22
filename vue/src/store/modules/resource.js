@@ -3,8 +3,7 @@ import constantRoutes from '@/router/constant'
 import authorityRoutes from '@/router/authority'
 import {needAuth} from "@/utils/auth"
 import {createTree} from "@/utils/tree"
-import {getLocalResource, setLocalResource} from "@/utils/storage"
-import {getResources} from "@/api/system/resource"
+import {getAllResources} from "@/api/system/resource"
 import {isEmpty} from "@/utils"
 
 const finalConstantRoutes = transformOriginRoutes(constantRoutes)
@@ -12,14 +11,11 @@ const finalAuthorityRoutes = transformOriginRoutes(authorityRoutes)
 clean(finalConstantRoutes, false)
 clean(finalAuthorityRoutes, false)
 
-const localResource = getLocalResource()
-
 const state = {
     routes: [],
     sidebarMenus: [],
-    data: localResource,
     dataMap: {},
-    tree: createTree(localResource),
+    tree: [],
     hasInitRoutes: false
 }
 
@@ -38,13 +34,12 @@ const mutations = {
         state.sidebarMenus = sidebarMenus
     },
     data(state, data) {
-        state.data = data || []
-        state.dataMap = state.data.reduce((map, item) => {
+        data = data || []
+        state.dataMap = data.reduce((map, item) => {
             map[item.url] = item.id
             return map
         }, {})
-        state.tree = createTree(state.data)
-        setLocalResource(data)
+        state.tree = createTree(data.filter(resource => resource.admin !== 1))
     },
     hasInitRoutes(state, sign) {
         state.hasInitRoutes = sign
@@ -69,8 +64,7 @@ const actions = {
     },
     initResource({commit}) {
         return new Promise(resolve => {
-            //if (state.data.length > 0) return resolve();
-            getResources()
+            getAllResources()
                 .then(data => {
                     commit('data', data)
                     resolve()
