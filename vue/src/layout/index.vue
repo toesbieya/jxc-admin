@@ -2,13 +2,15 @@
     <section class="el-container app-wrapper">
         <v-sidebar/>
 
-        <section class="el-container main-container" :class="{'has-header':hasHeader,'has-tags-view':useTagsView}">
+        <section :class="containerClass">
             <v-header/>
             <v-main/>
         </section>
 
         <!--移动端侧边栏展开时的遮罩-->
-        <div v-show="showSidebarMask" class="drawer-bg" @click.stop.prevent="collapseSidebar"/>
+        <transition name="el-fade-in-linear">
+            <div v-if="showSidebarMask" class="drawer-bg" @click.stop.prevent="collapseSidebar"/>
+        </transition>
     </section>
 </template>
 
@@ -46,6 +48,15 @@
                 isLogin: state => !isEmpty(state.id) && !isEmpty(state.token)
             }),
 
+            containerClass() {
+                return {
+                    'el-container': true,
+                    'main-container': true,
+                    'has-header': this.hasHeader,
+                    'has-tags-view': this.useTagsView
+                }
+            },
+
             showOfflineTip() {
                 return !this.online && this.isLogin
             },
@@ -77,12 +88,12 @@
         flex-direction: row;
 
         .drawer-bg {
-            background: #000;
-            opacity: 0.3;
+            background: rgba(0, 0, 0, .5);
+            backdrop-filter: blur(10px);
             width: 100%;
             top: 0;
             height: 100%;
-            position: absolute;
+            position: fixed;
             z-index: 9;
         }
 

@@ -1,4 +1,5 @@
 import Particle from "./Particle"
+import {getContextPath} from "@/utils/browser"
 
 export default class ParticleBall {
     constructor(canvas, {sphereRad = 130, fLen = 300, maxParticle = 400, turnSpeed = 0.005} = {}) {
@@ -80,8 +81,8 @@ export default class ParticleBall {
     initDot() {
         this.dotImageList = []
         for (let i = 1; i <= 4; i++) {
-            let dotImage = new Image()
-            dotImage.src = "/static/img/dot" + i + ".png"
+            const dotImage = new Image()
+            dotImage.src = `${getContextPath()}static/img/dot${i}.png`
             this.dotImageList.push(dotImage)
         }
     }

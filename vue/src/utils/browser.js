@@ -36,3 +36,9 @@ export function getElementHeight(ele, style) {
 
     return height
 }
+
+//获取项目部署的绝对路径
+export function getContextPath() {
+    const {protocol, host} = document.location
+    return `${protocol}//${host}${process.env.BASE_URL}`
+}

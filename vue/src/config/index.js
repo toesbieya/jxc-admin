@@ -1,7 +1,12 @@
 const isDevelopment = process.env.NODE_ENV === 'development'
 
+const contextPath = '/'
+
 module.exports = {
     title: 'BiuBiuBiu~',
+
+    //项目的部署路径
+    contextPath,
 
     //全局axios的baseUrl
     apiPrefix: '/api',
@@ -35,5 +40,5 @@ module.exports = {
     filePreviewPrefix: isDevelopment ? 'http://localhost:8012' : 'https://preview.toesbieya.cn',
 
     //省市地区json数据请求地址
-    regionDataUrl: '/static/json/region-pcas.json'
+    regionDataUrl: `${contextPath}static/json/region-pcas.json`
 }

@@ -25,8 +25,8 @@ const state = {
 
 const mutations = {
     routes(state, routes) {
-        let tempConstantRoutes = JSON.parse(JSON.stringify(finalConstantRoutes))
-        let tempAuthorityRoutes = JSON.parse(JSON.stringify(routes))
+        const tempConstantRoutes = JSON.parse(JSON.stringify(finalConstantRoutes))
+        const tempAuthorityRoutes = JSON.parse(JSON.stringify(routes))
 
         clean(tempConstantRoutes)
         clean(tempAuthorityRoutes)
@@ -61,7 +61,7 @@ const actions = {
     initRoutes({commit}, user) {
         const {resources, admin} = user
         return new Promise(resolve => {
-            let accessedRoutes = getAuthorizedRoutes({resources, admin})
+            const accessedRoutes = getAuthorizedRoutes({resources, admin})
             commit('routes', accessedRoutes)
             commit('hasInitRoutes', true)
             resolve()
@@ -81,7 +81,7 @@ const actions = {
 
 //在原始路由数组基础上添加全路径
 function transformOriginRoutes(routes) {
-    let res = JSON.parse(JSON.stringify(routes))
+    const res = JSON.parse(JSON.stringify(routes))
 
     addFullPath(res)
 
@@ -121,7 +121,7 @@ function addFullPath(routes, basePath = '/') {
 function getAuthorizedRoutes({resources, admin}) {
     if (admin === 1) return finalAuthorityRoutes
     if (!resources) return []
-    let arr = JSON.parse(JSON.stringify(finalAuthorityRoutes))
+    const arr = JSON.parse(JSON.stringify(finalAuthorityRoutes))
     filter(arr, i => !needAuth(i) || i.fullPath in resources)
     return arr
 }

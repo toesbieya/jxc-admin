@@ -53,6 +53,9 @@
 </template>
 
 <script>
+    import BtnStopImage from './image/btn_stop.png'
+    import BtnMoveImage from './image/btn_move.png'
+
     /*
     * https://github.com/Kevin-269581661/vue-puzzle-verification
     * 网上搬的例子，实际开发建议用极验
@@ -120,10 +123,11 @@
                 const showResultTip = ['success', 'fail'].includes(this.stat)
                 return ['verify-result', `verify-${this.stat}`, showResultTip ? 'show-result' : '']
             },
+
             sliderBtnStyle() {
                 return {
                     ...this.sliderStyle,
-                    'background-position': this.stat === 'move' ? '0 31.0992%' : '0 11.79625%'
+                    'background-image': `url(${this.stat === 'move' ? BtnMoveImage : BtnStopImage})`
                 }
             }
         },
@@ -134,9 +138,11 @@
                 this.clear()
                 this.reject()
             },
+
             refresh() {
                 this.initImage().then(() => this.initCanvas())
             },
+
             initCanvas() {
                 this.clear()
                 let MinX = this.padding + this.blockSize
@@ -217,6 +223,7 @@
                 ctx_s.shadowColor = "black"
                 ctx_s.fill()
             },
+
             initImage() {
                 const imageListTemp = [
                     "https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=4018557288,1217151095&fm=26&gp=0.jpg",
@@ -228,6 +235,7 @@
                 this.image.src = imageListTemp[imgRandomIndex]
                 return new Promise(resolve => resolve())
             },
+
             drawImage(fun) {
                 let img = new Image()
                 img.src = this.image.src
@@ -236,6 +244,7 @@
                     this.image.loading = false
                 }
             },
+
             clear() {
                 this.stat = 'ready'
                 let c = this.$refs.puzzleBox
@@ -245,12 +254,15 @@
                 c_l.setAttribute("height", c.getAttribute("height"))
                 c_s.setAttribute("height", c.getAttribute("height"))
             },
+
             moveStart(e) {
+                if (this.stat !== 'ready') return
                 e.preventDefault()
                 e.stopPropagation()
                 this.moveStartAtX = e.type === 'mousedown' ? e.pageX : e.changedTouches[0].pageX
                 this.addListener()
             },
+
             moving(e) {
                 this.stat = 'move'
                 const pageX = e.type === 'mousemove' ? e.pageX : e.changedTouches[0].pageX
@@ -263,6 +275,7 @@
                 this.sliderStyle.left = distance + "px"
                 this.sliderStyle.transition = "inherit"
             },
+
             moveEnd(e) {
                 const pageX = e.type === 'mouseup' ? e.pageX : e.changedTouches[0].pageX
                 const distance = pageX - this.moveStartAtX
@@ -286,6 +299,7 @@
                 this.moveStartAtX = null
                 this.removeListener()
             },
+
             addListener() {
                 if (this.image.loading) return
                 document.addEventListener("mousemove", this.moving)
@@ -293,12 +307,14 @@
                 document.addEventListener("touchmove", this.moving)
                 document.addEventListener("touchend", this.moveEnd)
             },
+
             removeListener() {
                 document.removeEventListener("mousemove", this.moving)
                 document.removeEventListener("mouseup", this.moveEnd)
                 document.addEventListener("touchmove", this.moving)
                 document.addEventListener("touchend", this.moveEnd)
             },
+
             handleAfterLeave() {
                 this.$destroy(true)
                 this.$el.parentNode.removeChild(this.$el)

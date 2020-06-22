@@ -39,15 +39,6 @@
         }
     }
 
-    .puzzle-view .puzzle-image-loading__icon,
-    .slider-container,
-    .slider-container .slider-btn,
-    .puzzle-footer .puzzle-small .puzzle-close,
-    .puzzle-footer .puzzle-small .puzzle-refresh {
-        background-repeat: no-repeat;
-        background-image: url(/static/img/sprite.1.2.4.png);
-    }
-
     .puzzle-view {
         position: relative;
         overflow: hidden;
@@ -63,8 +54,9 @@
             padding-top: 10%;
 
             &__icon {
-                background-size: 764.70588%;
-                background-position: 0 70.70218%;
+                /*background-size: 764.70588%;
+                background-position: 0 70.70218%;*/
+                background-image: url(./image/loading.png);
                 margin: 11% auto 10px;
                 width: 34px;
                 height: 26px;
@@ -131,8 +123,7 @@
         width: 93.52%;
         padding: 0 0 13.67% 0;
         background-color: white;
-        background-size: 100%;
-        background-position: 0 0;
+        background-image: url(./image/track.png);
 
         .slider-track {
             position: absolute;
@@ -160,7 +151,6 @@
             width: 25.38%;
             padding: 0 0 25.38% 0;
             cursor: pointer;
-            background-size: 393.93939%;
         }
     }
 
@@ -191,16 +181,16 @@
                 height: 0;
                 padding-bottom: 17.8%;
                 overflow: hidden;
-                background-size: 1300%;
             }
 
             .puzzle-close {
                 margin-left: 0;
-                background-position: 0 44.86874%;
+                background-image: url(./image/icon_close.png);
             }
 
             .puzzle-refresh {
-                background-position: 0 81.38425%;
+                background: url(./image/icon_refresh_top.png) top center no-repeat,
+                url(./image/icon_refresh_bottom.png) center bottom no-repeat;
             }
         }
     }

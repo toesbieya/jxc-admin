@@ -9,10 +9,11 @@
 <script>
     import {waitUntilSuccess} from "@/utils"
     import {elError} from "@/utils/message"
+    import {getContextPath} from "@/utils/browser"
 
     const DEFAULT_OPTIONS = {
         language: 'zh_CN',
-        language_url: '/static/tinymce/langs/zh_CN.js',
+        language_url: `${getContextPath()}static/tinymce/langs/zh_CN.js`,
         object_resizing: false,
         end_container_on_empty_block: true,
         default_link_target: '_blank',

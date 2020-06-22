@@ -1,7 +1,8 @@
 import {createWorker} from "@/utils/worker"
+import {getContextPath} from "@/utils/browser"
 
 export default function (uint8Array, quality = 75) {
-    const url = document.location.protocol + '//' + document.location.host
+    const url = `${getContextPath()}static/js/cjpeg.min.js`
     return new Promise(resolve => {
         let worker = createWorker(handler, {url, data: uint8Array, quality}, ({data}) => {
             resolve(data)
@@ -13,7 +14,7 @@ export default function (uint8Array, quality = 75) {
 function handler() {
     addEventListener('message', e => {
         const {url, data, quality} = e.data
-        importScripts(url + '/static/js/cjpeg.min.js')
+        importScripts(url)
         const start = performance.now()
         const result = cjpeg(data, ['-quality', quality])
         postMessage({time: performance.now() - start, data: result.data})

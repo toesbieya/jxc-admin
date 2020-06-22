@@ -70,10 +70,10 @@
     /*
     * https://photoswipe.com/
     * 需要加载以下文件
-    * /static/photoSwipe/photoswipe.css
-    * /static/photoSwipe/default-skin/default-skin.css
-    * /static/photoSwipe/photoswipe.js
-    * /static/photoSwipe/photoswipe-ui-default.js
+    * photoSwipe/photoswipe.css
+    * photoSwipe/default-skin/default-skin.css
+    * photoSwipe/photoswipe.js
+    * photoSwipe/photoswipe-ui-default.js
     * */
 
     export default {

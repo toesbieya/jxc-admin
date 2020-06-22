@@ -62,6 +62,7 @@
     import {elError} from "@/utils/message"
     import {isImage, isDoc, isPdf, isPpt, isRar, isXls, isTxt, isZip} from "@/utils/validate"
     import {preview, deleteUpload, download, upload, autoCompleteUrl} from "@/utils/file"
+    import {getContextPath} from "@/utils/browser"
 
     function parseMaxSize(maxSize) {
         if (typeof maxSize === 'number') {
@@ -82,13 +83,14 @@
 
     function getCoverImage(url, fileType) {
         if (isImage(fileType)) return url
-        if (isDoc(fileType)) return '/static/img/fileType/docx.png'
-        if (isPdf(fileType)) return '/static/img/fileType/pdf.png'
-        if (isPpt(fileType)) return '/static/img/fileType/ppt.png'
-        if (isRar(fileType)) return '/static/img/fileType/rar.png'
-        if (isXls(fileType)) return '/static/img/fileType/xls.png'
-        if (isTxt(fileType)) return '/static/img/fileType/txt.png'
-        if (isZip(fileType)) return '/static/img/fileType/zip.png'
+        else if (isDoc(fileType)) url = `${getContextPath()}static/img/fileType/doc.png`
+        else if (isPdf(fileType)) url = `${getContextPath()}static/img/fileType/pdf.png`
+        else if (isPpt(fileType)) url = `${getContextPath()}static/img/fileType/ppt.png`
+        else if (isRar(fileType)) url = `${getContextPath()}static/img/fileType/rar.png`
+        else if (isXls(fileType)) url = `${getContextPath()}static/img/fileType/xls.png`
+        else if (isTxt(fileType)) url = `${getContextPath()}static/img/fileType/txt.png`
+        else if (isZip(fileType)) url = `${getContextPath()}static/img/fileType/zip.png`
+        return url
     }
 
     export default {

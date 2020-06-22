@@ -31,6 +31,7 @@
             handleCollapse() {
                 this.collapse = !this.collapse
             },
+
             getElementNumInRow() {
                 const vw = getElementInnerWidth(this.$el.parentNode)
 
@@ -42,6 +43,7 @@
 
                 return Math.floor(24 / lineNum)
             },
+
             resize() {
                 const num = this.getElementNumInRow()
                 this.num = num

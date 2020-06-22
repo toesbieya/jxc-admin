@@ -9,6 +9,8 @@
 </template>
 
 <script>
+    import {getContextPath} from "@/utils/browser"
+
     /**
      * 加载js或css
      * @param url
@@ -49,7 +51,7 @@
         mounted() {
             //注意：live2d_path 参数应使用绝对路径
             //const live2d_path = "https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget/"
-            const live2d_path = "/static/live2d/"
+            const live2d_path = `${getContextPath()}static/live2d/`
 
             // 加载 waifu.css live2d.min.js waifu-tips.js
             Promise.all([

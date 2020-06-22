@@ -18,7 +18,7 @@ import NProgress from 'nprogress'
 import {isUserExist} from "@/utils/storage"
 import {auth, needAuth} from "@/utils/auth"
 import {getPageTitle, transformWhiteList, metaExtend} from './util'
-import {routerMode} from '@/config'
+import {contextPath, routerMode} from '@/config'
 import constantRoutes from '@/router/constant'
 import authorityRoutes from '@/router/authority'
 
@@ -34,6 +34,7 @@ metaExtend(constantRoutes)
 metaExtend(authorityRoutes)
 
 const router = new Router({
+    base: contextPath,
     mode: routerMode,
     scrollBehavior: () => ({y: 0}),
     routes: constantRoutes.concat(authorityRoutes, endRoute)
@@ -64,6 +65,7 @@ router.beforeEach(async (to, from, next) => {
         iframeControl(to)
         return next()
     }
+
     //用户无权限访问时的动作
     next({path: '/403'})
 })
@@ -80,7 +82,7 @@ function initMenu() {
 
 //判断是否需要打开iframe
 function iframeControl(route) {
-    let operate = route.meta.iframe ? 'open' : 'close'
+    const operate = route.meta.iframe ? 'open' : 'close'
     store.dispatch(`iframe/${operate}`, route.meta.iframe)
 }
 

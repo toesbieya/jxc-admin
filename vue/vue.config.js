@@ -4,23 +4,24 @@ const settings = require('./src/config')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
+const isDev = process.env.NODE_ENV === 'development'
+
 function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
-const port = process.env.port || 8079 // dev port
-
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-    publicPath: settings.routerMode === 'history' ? '/' : './',
+    publicPath: settings.contextPath,
     outputDir: 'dist',
     assetsDir: 'static',
     runtimeCompiler: true,
     lintOnSave: false,
-    productionSourceMap: process.env.NODE_ENV === 'development',
+    productionSourceMap: isDev,
     parallel: true,
     devServer: {
-        port,
+        port: process.env.port || 8079,
+        contentBasePublicPath: settings.contextPath,
         open: true,
         overlay: {
             warnings: true,
@@ -58,7 +59,7 @@ module.exports = {
                 minRatio: 0.8,
                 deleteOriginalAssets: false,//是否删除源文件
             }),
-            process.env.NODE_ENV === 'production' ? new BundleAnalyzerPlugin() : {apply: () => ({})}
+            isDev ? {apply: () => ({})} : new BundleAnalyzerPlugin()
         ]
     },
     chainWebpack(config) {
