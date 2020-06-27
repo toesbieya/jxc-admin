@@ -1,24 +1,36 @@
-import {rightSideRouteTransition} from '@/config'
 import {createMutations} from "@/utils"
 
 const state = {
+    //显示的页签，{...route,title:route.meta.title}对象数组
     visitedViews: [],
+
+    //缓存的页签，用于<keep-router-view-alive/>:include
     cachedViews: [],
-    transitionName: rightSideRouteTransition
+
+    //路由过渡动画名称
+    transitionName: ''
 }
 
 const mutations = {
     ...createMutations(state),
 
     addVisitedView(state, view) {
+        const {title = '暂无标题'} = view.meta || {}
+
         if (state.visitedViews.some(v => v.path === view.path)) return
-        state.visitedViews.push({...view, title: view.meta.title || 'no-name'})
+
+        state.visitedViews.push({...view, title})
     },
     addCachedView(state, view) {
-        if (state.cachedViews.includes(view.name)) return
-        if (!view.meta.noCache && !view.meta.iframe) {
-            state.cachedViews.push(view.name)
-        }
+        const {noCache, iframe} = view.meta || {}
+
+        if (noCache || iframe) return
+
+        const key = getCachedViewKey(view)
+
+        if (state.cachedViews.includes(key)) return
+
+        state.cachedViews.push(key)
     },
 
     delVisitedView(state, view) {
@@ -26,17 +38,9 @@ const mutations = {
         index > -1 && state.visitedViews.splice(index, 1)
     },
     delCachedView(state, view) {
-        const index = state.cachedViews.indexOf(view.name)
+        const key = getCachedViewKey(view)
+        const index = state.cachedViews.indexOf(key)
         index > -1 && state.cachedViews.splice(index, 1)
-    },
-
-    updateVisitedViews(state, view) {
-        for (let v of state.visitedViews) {
-            if (v.path === view.path) {
-                v = Object.assign(v, view)
-                break
-            }
-        }
     }
 }
 
@@ -53,14 +57,20 @@ const actions = {
 
     delOthersViews({state, commit}, view) {
         const visitedViews = state.visitedViews.filter(v => v.meta.affix || v.path === view.path)
-        const name = state.cachedViews.find(name => name === view.name)
+        const name = state.cachedViews.find(name => name === getCachedViewKey(view))
+
         commit('visitedViews', visitedViews)
         commit('cachedViews', name ? [name] : [])
     },
     delAllViews({state, commit}) {
-        commit('visitedViews', state.visitedViews.filter(tag => tag.meta.affix))
+        commit('visitedViews', state.visitedViews.filter(tag => tag.meta && tag.meta.affix))
         commit('cachedViews', [])
     }
+}
+
+function getCachedViewKey(view) {
+    const isDetailPage = view.meta && view.meta.isDetailPage
+    return isDetailPage ? view.path : view.name
 }
 
 export default {

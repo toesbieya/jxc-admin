@@ -11,7 +11,7 @@ const router = [
         component: Layout,
         children: [
             {
-                path: '/redirect/:path(.*)',
+                path: ':path(.*)',
                 component: Redirect
             }
         ]

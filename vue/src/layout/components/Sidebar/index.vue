@@ -32,6 +32,15 @@
                 sidebarAutoHidden: state => state.sidebarAutoHidden
             }),
 
+            activeMenu() {
+                const route = this.$route
+                const {meta, path} = route
+                if (path.startsWith('/redirect')) {
+                    return path.replace('/redirect', '')
+                }
+                return meta && meta.activeMenu ? meta.activeMenu : path
+            },
+
             //仅在pc端可折叠
             collapse() {
                 return this.sidebarCollapse && this.device === 'pc'
@@ -116,7 +125,7 @@
                     background-color={variables['menu-background']}
                     collapse={this.collapse}
                     collapse-transition={false}
-                    default-active={this.$route.path}
+                    default-active={this.activeMenu}
                     unique-opened={this.sidebarUniqueOpen}
                     mode="vertical"
                     on-select={this.select}

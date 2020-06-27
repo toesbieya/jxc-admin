@@ -36,9 +36,6 @@
                     :data="tableData"
                     @row-click="row=$event"
             >
-                <el-table-column align="center" type="expand">
-                    <role-resource slot-scope="{row}" :ids="row.resource_id" :map="resourceMap"/>
-                </el-table-column>
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="角色名" prop="name" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建人" prop="cname" show-overflow-tooltip/>
@@ -71,7 +68,6 @@
     import SearchForm from "@/components/SearchForm"
     import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import EditDialog from './components/EditDialog'
-    import RoleResource from "./components/RoleResource"
     import {delRole, searchRoles} from "@/api/system/role"
     import {isEmpty} from '@/utils'
     import {elConfirm, elError, elSuccess} from "@/utils/message"
@@ -85,7 +81,7 @@
 
         mixins: [tableMixin],
 
-        components: {SearchForm, SearchFormItem, EditDialog, RoleResource},
+        components: {SearchForm, SearchFormItem, EditDialog},
 
         data() {
             return {
@@ -112,15 +108,6 @@
 
             canDel() {
                 return auth(baseUrl + '/del')
-            },
-
-            resourceMap() {
-                const resource = this.$store.state.resource
-                if (resource.data.length <= 0) return {}
-                return resource.data.reduce((map, resource) => {
-                    map[resource.id] = resource
-                    return map
-                }, {})
             }
         },
 

@@ -2,8 +2,9 @@
     export default {
         created() {
             const {params, query} = this.$route
+            //如果使用了name+params传参
             if ('params' in query) {
-                let {name, params} = JSON.parse(query.params)
+                const {name, params} = JSON.parse(query.params)
                 this.$router.replace({name, params})
             }
             else this.$router.replace({path: '/' + params.path, query})

@@ -136,7 +136,7 @@ export default {
         }
     },
     activated() {
-        let {type, id} = this.$route.params
+        const {type, id} = this.$route.params
         if (!['see', 'edit'].includes(type) || isEmpty(id)) return
         this.row = null
         this.$nextTick(() => {

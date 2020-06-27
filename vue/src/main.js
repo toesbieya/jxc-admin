@@ -42,3 +42,9 @@ new Vue({
 
 //页面刷新时socket重连
 store.dispatch('socket/init', store.state.user).catch()
+
+window.addEventListener('unhandledrejection', event => {
+    if (event.reason.stack.startsWith('Error: Redirected when going from')) {
+        event.preventDefault()
+    }
+})

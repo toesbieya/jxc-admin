@@ -1,12 +1,13 @@
 /*
 * 路由配置
 *
-* 需要鉴权的路由：meta && !meta.noAuth
+* 需要鉴权的路由：!meta.noAuth
 * 左侧菜单显示：name && !hidden && meta.title
 * 左侧菜单排序：能显示 && sort，升序排列
 * 左侧菜单不折叠只有一个children的路由：alwaysShow
 * 面包屑显示：meta.title
 * 搜索选项显示：name && meta.title
+* tab栏显示：name && meta.title
 * tab栏固定显示：meta.affix
 * 页面不缓存：!name || meta.noCache
 * 打开iframe：meta.iframe，不会重复打开相同src的iframe
@@ -44,7 +45,15 @@ router.beforeEach(async (to, from, next) => {
     //使用redirect进行跳转时不显示进度条
     !to.path.startsWith('/redirect') && NProgress.start()
 
-    document.title = getPageTitle(to.meta.title)
+    //若是详情页之间的跳转，借助redirect避免组件复用
+    const isToDetailPage = to.meta && to.meta.isDetailPage,
+        isFromDetailPage = from.meta && from.meta.isDetailPage
+    if (isToDetailPage !== undefined && isToDetailPage === isFromDetailPage) {
+        //这里vue-router会报redirect错误
+        return next({path: `/redirect${to.path}`, query: to.query})
+    }
+
+    document.title = getPageTitle(to)
 
     //白名单内不需要进行权限控制
     if (whiteList.some(reg => reg.test(to.path))) return next()

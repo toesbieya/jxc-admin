@@ -17,6 +17,7 @@
             data: {
                 deep: true,
                 handler(val) {
+                    if (!window.echarts) return
                     this.init(val)
                 }
             }

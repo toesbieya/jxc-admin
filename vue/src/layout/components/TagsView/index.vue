@@ -9,17 +9,17 @@
                     class="tags-view-item"
                     :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
                     tag="div"
-                    @contextmenu.prevent.native="openMenu(tag,$event)"
-                    @dblclick.prevent.native="closeSelectedTag(tag)"
+                    @contextmenu.prevent.native="e=>openMenu(tag,e)"
+                    @dblclick.prevent.native="()=>closeSelectedTag(tag)"
             >
                 {{ tag.title }}
-                <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
+                <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="()=>closeSelectedTag(tag)"/>
             </router-link>
         </scroll-pane>
 
         <context-menu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
             <context-menu-item @click="refreshSelectedTag(selectedTag)">刷新</context-menu-item>
-            <context-menu-item v-show="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
+            <context-menu-item v-show="!isAffix(selectedTag)" @click="()=>closeSelectedTag(selectedTag)">
                 关闭
             </context-menu-item>
             <context-menu-item @click="closeOthersTags">关闭其他</context-menu-item>
@@ -32,11 +32,11 @@
     import ScrollPane from './ScrollPane'
     import ContextMenu from "@/components/ContextMenu"
     import ContextMenuItem from "@/components/ContextMenu/ContextMenuItem"
-    import shortcutsMixin from './mixin/shortcutsMixin'
-    import decideRouterTransitionMixin from './mixin/decideRouterTransition'
+    import shortcuts from './mixin/shortcuts'
+    import decideRouterTransition from './mixin/decideRouterTransition'
 
     export default {
-        mixins: [shortcutsMixin, decideRouterTransitionMixin],
+        mixins: [shortcuts, decideRouterTransition],
 
         components: {ContextMenu, ContextMenuItem, ScrollPane},
 
@@ -66,8 +66,7 @@
         watch: {
             $route(to, from) {
                 this.decideRouteTransition && this.decideRouteTransition(to, from)
-                this.addTags(to)
-                this.moveToCurrentTag()
+                this.addTags(to).then(this.moveToCurrentTag)
             },
 
             'contextmenu.show'(v) {
@@ -84,7 +83,7 @@
             },
 
             filterAffixTags(routes) {
-                let tags = []
+                const tags = []
                 routes.forEach(route => {
                     if (route.name && route.meta && route.meta.affix) {
                         tags.push({
@@ -110,20 +109,16 @@
 
             //将当前具有name属性的路由添加为tab页
             addTags(to = this.$route) {
-                if (!to.name) return
-                return this.$store.dispatch('tagsView/addView', this.$route)
+                return to.name ? this.$store.dispatch('tagsView/addView', to) : Promise.resolve()
             },
 
             //横向滚动条移动至当前tab
             moveToCurrentTag() {
                 this.$nextTick(() => {
-                    let tag = this.$refs.tag.find(i => i.to.path === this.$route.path)
+                    const tag = this.$refs.tag.find(i => i.to.path === this.$route.path)
                     if (!tag) return
+
                     this.$refs.scrollPane.moveToTarget(tag)
-                    //更新全路径
-                    if (tag.to.fullPath !== this.$route.fullPath) {
-                        this.$store.commit('tagsView/updateVisitedViews', this.$route)
-                    }
                 })
             },
 
@@ -138,7 +133,7 @@
             closeSelectedTag(view) {
                 if (this.isAffix(view)) return
                 this.$store.dispatch('tagsView/delView', view)
-                    .then(() => this.isActive(view) && this.gotoViewLast())
+                    .then(() => this.isActive(view) && this.gotoLastView())
             },
             closeOthersTags() {
                 this.$store.dispatch('tagsView/delOthersViews', this.selectedTag)
@@ -150,10 +145,10 @@
             },
             closeAllTags() {
                 this.$store.dispatch('tagsView/delAllViews')
-                    .then(() => this.gotoViewLast())
+                    .then(() => this.gotoLastView())
             },
 
-            gotoViewLast() {
+            gotoLastView() {
                 if (this.visitedViews.length === 0) return this.$router.push('/')
                 const latest = this.visitedViews[this.visitedViews.length - 1]
                 if (this.$route.path !== latest.path) this.$router.push(latest.path)

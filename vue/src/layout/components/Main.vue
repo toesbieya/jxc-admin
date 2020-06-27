@@ -2,11 +2,11 @@
     <main class="app-main">
         <el-scrollbar ref="scrollbar" v-show="!showIframe" class="scroll-container">
             <div class="page-view">
-                <transition :name="transitionName" mode="out-in">
-                    <keep-alive :include="cachedViews">
+                <keep-router-view-alive :include="cachedViews">
+                    <transition :name="transitionName" mode="out-in">
                         <router-view/>
-                    </keep-alive>
-                </transition>
+                    </transition>
+                </keep-router-view-alive>
             </div>
         </el-scrollbar>
 
@@ -29,10 +29,13 @@
 <script>
     import Vue from 'vue'
     import {mapState} from 'vuex'
+    import KeepRouterViewAlive from "./KeepAlive"
     import Footer from "./Footer"
 
     export default {
         name: 'AppMain',
+
+        components: {KeepRouterViewAlive},
 
         computed: {
             ...mapState('app', {

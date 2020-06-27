@@ -11,12 +11,14 @@ export default {
             default: '350px'
         }
     },
+
     data() {
         return {
             loading: false,
             chart: null
         }
     },
+
     methods: {
         $_getChartInstance() {
             return waitUntilSuccess(
@@ -28,9 +30,11 @@ export default {
             return this.$el
         }
     },
+
     mounted() {
         this.$_getChartInstance().then(() => this.init())
     },
+
     beforeDestroy() {
         if (!this.chart) return
         this.chart.dispose()

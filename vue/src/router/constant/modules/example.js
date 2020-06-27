@@ -91,6 +91,18 @@ const router = {
             name: 'developingTest',
             component: () => lazyLoadView(import('@/views/example/developingTest')),
             meta: {title: '开发测试'}
+        },
+        {
+            path: 'detailPage1',
+            name: 'detailPage1',
+            component: () => lazyLoadView(import('@/views/example/detailPage')),
+            meta: {title: '详情页缓存1', noCache: false, isDetailPage: true}
+        },
+        {
+            path: 'detailPage2',
+            name: 'detailPage2',
+            component: () => lazyLoadView(import('@/views/example/detailPage')),
+            meta: {title: '详情页缓存2', noCache: false, isDetailPage: true}
         }
     ]
 }
