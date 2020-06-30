@@ -5,6 +5,7 @@ import {needAuth} from "@/utils/auth"
 import {createTree} from "@/utils/tree"
 import {getAllResources} from "@/api/system/resource"
 import {isEmpty} from "@/utils"
+import {isExternal} from "@/utils/validate"
 
 const finalConstantRoutes = transformOriginRoutes(constantRoutes)
 const finalAuthorityRoutes = transformOriginRoutes(authorityRoutes)
@@ -106,7 +107,7 @@ function clean(routes, cleanHidden = true) {
 function addFullPath(routes, basePath = '/') {
     routes.forEach(route => {
         delete route.components
-        route.fullPath = path.resolve(basePath, route.path)
+        route.fullPath = isExternal(route.path) ? route.path : path.resolve(basePath, route.path)
         route.children && addFullPath(route.children, route.fullPath)
     })
 }

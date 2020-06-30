@@ -29,6 +29,11 @@ const routes = [
         ]
     },
     {
+        path: 'https://doc.toesbieya.cn',
+        sort: 1,
+        meta: {title: '文档', icon: 'documentation'}
+    },
+    {
         path: '/user',
         component: Layout,
         redirect: '/user/index',
