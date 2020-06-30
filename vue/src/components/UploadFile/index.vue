@@ -62,7 +62,6 @@
     import {elError} from "@/utils/message"
     import {isImage, isDoc, isPdf, isPpt, isRar, isXls, isTxt, isZip} from "@/utils/validate"
     import {preview, deleteUpload, download, upload, autoCompleteUrl} from "@/utils/file"
-    import {getContextPath} from "@/utils/browser"
 
     const typeMapper = [
         {test: isImage}, {test: isDoc, type: 'doc'}, {test: isPdf, type: 'pdf'}, {test: isPpt, type: 'ppt'},
@@ -85,7 +84,7 @@
     function getCoverImage(url, fileType) {
         const mapper = typeMapper.find(({test}) => test(fileType))
 
-        return mapper && mapper.type ? `${getContextPath()}static/img/fileType/${mapper.type}.png` : url
+        return mapper && mapper.type ? `${process.env.BASE_URL}static/img/fileType/${mapper.type}.png` : url
     }
 
     export default {

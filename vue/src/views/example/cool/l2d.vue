@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import {getContextPath, loadExternalResource} from "@/utils/browser"
+    import {loadExternalResource} from "@/utils/browser"
 
     export default {
         name: "l2d",
@@ -17,7 +17,7 @@
         data: () => ({l2d: null}),
 
         mounted() {
-            const path = `${getContextPath()}static/live2d/`
+            const path = `${process.env.BASE_URL}static/live2d/`
 
             Promise.all([
                 import('@/plugin/live2d'),
