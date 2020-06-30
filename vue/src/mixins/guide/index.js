@@ -7,7 +7,7 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
     modules[moduleName] = {
         data() {
             return {
-                steps: value.default
+                guideSteps: value.default
             }
         },
         ...baseMixin

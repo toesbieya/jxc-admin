@@ -9,16 +9,9 @@
         name: "ContextMenu",
 
         props: {
-            value: {
-                type: Boolean,
-                default: false
-            },
-            left: {
-                type: Number
-            },
-            top: {
-                type: Number
-            }
+            value: Boolean,
+            left: Number,
+            top: Number
         },
 
         data() {
@@ -31,7 +24,7 @@
         watch: {
             value(v) {
                 document.body[v ? 'addEventListener' : 'removeEventListener']('click', this.closeContextMenu)
-                if (v) this.$nextTick(() => this.autoAdapt())
+                if (v) this.$nextTick(this.autoAdapt)
             },
             left(v) {
                 if (!v) return
@@ -56,24 +49,22 @@
                 if (this.$el.offsetHeight > document.body.clientHeight - v && v > this.$el.offsetHeight) {
                     this.realTop = v - this.$el.offsetHeight + 'px'
                 }
-                else {
-                    this.realTop = v + 'px'
-                }
+                else this.realTop = v + 'px'
             },
             autoAdaptLeft(v) {
                 if (!this.value) return
                 if (this.$el.offsetWidth > document.body.clientWidth - v) {
                     this.realLeft = v - this.$el.offsetWidth + 'px'
                 }
-                else {
-                    this.realLeft = v + 'px'
-                }
+                else this.realLeft = v + 'px'
             }
         }
     }
 </script>
 
 <style lang="scss" scoped>
+    @import "~@/assets/styles/variables.scss";
+
     .contextmenu {
         margin: 0;
         background: $menu-background;
@@ -87,7 +78,7 @@
         color: #fff;
         box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
 
-        li {
+        &-item {
             margin: 0;
             padding: 7px 16px;
             cursor: pointer;

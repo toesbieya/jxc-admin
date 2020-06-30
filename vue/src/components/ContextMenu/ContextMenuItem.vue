@@ -5,7 +5,7 @@
         functional: true,
 
         render(h, context) {
-            return h('li', context.data, context.children)
+            return <li class="contextmenu-item" {...context.data}>{context.children}</li>
         }
     }
 </script>

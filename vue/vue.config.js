@@ -81,9 +81,9 @@ module.exports = {
             .options({symbolId: 'icon-[name]'})
             .end()
     },
-    css: {
+    /*css: {
         loaderOptions: {
             sass: {prependData: `@import "src/assets/styles/variables.scss";`,}
         }
-    }
+    }*/
 }

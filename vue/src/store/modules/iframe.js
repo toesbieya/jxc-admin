@@ -13,15 +13,13 @@ const mutations = {
         state.list.push(src)
     },
     del(state, src) {
-        if (!src) return
-        let index = state.list.findIndex(i => i === src)
+        const index = state.list.findIndex(i => i === src)
         index > -1 && state.list.splice(index, 1)
     }
 }
 
 const actions = {
     open({commit}, src) {
-        if (!src) return
         commit('show', true)
         commit('current', src)
         commit('add', src)

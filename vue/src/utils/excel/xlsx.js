@@ -1,6 +1,6 @@
 /**
  * @deprecated
- * xlsx问题多多，准备全面转向excelJS
+ * xlsx问题多多，转向excelJS
  */
 
 import {isEmpty} from "@/utils"

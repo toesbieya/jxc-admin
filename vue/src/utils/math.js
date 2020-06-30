@@ -1,6 +1,6 @@
+/*基于decimal.js的运算封装*/
 import Decimal from 'decimal.js'
 
-/*基于decimal.js的运算封装*/
 export function plus(...val) {
     if (val.length === 0) return 0
     else if (val.length === 1) return new Decimal(val[0]).toNumber()

@@ -81,6 +81,8 @@
 </script>
 
 <style lang="scss">
+    @import "~@/assets/styles/variables.scss";
+
     .has-tags-view .header-container {
         height: calc(#{$nav-height} + #{$tags-view-height});
     }

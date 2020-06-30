@@ -26,7 +26,7 @@
                     <router-link to="/user/index">
                         <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
                     </router-link>
-                    <el-dropdown-item class="hidden-xs" icon="el-icon-guide" @click.native="$guide(0,steps)">
+                    <el-dropdown-item class="hidden-xs" icon="el-icon-guide" @click.native="()=>$guide(0,guideSteps)">
                         新手指引
                     </el-dropdown-item>
                     <router-link v-if="showSystemMonitor" to="/system/monitor">
@@ -66,7 +66,6 @@
 
         data() {
             return {
-                fullscreen: false,
                 settingDrawer: false
             }
         },

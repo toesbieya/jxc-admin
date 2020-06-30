@@ -42,3 +42,39 @@ export function getContextPath() {
     const {protocol, host} = document.location
     return `${protocol}//${host}${process.env.BASE_URL}`
 }
+
+/**
+ * 加载js或css
+ *
+ * @param url
+ * @param type js|css
+ * @returns {Promise<String>} url
+ */
+export function loadExternalResource(url, type = 'js') {
+    return new Promise((resolve, reject) => {
+        let tag
+
+        if (type === "css") {
+            const links = Array.from(document.getElementsByTagName('link'))
+            if (links.some(link => link.getAttribute('href') === url)) return resolve()
+
+            tag = document.createElement("link")
+            tag.rel = "stylesheet"
+            tag.href = url
+        }
+        else if (type === "js") {
+            const scripts = Array.from(document.getElementsByTagName('script'))
+            if (scripts.some(script => script.getAttribute('src') === url)) return resolve()
+
+            tag = document.createElement("script")
+            tag.src = url
+        }
+
+        if (tag) {
+            tag.onload = () => resolve(url)
+            tag.onerror = () => reject(url)
+            document.head.appendChild(tag)
+        }
+        else reject(`没有这个东东,url:${url},type:${type}`)
+    })
+}

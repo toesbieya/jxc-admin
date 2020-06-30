@@ -1,10 +1,10 @@
 <template>
     <el-dialog
             v-drag-dialog
-            custom-class="dialog-form"
             v-bind="$props"
-            :visible="value"
             v-on="$listeners"
+            :visible="value"
+            custom-class="dialog-form"
     >
         <slot slot="title" name="title">{{title}}</slot>
 

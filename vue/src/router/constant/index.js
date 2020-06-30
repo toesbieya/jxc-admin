@@ -32,6 +32,7 @@ const routes = [
         path: '/user',
         component: Layout,
         redirect: '/user/index',
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -39,8 +40,7 @@ const routes = [
                 component: () => lazyLoadView(import('@/views/userCenter')),
                 meta: {title: '个人中心', noCache: true, icon: 'user'},
             }
-        ],
-        hidden: true
+        ]
     }
 ]
 

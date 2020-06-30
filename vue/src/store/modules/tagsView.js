@@ -8,7 +8,7 @@ const state = {
     cachedViews: [],
 
     //路由过渡动画名称
-    transitionName: ''
+    transitionName: 'el-fade-in-linear'
 }
 
 const mutations = {
@@ -22,9 +22,9 @@ const mutations = {
         state.visitedViews.push({...view, title})
     },
     addCachedView(state, view) {
-        const {noCache, iframe} = view.meta || {}
+        const {noCache, iframe, isDetailPage} = view.meta || {}
 
-        if (noCache || iframe) return
+        if (noCache || iframe || !view.name && !isDetailPage) return
 
         const key = getCachedViewKey(view)
 

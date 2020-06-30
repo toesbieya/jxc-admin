@@ -8,12 +8,14 @@ let Constructor = Vue.extend(Main)
 const PuzzleVerify = function ({left, top} = {}) {
     const instance = new Constructor()
     const position = getPosition({height: instance.height + 130, width: instance.width + 20, left, top})
+
     instance.positionTop = position.top
     instance.positionLeft = position.left
     instance.$mount()
     document.body.appendChild(instance.$el)
     instance.$el.style.zIndex = PopupManager.nextZIndex()
     instance.visible = true
+
     return new Promise((resolve, reject) => {
         instance.resolve = resolve
         instance.reject = reject

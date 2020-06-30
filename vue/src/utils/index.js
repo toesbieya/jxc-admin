@@ -49,7 +49,7 @@ export function timeFormat(fmt, date = new Date()) {
         fmt = fmt.replace(RegExp.$1, [...replace].join(''))
     }
 
-    for (let k in o) {
+    for (const k in o) {
         if (new RegExp(`(${k})`).test(fmt)) {
             const firstMatch = RegExp.$1
             const replace = firstMatch.length === 1 ? o[k] : ("00" + o[k]).substring(("" + o[k]).length)

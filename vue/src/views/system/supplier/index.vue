@@ -6,6 +6,7 @@
             </search-form-item>
             <search-form-item label="行政区域：">
                 <region-selector
+                        type="tree"
                         :value="temp.region_name"
                         limit
                         :limit-api="getLimitRegion"
@@ -83,7 +84,7 @@
 <script>
     import SearchForm from "@/components/SearchForm"
     import SearchFormItem from "@/components/SearchForm/SearchFormItem"
-    import RegionSelector from "@/components/RegionSelector/Tree"
+    import RegionSelector from "@/components/RegionSelector"
     import EditDialog from './EditDialog'
     import {delSupplier, getLimitRegion, getSuppliers} from "@/api/system/supplier"
     import {isEmpty} from '@/utils'

@@ -74,6 +74,8 @@
 </script>
 
 <style lang="scss">
+    @import "~@/assets/styles/variables.scss";
+
     .app-main {
         position: relative;
         overflow: hidden;

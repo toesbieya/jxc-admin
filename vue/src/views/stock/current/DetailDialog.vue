@@ -117,6 +117,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "~@/assets/styles/variables.scss";
+
     .el-table {
         a {
             color: $--color-primary;

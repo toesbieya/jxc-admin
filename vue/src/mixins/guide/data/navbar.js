@@ -8,10 +8,6 @@ const steps = [
         content: '这是搜索栏，可以根据关键字搜索菜单',
     },
     {
-        element: '.fullscreen-btn.right-menu-item',
-        content: '这是全屏按钮',
-    },
-    {
         element: '.setting-btn.right-menu-item',
         content: '这是个性设置按钮，可以根据自己喜好进行一些设置',
     },
@@ -25,17 +21,6 @@ const steps = [
                   <p>ctrl + ← → 可以进行tab页的左右切换</p>
                   <p>当tab过多时通过鼠标滚轮来滚动</p>
                   <p>双击可以关闭</p>`,
-        /*forceShowNextBtn: true,
-        nextBtnText: '下一阶段',
-        onNext() {
-            this.$router.push({
-                path: '/redirect/index',
-                query: {
-                    params: JSON.stringify({name: 'index', params: {guide: 'first'}})
-                }
-            })
-            return false
-        }*/
     },
 ]
 

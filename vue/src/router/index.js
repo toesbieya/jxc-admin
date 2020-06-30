@@ -9,7 +9,7 @@
 * 搜索选项显示：name && meta.title
 * tab栏显示：name && meta.title
 * tab栏固定显示：meta.affix
-* 页面不缓存：!name || meta.noCache
+* 页面不缓存：!name && !meta.isDetailPage || meta.noCache
 * 打开iframe：meta.iframe，不会重复打开相同src的iframe
 * */
 import Vue from 'vue'
@@ -71,7 +71,7 @@ router.beforeEach(async (to, from, next) => {
 
     //页面不需要鉴权或有访问权限时通过
     if (!needAuth(to) || auth(to.path)) {
-        iframeControl(to)
+        iframeControl(to, from)
         return next()
     }
 
@@ -90,9 +90,14 @@ function initMenu() {
 }
 
 //判断是否需要打开iframe
-function iframeControl(route) {
-    const operate = route.meta.iframe ? 'open' : 'close'
-    store.dispatch(`iframe/${operate}`, route.meta.iframe)
+function iframeControl(to, from) {
+    const isRefresh = to.path === '/redirect' + from.path
+    let iframe = to.meta && to.meta.iframe
+    const operate = iframe ? 'open' : 'close'
+
+    if (isRefresh) iframe = from.meta && from.meta.iframe
+
+    return store.dispatch(`iframe/${operate}`, iframe)
 }
 
 export default router

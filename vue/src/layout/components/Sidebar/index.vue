@@ -2,6 +2,7 @@
     import {mapState} from 'vuex'
     import Logo from './components/Logo'
     import SidebarItem from './components/SidebarItem'
+    import {isExternal} from "@/utils/validate"
     import variables from '@/assets/styles/variables.scss'
 
     export default {
@@ -97,6 +98,11 @@
                 this.device === 'mobile' && this.$store.commit('setting/sidebarCollapse', true)
 
                 if (!jump) return
+
+                //外部链接时打开新窗口
+                if (isExternal(index)) {
+                    return window.open(index)
+                }
 
                 if (this.$route.path === index) {
                     this.$store.commit('tagsView/delCachedView', this.$route)

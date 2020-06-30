@@ -14,7 +14,7 @@ const defaultOptions = {
     prevBtnText: '上一步',
 }
 
-const guide = function (start, steps, beforeExist) {
+const guide = function (start, steps, beforeExit) {
     if (instance) instance.exit()
     else {
         instance = new GuideConstructor({data: {options: defaultOptions}})
@@ -23,7 +23,7 @@ const guide = function (start, steps, beforeExist) {
     }
 
     instance.steps = steps
-    instance.beforeExist = beforeExist
+    instance.beforeExit = beforeExit
 
     this.$nextTick(() => instance.start(start))
 }

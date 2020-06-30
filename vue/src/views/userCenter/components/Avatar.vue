@@ -125,8 +125,8 @@
         }
 
         .img-wrapper {
-            height: 360px;
-            width: 640px;
+            height: 500px;
+            width: 100%;
             display: inline-block;
             border: 1px solid #ebebeb;
         }

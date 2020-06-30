@@ -12,10 +12,10 @@
 
         props: {
             labelWidth: {type: String, default: '120px'},
-            xs: {type: Number, default: 24},// <768px
-            sm: {type: Number, default: 12},// >=768px
-            md: {type: Number, default: 8}, // >=998px
-            lg: {type: Number, default: 6}  // >=1200px
+            xs: {type: Number, default: 1},// <768px
+            sm: {type: Number, default: 2},// >=768px
+            md: {type: Number, default: 3}, // >=998px
+            lg: {type: Number, default: 4}  // >=1200px
         },
 
         data() {
@@ -35,13 +35,10 @@
             getElementNumInRow() {
                 const vw = getElementInnerWidth(this.$el.parentNode)
 
-                let lineNum = this.lg
-
-                if (vw < 768) lineNum = this.xs
-                else if (vw < 998) lineNum = this.sm
-                else if (vw < 1200) lineNum = this.md
-
-                return Math.floor(24 / lineNum)
+                if (vw < 768) return this.xs
+                else if (vw < 998) return this.sm
+                else if (vw < 1200) return this.md
+                return this.lg
             },
 
             resize() {
@@ -78,7 +75,9 @@
                 const collapseSlot = this.$scopedSlots.collapse
 
                 collapseChildren.push(
-                    collapseSlot ? collapseSlot({collapse: this.collapse, handle: this.handleCollapse}) :
+                    collapseSlot ?
+                        collapseSlot({collapse: this.collapse, handle: this.handleCollapse})
+                        :
                         <div class="searchForm__collapse">
                             <el-button
                                 type="text"

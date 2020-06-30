@@ -38,6 +38,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "~@/assets/styles/variables.scss";
+
     .q-skeleton + .q-skeleton {
         margin-top: 20px;
     }

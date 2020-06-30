@@ -169,6 +169,11 @@
             }
         },
 
+        beforeDestroy() {
+            //销毁前将路由动画改为fade
+            this.$store.commit('setting/transitionName', 'el-fade-in-linear')
+        },
+
         mounted() {
             this.initTags()
             this.addTags()

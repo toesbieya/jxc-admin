@@ -11,12 +11,14 @@ const signature = function ({image, lineWidth = 6, lineColor = '#000000', onConf
         instance = new Constructor().$mount()
         document.body.appendChild(instance.$el)
     }
+
     instance.image = image
     instance.lineWidth = lineWidth
     instance.lineColor = lineColor
     instance.onConfirm = onConfirm
     instance.init()
     instance.visible = true
+
     return instance
 }
 

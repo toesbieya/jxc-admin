@@ -10,11 +10,7 @@
 
 <script>
     export default {
-        data() {
-            return {
-                data: null
-            }
-        },
+        data: () => ({data: []}),
 
         watch: {
             $route(route) {
@@ -37,6 +33,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "~@/assets/styles/variables.scss";
+
     .app-breadcrumb.el-breadcrumb {
         display: inline-block;
         line-height: 50px;

@@ -15,31 +15,39 @@ export default {
     methods: {
         $_prepareGuide(params) {
             if (!['navbar', 'sidebar'].includes(this.$options.name)) return
+
             if ('guide' in params) {
                 delAllUrlParam()
-                if (params.navbar && this.$options.name === 'navbar') this.$guide(params.guide, this.steps)
-                else if (params.sidebar && this.$options.name === 'sidebar') this.$guide(params.guide, this.steps)
+                for (const key of ['navbar', 'sidebar']) {
+                    if (params[key] && this.$options.name === key) {
+                        return this.$guide(params.guide, this.guideSteps)
+                    }
+                }
             }
         }
     },
+
     computed: {
-        params() {
+        routeParams() {
             return this.$route.params
         }
     },
+
     watch: {
-        params(v) {
+        routeParams(v) {
             this.$_prepareGuide(v)
         }
     },
+
     created() {
-        transformGuideSteps(this, this.steps)
+        transformGuideSteps(this, this.guideSteps)
     },
+
     activated() {
-        let params = this.$route.params
+        const params = this.$route.params
         if (!params.navbar && !params.sidebar && 'guide' in params) {
             delAllUrlParam()
-            this.$guide(params.guide, this.steps)
+            this.$guide(params.guide, this.guideSteps)
         }
     }
 }

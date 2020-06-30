@@ -5,8 +5,7 @@ import PageSkeleton from "@/components/Skeleton/PageSkeleton"
 
 //拼接页面标题
 export function getPageTitle(route) {
-    let pageTitle = route.meta && route.meta.title
-    if (typeof pageTitle === 'function') pageTitle = pageTitle(route)
+    const pageTitle = route.meta && route.meta.title
     return pageTitle ? `${pageTitle} - ${title}` : title
 }
 

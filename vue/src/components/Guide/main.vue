@@ -5,19 +5,19 @@
 
             <div class="guide-popover-action">
                 <div class="action-close">
-                    <el-button v-show="hasDone" size="small" @click="exit">
+                    <el-button v-if="hasDone" size="small" @click="exit">
                         {{step.doneBtnText}}
                     </el-button>
-                    <el-button v-show="!hasDone" size="small" @click="exit">
+                    <el-button v-else size="small" @click="exit">
                         {{step.closeBtnText}}
                     </el-button>
                 </div>
 
                 <div class="action-step">
-                    <el-button v-show="showPrevBtn" class="prev-btn" size="small" @click="previous">
+                    <el-button v-if="showPrevBtn" class="prev-btn" size="small" @click="previous">
                         {{step.prevBtnText}}
                     </el-button>
-                    <el-button v-show="showNextBtn" class="next-btn" size="small" @click="next">
+                    <el-button v-if="showNextBtn" class="next-btn" size="small" @click="next">
                         {{step.nextBtnText}}
                     </el-button>
                 </div>
@@ -26,9 +26,9 @@
             <div slot="reference" v-show="showStage" id="guide-stage" :style="stageStyle"/>
         </el-popover>
 
-        <div v-show="showStage" id="guide-highlight-element-cover" :style="stageStyle" @click.prevent.stop/>
+        <div v-if="showStage" id="guide-highlight-element-cover" :style="stageStyle" @click.prevent.stop/>
 
-        <div v-show="showOverlay" id="guide-overlay"/>
+        <div v-if="showOverlay" id="guide-overlay"/>
     </div>
 </template>
 
@@ -46,13 +46,7 @@
         data() {
             return {
                 steps: [],
-                options: {
-                    stageBackground: '#ffffff',
-                    doneBtnText: '完成',
-                    closeBtnText: '关闭',
-                    nextBtnText: '下一步',
-                    prevBtnText: '上一步',
-                },
+                options: {},
                 beforeExit: null,
                 isActive: false,
                 showStage: false,
@@ -79,9 +73,12 @@
                 return this.currentStep === this.steps.length - 1
             },
             step() {
-                if (!this.isActive) return {}
-                if (this.steps.length <= 0) return {}
-                if (!this.steps[this.currentStep]) return {}
+                if (!this.isActive
+                    || this.steps.length <= 0
+                    || !this.steps[this.currentStep]) {
+                    return {}
+                }
+
                 return {
                     ...this.options,
                     ...this.steps[this.currentStep],
@@ -114,59 +111,72 @@
                 this.showStage = false
 
                 this.$_highlight()
+
                 this.showOverlay = true
                 this.showStage = true
             },
+
             exit() {
                 if (!this.isActive) return
-                let done = this.hasDone
+
                 if (this.beforeExit) {
-                    let result = this.beforeExit(done)
+                    const result = this.beforeExit(this.hasDone)
                     if (result && result.then) {
-                        result.then(() => this.$_clear())
+                        result.then(this.$_clear)
                     }
-                    if (result !== false) this.$_clear()
+                    else result !== false && this.$_clear()
                     return
                 }
+
                 this.$_clear()
             },
+
             previous() {
                 if (!this.isActive || this.moving) return
                 this.moving = true
 
                 if (this.step.onPrevious) {
-                    let result = this.step.onPrevious()
-                    if (result && result.then) result.then(() => this.$_movePrevious())
+                    const result = this.step.onPrevious()
+                    if (result && result.then) {
+                        result.then(this.$_movePrevious)
+                    }
                     else result !== false && this.$_movePrevious()
                 }
                 else this.$_movePrevious()
             },
+
             next() {
                 if (!this.isActive || this.moving) return
                 this.moving = true
 
                 if (this.step.onNext) {
-                    let result = this.step.onNext()
-                    if (result && result.then) result.then(() => this.$_moveNext())
+                    const result = this.step.onNext()
+                    if (result && result.then) {
+                        result.then(this.$_moveNext)
+                    }
                     else result !== false && this.$_moveNext()
                 }
                 else this.$_moveNext()
             },
+
             resize() {
                 if (!this.highlightedElement) return
                 this.$_setStageStyle(getCalculatedPosition(this.highlightedElement))
-                this.$nextTick(() => this.$refs.popover.updatePopper())
+                this.$nextTick(this.$refs.popover.updatePopper)
             },
+
             $_movePrevious() {
                 if (!this.isActive) return
                 this.currentStep--
                 this.$_highlight()
             },
+
             $_moveNext() {
                 if (!this.isActive) return
                 this.currentStep++
                 this.$_highlight()
             },
+
             $_clear() {
                 if (!this.isActive) return
                 this.isActive = false
@@ -179,10 +189,11 @@
                 this.highlightedElement = null
                 this.lastHighlightedElement = null
             },
+
             $_highlight() {
                 if (isEmpty(this.step.element)) throw new Error(`step${this.currentStep}中element为空`)
 
-                let el = document.querySelector(this.step.element)
+                const el = document.querySelector(this.step.element)
 
                 if (!el) throw new Error(`${this.step.element} 没有该元素`)
 
@@ -204,6 +215,7 @@
 
                 addHighlightClasses(el)
             },
+
             $_setStageStyle({top, left, right, bottom}) {
                 const width = right - left
                 const height = bottom - top

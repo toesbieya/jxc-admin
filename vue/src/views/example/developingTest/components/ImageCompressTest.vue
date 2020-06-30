@@ -71,8 +71,6 @@
 
 <script>
     import {elError, elSuccess} from "@/utils/message"
-    import compressJPG from '@/plugin/imageCompress/cjpeg'
-    import compressPNG from '@/plugin/imageCompress/pngquant'
     import {sub, mul, div} from "@/utils/math"
 
     const commonData = () => ({
@@ -146,12 +144,14 @@
                 reader.readAsArrayBuffer(this[type].input.file)
             },
             compressJPG(uint8Array, start) {
-                compressJPG(uint8Array, this.jpg.quality)
+                import('@/plugin/imageCompress/cjpeg')
+                    .then(_ => _.default(uint8Array, this.jpg.quality))
                     .then(({data, time}) => this.compressSuccess({type: 'jpg', start, data, time}))
                     .finally(() => this.jpg.loading = false)
             },
             compressPNG(uint8Array, start) {
-                compressPNG(uint8Array, this.png.quality, this.png.speed)
+                import('@/plugin/imageCompress/pngquant')
+                    .then(_ => _.default(uint8Array, this.png.quality, this.png.speed))
                     .then(({data, time}) => this.compressSuccess({type: 'png', start, data, time}))
                     .finally(() => this.png.loading = false)
             },
@@ -166,7 +166,10 @@
         }
     }
 </script>
+
 <style lang="scss" scoped>
+    @import "~@/assets/styles/variables.scss";
+
     .container {
         max-width: 1200px;
         text-align: center;

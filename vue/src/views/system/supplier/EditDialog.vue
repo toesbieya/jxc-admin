@@ -13,6 +13,7 @@
             </el-form-item>
             <el-form-item label="行政区域：" prop="region_name">
                 <region-selector
+                        type="tree"
                         :value="form.region_name"
                         :readonly="!canEdit"
                         @clear="clearRegion"
@@ -55,7 +56,7 @@
 
 <script>
     import DialogForm from '@/components/DialogForm'
-    import RegionSelector from '@/components/RegionSelector/Tree'
+    import RegionSelector from '@/components/RegionSelector'
     import dialogMixin from "@/mixins/dialogMixin"
     import {addSupplier, updateSupplier} from "@/api/system/supplier"
     import {isEmpty, mergeObj, resetObj} from '@/utils'

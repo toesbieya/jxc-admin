@@ -26,6 +26,8 @@
 </script>
 
 <style lang="scss">
+    @import "~@/assets/styles/variables.scss";
+
     .page-skeleton-wrapper {
         margin: $page-view-margin;
     }

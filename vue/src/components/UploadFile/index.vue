@@ -3,7 +3,7 @@
             ref="upload"
             :before-upload="beforeUpload"
             :class="{disabled: hideUploader}"
-            :file-list="data"
+            :file-list="tempData"
             :http-request="httpRequest"
             :limit="limit"
             :multiple="multiple"
@@ -13,7 +13,7 @@
             action=""
             list-type="picture-card"
     >
-        <i slot="default" class="el-icon-plus"/>
+        <i class="el-icon-plus"/>
 
         <template v-slot:file="{file}">
             <span
@@ -64,6 +64,11 @@
     import {preview, deleteUpload, download, upload, autoCompleteUrl} from "@/utils/file"
     import {getContextPath} from "@/utils/browser"
 
+    const typeMapper = [
+        {test: isImage}, {test: isDoc, type: 'doc'}, {test: isPdf, type: 'pdf'}, {test: isPpt, type: 'ppt'},
+        {test: isRar, type: 'rar'}, {test: isXls, type: 'xls'}, {test: isTxt, type: 'txt'}, {test: isZip, type: 'zip'},
+    ]
+
     function parseMaxSize(maxSize) {
         if (typeof maxSize === 'number') {
             return maxSize
@@ -77,27 +82,17 @@
         return parseInt(num) * (map[unit] || 1)
     }
 
-    function isFileTypeSupported(fileType) {
-        return [isImage, isDoc, isPdf, isPpt, isRar, isXls, isTxt, isZip].some(i => i(fileType))
-    }
-
     function getCoverImage(url, fileType) {
-        if (isImage(fileType)) return url
-        else if (isDoc(fileType)) url = `${getContextPath()}static/img/fileType/doc.png`
-        else if (isPdf(fileType)) url = `${getContextPath()}static/img/fileType/pdf.png`
-        else if (isPpt(fileType)) url = `${getContextPath()}static/img/fileType/ppt.png`
-        else if (isRar(fileType)) url = `${getContextPath()}static/img/fileType/rar.png`
-        else if (isXls(fileType)) url = `${getContextPath()}static/img/fileType/xls.png`
-        else if (isTxt(fileType)) url = `${getContextPath()}static/img/fileType/txt.png`
-        else if (isZip(fileType)) url = `${getContextPath()}static/img/fileType/zip.png`
-        return url
+        const mapper = typeMapper.find(({test}) => test(fileType))
+
+        return mapper && mapper.type ? `${getContextPath()}static/img/fileType/${mapper.type}.png` : url
     }
 
     export default {
         name: 'UploadFile',
 
         props: {
-            disabled: {type: Boolean, default: false},
+            disabled: Boolean,
             multiple: {type: Boolean, default: true},
             fileList: {type: Array, default: () => []},
             limit: {type: Number, default: 10},
@@ -106,6 +101,7 @@
 
         data() {
             return {
+                tempData: this.fileList,
                 data: this.fileList,
                 tooltipContent: null
             }
@@ -127,13 +123,14 @@
             fileList: {
                 immediate: true,
                 handler(fileList) {
-                    if (isEmpty(fileList)) {
-                        return this.data = []
+                    if (isEmpty(fileList)) this.data = []
+                    else {
+                        this.data = [...this.fileList.map(file => {
+                            const downloadUrl = autoCompleteUrl(file.url)
+                            return {...file, url: getCoverImage(downloadUrl, file.name), downloadUrl}
+                        })]
                     }
-                    this.data = [...this.fileList.map(file => {
-                        const downloadUrl = autoCompleteUrl(file.url)
-                        return {...file, url: getCoverImage(downloadUrl, file.name), downloadUrl}
-                    })]
+                    this.tempData = JSON.parse(JSON.stringify(this.data))
                 }
             }
         },
@@ -209,7 +206,7 @@
 
             //上传前过滤文件
             beforeUpload(file) {
-                if (!isFileTypeSupported(file.name)) {
+                if (!typeMapper.some(({test}) => test(file.name))) {
                     elError('只支持图片、word、pdf、ppt、rar、excel、txt、zip类型的文件')
                     return false
                 }
@@ -221,8 +218,7 @@
             },
 
             httpRequest({file, onProgress}) {
-                const CancelToken = axios.CancelToken
-                const source = CancelToken.source()
+                const source = axios.CancelToken.source()
                 const promise = upload(file, file.name, {
                     onUploadProgress(e) {
                         if (e.total > 0) {
