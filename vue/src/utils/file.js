@@ -14,8 +14,7 @@ const defaultOptions = {
 
 //文件预览
 export function preview(url) {
-    const connectChar = url.includes('?') ? '&' : '?'
-    url = url + connectChar + 'fullfilename=' + url.replace(attachmentPrefix, '')
+    url = `${url}&fullfilename=${url.replace(attachmentPrefix, '')}`
     const anchor = document.createElement('a')
     anchor.style.visibility = 'hidden'
     anchor.href = `${filePreviewPrefix}/onlinePreview?url=${encodeURIComponent(url)}`
