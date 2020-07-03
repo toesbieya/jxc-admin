@@ -1,6 +1,7 @@
 import request from '@/config/request'
 import {attachmentUploadUrl, attachmentPrefix, filePreviewPrefix} from '@/config'
 import {isEmpty, timeFormat} from "@/utils"
+import {isTxt} from "@/utils/validate"
 
 const defaultOptions = {
     headers: {"Content-Type": "multipart/form-data"},
@@ -14,7 +15,10 @@ const defaultOptions = {
 
 //文件预览
 export function preview(url) {
-    url = `${url}&fullfilename=${url.replace(attachmentPrefix, '')}`
+    if (isTxt(url)) return window.open(url)
+
+    const connectChar = url.includes('?') ? '&' : '?'
+    url = url + connectChar + 'fullfilename=' + url.replace(attachmentPrefix, '')
     const anchor = document.createElement('a')
     anchor.style.visibility = 'hidden'
     anchor.href = `${filePreviewPrefix}/onlinePreview?url=${encodeURIComponent(url)}`
