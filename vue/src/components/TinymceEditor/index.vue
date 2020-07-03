@@ -75,7 +75,8 @@
                             height: ctx.height,
                             init_instance_callback(editor) {
                                 ctx.hasInit = true
-                                editor.setContent(this.value || '')
+                                editor.setContent(ctx.value || '')
+                                editor.mode.set(ctx.readonly ? 'readonly' : 'design')
                             },
                             setup(editor) {
                                 editor.on('keyup undo redo', () => {
@@ -101,7 +102,7 @@
         },
 
         mounted() {
-            !this.readonly && this.init()
+            this.init()
         },
 
         beforeDestroy() {
