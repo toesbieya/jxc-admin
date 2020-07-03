@@ -34,7 +34,7 @@
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table
                     :data="tableData"
-                    @row-click="row=$event"
+                    @row-click="rowClick"
             >
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="角色名" prop="name" show-overflow-tooltip/>

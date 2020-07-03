@@ -28,7 +28,7 @@
             <el-row class="table-container">
                 <liner-progress :show="config.loading"/>
 
-                <abstract-table :data="tableData" @row-click="row=$event" @row-dblclick="dbclick">
+                <abstract-table :data="tableData" @row-click="rowClick" @row-dblclick="dbclick">
                     <el-table-column align="center" label="#" type="index" width="80"/>
                     <el-table-column align="center" label="客 户" prop="name" show-overflow-tooltip/>
                     <el-table-column align="center" label="行政区域" prop="region_name" show-overflow-tooltip/>

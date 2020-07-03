@@ -36,7 +36,7 @@
         </el-row>
 
         <el-row v-loading="config.loading" class="table-container">
-            <abstract-table :data="tableData" @row-click="row=$event">
+            <abstract-table :data="tableData" @row-click="rowClick">
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="头像" width="100">
                     <img

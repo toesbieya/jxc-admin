@@ -58,7 +58,7 @@
         </el-row>
 
         <el-row v-loading="config.loading" class="table-container">
-            <abstract-table :data="tableData" @row-click="row=$event" @expand-change="getSubList">
+            <abstract-table :data="tableData" @row-click="rowClick" @expand-change="getSubList">
                 <el-table-column align="center" type="expand">
                     <template v-slot="{row}">
                         <liner-progress :show="row._loading"/>

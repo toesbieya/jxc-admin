@@ -32,7 +32,7 @@
                         current-row-key="id"
                         highlight-current-row
                         row-key="id"
-                        @row-click="row=$event"
+                        @row-click="rowClick"
                         @row-dblclick="dbclick"
                 >
                     <el-table-column align="center" label="#" type="index" width="80"/>

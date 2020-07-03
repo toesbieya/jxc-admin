@@ -48,7 +48,7 @@
         </el-row>
 
         <el-row v-loading="config.loading" class="table-container">
-            <abstract-table :data="tableData" @row-click="row=$event">
+            <abstract-table :data="tableData" @row-click="rowClick">
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="客 户" prop="name" show-overflow-tooltip/>
                 <el-table-column align="center" label="行政区域" prop="region_name" show-overflow-tooltip/>

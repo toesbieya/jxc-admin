@@ -21,18 +21,30 @@ const mixin = {
             type: 'see'
         }
     },
+
     components: {AbstractTable},
+
     watch: {
         row(v) {
             !v && this.$refs.table && this.$refs.table.setCurrentRow()
         }
     },
+
     methods: {
+        rowClick(row) {
+            if (this.row === row) {
+                this.$refs.table.setCurrentRow()
+                this.row = null
+            }
+            else this.row = row
+        },
+
         pageChange(v) {
             this.searchForm.page = v
             this.search()
         },
     },
+
     mounted() {
         this.search()
     }
