@@ -124,47 +124,36 @@ export function mergeExcel(props, data, primaryKey, orderKey, ignoreRows = 1) {
  * 参考element的table-header
  *
  * @param columns     列配置
+ * @param separator   分隔符
  */
-export function generateHeaders(columns) {
+export function generateHeaders(columns, separator = '-') {
     const tree = []
     let maxDepth = 1
 
-    for (let col of columns) {
-        const header = col.header, node = {depth: 1}
+    for (const col of columns) {
+        let header = col.header
 
-        if (Array.isArray(header)) {
-            const depth = header.length
-            if (depth > maxDepth) maxDepth = depth
-
-            let arr = tree
-
-            for (let i = 0, temp = node; i < depth; i++) {
-                const value = header[i]
-
-                temp.depth = i + 1
-                temp.value = value
-
-                if (arr) {
-                    const already = arr.find(i => i.value === value)
-                    if (!already) {
-                        arr.push(temp)
-                        arr = null
-                    }
-                    else {
-                        if (!already.children) already.children = []
-                        arr = already.children
-                    }
-                }
-
-                if (i === depth - 1) break
-
-                temp.children = [{}]
-                temp = temp.children[0]
-            }
+        if (typeof header === 'string') {
+            header = header.split(separator)
         }
-        else {
-            node.value = header || ''
-            tree.push(node)
+
+        let arr = tree, depth = header.length
+
+        if (depth > maxDepth) maxDepth = depth
+
+        for (let i = 0; i < depth; i++) {
+            const value = header[i]
+
+            let obj = arr.find(item => item.value === value)
+
+            if (!obj) {
+                obj = {value, depth: i + 1}
+                if (i !== depth - 1) obj.children = []
+
+                arr.push(obj)
+            }
+
+            arr = obj.children
         }
     }
 
