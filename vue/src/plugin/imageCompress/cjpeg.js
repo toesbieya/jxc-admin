@@ -1,7 +1,8 @@
 import {createWorker} from "@/utils/worker"
 
 export default function (uint8Array, quality = 75) {
-    const url = `${process.env.BASE_URL}static/js/cjpeg.min.js`
+    const {protocol, host} = document.location
+    const url = `${protocol}//${host}${process.env.BASE_URL}static/js/cjpeg.min.js`
     return new Promise(resolve => {
         let worker = createWorker(handler, {url, data: uint8Array, quality}, ({data}) => {
             resolve(data)

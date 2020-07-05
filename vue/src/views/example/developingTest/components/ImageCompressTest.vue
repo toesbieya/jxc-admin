@@ -5,8 +5,8 @@
             <a href="https://github.com/LI-NA/mozjpeg.js" target="_blank">使用mozjpeg</a>
             <div class="container">
                 <div v-show="!jpg.input.src" class="file-select">
-                    <input ref="jpg" type="file" accept="image/jpeg" @change="select($event,'jpg')">
-                    <el-button type="primary" @click="$refs.jpg.click()">选择图片</el-button>
+                    <input ref="jpg" type="file" accept="image/jpeg" @change="e => select(e,'jpg')">
+                    <el-button type="primary" @click="() => $refs.jpg.click()">选择图片</el-button>
                 </div>
                 <div v-show="jpg.input.src" class="image-container">
                     <p>原始图片：{{jpg.name}} ({{jpg.input.size|numberFormatter}})</p>
@@ -26,8 +26,8 @@
                     <el-slider v-model="jpg.quality" :disabled="jpg.loading" :min="0" :max="100" style="flex: 1"/>
                 </el-row>
                 <el-row type="flex" justify="center">
-                    <el-button :loading="jpg.loading" type="primary" @click="compress('jpg')">压缩</el-button>
-                    <el-button plain @click="cancel('jpg')">重置</el-button>
+                    <el-button :loading="jpg.loading" type="primary" @click="() => compress('jpg')">压缩</el-button>
+                    <el-button plain @click="() => cancel('jpg')">重置</el-button>
                 </el-row>
             </div>
         </div>
@@ -36,8 +36,8 @@
             <a href="https://github.com/psych0der/pngquantjs" target="_blank">使用pngquant</a>
             <div class="container">
                 <div v-show="!png.input.src" class="file-select">
-                    <input ref="png" type="file" accept="image/x-png" @change="select($event,'png')">
-                    <el-button type="primary" @click="$refs.png.click()">选择图片</el-button>
+                    <input ref="png" type="file" accept="image/x-png" @change="e => select(e,'png')">
+                    <el-button type="primary" @click="() => $refs.png.click()">选择图片</el-button>
                 </div>
                 <div v-show="png.input.src" class="image-container">
                     <p>原始图片：{{png.name}} ({{png.input.size|numberFormatter}})</p>
@@ -61,8 +61,8 @@
                     <el-slider v-model="png.speed" :disabled="png.loading" :min="0" :max="10" style="flex: 1"/>
                 </el-row>
                 <el-row type="flex" justify="center">
-                    <el-button :loading="png.loading" type="primary" @click="compress('png')">压缩</el-button>
-                    <el-button plain @click="cancel('png')">重置</el-button>
+                    <el-button :loading="png.loading" type="primary" @click="() => compress('png')">压缩</el-button>
+                    <el-button plain @click="() => cancel('png')">重置</el-button>
                 </el-row>
             </div>
         </div>
