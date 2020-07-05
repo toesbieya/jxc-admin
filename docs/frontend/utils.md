@@ -42,7 +42,7 @@ import {json2workbook, exportExcelByJs} from '@/utils/excel'
 
 const column = [
     {header: ['合并表头演示', '序号'], prop: 'no', merge: true},
-    {header: ['合并表头演示', '名称'], prop: 'name', merge: true},
+    {header: '合并表头演示-名称', prop: 'name', merge: true},
     {header: '日期', prop: 'date'}
 ]
 
@@ -62,7 +62,7 @@ exportExcelByJs(workbook, '测试导出.xlsx')
 - `columns` : `array`，列配置项数组，列配置详细如下：
 ```js
 {
-    header : string | array，表头名称，类型为 array 时，将从左往右地解析成一颗树，用于表头的合并
+    header : string | array，表头名称，通过使用'-'分隔符或者传入array来实现多级表头
     prop : string，表头对应的 json 字段名称，如果为空，则该字段不会写入excel表格
     merge : boolean，是否需要合并，true的话会从上至下合并值相同的相邻单元格
     width : number，单元格宽度，默认 20
