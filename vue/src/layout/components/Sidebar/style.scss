@@ -6,7 +6,7 @@ $iconSize: 17px;
     display: flex;
     flex-direction: column;
     width: $side-bar-width;
-    background-color: $menu-background;
+    background-color: $--menu-background-color;
     font-size: 0;
     flex-shrink: 0;
     height: 100vh;
@@ -83,28 +83,6 @@ $iconSize: 17px;
             right: 0;
         }
     }
-
-    //子级菜单激活时，父级同样高亮
-    .is-active > .el-submenu__title {
-        color: $--color-primary !important;
-    }
-
-    // menu hover
-    .submenu-title-noDropdown,
-    .el-submenu__title {
-        &:hover {
-            background-color: $menu-hover !important;
-        }
-    }
-
-    .nest-menu > .el-submenu__title,
-    .el-submenu .el-menu-item {
-        background-color: $sub-menu-background !important;
-
-        &:hover {
-            background-color: $sub-menu-hover !important;
-        }
-    }
 }
 
 .el-menu {
@@ -118,31 +96,46 @@ $iconSize: 17px;
         height: $iconSize;
     }
 
-    a {
-        display: inline-block;
-        width: 100%;
-        overflow: hidden;
+    //菜单hover
+    .el-menu-item:hover,
+    .el-submenu__title:hover {
+        color: $--menu-item-hover-color;
+
     }
 
-    &.el-menu--popup {
-        max-height: 88vh;
-        margin-bottom: 0.5vh;
-        overflow-y: auto;
-        overflow-y: overlay;
+    //子级菜单激活时，父级同样高亮
+    .el-menu-item.is-active,
+    .is-active > .el-submenu__title {
+        color: $--color-primary !important;
     }
 
+    //子级菜单的背景颜色
+    &.el-menu--inline,
+    .el-submenu .el-submenu > .el-submenu__title {
+        background-color: $sub-menu-background;
+    }
+
+    //子级菜单内阴影
+    &.el-menu--inline {
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, .45)
+    }
+
+    //箭头图标与字体同色
     .el-submenu__title i {
         color: inherit;
     }
 
-    .popover-menu__title {
-        cursor: auto;
-        text-align: center;
-        color: $menu-text-color;
-        border-bottom: 1px solid $sub-menu-background;
+    //折叠时的弹出菜单
+    &.el-menu--popup {
+        max-height: 88vh;
+        margin-bottom: 0.5vh;
+        overflow-y: overlay;
 
-        &.el-menu-item:hover {
-            background-color: $menu-background;
+        .popover-menu__title {
+            cursor: auto;
+            color: $--menu-item-hover-color;
+            text-align: center;
+            border-bottom: 1px solid $sub-menu-background;
         }
     }
 }

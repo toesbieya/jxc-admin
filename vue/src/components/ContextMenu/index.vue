@@ -67,7 +67,7 @@
 
     .contextmenu {
         margin: 0;
-        background: $menu-background;
+        background: $--menu-background-color;
         z-index: 10;
         position: absolute;
         list-style-type: none;
@@ -84,7 +84,6 @@
             cursor: pointer;
 
             &:hover {
-                background: $menu-hover;
                 color: $--color-primary;
             }
         }

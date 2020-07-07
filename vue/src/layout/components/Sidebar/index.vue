@@ -3,7 +3,6 @@
     import Logo from './components/Logo'
     import SidebarItem from './components/SidebarItem'
     import {isExternal} from "@/utils/validate"
-    import variables from '@/assets/styles/variables.scss'
 
     export default {
         name: 'sidebar',
@@ -126,9 +125,6 @@
             const menu = (
                 <el-menu
                     ref="menu"
-                    text-color={variables['menu-text-color']}
-                    active-text-color={variables['menu-active-text-color']}
-                    background-color={variables['menu-background']}
                     collapse={this.collapse}
                     collapse-transition={false}
                     default-active={this.activeMenu}

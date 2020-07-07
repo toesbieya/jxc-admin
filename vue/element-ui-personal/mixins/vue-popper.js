@@ -43,7 +43,7 @@ export default {
                 this.showPopper = val
                 this.$emit('input', val)
                 if (this.disabled) return
-                val && this.updatePopper()
+                val ? this.updatePopper() : this.destroyPopper()
             }
         }
     },
