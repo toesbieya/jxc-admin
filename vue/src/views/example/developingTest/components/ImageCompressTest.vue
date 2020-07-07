@@ -31,6 +31,7 @@
                 </el-row>
             </div>
         </div>
+
         <div class="tip-row">
             测试纯前端png图片压缩效率。
             <a href="https://github.com/psych0der/pngquantjs" target="_blank">使用pngquant</a>
@@ -118,6 +119,7 @@
                 this[type].input.size = file.size
                 this[type].input.src = window.URL.createObjectURL(file)
             },
+
             cancel(type) {
                 if (this[type].loading) return
                 window.URL.revokeObjectURL(this[type].input.src)
@@ -130,6 +132,7 @@
                 this[type].totalCost = 0
                 this[type].calcCost = 0
             },
+
             compress(type) {
                 if (this[type].loading) return
                 if (!this[type].input.file) return elError(`请选择一张${type}图片`)
@@ -143,18 +146,21 @@
                 }
                 reader.readAsArrayBuffer(this[type].input.file)
             },
+
             compressJPG(uint8Array, start) {
                 import('@/plugin/imageCompress/cjpeg')
                     .then(_ => _.default(uint8Array, this.jpg.quality))
                     .then(({data, time}) => this.compressSuccess({type: 'jpg', start, data, time}))
                     .finally(() => this.jpg.loading = false)
             },
+
             compressPNG(uint8Array, start) {
                 import('@/plugin/imageCompress/pngquant')
                     .then(_ => _.default(uint8Array, this.png.quality, this.png.speed))
                     .then(({data, time}) => this.compressSuccess({type: 'png', start, data, time}))
                     .finally(() => this.png.loading = false)
             },
+
             compressSuccess({type, start, data, time}) {
                 this[type].totalCost = (window.performance.now() - start).toFixed(2)
                 this[type].calcCost = time.toFixed(2)

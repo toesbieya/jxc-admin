@@ -17,7 +17,7 @@
 
             if (icon) {
                 const isElIcon = icon.startsWith('el-icon-')
-                iconComponent = isElIcon ? <i class={icon + ' svg-icon'}/> : <svg-icon icon={icon}/>
+                iconComponent = isElIcon ? <i class={`svg-icon ${icon}`}/> : <svg-icon icon={icon}/>
             }
             else iconComponent = <span class="svg-icon"/>
 

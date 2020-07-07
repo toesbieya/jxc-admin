@@ -16,21 +16,11 @@
         },
 
         computed: {
-            ...mapState('app', {
-                device: state => state.device
-            }),
+            ...mapState('app', ['device']),
 
-            ...mapState('resource', {
-                routes: state => state.sidebarMenus
-            }),
+            ...mapState('resource', ['sidebarMenus']),
 
-            ...mapState('setting', {
-                showLogo: state => state.showLogo,
-                sidebarCollapse: state => state.sidebarCollapse,
-                sidebarUniqueOpen: state => state.sidebarUniqueOpen,
-                sidebarShowParent: state => state.sidebarShowParent,
-                sidebarAutoHidden: state => state.sidebarAutoHidden
-            }),
+            ...mapState('setting', ['showLogo', 'sidebarCollapse', 'sidebarUniqueOpen', 'sidebarShowParent', 'sidebarAutoHidden']),
 
             activeMenu() {
                 const route = this.$route
@@ -132,7 +122,7 @@
                     mode="vertical"
                     on-select={this.select}
                 >
-                    {this.routes.map(route => (
+                    {this.sidebarMenus.map(route => (
                         <sidebar-item
                             key={route.path}
                             show-parent={this.sidebarShowParent}
@@ -150,7 +140,7 @@
                     on-mouseleave={() => this.mouseOutside = true}
                 >
                     {this.showLogo && <logo collapse={this.collapse}/>}
-                    {<el-scrollbar>{menu}</el-scrollbar>}
+                    {<el-scrollbar noresize native>{menu}</el-scrollbar>}
                 </aside>
             )
         }

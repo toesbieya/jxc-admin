@@ -30,19 +30,11 @@
         components: {VMain, VSidebar, VHeader},
 
         computed: {
-            ...mapState('app', {
-                device: state => state.device,
-                hasHeader: state => state.hasHeader
-            }),
+            ...mapState('app', ['device', 'hasHeader']),
 
-            ...mapState('setting', {
-                useTagsView: state => state.useTagsView,
-                sidebarCollapse: state => state.sidebarCollapse
-            }),
+            ...mapState('setting', ['useTagsView', 'sidebarCollapse']),
 
-            ...mapState('socket', {
-                online: state => state.online
-            }),
+            ...mapState('socket', ['online']),
 
             ...mapState('user', {
                 isLogin: state => !isEmpty(state.id) && !isEmpty(state.token)

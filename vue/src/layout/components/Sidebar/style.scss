@@ -42,18 +42,18 @@ $iconSize: 17px;
         line-height: $nav-height;
         text-align: center;
 
-        & .sidebar-logo-link {
+        .sidebar-logo-link {
             height: 100%;
             width: 100%;
 
-            & .sidebar-logo {
+            .sidebar-logo {
                 width: 32px;
                 height: 32px;
                 vertical-align: middle;
                 margin-right: 12px;
             }
 
-            & .sidebar-title {
+            .sidebar-title {
                 display: inline-block;
                 margin: 0;
                 color: #fff;
@@ -74,14 +74,6 @@ $iconSize: 17px;
 
     .el-scrollbar {
         flex: 1;
-
-        > .el-scrollbar__wrap {
-            overflow-x: hidden !important;
-        }
-
-        > .el-scrollbar__bar.is-vertical {
-            right: 0;
-        }
     }
 }
 

@@ -1,25 +1,26 @@
-<template>
-    <div :class="{'collapse':collapse}" class="sidebar-logo-container">
-        <router-link class="sidebar-logo-link" key="expand" to="/">
-            <img v-if="logo" :src="logo" class="sidebar-logo">
-            <h1 v-if="!collapse" class="sidebar-title">{{ title }}</h1>
-        </router-link>
-    </div>
-</template>
-
-<script>
+<script type="text/jsx">
     import {sidebarLogoUrl, title} from '@/config'
 
     export default {
         name: 'SidebarLogo',
 
+        functional: true,
+
         props: {collapse: Boolean},
 
-        data() {
-            return {
-                title,
-                logo: sidebarLogoUrl
-            }
+        render(h, context) {
+            const {collapse} = context.props
+
+            const logoClass = {'sidebar-logo-container': true, 'collapse': collapse}
+
+            return (
+                <div class={logoClass}>
+                    <router-link class="sidebar-logo-link" to="/">
+                        {sidebarLogoUrl && <img src={sidebarLogoUrl} class="sidebar-logo"/>}
+                        {!collapse && <h1 class="sidebar-title">{title}</h1>}
+                    </router-link>
+                </div>
+            )
         }
     }
 </script>

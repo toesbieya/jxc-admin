@@ -71,16 +71,9 @@
         },
 
         computed: {
-            ...mapState('user', {
-                avatar: state => state.avatar,
-                name: state => state.name,
-                prepare_logout: state => state.prepare_logout
-            }),
+            ...mapState('user', ['avatar', 'name', 'prepare_logout']),
 
-            ...mapState('setting', {
-                sidebarCollapse: state => state.sidebarCollapse,
-                showBreadcrumb: state => state.showBreadcrumb
-            }),
+            ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb']),
 
             showSystemMonitor() {
                 return auth('/system/monitor')

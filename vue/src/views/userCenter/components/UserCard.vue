@@ -36,12 +36,7 @@
         },
 
         computed: {
-            ...mapState('user', {
-                name: state => state.name,
-                avatar: state => state.avatar,
-                role_name: state => state.role_name,
-                admin: state => state.admin
-            })
+            ...mapState('user', ['name', 'avatar', 'role_name', 'admin'])
         }
     }
 </script>

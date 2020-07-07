@@ -5,7 +5,7 @@
         <div class="login-container" @click.stop>
             <div class="title">
                 {{title}}
-                <set-animation :value="animation" custom-class="set-animation" @select="setAnimation"/>
+                <set-animation :value="loginBackgroundAnimation" custom-class="set-animation" @select="setAnimation"/>
             </div>
 
             <component :is="component"/>
@@ -34,10 +34,7 @@
         },
 
         computed: {
-            ...mapState('app', {
-                device: state => state.device,
-                animation: state => state.loginBackgroundAnimation
-            }),
+            ...mapState('app', ['device', 'loginBackgroundAnimation']),
 
             component() {
                 const formType = this.$route.path.substring(1)
@@ -64,7 +61,7 @@
 
         mounted() {
             //移动端关闭动画，太卡
-            this.device !== 'mobile' && this.setAnimation(this.animation)
+            this.device !== 'mobile' && this.setAnimation(this.loginBackgroundAnimation)
         },
 
         beforeDestroy() {

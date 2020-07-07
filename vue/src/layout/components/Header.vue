@@ -2,12 +2,12 @@
     <header
             :class="{'hide-header':hideHeader}"
             class="header-container"
-            @mouseenter="mouseOutside=false"
-            @mouseleave="mouseOutside=true"
+            @mouseenter="() => valueCtrl('mouseOutside',false)"
+            @mouseleave="() => valueCtrl('mouseOutside',true)"
     >
-        <v-navbar @menu-show="navbarMenuShow=$event"/>
+        <v-navbar @menu-show="e => valueCtrl('navbarMenuShow',e)"/>
 
-        <tags-view v-if="useTagsView" @menu-show="tagsViewMenuShow=$event"/>
+        <tags-view v-if="useTagsView" @menu-show="e => valueCtrl('tagsViewMenuShow',e)"/>
     </header>
 </template>
 
@@ -31,10 +31,7 @@
         },
 
         computed: {
-            ...mapState('setting', {
-                useTagsView: state => state.useTagsView,
-                headerAutoHidden: state => state.headerAutoHidden
-            }),
+            ...mapState('setting', ['useTagsView', 'headerAutoHidden']),
 
             hideHeader() {
                 return this.mouseOutside
@@ -56,6 +53,10 @@
         },
 
         methods: {
+            valueCtrl(key, value) {
+                this[key] = value
+            },
+
             moveEvent(e) {
                 if (e.clientY <= 15) this.mouseOutside = false
             },

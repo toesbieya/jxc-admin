@@ -38,18 +38,11 @@
         components: {KeepRouterViewAlive},
 
         computed: {
-            ...mapState('app', {
-                scrollTop: state => state.scrollTop,
-            }),
+            ...mapState('app', ['scrollTop']),
 
-            ...mapState('setting', {
-                showBackToTop: state => state.showBackToTop
-            }),
+            ...mapState('setting', ['showBackToTop']),
 
-            ...mapState('tagsView', {
-                cachedViews: state => state.cachedViews,
-                transitionName: state => state.transitionName
-            }),
+            ...mapState('tagsView', ['cachedViews', 'transitionName']),
 
             ...mapState('iframe', {
                 showIframe: state => state.show,
