@@ -23,8 +23,9 @@
 | :-----------------: | :-------------------------------------: | :--------------: | :-----: |
 | type                | 选择器类型，`tab / tree`                | `string`         | `'tab'` |
 | value / v-model     | 绑定值                                  | `string / array` | -       | 
-| readonly            | 是否只读，等同于`el-select`的`disabled` | `boolean`        | -       | 
-| size                | 大小，等同于`el-select`的`size`         | `string`         | -       | 
+| readonly            | 等同于`el-select`的`disabled`           | `boolean`        | -       | 
+| size                | 等同于`el-select`的`size`               | `string`         | -       | 
+| maxLevel            | 可选择的最大深度，[1,4]                 | `number`         | 3       | 
 | getChildrenOnSelect | 在确认选择时是否连同子级一起获取        | `boolean`        | -       | 
 | limit               | 是否需要剪枝                            | `boolean`        | -       | 
 | limitApi            | 获取剪枝数据的api                       | `function`       | -       | 
