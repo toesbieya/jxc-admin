@@ -96,6 +96,10 @@
 
         &.hide-header {
             height: 0;
+
+            > .navbar {
+                height: 0;
+            }
         }
     }
 </style>

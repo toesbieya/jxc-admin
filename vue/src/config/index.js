@@ -40,5 +40,5 @@ module.exports = {
     filePreviewPrefix: isDevelopment ? 'http://localhost:8012' : 'https://preview.toesbieya.cn',
 
     //省市地区json数据请求地址
-    regionDataUrl: `${contextPath}static/json/region-pcas.json`
+    regionDataUrl: `${contextPath}static/json/region-pca.json`
 }

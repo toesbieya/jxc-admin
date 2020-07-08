@@ -65,7 +65,6 @@
 
     const PROVINCE_CITIES = ['北京市', '天津市', '上海市', '重庆市']
     const DEFAULT_TABS = [{name: '省/直辖市'}, {name: '市'}, {name: '区/县'}, {name: '乡/镇/街道'}]
-    const DEFAULT_MAX_LEVEL = 4
 
     export default {
         name: "RegionTabSelector",
@@ -74,6 +73,7 @@
 
         props: {
             value: [String, Array],
+            maxLevel: {type: Number, default: 3},
             separation: {type: String, default: ','}
         },
 
@@ -82,7 +82,7 @@
                 loading: false,
                 searchText: '',
                 currentLevel: 1,
-                maxLevel: DEFAULT_MAX_LEVEL,
+                realMaxLevel: this.maxLevel,
                 selected: [],
                 treeData: [],
                 items: []
@@ -143,18 +143,18 @@
                     //选择直辖市的时候，最大深度-1，移除'市'tab
                     if (PROVINCE_CITIES.includes(item.name)) {
                         next.splice(1, 1)
-                        this.maxLevel = DEFAULT_MAX_LEVEL - 1
+                        this.realMaxLevel = this.maxLevel - 1
                     }
-                    else this.maxLevel = DEFAULT_MAX_LEVEL
+                    else this.realMaxLevel = this.maxLevel
                 }
 
-                this.selected = prev.concat(next.slice(level, this.maxLevel))
+                this.selected = prev.concat(next.slice(level, this.realMaxLevel))
             },
 
             nextTab() {
                 this.searchText = ''
                 //若选择的是最后一级节点，直接完成
-                if (this.currentLevel >= this.maxLevel) {
+                if (this.currentLevel >= this.realMaxLevel) {
                     this.done()
                 }
                 else this.currentLevel++
@@ -202,7 +202,7 @@
             },
 
             removeAll() {
-                this.maxLevel = DEFAULT_MAX_LEVEL
+                this.realMaxLevel = this.maxLevel
                 this.selected = JSON.parse(JSON.stringify(DEFAULT_TABS))
                 this.currentLevel = 1
                 this.searchText = ''

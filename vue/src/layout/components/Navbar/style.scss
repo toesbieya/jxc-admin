@@ -2,6 +2,7 @@
 
 .navbar {
     height: $nav-height;
+    transition: height .3s ease-in-out;
     overflow: hidden;
     position: relative;
     z-index: 9;
