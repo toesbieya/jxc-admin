@@ -27,7 +27,7 @@
 <script>
     import DialogForm from '@/components/DialogForm'
     import dialogMixin from "@/mixins/dialogMixin"
-    import {updateUserPwd} from "@/api/system/user"
+    import {updateUserPwd} from "@/api/account"
     import {elSuccess} from "@/utils/message"
 
     export default {

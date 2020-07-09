@@ -38,7 +38,7 @@
 
 <script>
     import tablePageMixin from '@/mixins/tablePageMixin'
-    import {getUserAction} from "@/api/system/user"
+    import {searchUserAction} from "@/api/record"
 
     export default {
         name: "UserAction",
@@ -63,7 +63,7 @@
             search() {
                 if (this.config.loading) return
                 this.config.loading = true
-                getUserAction({...this.searchForm, uid: this.uid})
+                searchUserAction({...this.searchForm, uid: this.uid})
                     .then(({list, total}) => {
                         this.searchForm.total = total
                         this.tableData = list

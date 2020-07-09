@@ -39,7 +39,7 @@
     import dialogMixin from "@/mixins/dialogMixin"
     import {elError, elSuccess} from "@/utils/message"
     import {autoCompleteUrl, upload} from "@/utils/file"
-    import {updateAvatar} from "@/api/system/user"
+    import {updateAvatar} from "@/api/account"
 
     export default {
         name: "Avatar",

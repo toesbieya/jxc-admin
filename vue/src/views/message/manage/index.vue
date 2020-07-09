@@ -160,7 +160,7 @@
                 elConfirm(`确定删除消息【${this.row.title}】？`)
                     .then(() => {
                         this.config.operating = true
-                        return del(this.row.id)
+                        return del(this.row.id, this.row.title)
                     })
                     .then(() => {
                         elSuccess('删除成功')

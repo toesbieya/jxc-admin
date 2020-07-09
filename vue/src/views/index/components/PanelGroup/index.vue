@@ -10,7 +10,7 @@
     import PanelGroupItem from './PanelGroupItem'
     import variables from '@/assets/styles/variables.scss'
     import {getFourBlock} from '@/api/statistic'
-    import {isEmpty, mergeObj} from "@/utils"
+    import {isEmpty} from "@/utils"
     import {auth} from "@/utils/auth"
 
     export default {

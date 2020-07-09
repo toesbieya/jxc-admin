@@ -47,8 +47,7 @@
 
 <script>
     import md5 from "js-md5"
-    import {checkName} from "@/api/system/user"
-    import {register} from "@/api/account"
+    import {register, checkName} from "@/api/account"
     import {elSuccess} from "@/utils/message"
 
     export default {

@@ -31,7 +31,7 @@
 
 <script>
     import tablePageMixin from '@/mixins/tablePageMixin'
-    import {getLoginHistory} from "@/api/system/user"
+    import {searchLoginHistory} from "@/api/record"
 
     export default {
         name: "LoginHistory",
@@ -56,7 +56,7 @@
             search() {
                 if (this.config.loading) return
                 this.config.loading = true
-                getLoginHistory({...this.searchForm, uid: this.uid})
+                searchLoginHistory({...this.searchForm, uid: this.uid})
                     .then(({list, total}) => {
                         this.searchForm.total = total
                         this.tableData = list

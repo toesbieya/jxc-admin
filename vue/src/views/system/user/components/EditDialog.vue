@@ -33,7 +33,8 @@
     import DialogForm from '@/components/DialogForm'
     import RoleSelector from './RoleSelector'
     import dialogMixin from "@/mixins/dialogMixin"
-    import {addUser, updateUser, checkName} from "@/api/system/user"
+    import {checkName} from "@/api/account"
+    import {addUser, updateUser} from "@/api/system/user"
     import {isEmpty} from '@/utils'
     import {elConfirm} from "@/utils/message"
 
