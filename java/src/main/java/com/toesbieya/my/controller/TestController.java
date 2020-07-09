@@ -37,12 +37,13 @@ public class TestController {
 
     @PostMapping("upload")
     @ResponseBody
-    public Result upload(MultipartFile file, @RequestParam String extraParam1, @RequestParam String extraParam2) throws IOException {
+    public Result upload(MultipartFile file, @RequestParam(required = false) String extraParam1, @RequestParam(required = false) String extraParam2) throws IOException {
         /*System.out.println("extraParam1:" + extraParam1);
         System.out.println("extraParam2:" + extraParam2);
         System.out.println("文件名称：" + file.getOriginalFilename());
         String tempPath = "C:/static/" + file.getOriginalFilename();
         file.transferTo(Paths.get(tempPath));*/
+        System.out.println("文件名称：" + file.getOriginalFilename());
         return Result.success("ok");
     }
 }

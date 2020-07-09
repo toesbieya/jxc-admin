@@ -7,20 +7,20 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/your repo?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
-    username: your name
-    password: your password
+    url: jdbc:mysql://localhost:3306/repo?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: username
+    password: password
   redis:
     host: localhost
     port: 6379
+    password: password
     timeout: 3000
-    jedis:
+    lettuce:
       pool:
         max-idle: 500
         min-idle: 50
         max-active: 2000
         max-wait: 1000
-    password: your password,if no use password,remove this node
   session:
     store-type: redis
   servlet:
@@ -31,7 +31,8 @@ spring:
       max-request-size: 10MB
 
 mybatis:
-  mapper-locations: classpath:mapping/*.xml
+  mapper-locations:
+    - classpath*:/mapper/**/*.xml
 
 pagehelper:
   helperDialect: mysql
@@ -40,6 +41,7 @@ pagehelper:
   params: count=countSql
 
 socket:
+  #hostname: 172.24.52.184
   hostname: localhost
   port: 12580
   max-frame-payload: 1048576
@@ -48,16 +50,10 @@ socket:
     logout: logout
     new-message: new-message
 
-file:
-  #临时文件保存目录
-  temp: C:\static\
-  #excel模板目录
-  template: C:\static\template\
-
 qiniu:
-  access-key: your key
-  secret-key: your key
-  bucket: your bucket
+  access-key: access-key
+  secret-key: secret-key
+  bucket: bucket
   #七牛的临时上传凭证的有效期，单位秒
   token-expires: 3600
   #七牛的临时上传凭证的redis键名

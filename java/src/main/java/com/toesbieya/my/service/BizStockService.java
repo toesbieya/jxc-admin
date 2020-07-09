@@ -40,6 +40,6 @@ public class BizStockService {
 
     public void export(StockSearch vo, HttpServletResponse response) throws Exception {
         List<StockExport> list = stockMapper.export(vo);
-        ExcelUtil.exportWithMerge(list, response, "库存导出", mergeOptions);
+        ExcelUtil.export(list, response, "库存导出", mergeOptions);
     }
 }

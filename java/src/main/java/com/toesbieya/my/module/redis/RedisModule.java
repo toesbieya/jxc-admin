@@ -3,7 +3,7 @@ package com.toesbieya.my.module.redis;
 import com.toesbieya.my.utils.DateUtil;
 import com.toesbieya.my.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,10 +17,10 @@ import java.util.Map;
 
 @Component
 @Slf4j
+@DependsOn("redisUtil")
 public class RedisModule {
     public static final String DOCUMENTS_KEY = "documentsID";
     public static final String[] DOCUMENTS_TYPE = {"CGDD", "CGRK", "CGTH", "XSDD", "XSCK", "XSTH"};
-    private RedisUtil redisUtil;
 
     @PostConstruct
     public void init() {
@@ -88,10 +88,5 @@ public class RedisModule {
         } catch (Exception e) {
             log.error("定时更新单据ID失败", e);
         }
-    }
-
-    @Autowired
-    public void setRedisUtil(RedisUtil redisUtil) {
-        this.redisUtil = redisUtil;
     }
 }

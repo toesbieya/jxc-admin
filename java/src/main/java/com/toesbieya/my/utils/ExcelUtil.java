@@ -23,7 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ExcelUtil {
-    public static final String EXCEL_TEMPLATE_DIR = (String) YmlUtil.get("file.template");
     private static final WriteCellStyle defaultCellStyle = new WriteCellStyle();
 
     static {
@@ -35,22 +34,13 @@ public class ExcelUtil {
             List list,
             HttpServletResponse response,
             String filename) throws Exception {
-        export(list, response, filename, null, null);
-    }
-
-    public static void exportWithMerge(
-            List list,
-            HttpServletResponse response,
-            String filename,
-            CommonMergeOptions mergeOptions) throws Exception {
-        export(list, response, filename, null, mergeOptions);
+        export(list, response, filename, null);
     }
 
     public static void export(
             List list,
             HttpServletResponse response,
             String filename,
-            String template,
             CommonMergeOptions mergeOptions) throws Exception {
         String name = URLEncoder.encode(filename, "utf-8") + ".xlsx";
         response.setHeader("Content-disposition", "attachment;filename=" + name);
@@ -70,19 +60,16 @@ public class ExcelUtil {
 
         Class clazz = list.get(0).getClass();
 
-        ExcelWriterBuilder builder = EasyExcel.write(response.getOutputStream(), clazz);
+        ExcelWriterBuilder writerBuilder = EasyExcel.write(response.getOutputStream(), clazz);
 
-        builder.registerWriteHandler(getDefaultStyle());
+        writerBuilder.registerWriteHandler(getDefaultStyle());
 
-        if (!StringUtils.isEmpty(template)) {
-            builder.needHead(false).withTemplate(EXCEL_TEMPLATE_DIR + template + ".xlsx");
-        }
         if (mergeOptions != null) {
             CommonMerge commonMerge = new CommonMerge(list, clazz, mergeOptions);
-            builder.registerWriteHandler(commonMerge);
+            writerBuilder.registerWriteHandler(commonMerge);
         }
 
-        builder.sheet().doWrite(list);
+        writerBuilder.sheet(0, "Sheet1").doWrite(list);
     }
 
     private static AbstractVerticalCellStyleStrategy getDefaultStyle() {

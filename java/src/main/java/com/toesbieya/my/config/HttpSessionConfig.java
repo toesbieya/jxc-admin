@@ -16,7 +16,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 @Configuration
-@EnableRedisHttpSession()
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 28800)
 public class HttpSessionConfig {
     @Bean
     public HttpSessionListener httpSessionEventPublisher() {
