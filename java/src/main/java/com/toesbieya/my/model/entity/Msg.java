@@ -18,6 +18,6 @@ public class Msg {
     private String wname;
     private Long wtime;
     private Integer status;
-    private Integer all;
+    private Integer broadcast;
     private String recipient;
 }

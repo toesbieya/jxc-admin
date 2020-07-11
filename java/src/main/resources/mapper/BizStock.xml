@@ -19,7 +19,7 @@
         cname,
         sum(num) total_num,
         sum(num*price) total_price
-        from `biz_stock`
+        from biz_stock
         where 1
         <include refid="searchCondition"/>
         and num >0
@@ -48,7 +48,7 @@
         cname,
         sum(num) total_num,
         sum(num * price) total_price
-        from `biz_stock`
+        from biz_stock
         where 1
         <include refid="searchCondition"/>
         and num > 0

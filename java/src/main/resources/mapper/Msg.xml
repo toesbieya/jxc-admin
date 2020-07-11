@@ -16,11 +16,18 @@
         </if>
     </sql>
 
+    <sql id="unreadCondition">
+        where status = 1
+        and ptime <![CDATA[ >= ]]> #{ctime}
+        and (broadcast = 1 or broadcast = 0 and find_in_set(recipient, #{uid}))
+        and id not in (select mid from msg_state where uid = #{uid})
+    </sql>
+
     <insert id="insert" parameterType="com.toesbieya.my.model.entity.Msg">
         insert into msg (title, content, type, cid, cname, ctime,
-                         pid, pname, ptime, wid, wname, wtime, status, `all`, recipient)
+                         pid, pname, ptime, wid, wname, wtime, status, broadcast, recipient)
         values (#{title}, #{content}, #{type}, #{cid}, #{cname}, #{ctime}, #{pid},
-                #{pname}, #{ptime}, #{wid}, #{wname}, #{wtime}, #{status}, #{all}, #{recipient})
+                #{pname}, #{ptime}, #{wid}, #{wname}, #{wtime}, #{status}, #{broadcast}, #{recipient})
     </insert>
 
     <insert id="insertState" parameterType="com.toesbieya.my.model.entity.MsgState">
@@ -55,7 +62,7 @@
             wname=#{wname},
             wtime=#{wtime},
             status=#{status},
-            `all`=#{all},
+            broadcast=#{broadcast},
             recipient=#{recipient}
         where id = #{id}
     </update>
@@ -100,10 +107,7 @@
                pname,
                ptime
         from msg
-        where status = 1
-          and ptime <![CDATA[ >= ]]> #{ctime}
-          and (`all` = 1 or `all` = 0 and find_in_set(recipient, #{uid}))
-          and id not in (select mid from msg_state where uid = #{uid})
+        <include refid="unreadCondition"/>
         order by id desc
     </select>
 
@@ -111,9 +115,6 @@
             resultType="java.lang.Integer">
         select count(1)
         from msg
-        where status = 1
-          and ptime <![CDATA[ >= ]]> #{ctime}
-          and (`all` = 1 or `all` = 0 and find_in_set(recipient, #{uid}))
-          and id not in (select mid from msg_state where uid = #{uid})
+        <include refid="unreadCondition"/>
     </select>
 </mapper>

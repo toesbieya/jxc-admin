@@ -108,8 +108,8 @@ public class MsgController {
     private String validateAdd(Msg msg) {
         if (StringUtils.isEmpty(msg.getTitle())
                 || msg.getType() == null
-                || msg.getAll() == null
-                || msg.getAll().equals(MsgConstant.TO_RANGE) && StringUtils.isEmpty(msg.getRecipient())
+                || msg.getBroadcast() == null
+                || msg.getBroadcast().equals(MsgConstant.TO_RANGE) && StringUtils.isEmpty(msg.getRecipient())
         ) return "参数错误";
         return null;
     }

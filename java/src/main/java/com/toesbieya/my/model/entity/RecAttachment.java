@@ -14,7 +14,7 @@ public class RecAttachment {
     private String pid;
     private String name;
     private Long time;
-    private Integer order;
+    private Integer sort;
     private String url;
     private Long size;
 }

@@ -25,13 +25,13 @@
                 <dialog-form-item v-if="type!=='add'" label="创建时间：" dense>
                     <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
                 </dialog-form-item>
-                <dialog-form-item label="通知对象：" prop="all" dense>
-                    <el-select v-model="form.all" :disabled="!canSave">
+                <dialog-form-item label="通知对象：" prop="broadcast" dense>
+                    <el-select v-model="form.broadcast" :disabled="!canSave">
                         <el-option :value="0" label="指定用户"/>
                         <el-option :value="1" label="全体用户"/>
                     </el-select>
                 </dialog-form-item>
-                <dialog-form-item v-if="form.all===0" label="选择用户：" prop="recipient" dense>
+                <dialog-form-item v-if="form.broadcast===0" label="选择用户：" prop="recipient" dense>
                     <user-selector v-model="form.recipient" :disabled="!canSave"/>
                 </dialog-form-item>
                 <dialog-form-item v-if="form.pname" label="发布人：" dense>
@@ -106,13 +106,13 @@
                     wname: null,
                     wtime: null,
                     status: 0,
-                    all: 1,
+                    broadcast: 1,
                     recipient: []
                 },
                 rules: {
                     title: [{required: true, message: '请输入标题', trigger: 'change'}],
                     type: [{required: true, message: '请选择消息类型', trigger: 'change'}],
-                    all: [{required: true, message: '请选择通知对象', trigger: 'change'}]
+                    broadcast: [{required: true, message: '请选择通知对象', trigger: 'change'}]
                 }
             }
         },
@@ -159,7 +159,7 @@
 
             clearForm() {
                 resetObj(this.form)
-                this.form.all = 1
+                this.form.broadcast = 1
                 this.needSearch = false
                 this.loading = false
                 this.$nextTick(() => this.$refs.form.clearValidate())
@@ -240,7 +240,7 @@
             },
 
             transformForm() {
-                if (this.form.all === 1) return this.form
+                if (this.form.broadcast === 1) return this.form
                 else return {...this.form, recipient: this.form.recipient.join(',')}
             }
         }

@@ -47,7 +47,7 @@ public class MsgService {
         if (result.isSuccess()) {
             result.setMsg("提交成功");
             result.setData(msg);
-            if (msg.getAll().equals(MsgConstant.TO_ALL)) {
+            if (msg.getBroadcast().equals(MsgConstant.TO_ALL)) {
                 SocketModule.broadcast(SocketConstant.EVENT_NEW_MESSAGE);
             }
             else {

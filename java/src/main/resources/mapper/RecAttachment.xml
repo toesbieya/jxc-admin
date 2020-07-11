@@ -5,7 +5,7 @@
         select *
         from rec_attachment
         where pid = #{pid}
-        order by `order` desc
+        order by sort desc
     </select>
     <select id="getUrlByPid" resultType="java.lang.String">
         select url
@@ -14,10 +14,10 @@
     </select>
 
     <insert id="add" parameterType="com.toesbieya.my.model.entity.RecAttachment">
-        insert into rec_attachment (pid, name, time, `order`, url,size)
+        insert into rec_attachment (pid, name, time, sort, url,size)
         VALUES
         <foreach collection="list" item="i" separator=",">
-            (#{i.pid}, #{i.name}, #{i.time}, #{i.order}, #{i.url},#{i.size})
+            (#{i.pid}, #{i.name}, #{i.time}, #{i.sort}, #{i.url},#{i.size})
         </foreach>
     </insert>
 
