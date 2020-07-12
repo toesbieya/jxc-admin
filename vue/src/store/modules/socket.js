@@ -1,4 +1,5 @@
 import {MessageBox} from "element-ui"
+import {isEmpty} from "@/utils"
 import {socketUrl} from '@/config'
 import SocketIO from 'socket.io-client'
 import {createMutations} from "@/utils"
@@ -13,7 +14,7 @@ const mutations = createMutations(state)
 
 const actions = {
     init(context, user) {
-        if (!user || !user.id || !user.session_id) return
+        if (isEmpty(user, user.id, user.token)) return
 
         socket = initSocket(user)
 
@@ -29,9 +30,9 @@ const actions = {
     }
 }
 
-function initSocket({id, session_id}) {
+function initSocket({id, token}) {
     return new SocketIO(socketUrl, {
-        query: {id, session_id},
+        query: {id, token},
         transports: ['websocket']
     })
 }
@@ -79,11 +80,7 @@ function customEventBind(socket, {state, commit, dispatch, rootState}) {
         return MessageBox.alert(msg || '你已被强制下线，请重新登陆', {
             type: 'warning',
             beforeClose: (action, instance, done) => {
-                dispatch('user/logout', null, {root: true})
-                    .then(() => {
-                        done()
-                        location.reload()
-                    })
+                dispatch('user/logout', null, {root: true}).finally(done)
             }
         })
     })

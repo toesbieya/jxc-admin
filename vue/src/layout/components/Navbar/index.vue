@@ -29,9 +29,6 @@
                     <el-dropdown-item class="hidden-xs" icon="el-icon-guide" @click.native="()=>$guide(0,guideSteps)">
                         新手指引
                     </el-dropdown-item>
-                    <router-link v-if="showSystemMonitor" to="/system/monitor">
-                        <el-dropdown-item icon="el-icon-monitor">系统监控</el-dropdown-item>
-                    </router-link>
                     <router-link v-if="showSystemResource" to="/system/resource">
                         <el-dropdown-item icon="el-icon-setting">接口设置</el-dropdown-item>
                     </router-link>
@@ -74,10 +71,6 @@
             ...mapState('user', ['avatar', 'name', 'prepare_logout']),
 
             ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb']),
-
-            showSystemMonitor() {
-                return auth('/system/monitor')
-            },
 
             showSystemResource() {
                 return auth('/system/resource')

@@ -4,7 +4,7 @@ import authorityRoutes from '@/router/authority'
 import {needAuth} from "@/utils/auth"
 import {createTree} from "@/utils/tree"
 import {getAllResources} from "@/api/system/resource"
-import {isEmpty} from "@/utils"
+import {emptyOrDefault, isEmpty} from "@/utils"
 import {isExternal} from "@/utils/validate"
 
 const finalConstantRoutes = transformOriginRoutes(constantRoutes)
@@ -159,7 +159,7 @@ function sort(routes, getSortValue = defaultGetSortValue) {
 
 const defaultGetSortValue = item => {
     item = deepTap(item)
-    return !item || isEmpty(item.sort) ? 10000 : item.sort
+    return !item || emptyOrDefault(item.sort, 10000)
 }
 
 const deepTap = item => {

@@ -48,7 +48,7 @@ service.interceptors.response.use(
             return MessageBox.alert('请登录后重试', {
                 type: 'warning',
                 beforeClose: (action, instance, done) => {
-                    store.dispatch('user/logout').then(() => done())
+                    store.dispatch('user/logout').then(done)
                 }
             })
         }

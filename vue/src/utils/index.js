@@ -2,6 +2,10 @@ export function isEmpty(...str) {
     return str.some(i => i === undefined || i === null || i === '')
 }
 
+export function emptyOrDefault(v, defaultValue = '') {
+    return isEmpty(v) ? defaultValue : v
+}
+
 //简单重置对象属性
 export function resetObj(obj) {
     if (isEmpty(obj)) return

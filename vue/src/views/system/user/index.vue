@@ -48,7 +48,11 @@
                     >
                 </el-table-column>
                 <el-table-column align="center" label="用户名" prop="name" show-overflow-tooltip/>
-                <el-table-column align="center" label="角 色" prop="role_name" show-overflow-tooltip/>
+                <el-table-column align="center" label="角 色" show-overflow-tooltip>
+                    <template v-slot="{row}">
+                        {{row.admin===1?'超级管理员':row.role_name}}
+                    </template>
+                </el-table-column>
                 <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
                     <template v-slot="{row}">{{row.ctime | timestamp2Date}}</template>
                 </el-table-column>

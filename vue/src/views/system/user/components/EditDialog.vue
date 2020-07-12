@@ -12,7 +12,11 @@
                 <el-input v-model="form.name" :readonly="!canEdit" maxlength="20"/>
             </el-form-item>
             <el-form-item label="角 色：" prop="role">
-                <role-selector v-model="form.role" :disabled="!canEdit" @get-name="form.role_name=$event"/>
+                <role-selector
+                        v-model="form.role"
+                        :disabled="!canEdit"
+                        @get-name="e => form.role_name = e"
+                />
             </el-form-item>
             <el-form-item label="状 态：" prop="status">
                 <el-radio-group v-model="form.status" :disabled="!canEdit">
@@ -53,7 +57,7 @@
 
         data() {
             const validateName = (r, v, c) => {
-                checkName(this.form.name)
+                checkName(this.form.name, this.form.id)
                     .then(({msg}) => msg ? c(msg) : c())
                     .catch(e => c(e))
             }

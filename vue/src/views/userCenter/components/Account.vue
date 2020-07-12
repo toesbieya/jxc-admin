@@ -25,6 +25,7 @@
 </template>
 
 <script>
+    import md5 from "js-md5"
     import DialogForm from '@/components/DialogForm'
     import dialogMixin from "@/mixins/dialogMixin"
     import {updateUserPwd} from "@/api/account"
@@ -77,7 +78,10 @@
                 this.$refs.form.validate(v => {
                     if (!v) return
                     this.loading = true
-                    updateUserPwd(this.form)
+                    updateUserPwd({
+                        old_pwd: md5(this.form.old_pwd),
+                        new_pwd: md5(this.form.new_pwd),
+                    })
                         .then(() => elSuccess('修改成功'))
                         .finally(() => {
                             this.loading = false

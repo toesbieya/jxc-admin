@@ -37,7 +37,7 @@
             ...mapState('socket', ['online']),
 
             ...mapState('user', {
-                isLogin: state => !isEmpty(state.id) && !isEmpty(state.token)
+                isLogin: state => !isEmpty(state.id, state.token)
             }),
 
             containerClass() {

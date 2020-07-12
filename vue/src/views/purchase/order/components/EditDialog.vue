@@ -193,7 +193,7 @@
                 }
                 let index = 1
                 for (let sub of this.form.data) {
-                    if (isEmpty(sub.cid) || isEmpty(sub.cname)) return `第${index}个商品分类不能为空`
+                    if (isEmpty(sub.cid, sub.cname)) return `第${index}个商品分类不能为空`
                     if (isEmpty(sub.num)) return `第${index}个商品数量不能为空`
                     if (isEmpty(sub.price)) return `第${index + 1}个商品单价不能为空`
                     if (sub.num < 0 || !isInteger(sub.num)) return `第${index}个商品数量有误`

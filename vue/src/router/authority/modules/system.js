@@ -50,13 +50,6 @@ const router = {
             component: () => lazyLoadView(import('@/views/system/resource')),
             hidden: true,
             meta: {title: '接口设置'}
-        },
-        {
-            path: 'monitor',
-            name: 'systemMonitor',
-            component: () => lazyLoadView(import('@/views/system/monitor')),
-            hidden: true,
-            meta: {title: '系统监控'}
         }
     ]
 }
