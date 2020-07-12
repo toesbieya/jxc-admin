@@ -3,12 +3,12 @@ package com.toesbieya.my.controller;
 import com.toesbieya.my.enumeration.BizDocumentStatusEnum;
 import com.toesbieya.my.model.entity.BizSellOrder;
 import com.toesbieya.my.model.entity.BizSellOrderSub;
-import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.search.SellOrderSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
 import com.toesbieya.my.service.BizSellOrderService;
 import com.toesbieya.my.utils.Result;
-import com.toesbieya.my.utils.Util;
+import com.toesbieya.my.utils.SessionUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +56,7 @@ public class BizSellOrderController {
         String errMsg = validateSub(order.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser user = Util.getUser();
+        UserVo user = SessionUtil.get();
 
         order.setCid(user.getId());
         order.setCname(user.getName());
@@ -86,7 +86,8 @@ public class BizSellOrderController {
         order.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
 
         if (isFirst) {
-            SysUser user = Util.getUser();
+            UserVo user = SessionUtil.get();
+
             order.setCid(user.getId());
             order.setCname(user.getName());
             order.setCtime(System.currentTimeMillis());
@@ -97,17 +98,17 @@ public class BizSellOrderController {
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.withdraw(vo, Util.getUser());
+        return sellOrderService.withdraw(vo, SessionUtil.get());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.pass(vo, Util.getUser());
+        return sellOrderService.pass(vo, SessionUtil.get());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.reject(vo, Util.getUser());
+        return sellOrderService.reject(vo, SessionUtil.get());
     }
 
     @GetMapping("del")

@@ -3,12 +3,12 @@ package com.toesbieya.my.controller;
 import com.toesbieya.my.enumeration.BizDocumentStatusEnum;
 import com.toesbieya.my.model.entity.BizPurchaseInbound;
 import com.toesbieya.my.model.entity.BizPurchaseInboundSub;
-import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.search.PurchaseInboundSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
 import com.toesbieya.my.service.BizPurchaseInboundService;
 import com.toesbieya.my.utils.Result;
-import com.toesbieya.my.utils.Util;
+import com.toesbieya.my.utils.SessionUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +51,7 @@ public class BizPurchaseInboundController {
         String errMsg = validateSub(inbound.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser user = Util.getUser();
+        UserVo user = SessionUtil.get();
         inbound.setCid(user.getId());
         inbound.setCname(user.getName());
         inbound.setCtime(System.currentTimeMillis());
@@ -79,7 +79,7 @@ public class BizPurchaseInboundController {
 
         inbound.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
         if (isFirst) {
-            SysUser user = Util.getUser();
+            UserVo user = SessionUtil.get();
             inbound.setCid(user.getId());
             inbound.setCname(user.getName());
             inbound.setCtime(System.currentTimeMillis());
@@ -89,18 +89,18 @@ public class BizPurchaseInboundController {
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseInboundService.withdraw(vo, Util.getUser());
+        return purchaseInboundService.withdraw(vo, SessionUtil.get());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
         if (StringUtils.isEmpty(vo.getPid())) return Result.fail("参数错误");
-        return purchaseInboundService.pass(vo, Util.getUser());
+        return purchaseInboundService.pass(vo, SessionUtil.get());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseInboundService.reject(vo, Util.getUser());
+        return purchaseInboundService.reject(vo, SessionUtil.get());
     }
 
     @GetMapping("del")

@@ -10,14 +10,15 @@ import com.toesbieya.my.mapper.BizDocumentHistoryMapper;
 import com.toesbieya.my.mapper.BizSellOrderMapper;
 import com.toesbieya.my.mapper.BizStockMapper;
 import com.toesbieya.my.model.entity.*;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.export.SellOrderExport;
 import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.result.StockSearchResult;
 import com.toesbieya.my.model.vo.search.SellOrderSearch;
 import com.toesbieya.my.model.vo.search.StockSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
+import com.toesbieya.my.utils.DocumentUtil;
 import com.toesbieya.my.utils.ExcelUtil;
-import com.toesbieya.my.utils.RedisUtil;
 import com.toesbieya.my.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -107,7 +108,7 @@ public class BizSellOrderService {
     @UserAction("'撤回销售订单'+#vo.id")
     @Lock("#vo.id")
     @Tx
-    public Result withdraw(DocumentStatusUpdate vo, SysUser user) {
+    public Result withdraw(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
@@ -134,7 +135,7 @@ public class BizSellOrderService {
     @UserAction("'通过销售订单'+#vo.id")
     @Lock("#vo.id")
     @Tx
-    public Result pass(DocumentStatusUpdate vo, SysUser user) {
+    public Result pass(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
         long now = System.currentTimeMillis();
@@ -162,7 +163,7 @@ public class BizSellOrderService {
     @UserAction("'驳回销售订单'+#vo.id")
     @Lock("#vo.id")
     @Tx
-    public Result reject(DocumentStatusUpdate vo, SysUser user) {
+    public Result reject(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
@@ -200,7 +201,7 @@ public class BizSellOrderService {
         String err = checkStock(doc.getData());
         if (err != null) return Result.fail(err);
 
-        String id = RedisUtil.getDocumentID("XSDD");
+        String id = DocumentUtil.getDocumentID("XSDD");
         if (StringUtils.isEmpty(id)) return Result.fail("获取单号失败");
 
         doc.setId(id);

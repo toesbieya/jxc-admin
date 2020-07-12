@@ -1,36 +1,27 @@
 package com.toesbieya.my.utils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.io.ByteStreams;
-import com.toesbieya.my.constant.SessionConstant;
-import com.toesbieya.my.model.entity.SysUser;
-import com.toesbieya.my.module.redis.RedisLockType;
-import com.toesbieya.my.module.redis.RedisModule;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 
+import java.io.Closeable;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
 public class RedisUtil {
-    private static String GET_DOCUMENT_ID_SCRIPT = null;
     private static String INCREMENT_AND_EXPIRE_SCRIPT = null;
-    private static StringRedisTemplate stringRedisTemplate;
     private static RedisTemplate<Object, Object> redisTemplate;
 
     static {
         try {
-            GET_DOCUMENT_ID_SCRIPT = new String(ByteStreams.toByteArray(new ClassPathResource("/script/get_document_id.lua").getInputStream()));
             INCREMENT_AND_EXPIRE_SCRIPT = new String(ByteStreams.toByteArray(new ClassPathResource("/script/increase_and_expire.lua").getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,13 +29,12 @@ public class RedisUtil {
     }
 
     @Autowired
-    public RedisUtil(StringRedisTemplate stringRedisTemplate, RedisTemplate<Object, Object> redisTemplate) {
-        RedisUtil.stringRedisTemplate = stringRedisTemplate;
+    public RedisUtil(RedisTemplate<Object, Object> redisTemplate) {
         RedisUtil.redisTemplate = redisTemplate;
     }
 
     public static boolean exist(String key) {
-        Boolean result = stringRedisTemplate.hasKey(key);
+        Boolean result = redisTemplate.hasKey(key);
         return result != null && result;
     }
 
@@ -54,16 +44,8 @@ public class RedisUtil {
         return result == null ? 0 : result;
     }
 
-    public static void del(String key) {
-        stringRedisTemplate.delete(key);
-    }
-
-    public static void expire(String key) {
-        stringRedisTemplate.expire(key, 0L, TimeUnit.MILLISECONDS);
-    }
-
-    public static Set<String> keys(String key) {
-        return stringRedisTemplate.keys(key + '*');
+    public static void expireImmediately(String key) {
+        redisTemplate.expire(key, 0L, TimeUnit.MILLISECONDS);
     }
 
     public static Object get(String key) {
@@ -90,32 +72,44 @@ public class RedisUtil {
         redisTemplate.opsForHash().putAll(key, map);
     }
 
-    public static String getDocumentID(String type) {
-        if (!Arrays.asList(RedisModule.DOCUMENTS_TYPE).contains(type)) {
-            log.error("单据类型有误，【{}】不存在", type);
-            return null;
-        }
-
-        RedisScript<Long> redisScript = new DefaultRedisScript<>(GET_DOCUMENT_ID_SCRIPT, Long.class);
-        Long result = stringRedisTemplate.execute(
-                redisScript,
-                Arrays.asList(RedisLockType.UPDATE_DOCUMENT_ID, RedisModule.DOCUMENTS_KEY),
-                String.valueOf(DateUtil.getTimestampNow()),
-                type
-        );
-        if (result == null || result <= 1) return null;
-        return type + DateUtil.dateFormat(DateTimeFormatter.BASIC_ISO_DATE) + String.format("%04d", result - 1);
+    public static <T> T execute(RedisScript<T> script, List<Object> keys, Object... args) {
+        return redisTemplate.execute(script, keys, args);
     }
 
-    public static SysUser getUserByRedisKey(String key) {
-        JSONObject o = (JSONObject) redisTemplate.opsForHash().get(key, "sessionAttr:" + SessionConstant.USER_KEY);
-        if (o == null) {
-            return null;
-        }
-        return JSONObject.toJavaObject(o, SysUser.class);
+    public static RedisTemplate<Object, Object> getRedisTemplate() {
+        return redisTemplate;
     }
 
-    public static StringRedisTemplate getStringRedisTemplate() {
-        return stringRedisTemplate;
+    public static class Locker implements Closeable {
+        private final String key;
+        private final String value;
+        private final long expire;
+
+        public Locker(String key) {
+            this.key = "lock:" + key;
+            this.value = String.valueOf(System.currentTimeMillis());
+            this.expire = 300;
+        }
+
+        @Override
+        public void close() {
+            this.unlock();
+        }
+
+        public boolean lock() {
+            String LOCK_LUA_SCRIPT = "return redis.call('set',KEYS[1],ARGV[1],'EX',ARGV[2],'NX')";
+            RedisScript<Boolean> redisScript = new DefaultRedisScript<>(LOCK_LUA_SCRIPT, Boolean.class);
+            Boolean result = RedisUtil.execute(redisScript, Collections.singletonList(key), value, expire);
+            return Objects.equals(result, true);
+        }
+
+        public void unlock() {
+            String UNLOCK_LUA_SCRIPT = "if redis.call('get',KEYS[1]) == ARGV[1] then return redis.call('del',KEYS[1]) else return false end";
+            RedisScript<Boolean> redisScript = new DefaultRedisScript<>(UNLOCK_LUA_SCRIPT, Boolean.class);
+            Boolean result = RedisUtil.execute(redisScript, Collections.singletonList(key), value);
+            if (result == null || !result) {
+                log.error("redis锁释放失败，key:{},value:{}", key, value);
+            }
+        }
     }
 }

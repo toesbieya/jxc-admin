@@ -2,12 +2,12 @@ package com.toesbieya.my.controller;
 
 import com.toesbieya.my.constant.MsgConstant;
 import com.toesbieya.my.model.entity.Msg;
-import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.search.MsgPersonalSearch;
 import com.toesbieya.my.model.vo.search.MsgSearch;
 import com.toesbieya.my.service.MsgService;
 import com.toesbieya.my.utils.Result;
-import com.toesbieya.my.utils.Util;
+import com.toesbieya.my.utils.SessionUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +29,8 @@ public class MsgController {
         String errMsg = validateAdd(msg);
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser user = Util.getUser();
+        UserVo user = SessionUtil.get();
+
         setAddInfo(user, msg);
 
         return msgService.add(msg);
@@ -52,8 +53,10 @@ public class MsgController {
         if (errMsg == null && !isFirstCreate) errMsg = validateUpdate(msg);
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser user = Util.getUser();
+        UserVo user = SessionUtil.get();
+
         if (isFirstCreate) setAddInfo(user, msg);
+
         msg.setPid(user.getId());
         msg.setPname(user.getName());
         msg.setPtime(System.currentTimeMillis());
@@ -66,7 +69,8 @@ public class MsgController {
     public Result withdraw(@RequestBody Msg msg) {
         if (msg.getId() == null) return Result.fail("参数错误");
 
-        SysUser user = Util.getUser();
+        UserVo user = SessionUtil.get();
+
         msg.setWid(user.getId());
         msg.setWname(user.getName());
         msg.setWtime(System.currentTimeMillis());
@@ -82,23 +86,25 @@ public class MsgController {
 
     @PostMapping("user/search")
     public Result searchPersonal(@RequestBody MsgPersonalSearch vo) {
-        SysUser user = Util.getUser();
+        UserVo user = SessionUtil.get();
+
         vo.setUid(user.getId());
         vo.setCtime(user.getCtime());
+
         return Result.success(msgService.searchPersonal(vo));
     }
 
     @GetMapping("user/read")
     public Result read(@RequestParam Integer id) {
-        return msgService.read(Util.getUser(), id);
+        return msgService.read(SessionUtil.get(), id);
     }
 
     @GetMapping("user/readAll")
     public Result readAll() {
-        return msgService.readAll(Util.getUser());
+        return msgService.readAll(SessionUtil.get());
     }
 
-    private void setAddInfo(SysUser user, Msg msg) {
+    private void setAddInfo(UserVo user, Msg msg) {
         msg.setCid(user.getId());
         msg.setCname(user.getName());
         msg.setCtime(System.currentTimeMillis());

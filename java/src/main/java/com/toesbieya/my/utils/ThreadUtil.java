@@ -1,23 +1,26 @@
 package com.toesbieya.my.utils;
 
 import com.toesbieya.my.model.entity.RecUserAction;
-import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.UserVo;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class ThreadUtil {
     private static final ThreadLocal<RecUserAction> THREAD_LOCAL_USER_ACTION = new ThreadLocal<>();
-    private static final ThreadLocal<SysUser> THREAD_LOCAL_USER = new ThreadLocal<>();
+    private static final ThreadLocal<UserVo> THREAD_LOCAL_USER = new ThreadLocal<>();
 
     public static void quicklySetAction(HttpServletRequest request) {
-        SysUser user = getUser();
+        UserVo user = SessionUtil.get(request);
+
         if (null == user) return;
+
         RecUserAction userAction = RecUserAction.builder()
                 .uid(user.getId())
                 .uname(user.getName())
                 .ip(IpUtil.getIp(request))
                 .url(request.getServletPath())
                 .build();
+
         setAction(userAction);
     }
 
@@ -29,11 +32,11 @@ public class ThreadUtil {
         THREAD_LOCAL_USER_ACTION.set(action);
     }
 
-    public static SysUser getUser() {
+    public static UserVo getUser() {
         return THREAD_LOCAL_USER.get();
     }
 
-    public static void setUser(SysUser user) {
+    public static void setUser(UserVo user) {
         THREAD_LOCAL_USER.set(user);
     }
 

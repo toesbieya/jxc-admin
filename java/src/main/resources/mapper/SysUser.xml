@@ -37,24 +37,16 @@
         where id = #{id}
         and admin = 0
     </delete>
-    <select id="getById" resultType="com.toesbieya.my.model.entity.SysUser">
-        select a.*,
-        if(a.admin = 1, '超级管理员', b.name) role_name
-        from sys_user a
-        left join sys_role b on a.role = b.id
-        where a.id = #{id}
-    </select>
     <select id="getByNameAndPwd" resultType="com.toesbieya.my.model.entity.SysUser">
-        select a.*,
-        if(a.admin = 1, '超级管理员', b.name) role_name
+        select a.*,b.name role_name
         from sys_user a
         left join sys_role b on a.role = b.id
         where a.name = #{name}
         and a.pwd = #{pwd}
     </select>
-    <select id="search" resultType="com.toesbieya.my.model.entity.SysUser"
+    <select id="search" resultType="com.toesbieya.my.model.vo.UserVo"
             parameterType="com.toesbieya.my.model.vo.search.UserSearch">
-        select a.id, a.name, a.avatar, a.status, a.role, a.admin, a.ctime,if(a.admin = 1, '超级管理员', b.name) role_name
+        select a.id, a.name, a.avatar, a.status, a.role, a.admin, a.ctime,b.name role_name
         from sys_user a
         left join sys_role b on a.role=b.id
         where a.admin=0

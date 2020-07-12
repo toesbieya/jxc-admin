@@ -9,7 +9,7 @@ import com.toesbieya.my.mapper.RecUserActionMapper;
 import com.toesbieya.my.model.entity.RecAttachment;
 import com.toesbieya.my.model.entity.RecLoginHistory;
 import com.toesbieya.my.model.entity.RecUserAction;
-import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.LoginHistorySearch;
 import com.toesbieya.my.model.vo.search.UserActionSearch;
@@ -66,7 +66,7 @@ public class RecService {
     }
 
     @Async("dbInsertExecutor")
-    public void insertLoginHistory(SysUser user, String ip, RecLoginHistoryEnum historyEnum) {
+    public void insertLoginHistory(UserVo user, String ip, RecLoginHistoryEnum historyEnum) {
         RecLoginHistory history = RecLoginHistory.builder()
                 .uid(user.getId())
                 .uname(user.getName())

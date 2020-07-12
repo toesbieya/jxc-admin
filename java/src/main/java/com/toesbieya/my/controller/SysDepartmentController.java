@@ -28,8 +28,7 @@ public class SysDepartmentController {
     public Result add(@RequestBody SysDepartment department) {
         if (null == department.getPid()
                 || StringUtils.isEmpty(department.getName())
-                || null == department.getStatus()
-        ) {
+                || null == department.getStatus()) {
             return Result.fail("添加失败，参数错误");
         }
         return departmentService.add(department);
@@ -40,8 +39,7 @@ public class SysDepartmentController {
         if (null == department.getId()
                 || null == department.getPid()
                 || StringUtils.isEmpty(department.getName())
-                || null == department.getStatus()
-        ) {
+                || null == department.getStatus()) {
             return Result.fail("修改失败，参数错误");
         }
         return departmentService.update(department);

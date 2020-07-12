@@ -6,7 +6,7 @@ import com.toesbieya.my.constant.SocketConstant;
 import com.toesbieya.my.mapper.MsgMapper;
 import com.toesbieya.my.model.entity.Msg;
 import com.toesbieya.my.model.entity.MsgState;
-import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.MsgPersonalSearch;
 import com.toesbieya.my.model.vo.search.MsgSearch;
@@ -83,12 +83,13 @@ public class MsgService {
         return result;
     }
 
-    public Result read(SysUser user, int id) {
+    public Result read(UserVo user, int id) {
         if (msgMapper.checkRead(id, user.getId())) {
             return Result.success();
         }
 
         MsgState state = new MsgState();
+
         state.setMid(id);
         state.setUid(user.getId());
         state.setTime(System.currentTimeMillis());
@@ -96,7 +97,7 @@ public class MsgService {
         return Result.success(msgMapper.insertState(state));
     }
 
-    public Result readAll(SysUser user) {
+    public Result readAll(UserVo user) {
         MsgPersonalSearch vo = new MsgPersonalSearch();
         vo.setUid(user.getId());
         vo.setCtime(user.getCtime());

@@ -42,7 +42,6 @@ public class SysUserController {
         if (errMsg != null) {
             return Result.fail(errMsg);
         }
-        userService.setUpdateAction(user);
         return userService.update(user);
     }
 

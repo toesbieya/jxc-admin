@@ -48,11 +48,11 @@ public class ExcelUtil {
 
         int size = list.size();
         if (size == 0) {
-            Util.responseJson(response, Result.fail("当前没有能导出的数据"));
+            WebUtil.responseJson(response, Result.fail("当前没有能导出的数据"));
             return;
         }
         else if (size < 10000) {
-            Util.responseJson(response, Result.success(list));
+            WebUtil.responseJson(response, Result.success(list));
             return;
         }
 

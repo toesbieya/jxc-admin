@@ -1,23 +1,16 @@
 package com.toesbieya.my.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.toesbieya.my.constant.SessionConstant;
-import com.toesbieya.my.model.entity.SysUser;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -28,7 +21,9 @@ public class Util {
     }
 
     public static List<Integer> str2List(@NotNull String string) {
-        if (StringUtils.isEmpty(string)) return new ArrayList<>(0);
+        if (StringUtils.isEmpty(string)) {
+            return Collections.emptyList();
+        }
         return Arrays.stream(string.split(","))
                 .map(i -> Integer.parseInt(i.trim()))
                 .collect(Collectors.toList());
@@ -46,13 +41,6 @@ public class Util {
         return o == null ? defaultValue : o;
     }
 
-    public static void responseJson(HttpServletResponse response, Result result) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json; charset=utf-8");
-
-        response.getWriter().print(JSON.toJSONString(result));
-    }
-
     public static boolean isInteger(String str) {
         Pattern pattern = Pattern.compile("^[-+]?[\\d]*$");
         return pattern.matcher(str).matches();
@@ -64,24 +52,6 @@ public class Util {
         e.printStackTrace(printWriter);
         printWriter.close();
         return stringWriter.toString();
-    }
-
-    public static HttpServletRequest getRequest() {
-        return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-    }
-
-    public static HttpSession getSession() {
-        return getRequest().getSession();
-    }
-
-    public static SysUser getUser() {
-        return getUser(getSession());
-    }
-
-    public static SysUser getUser(HttpSession session) {
-        JSONObject o = (JSONObject) session.getAttribute(SessionConstant.USER_KEY);
-        if (o == null) return null;
-        return JSONObject.toJavaObject(o, SysUser.class);
     }
 
     public static String formatByte(long byteNumber) {
@@ -104,9 +74,31 @@ public class Util {
     }
 
     public static <T> T find(Iterable<T> list, Predicate<T> predicate) {
+        if (list == null) return null;
+
         for (T t : list) {
             if (predicate.test(t)) return t;
         }
+
         return null;
+    }
+
+    public static <T> int findIndex(Iterable<T> list, Predicate<T> predicate) {
+        int i = -1;
+
+        if (list == null) return i;
+
+        for (T t : list) {
+            i++;
+            if (predicate.test(t)) return i;
+        }
+
+        return -1;
+    }
+
+    public static <T> boolean some(Iterable<T> list, Predicate<T> predicate) {
+        int index = findIndex(list, predicate);
+
+        return index > -1;
     }
 }

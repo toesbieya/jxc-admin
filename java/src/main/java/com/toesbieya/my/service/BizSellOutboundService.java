@@ -13,14 +13,12 @@ import com.toesbieya.my.mapper.BizSellOrderMapper;
 import com.toesbieya.my.mapper.BizSellOutboundMapper;
 import com.toesbieya.my.mapper.BizStockMapper;
 import com.toesbieya.my.model.entity.*;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.export.SellOutboundExport;
 import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.SellOutboundSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
-import com.toesbieya.my.utils.ExcelUtil;
-import com.toesbieya.my.utils.RedisUtil;
-import com.toesbieya.my.utils.Result;
-import com.toesbieya.my.utils.Util;
+import com.toesbieya.my.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -112,7 +110,7 @@ public class BizSellOutboundService {
     @UserAction("'撤回销售出库单'+#vo.id")
     @Lock("#vo.id")
     @Tx
-    public Result withdraw(DocumentStatusUpdate vo, SysUser user) {
+    public Result withdraw(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
@@ -139,7 +137,7 @@ public class BizSellOutboundService {
     @UserAction("'通过销售出库单'+#vo.id")
     @Lock({"#vo.pid", "#vo.id"})
     @Tx
-    public Result pass(DocumentStatusUpdate vo, SysUser user) {
+    public Result pass(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
         String pid = vo.getPid();
@@ -202,7 +200,7 @@ public class BizSellOutboundService {
     @UserAction("'驳回销售出库单'+#vo.id")
     @Lock("#vo.id")
     @Tx
-    public Result reject(DocumentStatusUpdate vo, SysUser user) {
+    public Result reject(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
@@ -240,7 +238,7 @@ public class BizSellOutboundService {
         String err = check(doc.getPid(), doc.getData());
         if (err != null) return Result.fail(err);
 
-        String id = RedisUtil.getDocumentID("XSCK");
+        String id = DocumentUtil.getDocumentID("XSCK");
         if (StringUtils.isEmpty(id)) return Result.fail("获取单号失败");
 
         doc.setId(id);

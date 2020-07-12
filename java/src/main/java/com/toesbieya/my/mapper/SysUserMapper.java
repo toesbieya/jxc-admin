@@ -1,18 +1,17 @@
 package com.toesbieya.my.mapper;
 
 import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.PasswordUpdateParam;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.search.UserSearch;
-import com.toesbieya.my.model.vo.update.UserUpdatePwd;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface SysUserMapper {
-    SysUser getById(@Param("id") Integer id);
-
     SysUser getByNameAndPwd(@Param("name") String name, @Param("pwd") String pwd);
 
-    List<SysUser> search(UserSearch vo);
+    List<UserVo> search(UserSearch vo);
 
     boolean isNameExist(@Param("name") String name, @Param("id") Integer id);
 
@@ -24,7 +23,7 @@ public interface SysUserMapper {
 
     int resetPwd(@Param("id") Integer id, @Param("pwd") String pwd);
 
-    int updatePwd(UserUpdatePwd vo);
+    int updatePwd(PasswordUpdateParam vo);
 
     int updateAvatar(@Param("id") Integer id, @Param("avatar") String avatar);
 }

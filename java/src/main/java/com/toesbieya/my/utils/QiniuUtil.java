@@ -5,24 +5,41 @@ import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.util.Auth;
+import com.toesbieya.my.config.QiniuConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Slf4j
+@Component
+@DependsOn("redisUtil")
 public class QiniuUtil {
-    private static final String ACCESS_KEY = (String) YmlUtil.get("qiniu.access-key");
-    private static final String SECRET_KEY = (String) YmlUtil.get("qiniu.secret-key");
-    private static final String BUCKET = (String) YmlUtil.get("qiniu.bucket");
-    private static final int TOKEN_EXPIRES = (int) YmlUtil.get("qiniu.token-expires");
-    private static final String REDIS_CACHE_KEY = (String) YmlUtil.get("qiniu.redis-cache-key");
-    private static final Auth AUTH = Auth.create(ACCESS_KEY, SECRET_KEY);
-    private static final BucketManager BUCKET_MANAGER = new BucketManager(AUTH, new Configuration(Region.huadong()));
+    private static QiniuConfig config;
+    private static Auth AUTH ;
+    private static BucketManager BUCKET_MANAGER;
+
+    @Autowired
+    public QiniuUtil(QiniuConfig config) {
+        QiniuUtil.config = config;
+
+        if (StringUtils.isEmpty(config.getAccessKey())) {
+            QiniuUtil.AUTH = null;
+            QiniuUtil.BUCKET_MANAGER = null;
+            return;
+        }
+
+        QiniuUtil.AUTH = Auth.create(config.getAccessKey(), config.getSecretKey());
+        QiniuUtil.BUCKET_MANAGER = new BucketManager(QiniuUtil.AUTH, new Configuration(Region.huadong()));
+    }
 
     public static String getToken() {
-        String token = (String) RedisUtil.get(REDIS_CACHE_KEY);
+        String token = (String) RedisUtil.get(config.getRedisCacheKey());
 
         if (token == null) {
-            token = AUTH.uploadToken(BUCKET);
-            RedisUtil.set(REDIS_CACHE_KEY, token, TOKEN_EXPIRES);
+            token = AUTH.uploadToken(config.getBucket());
+            RedisUtil.set(config.getRedisCacheKey(), token, config.getTokenExpire());
         }
 
         return token;
@@ -30,7 +47,7 @@ public class QiniuUtil {
 
     public static void delete(String key) {
         try {
-            BUCKET_MANAGER.delete(BUCKET, key);
+            BUCKET_MANAGER.delete(config.getBucket(), key);
         } catch (QiniuException e) {
             log.info("七牛云删除单个文件失败,{}", e.getMessage());
         }
@@ -38,7 +55,7 @@ public class QiniuUtil {
 
     public static void deleteBatch(String... key) {
         BucketManager.BatchOperations batchOperations = new BucketManager.BatchOperations();
-        batchOperations.addDeleteOp(BUCKET, key);
+        batchOperations.addDeleteOp(config.getBucket(), key);
         try {
             BUCKET_MANAGER.batch(batchOperations);
         } catch (QiniuException e) {

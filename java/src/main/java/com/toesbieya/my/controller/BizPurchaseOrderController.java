@@ -3,12 +3,12 @@ package com.toesbieya.my.controller;
 import com.toesbieya.my.enumeration.BizDocumentStatusEnum;
 import com.toesbieya.my.model.entity.BizPurchaseOrder;
 import com.toesbieya.my.model.entity.BizPurchaseOrderSub;
-import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.search.PurchaseOrderSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
 import com.toesbieya.my.service.BizPurchaseOrderService;
 import com.toesbieya.my.utils.Result;
-import com.toesbieya.my.utils.Util;
+import com.toesbieya.my.utils.SessionUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -56,9 +56,9 @@ public class BizPurchaseOrderController {
         String errMsg = validateSub(order.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser sysUser = Util.getUser();
-        order.setCid(sysUser.getId());
-        order.setCname(sysUser.getName());
+        UserVo user = SessionUtil.get();
+        order.setCid(user.getId());
+        order.setCname(user.getName());
         order.setCtime(System.currentTimeMillis());
         order.setStatus(BizDocumentStatusEnum.DRAFT.getCode());
 
@@ -85,9 +85,9 @@ public class BizPurchaseOrderController {
         order.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
 
         if (isFirst) {
-            SysUser sysUser = Util.getUser();
-            order.setCid(sysUser.getId());
-            order.setCname(sysUser.getName());
+            UserVo user = SessionUtil.get();
+            order.setCid(user.getId());
+            order.setCname(user.getName());
             order.setCtime(System.currentTimeMillis());
         }
 
@@ -96,17 +96,17 @@ public class BizPurchaseOrderController {
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.withdraw(vo, Util.getUser());
+        return purchaseOrderService.withdraw(vo, SessionUtil.get());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.pass(vo, Util.getUser());
+        return purchaseOrderService.pass(vo, SessionUtil.get());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.reject(vo, Util.getUser());
+        return purchaseOrderService.reject(vo, SessionUtil.get());
     }
 
     @GetMapping("del")

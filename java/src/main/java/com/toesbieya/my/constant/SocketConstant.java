@@ -1,12 +1,14 @@
 package com.toesbieya.my.constant;
 
-import com.toesbieya.my.utils.YmlUtil;
-
 public class SocketConstant {
-    public static final String HOSTNAME = (String) YmlUtil.get("socket.hostname");
-    public static final int PORT = (int) YmlUtil.get("socket.port");
-    public static final int MAX_FRAME_PAYLOAD = (int) YmlUtil.get("socket.max-frame-payload");
-    public static final int MAX_HTTP_CONTENT = (int) YmlUtil.get("socket.max-http-content");
-    public static final String EVENT_LOGOUT = (String) YmlUtil.get("socket.event.logout");
-    public static final String EVENT_NEW_MESSAGE = (String) YmlUtil.get("socket.event.new-message");
+    public static String REDIS_EVENT_TOPIC_SEND = "socket:event:send";
+    public static int REDIS_EVENT_SPECIFIC = 0;
+    public static int REDIS_EVENT_BROADCAST = 1;
+    public static int REDIS_EVENT_LOGOUT = 2;
+
+    public static String REDIS_ONLINE_NUM = "socket:online-num";
+    public static String REDIS_ONLINE_USER = "socket:online-user";
+
+    public static final String EVENT_LOGOUT = "logout";
+    public static final String EVENT_NEW_MESSAGE = "new-message";
 }

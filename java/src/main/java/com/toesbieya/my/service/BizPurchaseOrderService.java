@@ -9,12 +9,13 @@ import com.toesbieya.my.enumeration.BizDocumentStatusEnum;
 import com.toesbieya.my.mapper.BizDocumentHistoryMapper;
 import com.toesbieya.my.mapper.BizPurchaseOrderMapper;
 import com.toesbieya.my.model.entity.*;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.export.PurchaseOrderExport;
 import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.PurchaseOrderSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
+import com.toesbieya.my.utils.DocumentUtil;
 import com.toesbieya.my.utils.ExcelUtil;
-import com.toesbieya.my.utils.RedisUtil;
 import com.toesbieya.my.utils.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -99,7 +100,7 @@ public class BizPurchaseOrderService {
     @UserAction("'撤回采购订单'+#vo.id")
     @Lock("#vo.id")
     @Tx
-    public Result withdraw(DocumentStatusUpdate vo, SysUser user) {
+    public Result withdraw(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
@@ -126,7 +127,7 @@ public class BizPurchaseOrderService {
     @UserAction("'通过采购订单'+#vo.id")
     @Lock("#vo.id")
     @Tx
-    public Result pass(DocumentStatusUpdate vo, SysUser user) {
+    public Result pass(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
         long now = System.currentTimeMillis();
@@ -154,7 +155,7 @@ public class BizPurchaseOrderService {
     @UserAction("'驳回采购订单'+#vo.id")
     @Lock("#vo.id")
     @Tx
-    public Result reject(DocumentStatusUpdate vo, SysUser user) {
+    public Result reject(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
@@ -189,7 +190,7 @@ public class BizPurchaseOrderService {
     }
 
     private Result addOrder(BizPurchaseOrder doc) {
-        String id = RedisUtil.getDocumentID("CGDD");
+        String id = DocumentUtil.getDocumentID("CGDD");
         if (StringUtils.isEmpty(id)) return Result.fail("获取单号失败");
 
         doc.setId(id);

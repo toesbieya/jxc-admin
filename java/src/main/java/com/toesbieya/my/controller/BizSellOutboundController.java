@@ -3,12 +3,12 @@ package com.toesbieya.my.controller;
 import com.toesbieya.my.enumeration.BizDocumentStatusEnum;
 import com.toesbieya.my.model.entity.BizSellOutbound;
 import com.toesbieya.my.model.entity.BizSellOutboundSub;
-import com.toesbieya.my.model.entity.SysUser;
+import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.search.SellOutboundSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
 import com.toesbieya.my.service.BizSellOutboundService;
 import com.toesbieya.my.utils.Result;
-import com.toesbieya.my.utils.Util;
+import com.toesbieya.my.utils.SessionUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +51,8 @@ public class BizSellOutboundController {
         String errMsg = validateSub(outbound.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        SysUser user = Util.getUser();
+        UserVo user = SessionUtil.get();
+
         outbound.setCid(user.getId());
         outbound.setCname(user.getName());
         outbound.setCtime(System.currentTimeMillis());
@@ -79,9 +80,10 @@ public class BizSellOutboundController {
 
         outbound.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
         if (isFirst) {
-            SysUser sysUser = Util.getUser();
-            outbound.setCid(sysUser.getId());
-            outbound.setCname(sysUser.getName());
+            UserVo user = SessionUtil.get();
+
+            outbound.setCid(user.getId());
+            outbound.setCname(user.getName());
             outbound.setCtime(System.currentTimeMillis());
         }
         return sellOutboundService.commit(outbound);
@@ -89,18 +91,18 @@ public class BizSellOutboundController {
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return sellOutboundService.withdraw(vo, Util.getUser());
+        return sellOutboundService.withdraw(vo, SessionUtil.get());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
         if (StringUtils.isEmpty(vo.getPid())) return Result.fail("参数错误");
-        return sellOutboundService.pass(vo, Util.getUser());
+        return sellOutboundService.pass(vo, SessionUtil.get());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return sellOutboundService.reject(vo, Util.getUser());
+        return sellOutboundService.reject(vo, SessionUtil.get());
     }
 
     @GetMapping("del")
