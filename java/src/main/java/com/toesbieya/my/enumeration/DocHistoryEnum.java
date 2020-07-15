@@ -1,11 +1,11 @@
 package com.toesbieya.my.enumeration;
 
-public enum BizDocumentFinishEnum {
-    TO_BE_STARTED(0), UNDERWAY(1), FINISHED(2);
+public enum DocHistoryEnum {
+    WITHDRAW(0), COMMIT(1), PASS(2), REJECT(3);
 
     private final int code;
 
-    BizDocumentFinishEnum(int code) {
+    DocHistoryEnum(int code) {
         this.code = code;
     }
 

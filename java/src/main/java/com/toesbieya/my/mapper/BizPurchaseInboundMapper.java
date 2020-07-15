@@ -17,7 +17,7 @@ public interface BizPurchaseInboundMapper {
 
     List<PurchaseInboundExport> export(PurchaseInboundSearch vo);
 
-    int add(BizPurchaseInbound param);
+    int insert(BizPurchaseInbound param);
 
     void addSub(List<BizPurchaseInboundSub> list);
 

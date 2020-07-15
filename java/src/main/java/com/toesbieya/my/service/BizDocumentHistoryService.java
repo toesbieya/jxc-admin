@@ -11,13 +11,13 @@ import java.util.List;
 @Service
 public class BizDocumentHistoryService {
     @Resource
-    private BizDocumentHistoryMapper documentHistoryMapper;
+    private BizDocumentHistoryMapper historyMapper;
 
     public List<BizDocumentHistory> search(DocumentHistorySearch vo) {
-        return documentHistoryMapper.search(vo);
+        return historyMapper.search(vo);
     }
 
     public List<BizDocumentHistory> getByPid(String pid) {
-        return documentHistoryMapper.getByPid(pid);
+        return historyMapper.getByPid(pid);
     }
 }

@@ -1,11 +1,11 @@
 package com.toesbieya.my.enumeration;
 
-public enum BizDocumentStatusEnum {
+public enum DocStatusEnum {
     DRAFT(0), WAIT_VERIFY(1), VERIFIED(2);
 
     private final int code;
 
-    BizDocumentStatusEnum(int code) {
+    DocStatusEnum(int code) {
         this.code = code;
     }
 

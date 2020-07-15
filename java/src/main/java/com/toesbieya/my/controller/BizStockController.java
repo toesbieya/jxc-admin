@@ -13,27 +13,27 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("stock/current")
 public class BizStockController {
     @Resource
-    private BizStockService stockService;
+    private BizStockService service;
 
     @PostMapping("search")
     public Result search(@RequestBody StockSearch vo) {
-        return Result.success(stockService.search(vo));
+        return Result.success(service.search(vo));
     }
 
     @GetMapping("getDetail")
-    public Result getDetail(@RequestParam String cid) {
-        if (StringUtils.isEmpty(cid)) return Result.fail("参数错误");
-        return Result.success(stockService.getDetail(cid));
+    public Result getDetail(@RequestParam String cids) {
+        if (StringUtils.isEmpty(cids)) return Result.fail("参数错误");
+        return Result.success(service.getDetail(cids));
     }
 
     @GetMapping("getDetailById")
     public Result getDetailById(@RequestParam String ids) {
         if (StringUtils.isEmpty(ids)) return Result.fail("参数错误");
-        return Result.success(stockService.getDetailById(ids));
+        return Result.success(service.getDetailById(ids));
     }
 
     @PostMapping("export")
     public void export(@RequestBody StockSearch vo, HttpServletResponse response) throws Exception {
-        stockService.export(vo, response);
+        service.export(vo, response);
     }
 }

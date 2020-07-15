@@ -1,5 +1,6 @@
 package com.toesbieya.my.service;
 
+import com.toesbieya.my.annoation.TimeCost;
 import com.toesbieya.my.annoation.UserAction;
 import com.toesbieya.my.enumeration.GeneralStatusEnum;
 import com.toesbieya.my.enumeration.RecLoginHistoryEnum;
@@ -10,7 +11,6 @@ import com.toesbieya.my.model.vo.*;
 import com.toesbieya.my.utils.QiniuUtil;
 import com.toesbieya.my.utils.Result;
 import com.toesbieya.my.utils.SessionUtil;
-import com.toesbieya.my.utils.Util;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -26,6 +26,7 @@ public class AccountService {
     @Resource
     private RecService recService;
 
+    @TimeCost
     public Result login(LoginParam param, String ip) {
         SysUser user = userMapper.getByNameAndPwd(param.getUsername(), param.getPassword());
 
@@ -41,7 +42,7 @@ public class AccountService {
         }
 
         //设置token
-        String token = Util.UUID();
+        String token = SessionUtil.generateToken(user);
 
         //存入redis的数据
         UserVo userVo = new UserVo(user);

@@ -19,7 +19,7 @@
         order by id desc
     </select>
 
-    <insert id="add" parameterType="com.toesbieya.my.model.entity.BizDocumentHistory">
+    <insert id="insert" parameterType="com.toesbieya.my.model.entity.BizDocumentHistory">
         insert into biz_document_history (pid, type, uid, uname, status_before, status_after, time, info)
         VALUES (#{pid}, #{type}, #{uid}, #{uname}, #{status_before}, #{status_after}, #{time}, #{info})
     </insert>

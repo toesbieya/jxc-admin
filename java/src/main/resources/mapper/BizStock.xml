@@ -13,6 +13,7 @@
         <if test="startTime!=null">and ctime <![CDATA[ >= ]]> #{startTime}</if>
         <if test="endTime!=null">and ctime <![CDATA[ <= ]]> #{endTime}</if>
     </sql>
+
     <select id="search" parameterType="com.toesbieya.my.model.vo.search.StockSearch"
             resultType="com.toesbieya.my.model.vo.result.StockSearchResult">
         select cid,
@@ -25,18 +26,21 @@
         and num >0
         group by cid
     </select>
+
     <select id="getDetail" resultType="com.toesbieya.my.model.entity.BizStock">
         select *
         from biz_stock
-        where cid in (${cid})
+        where cid in (${cids})
           and num > 0
         order by cgddid desc, cgrkid desc
     </select>
+
     <select id="getDetailById" resultType="com.toesbieya.my.model.entity.BizStock">
         select *
         from biz_stock
         where id in (${ids})
     </select>
+
     <select id="export" parameterType="com.toesbieya.my.model.vo.search.StockSearch"
             resultType="com.toesbieya.my.model.vo.export.StockExport">
         select a.cid,a.cname,a.total_num,a.total_price,b.cgddid,b.cgrkid,b.price cg_price,
@@ -59,107 +63,7 @@
         left join biz_purchase_order_sub d on c.cid = d.cid and d.pid = b.cgddid
         order by a.cid,b.cgddid desc, b.cgrkid desc
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
-        from biz_stock
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
-    <update id="updateByPrimaryKeySelective" parameterType="com.toesbieya.my.model.entity.BizStock">
-        update biz_stock
-        <set>
-            <if test="cid != null">
-                cid = #{cid,jdbcType=INTEGER},
-            </if>
-            <if test="cname != null">
-                cname = #{cname,jdbcType=VARCHAR},
-            </if>
-            <if test="num != null">
-                num = #{num,jdbcType=DECIMAL},
-            </if>
-            <if test="price != null">
-                price = #{price,jdbcType=DECIMAL},
-            </if>
-            <if test="ctime != null">
-                ctime = #{ctime,jdbcType=BIGINT},
-            </if>
-            <if test="cgrkid != null">
-                cgrkid = #{cgrkid,jdbcType=VARCHAR},
-            </if>
-            <if test="cgddid != null">
-                cgddid = #{cgddid,jdbcType=VARCHAR},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.toesbieya.my.model.entity.BizStock">
-        update biz_stock
-        set cid    = #{cid,jdbcType=INTEGER},
-            cname  = #{cname,jdbcType=VARCHAR},
-            num    = #{num,jdbcType=DECIMAL},
-            price  = #{price,jdbcType=DECIMAL},
-            ctime  = #{ctime,jdbcType=BIGINT},
-            cgrkid = #{cgrkid,jdbcType=VARCHAR},
-            cgddid = #{cgddid,jdbcType=VARCHAR}
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateBatchSelective" parameterType="java.util.List">
-        update biz_stock
-        <trim prefix="set" suffixOverrides=",">
-            <trim prefix="cid = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.cid != null">
-                        when id = #{item.id,jdbcType=INTEGER} then #{item.cid,jdbcType=INTEGER}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="cname = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.cname != null">
-                        when id = #{item.id,jdbcType=INTEGER} then #{item.cname,jdbcType=VARCHAR}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="num = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.num != null">
-                        when id = #{item.id,jdbcType=INTEGER} then #{item.num,jdbcType=DECIMAL}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="price = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.price != null">
-                        when id = #{item.id,jdbcType=INTEGER} then #{item.price,jdbcType=DECIMAL}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="ctime = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.ctime != null">
-                        when id = #{item.id,jdbcType=INTEGER} then #{item.ctime,jdbcType=BIGINT}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="cgrkid = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.cgrkid != null">
-                        when id = #{item.id,jdbcType=INTEGER} then #{item.cgrkid,jdbcType=VARCHAR}
-                    </if>
-                </foreach>
-            </trim>
-            <trim prefix="cgddid = case" suffix="end,">
-                <foreach collection="list" index="index" item="item">
-                    <if test="item.cgddid != null">
-                        when id = #{item.id,jdbcType=INTEGER} then #{item.cgddid,jdbcType=VARCHAR}
-                    </if>
-                </foreach>
-            </trim>
-        </trim>
-        where id in
-        <foreach close=")" collection="list" item="item" open="(" separator=", ">
-            #{item.id,jdbcType=INTEGER}
-        </foreach>
-    </update>
+
     <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="com.toesbieya.my.model.entity.BizStock"
             useGeneratedKeys="true">
         insert into biz_stock
@@ -171,6 +75,7 @@
             #{item.cgddid,jdbcType=VARCHAR})
         </foreach>
     </insert>
+
     <update id="outbound">
         update biz_stock
         set num = num - #{num,jdbcType=DECIMAL}

@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,10 +36,6 @@ public class Util {
         return new String(baKeyword, StandardCharsets.ISO_8859_1);
     }
 
-    public static <T> T getOrDefault(T o, T defaultValue) {
-        return o == null ? defaultValue : o;
-    }
-
     public static boolean isInteger(String str) {
         Pattern pattern = Pattern.compile("^[-+]?[\\d]*$");
         return pattern.matcher(str).matches();
@@ -54,51 +49,26 @@ public class Util {
         return stringWriter.toString();
     }
 
-    public static String formatByte(long byteNumber) {
-        //换算单位
-        double FORMAT = 1024.0;
-        double kbNumber = byteNumber / FORMAT;
-        if (kbNumber < FORMAT) {
-            return new DecimalFormat("#.##KB").format(kbNumber);
-        }
-        double mbNumber = kbNumber / FORMAT;
-        if (mbNumber < FORMAT) {
-            return new DecimalFormat("#.##MB").format(mbNumber);
-        }
-        double gbNumber = mbNumber / FORMAT;
-        if (gbNumber < FORMAT) {
-            return new DecimalFormat("#.##GB").format(gbNumber);
-        }
-        double tbNumber = gbNumber / FORMAT;
-        return new DecimalFormat("#.##TB").format(tbNumber);
-    }
-
     public static <T> T find(Iterable<T> list, Predicate<T> predicate) {
         if (list == null) return null;
-
         for (T t : list) {
             if (predicate.test(t)) return t;
         }
-
         return null;
     }
 
     public static <T> int findIndex(Iterable<T> list, Predicate<T> predicate) {
         int i = -1;
-
         if (list == null) return i;
-
         for (T t : list) {
             i++;
             if (predicate.test(t)) return i;
         }
-
         return -1;
     }
 
     public static <T> boolean some(Iterable<T> list, Predicate<T> predicate) {
         int index = findIndex(list, predicate);
-
         return index > -1;
     }
 }

@@ -15,7 +15,6 @@ import java.net.URLDecoder;
 @RequestMapping("file")
 @Slf4j
 public class FileController {
-
     @GetMapping("delete")
     public Result delete(@RequestParam String url) throws UnsupportedEncodingException {
         QiniuUtil.delete(URLDecoder.decode(url, "utf-8"));

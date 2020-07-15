@@ -1,6 +1,6 @@
 package com.toesbieya.my.controller;
 
-import com.toesbieya.my.enumeration.BizDocumentStatusEnum;
+import com.toesbieya.my.enumeration.DocStatusEnum;
 import com.toesbieya.my.model.entity.BizSellOrder;
 import com.toesbieya.my.model.entity.BizSellOrderSub;
 import com.toesbieya.my.model.vo.UserVo;
@@ -15,106 +15,107 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("sell/order")
+@RequestMapping("document/sell/order")
 public class BizSellOrderController {
     @Resource
-    private BizSellOrderService sellOrderService;
+    private BizSellOrderService service;
 
     @GetMapping("getById")
     public Result getById(@RequestParam String id) {
         if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
-        BizSellOrder order = sellOrderService.getById(id);
+        BizSellOrder order = service.getById(id);
         return order == null ? Result.fail("获取单据信息失败") : Result.success(order);
     }
 
     @GetMapping("getSubById")
     public Result getSubById(@RequestParam String id) {
         if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
-        return Result.success(sellOrderService.getSubById(id));
+        return Result.success(service.getSubById(id));
     }
 
     @PostMapping("search")
     public Result search(@RequestBody SellOrderSearch vo) {
-        return Result.success(sellOrderService.search(vo));
+        return Result.success(service.search(vo));
     }
 
     @PostMapping("export")
     public void export(@RequestBody SellOrderSearch vo, HttpServletResponse response) throws Exception {
-        sellOrderService.export(vo, response);
+        service.export(vo, response);
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody BizSellOrder order) {
-        if (order.getCustomer_id() == null
-                || StringUtils.isEmpty(order.getCustomer_name())
-                || order.getTotal() == null) {
+    public Result add(@RequestBody BizSellOrder vo) {
+        if (vo.getCustomer_id() == null
+                || StringUtils.isEmpty(vo.getCustomer_name())
+                || vo.getTotal() == null) {
             return Result.fail("参数错误");
         }
-        String errMsg = validateSub(order.getData());
+        String errMsg = validateSub(vo.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
         UserVo user = SessionUtil.get();
 
-        order.setCid(user.getId());
-        order.setCname(user.getName());
-        order.setCtime(System.currentTimeMillis());
-        order.setStatus(BizDocumentStatusEnum.DRAFT.getCode());
+        vo.setCid(user.getId());
+        vo.setCname(user.getName());
+        vo.setCtime(System.currentTimeMillis());
+        vo.setStatus(DocStatusEnum.DRAFT.getCode());
 
-        return sellOrderService.add(order);
+        return service.add(vo);
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody BizSellOrder order) {
-        String errMsg = validateUpdate(order);
-        if (errMsg == null) errMsg = validateSub(order.getData());
+    public Result update(@RequestBody BizSellOrder vo) {
+        String errMsg = validateUpdate(vo);
+        if (errMsg == null) errMsg = validateSub(vo.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        return sellOrderService.update(order);
+        return service.update(vo);
     }
 
     @PostMapping("commit")
-    public Result commit(@RequestBody BizSellOrder order) {
-        boolean isFirst = StringUtils.isEmpty(order.getId());
+    public Result commit(@RequestBody BizSellOrder vo) {
+        boolean isFirst = StringUtils.isEmpty(vo.getId());
 
-        String errMsg = validateSub(order.getData());
-        if (!isFirst && errMsg == null) errMsg = validateUpdate(order);
+        String errMsg = validateSub(vo.getData());
+        if (!isFirst && errMsg == null) errMsg = validateUpdate(vo);
         if (errMsg != null) return Result.fail(errMsg);
 
-        order.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
+        vo.setStatus(DocStatusEnum.WAIT_VERIFY.getCode());
 
         if (isFirst) {
             UserVo user = SessionUtil.get();
 
-            order.setCid(user.getId());
-            order.setCname(user.getName());
-            order.setCtime(System.currentTimeMillis());
+            vo.setCid(user.getId());
+            vo.setCname(user.getName());
+            vo.setCtime(System.currentTimeMillis());
         }
 
-        return sellOrderService.commit(order);
+        return service.commit(vo);
     }
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.withdraw(vo, SessionUtil.get());
+        return service.withdraw(vo, SessionUtil.get());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.pass(vo, SessionUtil.get());
+        return service.pass(vo, SessionUtil.get());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return sellOrderService.reject(vo, SessionUtil.get());
+        return service.reject(vo, SessionUtil.get());
     }
 
     @GetMapping("del")
     public Result del(@RequestParam String id) {
         if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
-        return sellOrderService.del(id);
+        return service.del(id);
     }
 
     private String validateUpdate(BizSellOrder main) {
@@ -132,11 +133,15 @@ public class BizSellOrderController {
 
     private String validateSub(List<BizSellOrderSub> list) {
         if (CollectionUtils.isEmpty(list)) return "销售订单必须要有销售列表";
-        int i = 1;
-        for (BizSellOrderSub sub : list) {
-            if (sub.getPrice() == null || sub.getPrice() <= 0) return "第" + i + "个销售商品价格有误";
-            if (sub.getNum() == null || sub.getNum() <= 0) return "第" + i + "个销售商品数量有误";
-            i++;
+        int len = list.size();
+        for (int i = 0; i < len; i++) {
+            BizSellOrderSub sub = list.get(i);
+            if (sub.getNum() == null || sub.getNum().compareTo(BigDecimal.ZERO) <= 0) {
+                return String.format("第%d个销售商品数量有误", i);
+            }
+            if (sub.getPrice() == null || sub.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+                return String.format("第%d个销售商品价格有误", i);
+            }
         }
         return null;
     }

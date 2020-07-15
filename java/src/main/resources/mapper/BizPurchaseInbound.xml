@@ -49,7 +49,7 @@
         <include refid="searchCondition"/>
         order by ctime desc
     </select>
-    <insert id="add" parameterType="com.toesbieya.my.model.entity.BizPurchaseInbound">
+    <insert id="insert" parameterType="com.toesbieya.my.model.entity.BizPurchaseInbound">
         insert into biz_purchase_inbound
         <trim prefix="(" suffix=")" suffixOverrides=",">
             id,pid,cid,cname,ctime,

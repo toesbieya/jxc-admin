@@ -4,6 +4,7 @@ import com.toesbieya.my.model.entity.SysResource;
 import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.service.SysResourceService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
+@Component
 public class PermissionModule {
     private final static ConcurrentHashMap<String, Integer> urlMap = new ConcurrentHashMap<>(128);
     private final static ConcurrentHashMap<String, Integer> adminUrlMap = new ConcurrentHashMap<>(128);

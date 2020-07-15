@@ -11,15 +11,15 @@ import javax.annotation.Resource;
 @RequestMapping("document/history")
 public class BizDocumentHistoryController {
     @Resource
-    private BizDocumentHistoryService documentHistoryService;
+    private BizDocumentHistoryService service;
 
     @GetMapping("get")
     public Result get(@RequestParam("pid") String pid) {
-        return Result.success(documentHistoryService.getByPid(pid));
+        return Result.success(service.getByPid(pid));
     }
 
     @PostMapping("search")
     public Result search(@RequestBody DocumentHistorySearch vo) {
-        return Result.success(documentHistoryService.search(vo));
+        return Result.success(service.search(vo));
     }
 }

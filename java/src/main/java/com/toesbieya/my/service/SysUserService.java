@@ -1,20 +1,24 @@
 package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
-import com.toesbieya.my.annoation.Tx;
 import com.toesbieya.my.annoation.UserAction;
 import com.toesbieya.my.mapper.SysUserMapper;
 import com.toesbieya.my.model.entity.SysUser;
 import com.toesbieya.my.model.vo.UserVo;
 import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.UserSearch;
-import com.toesbieya.my.module.SocketModule;
 import com.toesbieya.my.utils.Result;
+import com.toesbieya.my.utils.Util;
+import com.toesbieya.my.utils.WebSocketUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SysUserService {
@@ -27,8 +31,12 @@ public class SysUserService {
 
         List<UserVo> users = userMapper.search(vo);
 
+        //当前在线的用户id
+        Set<Integer> onlineUserIds = WebSocketUtil.getOnlineUserIds();
+
+        //设置在线情况
         for (UserVo user : users) {
-            user.setOnline(SocketModule.online(user.getId()));
+            user.setOnline(Util.some(onlineUserIds, i -> user.getId().equals(i)));
         }
 
         return new PageResult<>(users);
@@ -59,18 +67,23 @@ public class SysUserService {
     }
 
     @UserAction("'删除用户：'+#user.name")
-    @Tx
+    @Transactional(rollbackFor = Exception.class)
     public Result del(SysUser user) {
-        userMapper.del(user.getId());
-        SocketModule.logout(user.getId(), "该用户已删除");
-        return Result.success("删除成功");
+        int rows = userMapper.del(user.getId());
+        WebSocketUtil.sendLogoutEvent(Collections.singletonList(user.getId()), "该用户已删除");
+        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新后重试");
     }
 
     @UserAction
     public Result kick(List<SysUser> users) {
-        for (SysUser user : users) {
-            SocketModule.logout(user.getId(), null);
-        }
+        WebSocketUtil.sendLogoutEvent(
+                users
+                        .stream()
+                        .map(SysUser::getId)
+                        .collect(Collectors.toList()),
+                "你已被强制下线，请重新登陆"
+        );
+
         return Result.success("踢出成功");
     }
 

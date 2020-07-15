@@ -17,7 +17,7 @@ public interface BizSellOutboundMapper {
 
     List<SellOutboundExport> export(SellOutboundSearch vo);
 
-    int add(BizSellOutbound param);
+    int insert(BizSellOutbound param);
 
     void addSub(List<BizSellOutboundSub> list);
 

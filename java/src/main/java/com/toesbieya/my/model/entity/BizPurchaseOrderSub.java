@@ -4,10 +4,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.math.BigDecimal;
+
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class BizPurchaseOrderSub extends BizDocumentSub {
-    private Double price;
-    private Double remain_num;
+    private BigDecimal price;
+    private BigDecimal remain_num;
 }

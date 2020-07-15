@@ -2,18 +2,20 @@ package com.toesbieya.my.utils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toesbieya.my.constant.SessionConstant;
+import com.toesbieya.my.model.entity.SysUser;
 import com.toesbieya.my.model.vo.UserVo;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class SessionUtil {
-    private static long expire = 3600 * 8;
+    //token中的连接符
+    private static final String tokenSeparator = "-*-";
 
     public static void remove(String token) {
         if (StringUtils.isEmpty(token)) return;
 
-        RedisUtil.expireImmediately(SessionConstant.REDIS_NAMESPACE + token);
+        RedisUtil.del(SessionConstant.REDIS_NAMESPACE + token);
     }
 
     public static void save(UserVo user) {
@@ -21,7 +23,7 @@ public class SessionUtil {
 
         if (StringUtils.isEmpty(token)) return;
 
-        RedisUtil.set(SessionConstant.REDIS_NAMESPACE + token, user, expire);
+        RedisUtil.set(SessionConstant.REDIS_NAMESPACE + token, user, SessionConstant.EXPIRE);
     }
 
     public static UserVo get() {
@@ -42,5 +44,19 @@ public class SessionUtil {
     public static UserVo get(HttpServletRequest request) {
         String token = request.getHeader(SessionConstant.TOKEN_KEY);
         return get(token);
+    }
+
+    public static String generateToken(SysUser user) {
+        return user.getId() + tokenSeparator + Util.UUID();
+    }
+
+    public static Integer getUidFromToken(String token) {
+        if (StringUtils.isEmpty(token)) {
+            return null;
+        }
+
+        String[] arr = token.split(tokenSeparator);
+
+        return arr.length > 1 ? Integer.valueOf(arr[0]) : null;
     }
 }

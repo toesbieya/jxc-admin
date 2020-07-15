@@ -30,8 +30,8 @@ public class BizStockService {
         return new PageResult<>(stockMapper.search(vo));
     }
 
-    public List<BizStock> getDetail(String cid) {
-        return stockMapper.getDetail(cid);
+    public List<BizStock> getDetail(String cids) {
+        return stockMapper.getDetail(cids);
     }
 
     public List<BizStock> getDetailById(String ids) {

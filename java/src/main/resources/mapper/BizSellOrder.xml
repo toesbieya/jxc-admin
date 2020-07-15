@@ -55,7 +55,7 @@
         <include refid="searchCondition"/>
         order by ctime desc
     </select>
-    <insert id="add" parameterType="com.toesbieya.my.model.entity.BizSellOrder">
+    <insert id="insert" parameterType="com.toesbieya.my.model.entity.BizSellOrder">
         insert into biz_sell_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
             id,customer_id,customer_name,cid,cname,ctime,finish,total,
@@ -130,29 +130,4 @@
         set remain_num=#{remain_num}
         where id = #{id}
     </update>
-    <select id="getDailyTotalPurchasePrice" resultType="java.lang.Double">
-        select ifnull(sum(total), 0) total
-        from biz_sell_order
-        where status = 2
-        <if test="start!=null">and vtime <![CDATA[ >= ]]> #{start}</if>
-        <if test="end!=null">and vtime <![CDATA[ <= ]]> #{end}</if>
-    </select>
-    <select id="getLastDayFinishOrderNum" resultType="java.lang.Integer">
-        select count(0)
-        from biz_sell_order
-        where status = 2
-          and finish = 2
-          and ftime between unix_timestamp(cast(sysdate() as date) - interval 1 day) * 1000 and unix_timestamp(cast(sysdate() as date)) * 1000
-    </select>
-    <select id="getDailyProfitGoods" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
-        select t1.*,
-               t2.name cname
-        from (select a.cid,
-                     ifnull(sum(a.num * a.price), 0) sell
-              from biz_sell_order_sub a
-                       join biz_sell_order b on a.pid = b.id
-              where b.vtime between #{start} and #{end}
-              group by a.cid) t1
-                 join sys_category t2 on t1.cid = t2.id
-    </select>
 </mapper>

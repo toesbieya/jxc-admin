@@ -21,22 +21,22 @@ import java.net.URLDecoder;
 @RequestMapping("account")
 public class AccountController {
     @Resource
-    private AccountService accountService;
+    private AccountService service;
 
     @PostMapping("login")
     public Result login(HttpServletRequest request, @Valid @RequestBody LoginParam param) {
-        return accountService.login(param, IpUtil.getIp(request));
+        return service.login(param, IpUtil.getIp(request));
     }
 
     @GetMapping("logout")
     public Result logout(HttpServletRequest request) {
         UserVo user = SessionUtil.get();
-        return accountService.logout(user, IpUtil.getIp(request));
+        return service.logout(user, IpUtil.getIp(request));
     }
 
     @PostMapping("register")
     public Result register(@Valid @RequestBody RegisterParam param) {
-        return accountService.register(param);
+        return service.register(param);
     }
 
     @PostMapping("updatePwd")
@@ -47,7 +47,7 @@ public class AccountController {
         String errMsg = validateUpdatePwdParam(param);
         if (errMsg != null) return Result.fail(errMsg);
 
-        return accountService.updatePwd(param);
+        return service.updatePwd(param);
     }
 
     @GetMapping("updateAvatar")
@@ -55,7 +55,7 @@ public class AccountController {
         if (StringUtils.isEmpty(key)) return Result.fail("参数错误");
 
         UserVo user = SessionUtil.get();
-        return accountService.updateAvatar(user, URLDecoder.decode(key, "utf-8"));
+        return service.updateAvatar(user, URLDecoder.decode(key, "utf-8"));
     }
 
     @GetMapping("validate")
@@ -75,7 +75,7 @@ public class AccountController {
             return Result.success();
         }
 
-        return Result.success(accountService.checkName(name, id) ? null : "该用户名已存在");
+        return Result.success(service.checkName(name, id) ? null : "该用户名已存在");
     }
 
     private String validateUpdatePwdParam(PasswordUpdateParam vo) {

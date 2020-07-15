@@ -2,11 +2,11 @@ package com.toesbieya.my.mapper;
 
 import com.toesbieya.my.model.entity.BizSellOrder;
 import com.toesbieya.my.model.entity.BizSellOrderSub;
-import com.toesbieya.my.model.entity.StatProfitGoods;
 import com.toesbieya.my.model.vo.export.SellOrderExport;
 import com.toesbieya.my.model.vo.search.SellOrderSearch;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface BizSellOrderMapper {
@@ -18,13 +18,13 @@ public interface BizSellOrderMapper {
 
     List<SellOrderExport> export(SellOrderSearch vo);
 
-    int add(BizSellOrder param);
+    int insert(BizSellOrder param);
 
     void addSub(List<BizSellOrderSub> list);
 
     int update(BizSellOrder param);
 
-    int updateSubRemainNum(@Param("id") Integer id, @Param("remain_num") double remain_num);
+    int updateSubRemainNum(@Param("id") Integer id, @Param("remain_num") BigDecimal remain_num);
 
     int pass(@Param("id") String id, @Param("vid") Integer vid, @Param("vname") String vname, @Param("vtime") long vtime);
 
@@ -35,10 +35,4 @@ public interface BizSellOrderMapper {
     void delSubByPid(@Param("pid") String pid);
 
     int updateFinish(@Param("id") String id, @Param("finish") Integer finish, @Param("ftime") Long ftime);
-
-    double getDailyTotalPurchasePrice(@Param("start") Long start, @Param("end") Long end);
-
-    List<StatProfitGoods> getDailyProfitGoods(@Param("start") long start, @Param("end") long end);
-
-    Integer getLastDayFinishOrderNum();
 }

@@ -33,9 +33,9 @@ public class DocumentUtil {
 
         RedisScript<Long> redisScript = new DefaultRedisScript<>(GET_DOCUMENT_ID_SCRIPT, Long.class);
 
-        Long result = RedisUtil.execute(
+        Long result = RedisUtil.getStringRedisTemplate().execute(
                 redisScript,
-                Arrays.asList(DocumentConstant.DOCUMENT_TYPE_REDIS_KEY, DocumentConstant.DOCUMENT_TYPE_REDIS_KEY),
+                Arrays.asList(DocumentConstant.UPDATE_DOCUMENTS_LOCK_KEY, DocumentConstant.DOCUMENT_TYPE_REDIS_KEY),
                 String.valueOf(DateUtil.getTimestampNow()),
                 type
         );

@@ -2,11 +2,10 @@ package com.toesbieya.my.service;
 
 import com.github.pagehelper.PageHelper;
 import com.toesbieya.my.annoation.Lock;
-import com.toesbieya.my.annoation.Tx;
 import com.toesbieya.my.annoation.UserAction;
-import com.toesbieya.my.enumeration.BizDocumentFinishEnum;
-import com.toesbieya.my.enumeration.BizDocumentHistoryEnum;
-import com.toesbieya.my.enumeration.BizDocumentStatusEnum;
+import com.toesbieya.my.enumeration.DocFinishEnum;
+import com.toesbieya.my.enumeration.DocHistoryEnum;
+import com.toesbieya.my.enumeration.DocStatusEnum;
 import com.toesbieya.my.exception.JsonResultException;
 import com.toesbieya.my.mapper.BizDocumentHistoryMapper;
 import com.toesbieya.my.mapper.BizSellOrderMapper;
@@ -18,13 +17,19 @@ import com.toesbieya.my.model.vo.export.SellOutboundExport;
 import com.toesbieya.my.model.vo.result.PageResult;
 import com.toesbieya.my.model.vo.search.SellOutboundSearch;
 import com.toesbieya.my.model.vo.update.DocumentStatusUpdate;
-import com.toesbieya.my.utils.*;
+import com.toesbieya.my.utils.DocumentUtil;
+import com.toesbieya.my.utils.ExcelUtil;
+import com.toesbieya.my.utils.Result;
+import com.toesbieya.my.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +39,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BizSellOutboundService {
     @Resource
-    private BizSellOutboundMapper sellOutboundMapper;
+    private BizSellOutboundMapper mainMapper;
     @Resource
-    private BizSellOrderMapper sellOrderMapper;
+    private BizSellOrderMapper orderMapper;
     @Resource
-    private BizDocumentHistoryMapper documentHistoryMapper;
+    private BizDocumentHistoryMapper historyMapper;
     @Resource
     private BizStockMapper stockMapper;
     @Resource
@@ -47,58 +52,58 @@ public class BizSellOutboundService {
     private BizStockService stockService;
 
     public BizSellOutbound getById(String id) {
-        BizSellOutbound outbound = sellOutboundMapper.getById(id);
-        if (outbound == null) return null;
-        List<BizSellOutboundSub> list = sellOutboundMapper.getSubById(id);
-        outbound.setData(list);
-        List<RecAttachment> imageList = recService.getAttachmentByPid(id);
-        outbound.setImageList(imageList);
-        return outbound;
+        BizSellOutbound main = mainMapper.getById(id);
+
+        if (main == null) return null;
+
+        main.setData(this.getSubById(id));
+        main.setImageList(recService.getAttachmentByPid(id));
+
+        return main;
     }
 
     public List<BizSellOutboundSub> getSubById(String pid) {
-        return sellOutboundMapper.getSubById(pid);
+        return mainMapper.getSubById(pid);
     }
 
     public PageResult<BizSellOutbound> search(SellOutboundSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
-        List<BizSellOutbound> list = sellOutboundMapper.search(vo);
-        return new PageResult<>(list);
+        return new PageResult<>(mainMapper.search(vo));
     }
 
     public void export(SellOutboundSearch vo, HttpServletResponse response) throws Exception {
-        List<SellOutboundExport> list = sellOutboundMapper.export(vo);
+        List<SellOutboundExport> list = mainMapper.export(vo);
         ExcelUtil.exportSimply(list, response, "销售出库单导出");
     }
 
     @UserAction("'添加销售出库单'")
-    @Tx
+    @Transactional(rollbackFor = Exception.class)
     public Result add(BizSellOutbound doc) {
-        return addOutbound(doc);
+        return addMain(doc);
     }
 
     @UserAction("'修改销售出库单'+#doc.id")
     @Lock("#doc.id")
-    @Tx
+    @Transactional(rollbackFor = Exception.class)
     public Result update(BizSellOutbound doc) {
-        return updateOutbound(doc);
+        return updateMain(doc);
     }
 
     @UserAction("'提交销售出库单'+#doc.id")
     @Lock("#doc.id")
-    @Tx
+    @Transactional(rollbackFor = Exception.class)
     public Result commit(BizSellOutbound doc) {
         boolean isFirstCreate = StringUtils.isEmpty(doc.getId());
-        Result result = isFirstCreate ? addOutbound(doc) : updateOutbound(doc);
+        Result result = isFirstCreate ? addMain(doc) : updateMain(doc);
 
-        documentHistoryMapper.add(
+        historyMapper.insert(
                 BizDocumentHistory.builder()
                         .pid(doc.getId())
-                        .type(BizDocumentHistoryEnum.COMMIT.getCode())
+                        .type(DocHistoryEnum.COMMIT.getCode())
                         .uid(doc.getCid())
                         .uname(doc.getCname())
-                        .status_before(BizDocumentStatusEnum.DRAFT.getCode())
-                        .status_after(BizDocumentStatusEnum.WAIT_VERIFY.getCode())
+                        .status_before(DocStatusEnum.DRAFT.getCode())
+                        .status_after(DocStatusEnum.WAIT_VERIFY.getCode())
                         .time(System.currentTimeMillis())
                         .build()
         );
@@ -109,23 +114,23 @@ public class BizSellOutboundService {
 
     @UserAction("'撤回销售出库单'+#vo.id")
     @Lock("#vo.id")
-    @Tx
+    @Transactional(rollbackFor = Exception.class)
     public Result withdraw(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
-        if (sellOutboundMapper.reject(id) < 1) {
+        if (mainMapper.reject(id) < 1) {
             return Result.fail("撤回失败，请刷新重试");
         }
 
-        documentHistoryMapper.add(
+        historyMapper.insert(
                 BizDocumentHistory.builder()
                         .pid(id)
-                        .type(BizDocumentHistoryEnum.WITHDRAW.getCode())
+                        .type(DocHistoryEnum.WITHDRAW.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(BizDocumentStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(BizDocumentStatusEnum.DRAFT.getCode())
+                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .status_after(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -136,59 +141,70 @@ public class BizSellOutboundService {
 
     @UserAction("'通过销售出库单'+#vo.id")
     @Lock({"#vo.pid", "#vo.id"})
-    @Tx
+    @Transactional(rollbackFor = Exception.class)
     public Result pass(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
         String pid = vo.getPid();
         long now = System.currentTimeMillis();
 
-        List<BizSellOutboundSub> outboundSubList = sellOutboundMapper.getSubById(vo.getId());
-        String err = check(vo.getPid(), outboundSubList);
+        List<BizSellOutboundSub> subList = this.getSubById(vo.getId());
+        String err = check(vo.getPid(), subList);
         if (err != null) return Result.fail("通过失败，" + err);
 
-        if (sellOutboundMapper.pass(id, user.getId(), user.getName(), now) < 1) {
+        if (mainMapper.pass(id, user.getId(), user.getName(), now) < 1) {
             return Result.fail("通过失败，请刷新重试");
         }
 
-        //获取销售订单子表
-        List<BizSellOrderSub> orderSubList = sellOrderMapper.getSubById(pid);
-
         //按分类分组统计出库数量，并出库
-        Map<Integer, Double> outboundCount = new HashMap<>();
-        for (BizSellOutboundSub outboundSub : outboundSubList) {
+        Map<Integer, BigDecimal> outboundCount = new HashMap<>();
+        for (BizSellOutboundSub outboundSub : subList) {
             int rows = stockMapper.outbound(outboundSub.getSid(), outboundSub.getNum());
-            if (rows == 0) throw new JsonResultException("通过失败，商品" + outboundSub.getCname() + "库存不足");
+            if (rows == 0) {
+                throw new JsonResultException(String.format("通过失败，商品%s库存不足", outboundSub.getCname()));
+            }
 
             Integer cid = outboundSub.getCid();
-            Double num = outboundCount.getOrDefault(cid, 0D);
-            outboundCount.put(cid, num + outboundSub.getNum());
+            BigDecimal num = outboundCount.getOrDefault(cid, BigDecimal.ZERO);
+            outboundCount.put(cid, num.add(outboundSub.getNum()));
         }
 
         //更新销售订单子表的剩余未出库数量，记录销售订单的完成情况
-        BizDocumentFinishEnum finish = BizDocumentFinishEnum.FINISHED;
+        DocFinishEnum finish = DocFinishEnum.FINISHED;
+        List<BizSellOrderSub> orderSubList = orderMapper.getSubById(pid);
+
         for (BizSellOrderSub orderSub : orderSubList) {
-            if (orderSub.getRemain_num().equals(0D)) continue;
-            Double outboundNum = outboundCount.get(orderSub.getCid());
+            if (orderSub.getRemain_num().equals(BigDecimal.ZERO)) {
+                continue;
+            }
+
+            BigDecimal outboundNum = outboundCount.get(orderSub.getCid());
+
             if (outboundNum == null) continue;
 
-            double gap = orderSub.getRemain_num() - outboundNum;
-            if (gap > 0) finish = BizDocumentFinishEnum.UNDERWAY;
+            BigDecimal gap = orderSub.getRemain_num().subtract(outboundNum);
 
-            sellOrderMapper.updateSubRemainNum(orderSub.getId(), gap);
+            //如果有任意一个采购商品的remain_num大于采购商品的num，则完成情况为进行中，否则为已完成
+            if (gap.compareTo(BigDecimal.ZERO) > 0) {
+                finish = DocFinishEnum.UNDERWAY;
+            }
+
+            orderMapper.updateSubRemainNum(orderSub.getId(), gap);
         }
 
         //更新销售订单完成情况
-        sellOrderMapper.updateFinish(pid, finish.getCode(), finish == BizDocumentFinishEnum.FINISHED ? now : null);
+        if (1 > orderMapper.updateFinish(pid, finish.getCode(), finish == DocFinishEnum.FINISHED ? now : null)) {
+            throw new JsonResultException("通过失败，销售订单状态有误，请刷新重试");
+        }
 
-        documentHistoryMapper.add(
+        historyMapper.insert(
                 BizDocumentHistory.builder()
                         .pid(id)
-                        .type(BizDocumentHistoryEnum.PASS.getCode())
+                        .type(DocHistoryEnum.PASS.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(BizDocumentStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(BizDocumentStatusEnum.VERIFIED.getCode())
+                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .status_after(DocStatusEnum.VERIFIED.getCode())
                         .time(now)
                         .info(info)
                         .build()
@@ -199,23 +215,23 @@ public class BizSellOutboundService {
 
     @UserAction("'驳回销售出库单'+#vo.id")
     @Lock("#vo.id")
-    @Tx
+    @Transactional(rollbackFor = Exception.class)
     public Result reject(DocumentStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
-        if (sellOutboundMapper.reject(id) < 1) {
+        if (mainMapper.reject(id) < 1) {
             return Result.fail("驳回失败，请刷新重试");
         }
 
-        documentHistoryMapper.add(
+        historyMapper.insert(
                 BizDocumentHistory.builder()
                         .pid(id)
-                        .type(BizDocumentHistoryEnum.REJECT.getCode())
+                        .type(DocHistoryEnum.REJECT.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(BizDocumentStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(BizDocumentStatusEnum.DRAFT.getCode())
+                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .status_after(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -226,29 +242,39 @@ public class BizSellOutboundService {
 
     @UserAction("'删除销售出库单'+#id")
     @Lock("#id")
-    @Tx
+    @Transactional(rollbackFor = Exception.class)
     public Result del(String id) {
-        if (sellOutboundMapper.del(id) < 1) return Result.fail("删除失败");
-        sellOutboundMapper.delSubByPid(id);
+        if (mainMapper.del(id) < 1) {
+            return Result.fail("删除失败");
+        }
+
+        //同时删除子表和附件
+        mainMapper.delSubByPid(id);
         recService.delAttachmentByPid(id);
+
         return Result.success("删除成功");
     }
 
-    private Result addOutbound(BizSellOutbound doc) {
-        String err = check(doc.getPid(), doc.getData());
+    private Result addMain(BizSellOutbound doc) {
+        List<BizSellOutboundSub> subList = doc.getData();
+
+        String err = check(doc.getPid(), subList);
         if (err != null) return Result.fail(err);
 
         String id = DocumentUtil.getDocumentID("XSCK");
-        if (StringUtils.isEmpty(id)) return Result.fail("获取单号失败");
 
-        doc.setId(id);
-        for (BizSellOutboundSub sub : doc.getData()) {
-            sub.setPid(id);
+        if (StringUtils.isEmpty(id)) {
+            return Result.fail("获取单号失败");
         }
 
-        sellOutboundMapper.add(doc);
-        sellOutboundMapper.addSub(doc.getData());
+        doc.setId(id);
 
+        subList.forEach(sub -> sub.setPid(id));
+
+        mainMapper.insert(doc);
+        mainMapper.addSub(subList);
+
+        //插入附件
         List<RecAttachment> uploadImageList = doc.getUploadImageList();
         Long time = System.currentTimeMillis();
         for (RecAttachment attachment : uploadImageList) {
@@ -260,19 +286,21 @@ public class BizSellOutboundService {
         return Result.success("添加成功", id);
     }
 
-    private Result updateOutbound(BizSellOutbound doc) {
-        String err = checkUpdateStatus(doc.getId());
+    private Result updateMain(BizSellOutbound doc) {
+        String docId = doc.getId();
+
+        String err = checkUpdateStatus(docId);
         if (err == null) err = check(doc.getPid(), doc.getData());
         if (err != null) return Result.fail(err);
 
-        sellOutboundMapper.delSubByPid(doc.getId());
-        sellOutboundMapper.update(doc);
-        sellOutboundMapper.addSub(doc.getData());
+        mainMapper.update(doc);
+        mainMapper.delSubByPid(docId);
+        mainMapper.addSub(doc.getData());
 
         List<RecAttachment> uploadImageList = doc.getUploadImageList();
         Long time = System.currentTimeMillis();
         for (RecAttachment attachment : uploadImageList) {
-            attachment.setPid(doc.getId());
+            attachment.setPid(docId);
             attachment.setTime(time);
         }
         recService.handleAttachment(uploadImageList, doc.getDeleteImageList());
@@ -282,33 +310,33 @@ public class BizSellOutboundService {
 
     //只有拟定状态的单据才能修改
     private String checkUpdateStatus(String id) {
-        BizSellOutbound doc = sellOutboundMapper.getById(id);
-        if (doc == null || !doc.getStatus().equals(0)) return "单据状态已更新，请刷新后重试";
+        BizSellOutbound doc = mainMapper.getById(id);
+        if (doc == null || !doc.getStatus().equals(DocStatusEnum.DRAFT.getCode())) {
+            return "单据状态已更新，请刷新后重试";
+        }
         return null;
     }
 
     //添加、修改、通过前都需要检查
     private String check(String pid, List<BizSellOutboundSub> docSubList) {
-        BizSellOrder order = sellOrderMapper.getById(pid);
+        BizSellOrder order = orderMapper.getById(pid);
 
         //检查销售订单是否已审核、未完成
-        if (order == null || order.getStatus() != 2 || order.getFinish() == 2) {
+        if (order == null
+                || !order.getStatus().equals(DocStatusEnum.VERIFIED.getCode())
+                || order.getFinish().equals(DocFinishEnum.FINISHED.getCode())
+        ) {
             return "销售订单状态异常";
         }
 
-        List<BizSellOrderSub> orderSubList = sellOrderMapper.getSubById(pid);
-        if (orderSubList.size() <= 0) return "没有找到销售订单的数据";
+        List<BizSellOrderSub> orderSubList = orderMapper.getSubById(pid);
+
+        if (CollectionUtils.isEmpty(orderSubList)) {
+            return "没有找到销售订单的数据";
+        }
 
         //按分类统计商品的出库数量
-        Map<Integer, Double> outboundCount =
-                docSubList
-                        .stream()
-                        .collect(
-                                Collectors.groupingBy(
-                                        BizSellOutboundSub::getCid,
-                                        Collectors.summingDouble(BizSellOutboundSub::getNum)
-                                )
-                        );
+        Map<Integer, BigDecimal> outboundCount = this.getOutboundCount(docSubList);
 
         String[] cids = new String[outboundCount.size()];
 
@@ -320,11 +348,11 @@ public class BizSellOutboundService {
             if (orderSub == null) {
                 return "未在销售订单中找到对应的出库商品";
             }
-            if (orderSub.getRemain_num().equals(0D)) {
-                return "出库商品【" + orderSub.getCname() + "】已全部出库";
+            if (orderSub.getRemain_num().equals(BigDecimal.ZERO)) {
+                return String.format("出库商品【%s】已全部出库", orderSub.getCname());
             }
-            if (orderSub.getRemain_num() < outboundCount.get(cid)) {
-                return "出库商品【" + orderSub.getCname() + "】的数量超出订单数量";
+            if (orderSub.getRemain_num().compareTo(outboundCount.get(cid)) < 0) {
+                return String.format("出库商品【%s】的数量超出订单数量", orderSub.getCname());
             }
             cids[index] = String.valueOf(cid);
             index++;
@@ -334,11 +362,29 @@ public class BizSellOutboundService {
         List<BizStock> stockList = stockService.getDetail(String.join(",", cids));
         for (BizSellOutboundSub sub : docSubList) {
             BizStock stock = Util.find(stockList, i -> i.getId().equals(sub.getSid()));
-            if (stock == null || stock.getNum() < sub.getNum()) {
-                return "出库商品【" + sub.getCname() + "】(采购入库单：" + sub.getPid() + ")库存不足";
+            if (stock == null || stock.getNum().compareTo(sub.getNum()) < 0) {
+                return String.format("出库商品【%s】(采购入库单：%s)库存不足", sub.getCname(), sub.getPid());
             }
         }
 
         return null;
+    }
+
+    private Map<Integer, BigDecimal> getOutboundCount(List<BizSellOutboundSub> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return new HashMap<>();
+        }
+        return list
+                .stream()
+                .collect(
+                        Collectors.groupingBy(
+                                BizSellOutboundSub::getCid,
+                                Collectors.reducing(
+                                        BigDecimal.ZERO,
+                                        BizSellOutboundSub::getNum,
+                                        BigDecimal::add
+                                )
+                        )
+                );
     }
 }

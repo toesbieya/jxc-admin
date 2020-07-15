@@ -1,6 +1,6 @@
 package com.toesbieya.my.controller;
 
-import com.toesbieya.my.enumeration.BizDocumentStatusEnum;
+import com.toesbieya.my.enumeration.DocStatusEnum;
 import com.toesbieya.my.model.entity.BizPurchaseOrder;
 import com.toesbieya.my.model.entity.BizPurchaseOrderSub;
 import com.toesbieya.my.model.vo.UserVo;
@@ -15,104 +15,105 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("purchase/order")
+@RequestMapping("document/purchase/order")
 public class BizPurchaseOrderController {
     @Resource
-    private BizPurchaseOrderService purchaseOrderService;
+    private BizPurchaseOrderService service;
 
     @GetMapping("getById")
     public Result getById(@RequestParam String id) {
         if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
-        BizPurchaseOrder order = purchaseOrderService.getById(id);
+        BizPurchaseOrder order = service.getById(id);
         return order == null ? Result.fail("获取单据信息失败") : Result.success(order);
     }
 
     @GetMapping("getSubById")
     public Result getSubById(@RequestParam String id) {
         if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
-        return Result.success(purchaseOrderService.getSubById(id));
+        return Result.success(service.getSubById(id));
     }
 
     @PostMapping("search")
     public Result search(@RequestBody PurchaseOrderSearch vo) {
-        return Result.success(purchaseOrderService.search(vo));
+        return Result.success(service.search(vo));
     }
 
     @PostMapping("export")
     public void export(@RequestBody PurchaseOrderSearch vo, HttpServletResponse response) throws Exception {
-        purchaseOrderService.export(vo, response);
+        service.export(vo, response);
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody BizPurchaseOrder order) {
-        if (order.getSid() == null
-                || StringUtils.isEmpty(order.getSname())
-                || order.getTotal() == null) {
+    public Result add(@RequestBody BizPurchaseOrder vo) {
+        if (vo.getSid() == null
+                || StringUtils.isEmpty(vo.getSname())
+                || vo.getTotal() == null) {
             return Result.fail("参数错误");
         }
-        String errMsg = validateSub(order.getData());
+        String errMsg = validateSub(vo.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
         UserVo user = SessionUtil.get();
-        order.setCid(user.getId());
-        order.setCname(user.getName());
-        order.setCtime(System.currentTimeMillis());
-        order.setStatus(BizDocumentStatusEnum.DRAFT.getCode());
+        vo.setCid(user.getId());
+        vo.setCname(user.getName());
+        vo.setCtime(System.currentTimeMillis());
+        vo.setStatus(DocStatusEnum.DRAFT.getCode());
 
-        return purchaseOrderService.add(order);
+        return service.add(vo);
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody BizPurchaseOrder order) {
-        String errMsg = validateUpdate(order);
-        if (errMsg == null) errMsg = validateSub(order.getData());
+    public Result update(@RequestBody BizPurchaseOrder vo) {
+        String errMsg = validateUpdate(vo);
+        if (errMsg == null) errMsg = validateSub(vo.getData());
         if (errMsg != null) return Result.fail(errMsg);
 
-        return purchaseOrderService.update(order);
+        return service.update(vo);
     }
 
     @PostMapping("commit")
-    public Result commit(@RequestBody BizPurchaseOrder order) {
-        boolean isFirst = StringUtils.isEmpty(order.getId());
+    public Result commit(@RequestBody BizPurchaseOrder vo) {
+        boolean isFirst = StringUtils.isEmpty(vo.getId());
 
-        String errMsg = validateSub(order.getData());
-        if (!isFirst && errMsg == null) errMsg = validateUpdate(order);
+        String errMsg = validateSub(vo.getData());
+        if (!isFirst && errMsg == null) errMsg = validateUpdate(vo);
         if (errMsg != null) return Result.fail(errMsg);
 
-        order.setStatus(BizDocumentStatusEnum.WAIT_VERIFY.getCode());
+        vo.setStatus(DocStatusEnum.WAIT_VERIFY.getCode());
 
         if (isFirst) {
             UserVo user = SessionUtil.get();
-            order.setCid(user.getId());
-            order.setCname(user.getName());
-            order.setCtime(System.currentTimeMillis());
+            vo.setCid(user.getId());
+            vo.setCname(user.getName());
+            vo.setCtime(System.currentTimeMillis());
         }
 
-        return purchaseOrderService.commit(order);
+        return service.commit(vo);
     }
 
     @PostMapping("withdraw")
     public Result withdraw(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.withdraw(vo, SessionUtil.get());
+        return service.withdraw(vo, SessionUtil.get());
     }
 
     @PostMapping("pass")
     public Result pass(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.pass(vo, SessionUtil.get());
+        return service.pass(vo, SessionUtil.get());
     }
 
     @PostMapping("reject")
     public Result reject(@RequestBody DocumentStatusUpdate vo) {
-        return purchaseOrderService.reject(vo, SessionUtil.get());
+        return service.reject(vo, SessionUtil.get());
     }
 
     @GetMapping("del")
     public Result del(@RequestParam String id) {
         if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
-        return purchaseOrderService.del(id);
+        return service.del(id);
     }
 
     private String validateUpdate(BizPurchaseOrder main) {
@@ -130,11 +131,15 @@ public class BizPurchaseOrderController {
 
     private String validateSub(List<BizPurchaseOrderSub> list) {
         if (CollectionUtils.isEmpty(list)) return "采购订单必须要有采购列表";
-        int i = 1;
-        for (BizPurchaseOrderSub sub : list) {
-            if (sub.getPrice() == null || sub.getPrice() <= 0) return "第" + i + "个采购商品价格有误";
-            if (sub.getNum() == null || sub.getNum() <= 0) return "第" + i + "个采购商品数量有误";
-            i++;
+        int len = list.size();
+        for (int i = 0; i < len; i++) {
+            BizPurchaseOrderSub sub = list.get(i);
+            if (sub.getNum() == null || sub.getNum().compareTo(BigDecimal.ZERO) <= 0) {
+                return String.format("第%d个入库商品数量有误", i);
+            }
+            if (sub.getPrice() == null || sub.getPrice().compareTo(BigDecimal.ZERO) <= 0) {
+                return String.format("第%d个采购商品价格有误", i);
+            }
         }
         return null;
     }

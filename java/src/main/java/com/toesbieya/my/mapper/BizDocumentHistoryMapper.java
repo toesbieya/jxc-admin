@@ -11,5 +11,5 @@ public interface BizDocumentHistoryMapper {
 
     List<BizDocumentHistory> search(DocumentHistorySearch vo);
 
-    int add(BizDocumentHistory history);
+    int insert(BizDocumentHistory history);
 }

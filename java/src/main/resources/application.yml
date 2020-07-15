@@ -20,14 +20,14 @@ spring:
         min-idle: 50
         max-active: 2000
         max-wait: 1000
-  session:
-    store-type: redis
   servlet:
     multipart:
       #单文件上传最大值
       max-file-size: 10MB
       #单次请求最大值
       max-request-size: 10MB
+  aop:
+    proxy-target-class: true
 
 mybatis:
   mapper-locations:
@@ -43,21 +43,14 @@ socket:
   #hostname: 172.24.52.184
   hostname: localhost
   port: 12580
-  max-frame-payload: 1048576
-  max-http-content: 1048576
-  event:
-    logout: logout
-    new-message: new-message
+  max-frame-payload-length: 1048576
+  max-http-content-length: 1048576
 
 qiniu:
-  access-key: access-key
-  secret-key: secret-key
-  bucket: bucket
+  access-key:
+  secret-key:
+  bucket:
   #七牛的临时上传凭证的有效期，单位秒
-  token-expires: 3600
+  token-expire: 3600
   #七牛的临时上传凭证的redis键名
   redis-cache-key: qiniu-token
-
-#logging:
-#  level:
-#    com.toesbieya.my.mapper: DEBUG

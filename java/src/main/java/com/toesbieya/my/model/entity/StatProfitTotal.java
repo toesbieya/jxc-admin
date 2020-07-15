@@ -2,11 +2,13 @@ package com.toesbieya.my.model.entity;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class StatProfitTotal {
     private Integer id;
-    private Double purchase;
-    private Double sell;
-    private Double profit;
+    private BigDecimal purchase;
+    private BigDecimal sell;
+    private BigDecimal profit;
     private Long time;
 }

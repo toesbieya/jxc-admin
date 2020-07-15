@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,8 +15,8 @@ public class BizStock {
     private Integer id;
     private Integer cid;
     private String cname;
-    private Double num;
-    private Double price;
+    private BigDecimal num;
+    private BigDecimal price;
     private Long ctime;
     private String cgrkid;
     private String cgddid;
