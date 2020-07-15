@@ -159,7 +159,7 @@ function sort(routes, getSortValue = defaultGetSortValue) {
 
 const defaultGetSortValue = item => {
     item = deepTap(item)
-    return !item || emptyOrDefault(item.sort, 10000)
+    return !item || isEmpty(item.sort) ? 10000 : item.sort
 }
 
 const deepTap = item => {

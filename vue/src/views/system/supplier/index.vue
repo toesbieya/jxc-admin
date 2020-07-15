@@ -6,7 +6,6 @@
             </search-form-item>
             <search-form-item label="行政区域：">
                 <region-selector
-                        type="tree"
                         :value="temp.region_name"
                         limit
                         :limit-api="getLimitRegion"

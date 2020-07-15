@@ -12,7 +12,7 @@
 
 <script>
     import UploadFile from '@/components/UploadFile'
-    import request from '@/config/request'
+    import request from "@/config/request"
 
     export default {
         name: "uploadExample",

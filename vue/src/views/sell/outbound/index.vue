@@ -112,7 +112,7 @@
     import SearchForm from '@/components/SearchForm'
     import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import documentTableMixin from '@/mixins/bizDocumentTableMixin'
-    import {del, getSubById, search} from "@/api/sell/outbound"
+    import {del, getSubById, search} from "@/api/document/sell/outbound"
 
     export default {
         name: "sellOutbound",

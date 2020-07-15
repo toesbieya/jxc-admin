@@ -13,7 +13,7 @@ const service = axios.create({
 service.interceptors.request.use(
     config => {
         //登录状态下socket断连时，除登出外中断一切请求
-        if (store.state.user.id && !store.state.socket.online && config.url !== '/logout') {
+        if (store.state.user.id && !store.state.socket.online && config.url !== '/account/logout') {
             Message.error('请等待与服务器重新连接')
             return Promise.reject('')
         }

@@ -29,7 +29,7 @@
             position: relative;
             padding: 0 8px;
             height: 100%;
-            font-size: 18px;
+            font-size: 0;
             color: #5a5e66;
             vertical-align: text-bottom;
             transition: background .3s;
@@ -42,13 +42,16 @@
 
         .avatar-container {
             .avatar-wrapper {
-                margin-top: 5px;
-                position: relative;
+                margin-top: 2px;
 
                 .el-avatar {
                     position: relative;
                     top: 5px;
                     margin-right: 5px;
+                }
+
+                span {
+                    font-size: 18px;
                 }
             }
         }

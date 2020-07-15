@@ -72,14 +72,12 @@
     import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import CategoryTree from '@/bizComponents/CategoryTree'
     import DetailDialog from "./DetailDialog"
-    import {search} from "@/api/stock/current"
+    import {baseUrl, search} from "@/api/stock/current"
     import {isEmpty, debounce} from "@/utils"
     import {plus} from "@/utils/math"
     import {exportExcel} from "@/utils/excel"
     import {getNodeId} from "@/utils/tree"
     import tableMixin from '@/mixins/tablePageMixin'
-
-    const baseUrl = '/stock/current'
 
     export default {
         name: "currentStock",
@@ -168,7 +166,7 @@
             },
 
             downloadExcel() {
-                exportExcel(baseUrl + '/export', this.mergeSearchForm(), this.excel)
+                exportExcel(`${baseUrl}/export`, this.mergeSearchForm(), this.excel)
             },
 
             nodeClick(obj) {

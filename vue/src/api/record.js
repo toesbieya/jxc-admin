@@ -1,6 +1,6 @@
-import request from '@/config/request'
+import request from "@/config/request"
 
-const baseUrl = '/record'
+export const baseUrl = '/record'
 
 export function searchLoginHistory(data) {
     return request.post(`${baseUrl}/searchLoginHistory`, data).then(({data}) => data.data)

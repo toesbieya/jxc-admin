@@ -1,23 +1,23 @@
-import request from '@/config/request'
+import request from "@/config/request"
 
-const baseUrl = '/system/customer'
+export const baseUrl = `/system/customer`
 
 export function getLimitRegion() {
-    return request.get(baseUrl + '/getLimitRegion').then(({data}) => data.data)
+    return request.get(`${baseUrl}/getLimitRegion`).then(({data}) => data.data)
 }
 
 export function getCustomers(data) {
-    return request.post(baseUrl + '/search', data).then(({data}) => data.data)
+    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
 }
 
 export function addCustomer(data) {
-    return request.post(baseUrl + '/add', data).then(({data}) => data)
+    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
 }
 
 export function updateCustomer(data) {
-    return request.post(baseUrl + '/update', data).then(({data}) => data)
+    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
 }
 
 export function delCustomer(data) {
-    return request.post(baseUrl + '/del', data).then(({data}) => data)
+    return request.post(`${baseUrl}/del`, data).then(({data}) => data)
 }

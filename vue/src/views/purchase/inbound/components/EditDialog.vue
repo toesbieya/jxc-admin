@@ -93,8 +93,8 @@
 <script>
     import OrderSelector from "./OrderSelector"
     import bizDocumentDialogMixin from "@/mixins/bizDocumentDialogMixin"
-    import {add, commit, getById, pass, reject, update, withdraw} from "@/api/purchase/inbound"
-    import {getSubById as getParentSubById} from "@/api/purchase/order"
+    import {add, commit, getById, pass, reject, update, withdraw} from "@/api/document/purchase/inbound"
+    import {getSubById as getParentSubById} from "@/api/document/purchase/order"
     import {isEmpty} from "@/utils"
     import {isInteger} from "@/utils/validate"
     import {elAlert} from "@/utils/message"

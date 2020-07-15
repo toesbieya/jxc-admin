@@ -15,7 +15,7 @@
 <script>
     import {isEmpty, waitUntilSuccess} from '@/utils'
     import {elConfirm, elError, elSuccess} from "@/utils/message"
-    import {delCategory, getAllCategories} from "@/api/system/category"
+    import {del, getAll} from "@/api/system/category"
     import ContextMenu from "@/components/ContextMenu"
     import ContextMenuItem from "@/components/ContextMenu/ContextMenuItem"
     import CategoryTree from '@/bizComponents/CategoryTree'
@@ -50,7 +50,7 @@
                 this.loading = true
                 this.currentCategory = null
                 this.contextmenu.show = false
-                getAllCategories()
+                getAll()
                     .then(data => this.$store.commit('dataCache/categories', data))
                     .finally(() => this.loading = false)
             },
@@ -77,7 +77,7 @@
                 elConfirm(`确认删除【${this.currentCategory.name}】分类？`)
                     .then(() => {
                         this.loading = true
-                        return delCategory({id: this.currentCategory.id, name: this.currentCategory.name})
+                        return del({id: this.currentCategory.id, name: this.currentCategory.name})
                     })
                     .then(() => this.commitSuccess('删除成功'))
             },

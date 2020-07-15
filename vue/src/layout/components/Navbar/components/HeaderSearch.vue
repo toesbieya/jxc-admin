@@ -119,8 +119,6 @@
 
 <style lang="scss">
     .header-search {
-        font-size: 0 !important;
-
         .header-search-select {
             font-size: 18px;
             transition: width 0.2s;

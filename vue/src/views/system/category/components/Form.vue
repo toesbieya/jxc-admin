@@ -39,7 +39,7 @@
 <script>
     import {isEmpty, mergeObj, waitUntilSuccess} from '@/utils'
     import {elConfirm} from "@/utils/message"
-    import {addCategory, updateCategory} from "@/api/system/category"
+    import {add, update} from "@/api/system/category"
 
     export default {
         props: ['list'],
@@ -118,7 +118,7 @@
                 this.$refs.form.validate(v => {
                     if (!v) return
                     elConfirm(this.confirmMessage)
-                        .then(() => this.type === 'add' ? addCategory(this.form) : updateCategory(this.form))
+                        .then(() => this.type === 'add' ? add(this.form) : update(this.form))
                         .then(() => {
                             this.$emit('commit-success', this.type === 'add' ? '添加成功' : '修改成功')
                             this.cancel()

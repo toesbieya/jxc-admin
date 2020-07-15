@@ -136,7 +136,7 @@
     import SupplierSelector from './SupplierSelector'
     import CategorySelector from './CategorySelector'
     import bizDocumentDialogMixin from "@/mixins/bizDocumentDialogMixin"
-    import {add, commit, getById, pass, reject, update, withdraw} from "@/api/purchase/order"
+    import {add, commit, getById, pass, reject, update, withdraw} from "@/api/document/purchase/order"
     import {isEmpty} from "@/utils"
     import {plus, mul} from "@/utils/math"
     import {isInteger} from "@/utils/validate"

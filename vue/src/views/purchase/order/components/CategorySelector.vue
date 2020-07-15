@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import {getAllCategories} from "@/api/system/category"
+    import {getAll} from "@/api/system/category"
     import {elError} from "@/utils/message"
 
     export default {
@@ -30,7 +30,7 @@
         methods: {
             init() {
                 if (this.selectableCategories.length > 0) return
-                getAllCategories()
+                getAll()
                     .then(data => this.$store.commit('dataCache/categories', data))
             },
             change(v) {

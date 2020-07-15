@@ -1,6 +1,6 @@
-import request from '@/config/request'
+import request from "@/config/request"
 
-const baseUrl = '/account'
+export const baseUrl = '/account'
 
 export function login(data) {
     return request.post(`${baseUrl}/login`, data).then(({data}) => data.data)

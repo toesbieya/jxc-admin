@@ -69,7 +69,7 @@
     import LinerProgress from '@/components/LinerProgress'
     import dialogMixin from "@/mixins/dialogMixin"
     import tableMixin from '@/mixins/tablePageMixin'
-    import {getSubById, search} from "@/api/purchase/order"
+    import {getSubById, search} from "@/api/document/purchase/order"
     import {elError} from "@/utils/message"
 
     export default {

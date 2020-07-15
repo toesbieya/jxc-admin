@@ -21,6 +21,7 @@ const actions = {
         defaultEventBind(socket, context)
         customEventBind(socket, context)
     },
+
     close() {
         return new Promise(resolve => {
             if (!socket) return resolve()
@@ -77,7 +78,7 @@ function defaultEventBind(socket, {state, commit, dispatch}) {
 function customEventBind(socket, {state, commit, dispatch, rootState}) {
     socket.on('logout', msg => {
         if (rootState.user.prepare_logout) return
-        return MessageBox.alert(msg || '你已被强制下线，请重新登陆', {
+        MessageBox.alert(msg || '你已被强制下线，请重新登陆', {
             type: 'warning',
             beforeClose: (action, instance, done) => {
                 dispatch('user/logout', null, {root: true}).finally(done)

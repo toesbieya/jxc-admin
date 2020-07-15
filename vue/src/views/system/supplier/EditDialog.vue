@@ -13,7 +13,6 @@
             </el-form-item>
             <el-form-item label="行政区域：" prop="region_name">
                 <region-selector
-                        type="tree"
                         :value="form.region_name"
                         :readonly="!canEdit"
                         @clear="clearRegion"

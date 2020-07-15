@@ -129,7 +129,7 @@
     import StockSelector from './StockSelector'
     import CustomerSelector from './CustomerSelector'
     import bizDocumentDialogMixin from "@/mixins/bizDocumentDialogMixin"
-    import {add, commit, getById, pass, reject, update, withdraw} from "@/api/sell/order"
+    import {add, commit, getById, pass, reject, update, withdraw} from "@/api/document/sell/order"
     import {isEmpty} from "@/utils"
     import {mul, plus} from "@/utils/math"
     import {isInteger} from "@/utils/validate"
