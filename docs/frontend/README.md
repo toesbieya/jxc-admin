@@ -1,5 +1,7 @@
 # 介绍
 
+这是在[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin) 的基础上改造而来的。
+
 ## 功能
 
 ```

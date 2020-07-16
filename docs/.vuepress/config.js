@@ -21,6 +21,7 @@ module.exports = {
 
         sidebar: [
             'installation',
+            'start',
             {
                 title: '前端',
                 collapsable: false,
@@ -56,6 +57,13 @@ module.exports = {
                     '/frontend/plugins'
                 ]
             },
+            {
+                title:'后端',
+                collapsable: false,
+                children: [
+                    '/backend/',
+                ]
+            }
         ]
     },
 
