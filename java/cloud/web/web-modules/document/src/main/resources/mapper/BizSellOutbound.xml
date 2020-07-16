@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.toesbieya.jxc.document.mapper.SellOutboundMapper">
+    <select id="export" resultType="cn.toesbieya.jxc.document.model.vo.SellOutboundExport">
+        select id,
+               pid,
+               cname,
+               from_unixtime(ctime / 1000, '%Y-%m-%d %H:%m:%s') ctime,
+               from_unixtime(vtime / 1000, '%Y-%m-%d %H:%m:%s') vtime,
+               vname,
+               case status
+                       when 0 then '拟定'
+                       when 1 then '待审核'
+                       when 2 then '已审核'
+                       end                                      status,
+               remark
+        from biz_sell_outbound ${ew.customSqlSegment}
+    </select>
+</mapper>

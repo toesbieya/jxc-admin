@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.toesbieya.jxc.record.mapper.RecAttachmentMapper">
+    <insert id="insertBatch" parameterType="cn.toesbieya.jxc.common.model.entity.RecAttachment">
+        insert into rec_attachment (pid, name, time, sort, url,size)
+        VALUES
+        <foreach collection="list" item="i" separator=",">
+            (#{i.pid}, #{i.name}, #{i.time}, #{i.sort}, #{i.url},#{i.size})
+        </foreach>
+    </insert>
+
+    <select id="getUrlByPid" resultType="java.lang.String">
+        select url
+        from rec_attachment
+        where pid = #{pid}
+    </select>
+</mapper>

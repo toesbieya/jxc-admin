@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toesbieya.my.mapper.SysCustomerMapper">
+    <sql id="searchCondition">
+        <if test="id!=null">and a.id=#{id}</if>
+        <if test="name!=null and name!=''">and a.name like "%"#{name}"%"</if>
+        <if test="address!=null and address!=''">and a.address like "%"#{address}"%"</if>
+        <if test="linkman!=null and linkman!=''">and a.linkman like "%"#{linkman}"%"</if>
+        <if test="linkphone!=null and linkphone!=''">and a.linkphone=#{linkphone}</if>
+        <if test="region!=null and region!=''">and a.region in (${region})</if>
+        <if test="status!=null">and a.status=#{status}</if>
+        <if test="startTime!=null">and a.ctime <![CDATA[ >= ]]> #{startTime}</if>
+        <if test="endTime!=null">and a.ctime <![CDATA[ <= ]]> #{endTime}</if>
+    </sql>
+    <insert id="add" parameterType="com.toesbieya.my.model.entity.SysCustomer">
+        insert into sys_customer (name, address, linkman, linkphone, ctime, region, status, remark)
+        values (#{name}, #{address}, #{linkman}, #{linkphone}, #{ctime}, #{region}, #{status}, #{remark})
+    </insert>
+    <update id="update" parameterType="com.toesbieya.my.model.entity.SysCustomer">
+        update sys_customer
+        set name=#{name},
+            address=#{address},
+            linkman=#{linkman},
+            linkphone=#{linkphone},
+            region=#{region},
+            remark=#{remark},
+            status=#{status}
+        where id = #{id}
+    </update>
+    <delete id="del" parameterType="java.lang.Integer">
+        delete
+        from sys_customer
+        where id = #{id}
+          and status = 0
+    </delete>
+    <select id="get" resultType="com.toesbieya.my.model.entity.SysCustomer">
+        select a.*,
+               b.fullname region_name
+        from sys_customer a
+                 left join sys_region b on a.region = b.id
+        where a.status = 1
+    </select>
+    <select id="search" resultType="com.toesbieya.my.model.entity.SysCustomer"
+            parameterType="com.toesbieya.my.model.vo.search.CustomerSearch">
+        select a.*,b.fullname region_name
+        from sys_customer a left join sys_region b on a.region=b.id
+        where 1
+        <include refid="searchCondition"/>
+        order by a.ctime desc
+    </select>
+    <select id="getById" resultType="com.toesbieya.my.model.entity.SysCustomer" parameterType="java.lang.Integer">
+        select *
+        from sys_customer
+        where id = #{id}
+    </select>
+    <select id="isNameExist" resultType="java.lang.Boolean">
+        select if(count(0) > 0, 1, 0)
+        from sys_customer
+        where name = #{name}
+        <if test="id!=null">
+            and id!=#{id}
+        </if>
+    </select>
+    <select id="getLimitRegion" resultType="com.toesbieya.my.model.vo.result.RegionValueResult">
+        select a.id,
+               count(0) value
+        from sys_region a
+                 join sys_customer b on a.id = b.region
+        group by a.id
+    </select>
+</mapper>

@@ -1,0 +1,56 @@
+server:
+  port: 8081
+  tomcat:
+    #指定tomcat临时目录，否则每次启动都会在用户临时文件夹里创建一个tomcat文件夹
+    basedir: C:\static
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/repo?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: username
+    password: password
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 3000
+    lettuce:
+      pool:
+        max-idle: 500
+        min-idle: 50
+        max-active: 2000
+        max-wait: 1000
+  servlet:
+    multipart:
+      #单文件上传最大值
+      max-file-size: 10MB
+      #单次请求最大值
+      max-request-size: 10MB
+  aop:
+    proxy-target-class: true
+
+mybatis:
+  mapper-locations:
+    - classpath*:/mapper/**/*.xml
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+socket:
+  #hostname: 172.24.52.184
+  hostname: localhost
+  port: 12580
+  max-frame-payload-length: 1048576
+  max-http-content-length: 1048576
+
+qiniu:
+  access-key:
+  secret-key:
+  bucket:
+  #七牛的临时上传凭证的有效期，单位秒
+  token-expire: 3600
+  #七牛的临时上传凭证的redis键名
+  redis-cache-key: qiniu-token

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.toesbieya.my.mapper.StatisticMapper">
+    <select id="searchTotalProfit" resultType="com.toesbieya.my.model.entity.StatProfitTotal">
+        select *
+        from stat_profit_total
+        where 1
+        <if test="start!=null">and time <![CDATA[ >= ]]> #{start}</if>
+        <if test="end!=null">and time <![CDATA[ <= ]]> #{end}</if>
+    </select>
+
+    <select id="searchGoodsProfit" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
+        select *
+        from stat_profit_goods
+        where 1
+        <if test="start!=null">and time <![CDATA[ >= ]]> #{start}</if>
+        <if test="end!=null">and time <![CDATA[ <= ]]> #{end}</if>
+    </select>
+
+    <select id="searchFinishOrder" resultType="com.toesbieya.my.model.entity.StatFinishOrder">
+        select *
+        from stat_finish_order
+        where 1
+        <if test="start!=null">and time <![CDATA[ >= ]]> #{start}</if>
+        <if test="end!=null">and time <![CDATA[ <= ]]> #{end}</if>
+    </select>
+
+    <select id="getHistoryTotalProfitGoods" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
+        select t1.*,
+               t2.name cname
+        from (select cid,
+                     ifnull(sum(purchase), 0) purchase,
+                     ifnull(sum(sell), 0) sell,
+                     ifnull(sum(profit), 0) profit
+              from stat_profit_goods
+              group by cid) t1
+                 join sys_category t2 on t1.cid = t2.id
+    </select>
+
+    <select id="checkDailyFinishOrderExist" resultType="java.lang.Boolean">
+        select count(0)
+        from stat_finish_order
+        where time = #{time}
+    </select>
+
+    <select id="checkDailyProfitExist" resultType="java.lang.Boolean">
+        select count(0)
+        from stat_profit_total
+        where time = #{time}
+    </select>
+
+    <insert id="insertFinishOrder" parameterType="com.toesbieya.my.model.entity.StatFinishOrder">
+        insert into stat_finish_order (purchase, sell, time)
+        values (#{purchase}, #{sell}, #{time})
+    </insert>
+
+    <insert id="insertProfitTotal" parameterType="com.toesbieya.my.model.entity.StatProfitTotal">
+        insert into stat_profit_total (purchase, sell, profit, time)
+        values (#{purchase}, #{sell}, #{profit}, #{time})
+    </insert>
+
+    <insert id="insertProfitGoodsBatch" keyColumn="id" keyProperty="id"
+            parameterType="com.toesbieya.my.model.entity.StatProfitGoods"
+            useGeneratedKeys="true">
+        insert into stat_profit_goods
+        (cid, purchase, sell, profit, time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.cid},#{item.purchase},#{item.sell},#{item.profit},#{item.time})
+        </foreach>
+    </insert>
+
+    <select id="getPurchaseOrderDailyTotalPurchasePrice" resultType="java.math.BigDecimal">
+        select ifnull(sum(total), 0) total
+        from biz_purchase_order
+                where status = 2
+        <if test="start != null">
+            and vtime <![CDATA[ >= ]]> #{start}
+        </if>
+        <if test="end != null">
+            and vtime <![CDATA[ <= ]]> #{end}
+        </if>
+    </select>
+
+    <select id="getPurchaseOrderLastDayFinishOrderNum" resultType="java.lang.Integer">
+        select count(0)
+        from biz_purchase_order
+        where status = 2
+          and finish = 2
+          and ftime between unix_timestamp(cast(sysdate() as date) - interval 1 day) * 1000 and unix_timestamp(cast(sysdate() as date)) * 1000
+    </select>
+
+    <select id="getPurchaseOrderDailyProfitGoods" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
+        select t1.*,
+               t2.name cname
+        from (select a.cid,
+                     ifnull(sum(a.num * a.price), 0) purchase
+              from biz_purchase_order_sub a
+                           join biz_purchase_order b on a.pid = b.id
+              where b.vtime between #{start} and #{end}
+              group by a.cid) t1
+                     join sys_category t2 on t1.cid = t2.id
+    </select>
+
+    <select id="getSellOrderDailyTotalPurchasePrice" resultType="java.math.BigDecimal">
+        select ifnull(sum(total), 0) total
+        from biz_sell_order
+                where status = 2
+        <if test="start != null">
+            and vtime <![CDATA[ >= ]]> #{start}
+        </if>
+        <if test="end != null">
+            and vtime <![CDATA[ <= ]]> #{end}
+        </if>
+    </select>
+
+    <select id="getSellOrderLastDayFinishOrderNum" resultType="java.lang.Integer">
+        select count(0)
+        from biz_sell_order
+        where status = 2
+          and finish = 2
+          and ftime between unix_timestamp(cast(sysdate() as date) - interval 1 day) * 1000 and unix_timestamp(cast(sysdate() as date)) * 1000
+    </select>
+
+    <select id="getSellOrderDailyProfitGoods" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
+        select t1.*,
+               t2.name cname
+        from (select a.cid,
+                     ifnull(sum(a.num * a.price), 0) sell
+              from biz_sell_order_sub a
+                           join biz_sell_order b on a.pid = b.id
+              where b.vtime between #{start} and #{end}
+              group by a.cid) t1
+                     join sys_category t2 on t1.cid = t2.id
+    </select>
+</mapper>

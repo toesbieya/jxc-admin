@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: jxc-gateway
+
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        shared-configs:
+          - data-id: jxc-common-database.yml
+          - data-id: jxc-common-redis.yml
+        file-extension: yml
+
+      discovery:
+        server-addr: 127.0.0.1:8848

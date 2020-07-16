@@ -1,0 +1,60 @@
+server:
+  port: 8081
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10 # 每秒处理多少个请求
+            redis-rate-limiter.burstCapacity: 20 # 一秒钟内完成的最大请求数
+            key-resolver: #{@urlKeyResolver}
+
+      routes:
+        - id: jxc-web-account
+          uri: lb://jxc-web-account
+          predicates:
+            - Path=/account/**
+
+        - id: jxc-web-document
+          uri: lb://jxc-web-document
+          predicates:
+            - Path=/document/**
+
+        - id: jxc-web-message
+          uri: lb://jxc-web-message
+          predicates:
+            - Path=/message/**
+
+        - id: jxc-web-record
+          uri: lb://jxc-web-record
+          predicates:
+            - Path=/record/**
+
+        - id: jxc-web-statistic
+          uri: lb://jxc-web-statistic
+          predicates:
+            - Path=/statistic/**
+
+        - id: jxc-web-stock
+          uri: lb://jxc-web-stock
+          predicates:
+            - Path=/stock/**
+
+        - id: jxc-web-system
+          uri: lb://jxc-web-system
+          predicates:
+            - Path=/system/**
+
+      whitelist:
+        - /test/**
+        - /account/login
+        - /account/logout
+        - /account/register
+        - /account/checkName

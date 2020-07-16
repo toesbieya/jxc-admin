@@ -1,0 +1,6 @@
+socket:
+  #hostname: 172.24.52.184
+  hostname: localhost
+  port: 12580
+  max-frame-payload-length: 1048576
+  max-http-content-length: 1048576

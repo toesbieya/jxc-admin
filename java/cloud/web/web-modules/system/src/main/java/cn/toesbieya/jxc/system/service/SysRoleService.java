@@ -1,0 +1,112 @@
+package cn.toesbieya.jxc.system.service;
+
+import cn.toesbieya.jxc.api.service.system.RoleApi;
+import cn.toesbieya.jxc.common.model.entity.SysRole;
+import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.system.mapper.SysRoleMapper;
+import cn.toesbieya.jxc.system.model.vo.RoleSearch;
+import cn.toesbieya.jxc.web.common.annoation.UserAction;
+import cn.toesbieya.jxc.web.common.model.vo.PageResult;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.github.pagehelper.PageHelper;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service
+@org.apache.dubbo.config.annotation.Service
+public class SysRoleService implements RoleApi {
+    @Resource
+    private SysRoleMapper roleMapper;
+
+    @Override
+    public SysRole getRoleById(Integer id) {
+        return id == null ? null : roleMapper.selectById(id);
+    }
+
+    public List<SysRole> get() {
+        return roleMapper.selectList(Wrappers.lambdaQuery(SysRole.class).eq(SysRole::getStatus, 1));
+    }
+
+    public List<SysRole> getAll() {
+        return roleMapper.selectList(null);
+    }
+
+    public PageResult<SysRole> search(RoleSearch vo) {
+        Integer id = vo.getId();
+        String name = vo.getName();
+        Integer cid = vo.getCid();
+        String cname = vo.getCname();
+        Integer status = vo.getStatus();
+        Long startTime = vo.getStartTime();
+        Long endTime = vo.getEndTime();
+
+        Wrapper<SysRole> wrapper =
+                Wrappers.lambdaQuery(SysRole.class)
+                        .eq(id != null, SysRole::getId, id)
+                        .like(!StringUtils.isEmpty(name), SysRole::getName, name)
+                        .eq(cid != null, SysRole::getCid, cid)
+                        .like(!StringUtils.isEmpty(cname), SysRole::getName, cname)
+                        .eq(status != null, SysRole::getStatus, status)
+                        .ge(startTime != null, SysRole::getCtime, startTime)
+                        .le(endTime != null, SysRole::getCtime, endTime)
+                        .orderByDesc(SysRole::getCtime);
+
+        PageHelper.startPage(vo.getPage(), vo.getPageSize());
+
+        return new PageResult<>(roleMapper.selectList(wrapper));
+    }
+
+    @UserAction("'添加角色：'+#role.name")
+    public Result add(SysRole role) {
+        if (isNameExist(role.getName(), null)) {
+            return Result.fail("添加失败，角色名称重复");
+        }
+
+        int rows = roleMapper.insert(role);
+        return rows > 0 ? Result.success("添加成功") : Result.fail("添加失败");
+    }
+
+    @UserAction("'修改角色：'+#role.name")
+    public Result update(SysRole role) {
+        Integer id = role.getId();
+        String name = role.getName();
+
+        if (isNameExist(name, id)) {
+            return Result.fail("修改失败，角色名称重复");
+        }
+
+        int rows = roleMapper.update(
+                null,
+                Wrappers.lambdaUpdate(SysRole.class)
+                        .set(SysRole::getName, name)
+                        .set(SysRole::getResource_id, role.getResource_id())
+                        .set(SysRole::getStatus, role.getStatus())
+                        .eq(SysRole::getId, id)
+        );
+        return rows > 0 ? Result.success("修改成功") : Result.fail("修改失败，请刷新重试");
+    }
+
+    @UserAction("'删除角色：'+#role.name")
+    public Result del(SysRole role) {
+        int rows = roleMapper.delete(
+                Wrappers.lambdaQuery(SysRole.class)
+                        .eq(SysRole::getId, role.getId())
+                        .eq(SysRole::getStatus, 0)
+        );
+        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新重试");
+    }
+
+    private boolean isNameExist(String name, Integer id) {
+        Integer num = roleMapper.selectCount(
+                Wrappers.lambdaQuery(SysRole.class)
+                        .eq(SysRole::getName, name)
+                        .ne(id != null, SysRole::getId, id)
+        );
+
+        return num != null && num > 0;
+    }
+}

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: jxc-web-statistic
+
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        shared-configs:
+          - data-id: jxc-common-database.yml
+          - data-id: jxc-common-redis.yml
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+dubbo:
+  registry:
+    address: nacos://127.0.0.1:8848
+  cloud:
+    subscribed-services: jxc-web-record

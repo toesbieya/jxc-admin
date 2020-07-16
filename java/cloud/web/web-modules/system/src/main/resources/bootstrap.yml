@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: jxc-web-system
+
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yml
+        shared-configs:
+          - data-id: jxc-common-database.yml
+          - data-id: jxc-common-redis.yml
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+dubbo:
+  protocol:
+    port: -1
+    name: dubbo
+  scan:
+    base-packages: cn.toesbieya.jxc.system.service
+  registry:
+    address: nacos://127.0.0.1:8848
+  cloud:
+    subscribed-services: jxc-web-record
