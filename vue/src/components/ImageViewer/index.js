@@ -1,28 +1,33 @@
-import Vue from 'vue'
-import Main from './main.vue'
+let insertEl = false
 
-const ImageViewerConstructor = Vue.extend(Main)
-
-let instance
-
-const image = function ({index, urlList}) {
-    if (instance) instance.close()
-    else {
-        instance = new ImageViewerConstructor({data: {index, urlList}})
-        instance.$mount()
-        document.body.appendChild(instance.$el)
+const image = function ({index = 0, urlList}) {
+    if (!window.lightGallery || !Array.isArray(urlList) || urlList.length < 1) {
+        return
     }
-    instance.urlList = urlList || []
-    instance.index = index
-    instance.value = true
-    return instance
+
+    if (!insertEl) {
+        const div = document.createElement('div')
+        div.setAttribute('id', 'light-gallery-el')
+        div.style.display = 'none'
+        document.body.appendChild(div)
+        div.addEventListener(
+            'onCloseAfter',
+            () => window.lgData[div.getAttribute('lg-uid')].destroy(true),
+            false
+        )
+        insertEl = true
+    }
+
+    window.lightGallery(document.getElementById('light-gallery-el'), {
+        index,
+        download: false,
+        dynamic: true,
+        dynamicEl: urlList.map(src => ({src, thumb: src}))
+    })
 }
 
 image.close = function () {
-    if (instance) {
-        instance.close()
-        instance = null
-    }
+
 }
 
 export default image

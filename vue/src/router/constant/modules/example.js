@@ -55,12 +55,6 @@ const router = {
                     meta: {title: '上传文件'}
                 },
                 {
-                    path: 'picturePreviewExample',
-                    name: 'picturePreviewExample',
-                    component: () => lazyLoadView(import('@/views/example/components/picturePreviewExample')),
-                    meta: {title: '图片预览'}
-                },
-                {
                     path: 'skeletonExample',
                     name: 'skeletonExample',
                     component: () => lazyLoadView(import('@/views/example/components/skeletonExample')),
