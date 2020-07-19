@@ -1,5 +1,5 @@
 <template>
-    <dialog-form :value="value" :loading="false" :title="title" width="70%" @close="cancel" @open="search">
+    <form-dialog :value="value" :loading="false" :title="title" width="70%" @close="cancel" @open="search">
         <liner-progress :show="loading"/>
 
         <abstract-table :data="tableData" border show-summary :summary-method="summary" :span-method="span">
@@ -28,13 +28,13 @@
             <el-table-column align="center" label="库存数量" prop="num" show-overflow-tooltip/>
             <el-table-column align="center" label="总 值" prop="total" show-overflow-tooltip/>
         </abstract-table>
-    </dialog-form>
+    </form-dialog>
 </template>
 
 <script>
     import AbstractTable from '@/components/AbstractTable'
     import LinerProgress from '@/components/LinerProgress'
-    import DialogForm from "@/components/DialogForm"
+    import FormDialog from "@/components/FormDialog"
     import dialogMixin from "@/mixins/dialogMixin"
     import {isEmpty} from "@/utils"
     import {plus, mul} from "@/utils/math"
@@ -45,7 +45,7 @@
 
         mixins: [dialogMixin],
 
-        components: {AbstractTable, LinerProgress, DialogForm},
+        components: {AbstractTable, LinerProgress, FormDialog},
 
         props: {value: Boolean, title: String, cid: Number},
 

@@ -1,5 +1,5 @@
 <template>
-    <dialog-form :loading="loading" title="修改密码" :value="value" width="30%" @close="cancel">
+    <form-dialog :loading="loading" title="修改密码" :value="value" width="30%" @close="cancel">
         <el-form
                 ref="form"
                 :model="form"
@@ -21,12 +21,12 @@
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
-    </dialog-form>
+    </form-dialog>
 </template>
 
 <script>
     import md5 from "js-md5"
-    import DialogForm from '@/components/DialogForm'
+    import FormDialog from '@/components/FormDialog'
     import dialogMixin from "@/mixins/dialogMixin"
     import {updateUserPwd} from "@/api/account"
     import {elSuccess} from "@/utils/message"
@@ -34,7 +34,7 @@
     export default {
         mixins: [dialogMixin],
 
-        components: {DialogForm},
+        components: {FormDialog},
 
         data() {
             return {

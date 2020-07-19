@@ -32,7 +32,9 @@ export const commonMethods = {
 
 export default {
     mixins: [tableMixin],
+
     components: {LinerProgress},
+
     data() {
         return {
             searchForm: {
@@ -40,7 +42,6 @@ export default {
                 cname: null,
                 vname: null
             },
-            editDialog: false,
             temp: {
                 status: [],
                 ctime: [],
@@ -48,30 +49,25 @@ export default {
             }
         }
     },
+
     computed: {
         canAdd() {
-            return auth(this.baseUrl + '/add')
+            return auth(`${this.baseUrl}/add`)
         },
         canUpdate() {
-            return auth(this.baseUrl + '/update')
-                || auth(this.baseUrl + '/withdraw')
-                || auth(this.baseUrl + '/pass')
-                || auth(this.baseUrl + '/reject')
+            return auth(`${this.baseUrl}/update`)
+                || auth(`${this.baseUrl}/withdraw`)
+                || auth(`${this.baseUrl}/pass`)
+                || auth(`${this.baseUrl}/reject`)
         },
         canDel() {
-            return auth(this.baseUrl + '/del')
+            return auth(`${this.baseUrl}/del`)
         },
         canExport() {
-            return auth(this.baseUrl + '/export')
+            return auth(`${this.baseUrl}/export`)
         },
     },
-    watch: {
-        editDialog(v) {
-            if (!v && this.row && this.row._external) {
-                this.row = null
-            }
-        }
-    },
+
     methods: {
         ...commonMethods,
         search() {
@@ -103,23 +99,25 @@ export default {
         },
         add() {
             this.row = null
-            this.type = 'add'
-            this.editDialog = true
+            this.$router.push(`${this.$route.path}/detail/add`)
         },
         see() {
             if (isEmpty(this.row)) return elError('请选择要查看的单据')
-            this.type = 'see'
-            this.editDialog = true
+            this.$router.push(`${this.$route.path}/detail/see/${this.row.id}`)
         },
         edit() {
             if (isEmpty(this.row)) return elError('请选择要编辑的单据')
-            this.type = 'edit'
-            this.editDialog = true
+            this.$router.push(`${this.$route.path}/detail/edit/${this.row.id}`)
         },
         del() {
-            if (isEmpty(this.row)) return elError('请选择要删除的单据')
-            if (this.row.status !== 0) return elError('只有状态为【拟定】时才能删除')
+            if (isEmpty(this.row)) {
+                return elError('请选择要删除的单据')
+            }
+            if (this.row.status !== 0) {
+                return elError('只有状态为【拟定】时才能删除')
+            }
             if (this.config.operating) return
+
             elConfirm(`确定删除单据【${this.row.id}】？`)
                 .then(() => {
                     this.config.operating = true
@@ -132,16 +130,7 @@ export default {
                 .finally(() => this.config.operating = false)
         },
         downloadExcel() {
-            exportExcel(this.baseUrl + '/export', this.mergeSearchForm(), this.excel)
+            exportExcel(`${this.baseUrl}/export`, this.mergeSearchForm(), this.excel)
         }
-    },
-    activated() {
-        const {type, id} = this.$route.params
-        if (!['see', 'edit'].includes(type) || isEmpty(id)) return
-        this.row = null
-        this.$nextTick(() => {
-            this.row = {id, _external: true}
-            this[type]()
-        })
     }
 }

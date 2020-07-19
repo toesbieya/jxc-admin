@@ -11,6 +11,7 @@
                 filterable
                 placeholder="搜索页面"
                 remote
+                popper-append-to-body
                 @change="change"
         >
             <el-option

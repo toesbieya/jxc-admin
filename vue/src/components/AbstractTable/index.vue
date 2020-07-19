@@ -1,5 +1,5 @@
 <script type="text/jsx">
-    import Empty from '@/components/Empty'
+    import Empty from "@/components/Empty"
 
     export default {
         name: "AbstractTable",
@@ -7,7 +7,12 @@
         functional: true,
 
         render(h, context) {
-            const {data, children} = context
+            const {data, children, scopedSlots} = context
+
+            if (!scopedSlots.empty) {
+                scopedSlots.empty = () => <Empty/>
+            }
+
             return (
                 <el-table
                     ref="table"
@@ -17,7 +22,13 @@
                     {...data}
                 >
                     {children}
-                    <Empty slot="empty"/>
+                    {
+                        Object
+                            .entries(scopedSlots)
+                            .map(([name, slot]) => (
+                                name !== 'default' && <slot slot={name}>{slot()}</slot>
+                            ))
+                    }
                 </el-table>
             )
         }

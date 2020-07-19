@@ -1,10 +1,10 @@
 <script type="text/jsx">
     import store from '@/store'
-    import DialogForm from "@/components/DialogForm"
+    import FormDialog from "@/components/FormDialog"
     import {createLimitTree, getNodeId} from "@/utils/tree"
 
     export default {
-        components: {DialogForm},
+        components: {FormDialog},
 
         data() {
             return {

@@ -1,5 +1,5 @@
 <template>
-    <dialog-form :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
+    <form-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
         <el-form
                 ref="form"
                 :model="form"
@@ -44,11 +44,11 @@
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
-    </dialog-form>
+    </form-dialog>
 </template>
 
 <script>
-    import DialogForm from '@/components/DialogForm'
+    import FormDialog from '@/components/FormDialog'
     import dialogMixin from "@/mixins/dialogMixin"
     import {addRole, updateRole} from "@/api/system/role"
     import {isEmpty, mergeObj} from '@/utils'
@@ -59,7 +59,7 @@
 
         mixins: [dialogMixin],
 
-        components: {DialogForm},
+        components: {FormDialog},
 
         props: {
             value: {type: Boolean, default: false},

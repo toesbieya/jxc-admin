@@ -49,24 +49,24 @@
             </el-row>
         </el-card>
 
-        <dialog-form v-model="dialog" :loading="false" title="封装的dialog">
+        <form-dialog v-model="dialog" :loading="false" title="封装的dialog">
             <p v-for="i in 50" :key="i">超出部分滚动...</p>
             <template v-slot:footer>
                 <el-button plain size="small" @click="dialog=false">取 消</el-button>
                 <el-button size="small" type="primary" @click="dialog=false">保 存</el-button>
             </template>
-        </dialog-form>
+        </form-dialog>
     </div>
 </template>
 
 <script>
     import AbstractTable from '@/components/AbstractTable'
     import LinerProgress from '@/components/LinerProgress'
-    import DialogForm from "@/components/DialogForm"
+    import FormDialog from "@/components/FormDialog"
 
     export default {
         name: "stylePage",
-        components: {AbstractTable, LinerProgress, DialogForm},
+        components: {AbstractTable, LinerProgress, FormDialog},
         data() {
             return {
                 dialog: false,

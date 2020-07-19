@@ -1,34 +1,40 @@
+import AbstractForm from '@/components/AbstractForm'
+import AbstractFormItem from "@/components/AbstractForm/AbstractFormItem"
+import AbstractTable from "@/components/AbstractTable"
+import DocDetailHeader from "@/bizComponents/document/DocDetailHeader"
+import DocDetailFooter from "@/bizComponents/document/DocDetailFooter"
+import DocHistory from '@/bizComponents/document/DocHistory'
+import DocSteps from '@/bizComponents/document/DocSteps'
 import UploadFile from '@/components/UploadFile'
-import DialogForm from '@/components/DialogForm'
-import DialogFormItem from "@/components/DialogForm/DialogFormItem"
-import DocumentSteps from '@/bizComponents/DocumentSteps'
-import DocumentHistory from '@/bizComponents/DocumentHistory'
-import dialogMixin from "@/mixins/dialogMixin"
 import {commonMethods} from "@/mixins/bizDocumentTableMixin"
-import {isEmpty, mergeObj, resetObj, timeFormat} from '@/utils'
+import {isEmpty, mergeObj} from '@/utils'
 import {elAlert, elConfirm, elPrompt, elSuccess} from "@/utils/message"
-import {getDocumentHistoryByPid} from "@/api/documentHistory"
 import {deleteUpload} from "@/utils/file"
 import {auth} from "@/utils/auth"
+import {closeCurrentPage} from "@/utils/route"
 
 export default {
-    mixins: [dialogMixin],
-    components: {DialogForm, DialogFormItem, DocumentSteps, DocumentHistory, UploadFile},
+    components: {
+        AbstractForm,
+        AbstractFormItem,
+        AbstractTable,
+        DocDetailHeader,
+        DocDetailFooter,
+        DocHistory,
+        DocSteps,
+        UploadFile
+    },
+
     props: {
-        //dialog显隐
-        value: Boolean,
-        //编辑模式,see,add,edit
-        type: {type: String, default: 'see'},
         //单据id
         id: String,
-        baseUrl: String
+        //编辑模式,see,add,edit
+        type: String
     },
+
     data() {
         return {
-            //dialog loading标志
             loading: true,
-            //关闭dialog后是否需要更新列表
-            needSearch: false,
             //单据提交历史
             history: [],
             form: {
@@ -49,51 +55,51 @@ export default {
             rules: {}
         }
     },
+
     computed: {
-        //dialog标题
         title() {
             if (isEmpty(this.type)) return ''
             switch (this.type) {
                 case 'see':
-                    return this.documentName + '信息'
+                    return `查看${this.docName}：${this.form.id}`
                 case 'add':
-                    return '添加' + this.documentName
+                    return `添加${this.docName}`
                 case 'edit':
-                    return '编辑' + this.documentName
+                    return `编辑${this.docName}：${this.form.id}`
             }
         },
         user() {
             return this.$store.state.user
         },
 
-        /*
-        * 权限判断以及根据状态控制是否可编辑
-        * */
+        //权限判断以及根据状态控制是否可编辑
         canSave() {
             //add模式有添加权限、edit模式有编辑权限且status=0
-            return this.type === 'add' && auth(this.baseUrl + '/add')
-                || this.form.status === 0 && this.type === 'edit' && auth(this.baseUrl + '/update')
+            return this.type === 'add' && auth(`${this.baseUrl}/add`)
+                || this.form.status === 0 && this.type === 'edit' && auth(`${this.baseUrl}/update`)
         },
         canCommit() {
             //有提交权限、add模式或edit模式且status=0
-            return auth(this.baseUrl + '/commit') && (this.type === 'add' || this.type === 'edit' && this.form.status === 0)
+            return auth(`${this.baseUrl}/commit`)
+                && (this.type === 'add' || this.type === 'edit' && this.form.status === 0)
         },
         canWithdraw() {
             //有撤回权限、当前用户是创建人、edit模式且status=1
-            return auth(this.baseUrl + '/withdraw')
+            return auth(`${this.baseUrl}/withdraw`)
                 && this.type === 'edit'
                 && this.user.id === this.form.cid
                 && this.form.status === 1
         },
         canPass() {
             //有通过权限、edit模式且status=1
-            return auth(this.baseUrl + '/pass') && this.type === 'edit' && this.form.status === 1
+            return auth(`${this.baseUrl}/pass`) && this.type === 'edit' && this.form.status === 1
         },
         canReject() {
             //有驳回权限、edit模式且status=1
-            return auth(this.baseUrl + '/reject') && this.type === 'edit' && this.form.status === 1
+            return auth(`${this.baseUrl}/reject`) && this.type === 'edit' && this.form.status === 1
         }
     },
+
     methods: {
         ...commonMethods,
 
@@ -107,14 +113,12 @@ export default {
                     if (!isEmpty(valid)) return elAlert(valid)
                 }
                 this.loading = true
-                let promise = this.type === 'add' ? this.api.add(this.form) : this.api.update(this.form)
+                const promise = this.type === 'add' ? this.api.add(this.form) : this.api.update(this.form)
                 promise
                     .then(({data, msg}) => {
-                        this.needSearch = true
+                        this.needSearch()
                         elSuccess(msg)
-                        const id = this.type === 'add' ? data : this.form.id
-                        this.$emit('update:type', 'edit')
-                        this.init(id)
+                        this.afterSaveOrCommit(data)
                     })
                     .catch(() => this.loading = false)
             })
@@ -134,10 +138,8 @@ export default {
                     .then(() => this.api.commit(this.form))
                     .then(({data, msg}) => {
                         elSuccess(msg)
-                        this.needSearch = true
-                        const id = this.type === 'add' ? data : this.form.id
-                        this.$emit('update:type', 'edit')
-                        this.init(id)
+                        this.needSearch()
+                        this.afterSaveOrCommit(data)
                     })
                     .catch(() => this.loading = false)
             })
@@ -153,7 +155,7 @@ export default {
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
-                    this.needSearch = true
+                    this.needSearch()
                     this.init(this.form.id)
                 })
                 .catch(() => this.loading = false)
@@ -169,10 +171,10 @@ export default {
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
-                    this.needSearch = true
-                    this.closeDialog()
+                    this.needSearch()
+                    return this.close()
                 })
-                .finally(() => this.loading = false)
+                .catch(() => this.loading = false)
         },
 
         //驳回单据，状态由待审核->拟定
@@ -185,71 +187,42 @@ export default {
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
-                    this.needSearch = true
-                    this.closeDialog()
+                    this.needSearch()
+                    return this.close()
                 })
-                .finally(() => this.loading = false)
-        },
-
-        //获取单据的提交历史
-        getHistory() {
-            if (isEmpty(this.id) || this.history.length > 0) return
-            getDocumentHistoryByPid(this.id)
-                .then(history => {
-                    history.forEach(i => {
-                        i.time = timeFormat(null, new Date(i.time))
-                        let type = null
-                        switch (i.type) {
-                            case 0:
-                                type = '撤回'
-                                break
-                            case 1:
-                                type = '提交'
-                                break
-                            case 2:
-                                type = '通过'
-                                break
-                            case 3:
-                                type = '驳回'
-                                break
-                        }
-                        i.type = type
-                    })
-                    this.history = history
-                })
+                .catch(() => this.loading = false)
         },
 
         //初始化单据信息
         init(id) {
             this.loading = true
             if (isEmpty(id)) {
-                return elAlert(`获取${this.documentName}数据失败，请传入id`, this.closeDialog)
+                return elAlert(`获取${this.docName}数据失败，请传入id`, this.close)
             }
             this.api.getById(id)
                 .then(data => {
                     if (!data || id !== data.id) return Promise.reject()
                     return Promise.resolve(mergeObj(this.form, data))
                 })
-                .then(() => this.afterInit ? this.afterInit() : Promise.resolve())
+                .then(this.afterInit || Promise.resolve)
                 .catch(e => {
                     console.log(e)
-                    return elAlert(`获取${this.documentName}数据失败，请重试`, () => this.cancel())
+                    return elAlert(`获取${this.docName}数据失败，请重试`, this.close)
                 })
                 .finally(() => this.loading = false)
         },
 
-        //dialog打开时
-        open() {
-            this.needSearch = false
-            this.loading = false
-            if (this.type !== 'add') return this.init(this.id)
+        //保存、提交成功后需要判断后续动作
+        afterSaveOrCommit(data) {
+            if (this.type === 'add') {
+                const editUrl = `${this.baseUrl}/detail/edit/${data}`
+                return closeCurrentPage(editUrl)
+            }
+            else return this.init(this.form.id)
         },
 
-        //关闭dialog并清除单据数据
-        cancel() {
-            this.closeDialog()
-            this.needSearch && this.$emit('search')
-
+        //关闭页面
+        close() {
             //删除未保存的上传附件
             const deleteArr = []
             if (this.form.uploadImageList.length > 0) {
@@ -259,17 +232,11 @@ export default {
                 deleteUpload(deleteArr).catch(e => ({}))
             }
 
-            //延时清除表单数据
-            setTimeout(() => this.clearForm(), 200)
-            this.loading = false
+            return closeCurrentPage(this.baseUrl)
         },
 
-        //清除单据数据
-        clearForm() {
-            resetObj(this.form)
-            this.history = []
-            this.parentSubList && (this.parentSubList = [])
-            this.$nextTick(() => this.$refs.form.clearValidate())
+        needSearch() {
+            this.$store.commit('needSearch/emit', this.baseUrl)
         },
 
         //附件操作
@@ -281,5 +248,10 @@ export default {
             const index = this.form.uploadImageList.findIndex(i => i.url === file.url)
             if (index > -1) this.form.uploadImageList.splice(index, 1)
         }
+    },
+
+    mounted() {
+        this.loading = false
+        if (this.type !== 'add') return this.init(this.id)
     }
 }

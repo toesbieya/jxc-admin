@@ -28,7 +28,7 @@
                 if (path.startsWith('/redirect')) {
                     return path.replace('/redirect', '')
                 }
-                return meta && meta.activeMenu ? meta.activeMenu : path
+                return meta.activeMenu || path
             },
 
             //仅在pc端可折叠
@@ -55,11 +55,10 @@
             //由于elMenu的initOpenedMenu()不会触发select事件，所以手动实现菜单收起
             '$route.path'(nv, ov) {
                 //如果是redirect刷新，则跳过
-                if (nv === '/redirect' + ov) return
-
+                if (nv === `/redirect${ov}`) return
                 const menu = this.$refs.menu
                 if (!menu) return
-                const item = menu.items[nv]
+                const item = menu.items[this.activeMenu]
                 if (!item) menu.openedMenus = []
                 else this.select(item.index, item.indexPath, item, false)
             },

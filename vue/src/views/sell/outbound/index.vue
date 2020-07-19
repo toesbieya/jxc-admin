@@ -96,34 +96,25 @@
                     @current-change="pageChange"
             />
         </el-row>
-
-        <edit-dialog
-                v-model="editDialog"
-                :base-url="baseUrl"
-                :id="row?row.id:null"
-                :type.sync="type"
-                @search="search"
-        />
     </el-card>
 </template>
 
 <script>
-    import EditDialog from './components/EditDialog'
     import SearchForm from '@/components/SearchForm'
     import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import documentTableMixin from '@/mixins/bizDocumentTableMixin'
-    import {del, getSubById, search} from "@/api/document/sell/outbound"
+    import {baseUrl, del, getSubById, search} from "@/api/document/sell/outbound"
 
     export default {
         name: "sellOutbound",
 
         mixins: [documentTableMixin],
 
-        components: {EditDialog, SearchForm, SearchFormItem},
+        components: {SearchForm, SearchFormItem},
 
         data() {
             return {
-                baseUrl: '/sell/outbound',
+                baseUrl,
                 api: {search, del, getSubById},
                 searchForm: {
                     pid_fuzzy: null

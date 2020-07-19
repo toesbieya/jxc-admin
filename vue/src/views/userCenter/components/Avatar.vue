@@ -1,5 +1,5 @@
 <template>
-    <dialog-form :loading="loading" title="上传头像" :value="value" width="50%" @close="cancel">
+    <form-dialog :loading="loading" title="上传头像" :value="value" width="50%" @close="cancel">
         <el-row class="avatar-cropper">
             <div class="img-wrapper">
                 <vue-cropper
@@ -30,12 +30,12 @@
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
-    </dialog-form>
+    </form-dialog>
 </template>
 
 <script>
     import {VueCropper} from 'vue-cropper'
-    import DialogForm from '@/components/DialogForm'
+    import FormDialog from '@/components/FormDialog'
     import dialogMixin from "@/mixins/dialogMixin"
     import {elError, elSuccess} from "@/utils/message"
     import {autoCompleteUrl, upload} from "@/utils/file"
@@ -46,7 +46,7 @@
 
         mixins: [dialogMixin],
 
-        components: {VueCropper, DialogForm},
+        components: {VueCropper, FormDialog},
 
         props: {
             value: Boolean

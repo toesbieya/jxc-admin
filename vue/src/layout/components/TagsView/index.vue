@@ -87,6 +87,7 @@
                 routes.forEach(route => {
                     if (route.name && route.meta && route.meta.affix) {
                         tags.push({
+                            //注意，此处的fullPath并不是$route.fullPath
                             fullPath: route.fullPath,
                             path: route.fullPath,
                             name: route.name,
@@ -95,7 +96,7 @@
                     }
                     if (route.children) {
                         const tempTags = this.filterAffixTags(route.children)
-                        if (tempTags.length > 0) tags.push(...tempTags)
+                        tempTags.length > 0 && tags.push(...tempTags)
                     }
                 })
                 return tags
@@ -117,7 +118,6 @@
                 this.$nextTick(() => {
                     const tag = this.$refs.tag.find(i => i.to.path === this.$route.path)
                     if (!tag) return
-
                     this.$refs.scrollPane.moveToTarget(tag)
                 })
             },
@@ -128,24 +128,27 @@
             * */
             refreshSelectedTag(view) {
                 this.$store.commit('tagsView/delCachedView', view)
-                this.$nextTick(() => this.$router.replace({path: '/redirect' + view.fullPath}))
+                this.$nextTick(() => this.$router.replace({path: `/redirect${view.fullPath}`}))
             },
             closeSelectedTag(view) {
                 if (this.isAffix(view)) return
-                this.$store.dispatch('tagsView/delView', view)
+                this.$store
+                    .dispatch('tagsView/delView', view)
                     .then(() => this.isActive(view) && this.gotoLastView())
             },
             closeOthersTags() {
-                this.$store.dispatch('tagsView/delOthersViews', this.selectedTag)
+                this.$store
+                    .dispatch('tagsView/delOthersViews', this.selectedTag)
                     .then(() => {
                         if (this.selectedTag.path !== this.$route.path) {
-                            this.$router.push(this.selectedTag)
+                            return this.$router.push(this.selectedTag)
                         }
                     })
             },
             closeAllTags() {
-                this.$store.dispatch('tagsView/delAllViews')
-                    .then(() => this.gotoLastView())
+                this.$store
+                    .dispatch('tagsView/delAllViews')
+                    .then(this.gotoLastView)
             },
 
             gotoLastView() {

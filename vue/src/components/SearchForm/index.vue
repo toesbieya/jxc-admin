@@ -107,6 +107,12 @@
     .searchForm {
         margin-bottom: -15px;
 
+        > .el-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
         .searchForm__collapse {
             position: relative;
             bottom: 20px;

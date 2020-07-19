@@ -24,6 +24,8 @@
 
     .el-card__body {
         height: 100%;
+
+        @include clearfix;
     }
 
     .el-card__header + .el-card__body {
@@ -65,14 +67,6 @@
     .el-scrollbar__wrap {
         //53 for dialog header,53 for dialog footer,100 for up+down
         max-height: calc(100vh - 53px - 53px - 100px);
-    }
-}
-
-.el-form {
-    .el-row {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
     }
 }
 
@@ -140,6 +134,15 @@
 
 .el-select {
     width: 100%;
+}
+
+.el-steps {
+    &.el-steps--horizontal {
+        .el-step__line {
+            left: 57%;
+            right: -43%;
+        }
+    }
 }
 
 .el-table {

@@ -239,6 +239,3 @@ function isCyclic(data) {
 
     return detect(data)
 }
-
-
-

@@ -1,132 +1,123 @@
 <template>
-    <dialog-form :loading="loading" :value="value" width="70%" @close="cancel" @open="open">
-        <template slot="title">
-            {{title}}
-            <document-history :data="history" :type="type" @show="getHistory"/>
-        </template>
+    <div v-loading="loading" class="detail-page">
+        <doc-detail-header
+                :title="this.title"
+                :description="headerDescription"
+                :extra="headerExtra"
+                @close="close"
+        />
 
-        <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                label-position="right"
-                label-width="100px"
-                size="small"
-                status-icon
-        >
-            <el-row :gutter="20">
-                <dialog-form-item v-if="form.id" label="单 号：" prop="id">
-                    <el-input :value="form.id" readonly/>
-                </dialog-form-item>
-                <dialog-form-item label="销售订单：" prop="pid">
-                    <el-input :value="form.pid" readonly>
-                        <el-button slot="append" :disabled="!canSave" @click="parentDialog=true">选择</el-button>
+        <abstract-form :model="form" :rules="rules">
+            <el-card header="流程进度">
+                <doc-steps :status="form.status" :finish="form.finish" :type="type"/>
+            </el-card>
+
+            <el-card header="基础信息">
+                <abstract-form-item label="销售订单：" prop="pid">
+                    <el-input v-if="canSave" :value="form.pid" readonly>
+                        <el-button slot="append" @click="parentDialog=true">选择</el-button>
                     </el-input>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.id" label="创建人：" prop="cname">
-                    <el-input :value="form.cname" readonly/>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.id" label="创建时间：" prop="ctime">
-                    <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.status===2" label="审核人：" prop="vname">
-                    <el-input :value="form.vname" readonly/>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.status===2" label="审核时间：" prop="vtime">
-                    <el-date-picker :value="form.vtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
-                </dialog-form-item>
-                <dialog-form-item label="附 件：" full>
-                    <upload-file
-                            :file-list="form.imageList"
-                            :disabled="!canSave"
-                            @remove="removeUpload"
-                            @success="uploadSuccess"
-                    />
-                </dialog-form-item>
-                <dialog-form-item label="备 注：" prop="remark" full>
-                    <el-input
-                            v-model="form.remark"
-                            :rows="4"
-                            :readonly="!canSave"
-                            maxlength="200"
-                            show-word-limit
-                            type="textarea"
-                    />
-                </dialog-form-item>
-            </el-row>
-        </el-form>
+                    <template v-else>{{form.pid}}</template>
+                </abstract-form-item>
+            </el-card>
 
-        <el-table :data="displayTableData">
-            <el-table-column align="center" type="expand">
-                <el-table slot-scope="{row}" :data="row.data" border show-summary :summary-method="summaryStock(row)">
-                    <el-table-column align="center" label="#" type="index" width="80"/>
-                    <el-table-column align="center">
-                        <template slot="header">
-                            出库数量
-                            <el-button v-if="canSave" type="text" size="small" @click="openStock(row)">选择库存</el-button>
-                        </template>
-                        <template v-slot="d">
-                            <el-input-number
-                                    v-if="canSave"
-                                    v-model="d.row.num"
-                                    controls-position="right"
-                                    :min="0"
-                                    size="small"
-                                    @change="(nv,ov)=>changeOutboundNum(nv,ov,d.row,row)"
-                            />
-                            <span v-else>{{d.row.num}}</span>
-                        </template>
+            <el-card header="出库商品">
+                <abstract-table :data="form.data" :highlight-current-row="false">
+                    <el-table-column align="center" type="expand">
+                        <el-table slot-scope="{row}" :data="row.data" border show-summary :summary-method="summaryStock(row)">
+                            <el-table-column align="center" label="#" type="index" width="80"/>
+                            <el-table-column align="center">
+                                <template slot="header">
+                                    出库数量
+                                    <el-button v-if="canSave" type="text" size="small" @click="openStock(row)">选择库存</el-button>
+                                </template>
+                                <template v-slot="d">
+                                    <el-input-number
+                                            v-if="canSave"
+                                            v-model="d.row.num"
+                                            controls-position="right"
+                                            :min="0"
+                                            size="small"
+                                            @change="(nv,ov)=>changeOutboundNum(nv,ov,d.row,row)"
+                                    />
+                                    <span v-else>{{d.row.num}}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="center" label="采购订单" prop="cgddid" show-overflow-tooltip/>
+                            <el-table-column align="center" label="采购入库" prop="cgrkid" show-overflow-tooltip/>
+                        </el-table>
                     </el-table-column>
-                    <el-table-column align="center" label="采购订单" prop="cgddid" show-overflow-tooltip/>
-                    <el-table-column align="center" label="采购入库" prop="cgrkid" show-overflow-tooltip/>
-                </el-table>
-            </el-table-column>
-            <el-table-column align="center" label="#" type="index" width="80"/>
-            <el-table-column align="center" label="商 品" prop="cname"/>
-            <el-table-column align="center" label="出库数量" prop="num" width="150"/>
-            <el-table-column align="center" label="订单剩余未出库数量" prop="remain_num" width="250"/>
-        </el-table>
+                    <el-table-column align="center" label="#" type="index" width="80"/>
+                    <el-table-column align="center" label="商 品" prop="cname"/>
+                    <el-table-column align="center" label="出库数量" prop="num" width="150"/>
+                    <el-table-column align="center" label="订单剩余未出库数量" prop="remain_num" width="250"/>
+                </abstract-table>
+            </el-card>
 
-        <document-steps :status="form.status" :type="type"/>
+            <el-card header="附件">
+                <upload-file
+                        :file-list="form.imageList"
+                        :disabled="!canSave"
+                        @remove="removeUpload"
+                        @success="uploadSuccess"
+                />
+            </el-card>
 
-        <template v-slot:footer>
-            <span v-if="form.status===2" class="seal">已审核</span>
-            <el-button plain size="small" @click="closeDialog">取 消</el-button>
-            <el-button v-if="canSave" size="small" type="primary" @click="save">保 存</el-button>
-            <el-button v-if="canCommit" size="small" type="primary" @click="commit">提 交</el-button>
-            <el-button v-if="canWithdraw" size="small" type="danger" @click="withdraw">撤 回</el-button>
-            <el-button v-if="canPass" size="small" type="success" @click="pass">通 过</el-button>
-            <el-button v-if="canReject" size="small" type="danger" @click="reject">驳 回</el-button>
-        </template>
+            <el-card header="备注">
+                <el-input
+                        v-model="form.remark"
+                        :rows="4"
+                        :readonly="!canSave"
+                        maxlength="200"
+                        show-word-limit
+                        type="textarea"
+                />
+            </el-card>
+        </abstract-form>
+
+        <doc-history :id="form.id"/>
+
+        <doc-detail-footer>
+            <template v-slot:right>
+                <el-button plain size="small" @click="close">关 闭</el-button>
+                <el-button v-if="canSave" size="small" type="primary" @click="save">保 存</el-button>
+                <el-button v-if="canCommit" size="small" type="primary" @click="commit">提 交</el-button>
+                <el-button v-if="canWithdraw" size="small" type="danger" @click="withdraw">撤 回</el-button>
+                <el-button v-if="canPass" size="small" type="success" @click="pass">通 过</el-button>
+                <el-button v-if="canReject" size="small" type="danger" @click="reject">驳 回</el-button>
+            </template>
+        </doc-detail-footer>
 
         <order-selector v-model="parentDialog" @select="selectParent"/>
 
         <stock-selector v-model="stockDialog" :cid="row?row.cid:null" @select="selectStock"/>
-    </dialog-form>
+    </div>
 </template>
 
 <script>
-    import OrderSelector from "./OrderSelector"
-    import StockSelector from "./StockSelector"
-    import bizDocumentDialogMixin from "@/mixins/bizDocumentDialogMixin"
+    import OrderSelector from "./components/OrderSelector"
+    import StockSelector from "./components/StockSelector"
+    import bizDocDetailMixin from "@/mixins/bizDocDetailMixin"
     import {getDetailById as getStockDetail} from "@/api/stock/current"
     import {getSubById as getParentSubById} from "@/api/document/sell/order"
-    import {add, commit, getById, pass, reject, update, withdraw} from "@/api/document/sell/outbound"
+    import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/document/sell/outbound"
     import {isEmpty} from "@/utils"
     import {plus, sub} from "@/utils/math"
     import {isInteger} from "@/utils/validate"
     import {elAlert} from "@/utils/message"
+    import {timestamp2Date} from "@/filter"
 
     export default {
-        name: "EditDialog",
+        name: "sellOutboundDetail",
 
-        mixins: [bizDocumentDialogMixin],
+        mixins: [bizDocDetailMixin],
 
         components: {OrderSelector, StockSelector},
 
         data() {
             return {
-                documentName: '销售出库单',
+                baseUrl,
+                docName: '销售出库单',
                 api: {
                     getById, add, update, commit, withdraw, pass, reject
                 },
@@ -140,6 +131,22 @@
                 row: null,
                 parentDialog: false,
                 displayTableData: []
+            }
+        },
+
+        computed: {
+            headerDescription() {
+                return [
+                    {label: '创建人：', content: this.form.cname},
+                    {label: '创建时间：', content: timestamp2Date(this.form.ctime)},
+                    {label: '审核人：', content: this.form.vname},
+                    {label: '审核时间：', content: timestamp2Date(this.form.vtime)}
+                ]
+            },
+            headerExtra() {
+                return [
+                    {title: '单据状态', content: this.getStatus(this.form.status)}
+                ]
             }
         },
 

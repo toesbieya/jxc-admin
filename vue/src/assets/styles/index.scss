@@ -5,6 +5,7 @@
 @import "element-ui";
 @import "~@ele/style/index.scss";
 @import "nprogress";
+@import "detail-page";
 
 body {
     height: 100%;
@@ -58,14 +59,7 @@ a:hover {
 }
 
 .clearfix {
-    &:after {
-        visibility: hidden;
-        display: block;
-        font-size: 0;
-        content: " ";
-        clear: both;
-        height: 0;
-    }
+    @include clearfix;
 }
 
 .overflow-hidden {

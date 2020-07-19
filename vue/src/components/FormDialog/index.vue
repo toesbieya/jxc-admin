@@ -26,7 +26,7 @@
     import LoadingMask from '@/components/LoadingMask'
 
     export default {
-        name: "DialogForm",
+        name: "FormDialog",
 
         components: {LoadingMask},
 

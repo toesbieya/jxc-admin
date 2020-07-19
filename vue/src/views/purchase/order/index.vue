@@ -55,6 +55,7 @@
                 />
             </search-form-item>
         </search-form>
+
         <el-row class="button-group">
             <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
             <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
@@ -64,6 +65,7 @@
             <el-button v-if="canExport" icon="el-icon-download" size="small" type="info" @click="downloadExcel">导 出
             </el-button>
         </el-row>
+
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table
                     :data="tableData"
@@ -118,31 +120,22 @@
                     @current-change="pageChange"
             />
         </el-row>
-
-        <edit-dialog
-                v-model="editDialog"
-                :base-url="baseUrl"
-                :id="row?row.id:null"
-                :type.sync="type"
-                @search="search"
-        />
     </el-card>
 </template>
 
 <script>
-    import EditDialog from './components/EditDialog'
     import SearchForm from '@/components/SearchForm'
     import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import documentTableMixin from '@/mixins/bizDocumentTableMixin'
-    import {del, getSubById, search} from "@/api/document/purchase/order"
+    import {baseUrl, del, getSubById, search} from "@/api/document/purchase/order"
 
     export default {
         name: "purchaseOrder",
         mixins: [documentTableMixin],
-        components: {EditDialog, SearchForm, SearchFormItem},
+        components: {SearchForm, SearchFormItem},
         data() {
             return {
-                baseUrl: '/purchase/order',
+                baseUrl,
                 searchForm: {
                     sname: null
                 },

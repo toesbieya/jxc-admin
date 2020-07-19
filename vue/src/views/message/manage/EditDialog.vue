@@ -1,56 +1,46 @@
 <template>
-    <dialog-form :loading="loading" :title="title" :value="value" width="50%" @close="cancel" @open="open">
-        <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                label-position="right"
-                label-width="100px"
-                size="small"
-                status-icon
-        >
-            <el-row :gutter="20">
-                <dialog-form-item label="标 题：" prop="title" dense>
-                    <el-input v-model="form.title" maxlength="100" :readonly="!canSave"/>
-                </dialog-form-item>
-                <dialog-form-item label="消息类型：" prop="type" dense>
-                    <el-select v-model="form.type" :disabled="!canSave">
-                        <el-option :value="0" label="通知提醒"/>
-                        <el-option :value="1" label="系统公告"/>
-                    </el-select>
-                </dialog-form-item>
-                <dialog-form-item v-if="type!=='add'" label="创建人：" dense>
-                    <el-input :value="form.cname" readonly/>
-                </dialog-form-item>
-                <dialog-form-item v-if="type!=='add'" label="创建时间：" dense>
-                    <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
-                </dialog-form-item>
-                <dialog-form-item label="通知对象：" prop="broadcast" dense>
-                    <el-select v-model="form.broadcast" :disabled="!canSave">
-                        <el-option :value="0" label="指定用户"/>
-                        <el-option :value="1" label="全体用户"/>
-                    </el-select>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.broadcast===0" label="选择用户：" prop="recipient" dense>
-                    <user-selector v-model="form.recipient" :disabled="!canSave"/>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.pname" label="发布人：" dense>
-                    <el-input :value="form.pname" readonly/>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.ptime" label="发布时间：" dense>
-                    <el-date-picker :value="form.ptime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.status===2" label="撤回人：" dense>
-                    <el-input :value="form.wname" readonly/>
-                </dialog-form-item>
-                <dialog-form-item v-if="form.status===2" label="撤回时间：" dense>
-                    <el-date-picker :value="form.wtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
-                </dialog-form-item>
-                <dialog-form-item label="内 容：" full>
-                    <tinymce-editor v-model="form.content" :readonly="!canSave"/>
-                </dialog-form-item>
-            </el-row>
-        </el-form>
+    <form-dialog :loading="loading" :title="title" :value="value" width="50%" @close="cancel" @open="open">
+        <abstract-form :model="form" :rules="rules">
+            <abstract-form-item label="标 题：" prop="title" dense>
+                <el-input v-model="form.title" maxlength="100" :readonly="!canSave"/>
+            </abstract-form-item>
+            <abstract-form-item label="消息类型：" prop="type" dense>
+                <el-select v-model="form.type" :disabled="!canSave">
+                    <el-option :value="0" label="通知提醒"/>
+                    <el-option :value="1" label="系统公告"/>
+                </el-select>
+            </abstract-form-item>
+            <abstract-form-item v-if="type!=='add'" label="创建人：" dense>
+                <el-input :value="form.cname" readonly/>
+            </abstract-form-item>
+            <abstract-form-item v-if="type!=='add'" label="创建时间：" dense>
+                <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
+            </abstract-form-item>
+            <abstract-form-item label="通知对象：" prop="broadcast" dense>
+                <el-select v-model="form.broadcast" :disabled="!canSave">
+                    <el-option :value="0" label="指定用户"/>
+                    <el-option :value="1" label="全体用户"/>
+                </el-select>
+            </abstract-form-item>
+            <abstract-form-item v-if="form.broadcast===0" label="选择用户：" prop="recipient" dense>
+                <user-selector v-model="form.recipient" :disabled="!canSave"/>
+            </abstract-form-item>
+            <abstract-form-item v-if="form.pname" label="发布人：" dense>
+                <el-input :value="form.pname" readonly/>
+            </abstract-form-item>
+            <abstract-form-item v-if="form.ptime" label="发布时间：" dense>
+                <el-date-picker :value="form.ptime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
+            </abstract-form-item>
+            <abstract-form-item v-if="form.status===2" label="撤回人：" dense>
+                <el-input :value="form.wname" readonly/>
+            </abstract-form-item>
+            <abstract-form-item v-if="form.status===2" label="撤回时间：" dense>
+                <el-date-picker :value="form.wtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
+            </abstract-form-item>
+            <abstract-form-item label="内 容：" full>
+                <tinymce-editor v-model="form.content" :readonly="!canSave"/>
+            </abstract-form-item>
+        </abstract-form>
 
         <template v-slot:footer>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
@@ -58,12 +48,13 @@
             <el-button v-if="canPublish" size="small" type="primary" @click="publish">发 布</el-button>
             <el-button v-if="canWithdraw" size="small" type="danger" @click="withdraw">撤 回</el-button>
         </template>
-    </dialog-form>
+    </form-dialog>
 </template>
 
 <script>
-    import DialogForm from '@/components/DialogForm'
-    import DialogFormItem from "@/components/DialogForm/DialogFormItem"
+    import AbstractForm from "@/components/AbstractForm"
+    import AbstractFormItem from "@/components/AbstractForm/AbstractFormItem"
+    import FormDialog from '@/components/FormDialog'
     import TinymceEditor from "@/components/TinymceEditor"
     import {SimpleMultipleUserSelector as UserSelector} from '@/bizComponents/UserSelector'
     import dialogMixin from "@/mixins/dialogMixin"
@@ -77,7 +68,7 @@
 
         mixins: [dialogMixin],
 
-        components: {DialogForm, DialogFormItem, TinymceEditor, UserSelector},
+        components: {AbstractForm,AbstractFormItem,FormDialog, TinymceEditor, UserSelector},
 
         props: {
             value: {type: Boolean, default: false},

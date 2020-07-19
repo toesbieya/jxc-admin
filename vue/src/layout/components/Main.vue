@@ -22,7 +22,7 @@
                 width="100%"
         />
 
-        <el-backtop v-if="showBackToTop" target=".app-main .el-scrollbar__wrap" :visibility-height="400"/>
+        <el-backtop v-if="showBackToTop" target=".app-main .el-scrollbar__wrap" :visibility-height="400" :bottom="66"/>
     </main>
 </template>
 
