@@ -41,7 +41,8 @@
     "svg-sprite-loader": "^4.3.0",
     "svgo": "^1.3.2",
     "vue-template-compiler": "^2.6.11",
-    "webpack-bundle-analyzer": "^3.6.1"
+    "webpack-bundle-analyzer": "^3.6.1",
+    "webpack-theme-color-replacer": "^1.3.14"
   },
   "postcss": {
     "plugins": {

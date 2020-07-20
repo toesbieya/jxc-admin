@@ -1,8 +1,10 @@
-const isDevelopment = process.env.NODE_ENV === 'development'
+const isDev = process.env.NODE_ENV === 'development'
 
 const contextPath = '/'
 
 module.exports = {
+    isDev,
+
     title: 'BiuBiuBiu~',
 
     //项目的部署路径
@@ -15,11 +17,11 @@ module.exports = {
     routerMode: 'history',
 
     //socket连接地址
-    socketUrl: isDevelopment ? 'localhost:12580' : 'wss://toesbieya.cn',
+    socketUrl: isDev ? 'localhost:12580' : 'wss://toesbieya.cn',
 
     sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
 
-    errorLog: ['production', 'development'],
+    errorLog: true,
 
     //storage的相关键名
     sessionUserKey: 'GCC-SESS-USER',
@@ -37,7 +39,7 @@ module.exports = {
     attachmentPrefix: 'https://static.toesbieya.cn/',
 
     //文件预览接口前缀
-    filePreviewPrefix: isDevelopment ? 'http://localhost:8012' : 'https://preview.toesbieya.cn',
+    filePreviewPrefix: isDev ? 'http://localhost:8012' : 'https://preview.toesbieya.cn',
 
     //省市地区json数据请求地址
     regionDataUrl: `${contextPath}static/json/region-pca.json`

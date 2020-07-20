@@ -1,10 +1,12 @@
 <template>
-    <el-badge :hidden="hidden" class="bell-badge" is-dot @click.native="jump">
-        <i class="el-icon-bell navbar-icon" title="消息提醒"/>
+    <el-badge :hidden="hidden" class="bell-badge" is-dot>
+        <i class="el-icon-bell navbar-icon" title="消息提醒" @click="jump"/>
     </el-badge>
 </template>
 
 <script>
+    import {baseUrl} from '@/api/message/user'
+
     export default {
         name: "Bell",
 
@@ -16,8 +18,8 @@
 
         methods: {
             jump() {
-                let target = '/message/user'
-                if (this.$route.path === target) target = '/redirect' + target
+                let target = baseUrl
+                if (this.$route.path === target) target = `/redirect${target}`
                 this.$router.replace(target)
             }
         },

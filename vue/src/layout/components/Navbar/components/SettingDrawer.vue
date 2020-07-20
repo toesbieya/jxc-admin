@@ -1,16 +1,29 @@
 <template>
-    <el-drawer :visible="value" :with-header="false" append-to-body size="300px" @close="$emit('input', false)">
+    <el-drawer :visible="value" :with-header="false" append-to-body size="288px" @close="$emit('input', false)">
         <div class="drawer-container">
-            <el-divider><h3>个性化设置</h3></el-divider>
+            <el-divider>主题色</el-divider>
+            <div class="drawer-item">
+                <color-checkbox-group :value="color" @input="changeColor">
+                    <color-check-box v-for="i in colors" :key="i" :color="i"/>
+                </color-checkbox-group>
+            </div>
+
+            <el-divider>其他设置</el-divider>
             <div v-for="{name,key} in settings" :key="key" class="drawer-item">
                 <span>{{name}}</span>
-                <el-switch :value="getValue(key)" @input="setValue($event,key)" class="drawer-switch"/>
+                <el-switch :value="getValue(key)" class="drawer-switch" @input="e => setValue(e,key)"/>
             </div>
         </div>
     </el-drawer>
 </template>
 
 <script>
+    import ColorCheckBox from "@/components/ColorCheckBox"
+    import ColorCheckboxGroup from "@/components/ColorCheckBox/group"
+    import {isDev} from '@/config'
+    import client from 'webpack-theme-color-replacer/client'
+    import forElementUI from 'webpack-theme-color-replacer/forElementUI'
+
     const settings = [
         {name: '显示logo', key: 'showLogo'},
         {name: '显示面包屑', key: 'showBreadcrumb'},
@@ -22,21 +35,31 @@
         {name: '头部自动隐藏', key: 'headerAutoHidden'},
         {name: '显示返回顶部按钮', key: 'showBackToTop'}
     ]
+    const colors = ['#f5222d', '#fa541c', '#fadb14', '#3eaf7c', '#13c2c2', '#1890ff', '#722ed1', '#eb2f96']
 
     export default {
         name: "SettingDrawer",
 
-        props: {
-            value: Boolean
+        components: {ColorCheckBox, ColorCheckboxGroup},
+
+        props: {value: Boolean},
+
+        data() {
+            return {
+                settings,
+                colors,
+                color: '#1890ff'
+            }
         },
 
-        data: () => ({settings}),
-
         methods: {
+            changeColor(color) {
+                this.color = color
+                isDev && client.changer.changeColor({newColors: forElementUI.getElementUISeries(color)})
+            },
             getValue(key) {
                 return this.$store.state.setting[key]
             },
-
             setValue(value, key) {
                 this.$store.commit(`setting/${key}`, value)
             }

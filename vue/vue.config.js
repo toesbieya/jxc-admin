@@ -3,8 +3,10 @@ const path = require('path')
 const settings = require('./src/config')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const ThemeColorReplacer = require('webpack-theme-color-replacer')
+const forElementUI = require('webpack-theme-color-replacer/forElementUI')
 
-const isDev = process.env.NODE_ENV === 'development'
+const EMPTY_PLUGIN = {apply: () => ({})}
 
 function resolve(dir) {
     return path.join(__dirname, dir)
@@ -17,7 +19,7 @@ module.exports = {
     assetsDir: 'static',
     runtimeCompiler: true,
     lintOnSave: false,
-    productionSourceMap: isDev,
+    productionSourceMap: settings.isDev,
     parallel: true,
     devServer: {
         port: process.env.port || 8079,
@@ -59,7 +61,14 @@ module.exports = {
                 minRatio: 0.8,
                 deleteOriginalAssets: false,//是否删除源文件
             }),
-            isDev ? {apply: () => ({})} : new BundleAnalyzerPlugin()
+            settings.isDev
+                ? new ThemeColorReplacer({
+                    fileName: 'css/theme-colors.[contenthash:8].css',
+                    matchColors: forElementUI.getElementUISeries('#1890ff'),
+                    changeSelector: forElementUI.changeSelector
+                })
+                : EMPTY_PLUGIN,
+            settings.isDev ? EMPTY_PLUGIN : new BundleAnalyzerPlugin()
         ]
     },
     chainWebpack(config) {
@@ -80,10 +89,5 @@ module.exports = {
             .loader('svg-sprite-loader')
             .options({symbolId: 'icon-[name]'})
             .end()
-    },
-    /*css: {
-        loaderOptions: {
-            sass: {prependData: `@import "src/assets/styles/variables.scss";`,}
-        }
-    }*/
+    }
 }

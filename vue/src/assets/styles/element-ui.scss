@@ -70,6 +70,12 @@
     }
 }
 
+.el-drawer {
+    &__body {
+        overflow-y: overlay;
+    }
+}
+
 .el-loading-mask {
     background: #fff;
     color: $--color-primary;
