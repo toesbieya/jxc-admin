@@ -5,7 +5,7 @@
         select *
         from rec_attachment
         where pid = #{pid}
-        order by sort desc
+        order by sort
     </select>
     <select id="getUrlByPid" resultType="java.lang.String">
         select url

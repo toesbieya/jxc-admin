@@ -95,7 +95,7 @@ public class RecordService implements RecordApi {
         return attachmentMapper.selectList(
                 Wrappers.lambdaQuery(RecAttachment.class)
                         .eq(RecAttachment::getPid, pid)
-                        .orderByDesc(RecAttachment::getSort)
+                        .orderByAsc(RecAttachment::getSort)
         );
     }
 

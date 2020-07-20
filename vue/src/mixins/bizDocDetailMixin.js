@@ -34,6 +34,7 @@ export default {
 
     data() {
         return {
+            attachmentSortSeed: 0,
             loading: true,
             //单据提交历史
             history: [],
@@ -241,7 +242,13 @@ export default {
 
         //附件操作
         uploadSuccess(file, res) {
-            this.form.uploadImageList.push({url: res.key, name: file.name, order: 0, size: file.size})
+            this.form.uploadImageList.push({
+                url: res.key,
+                name: file.name,
+                sort: this.attachmentSortSeed,
+                size: file.size
+            })
+            this.attachmentSortSeed++
         },
         removeUpload(file) {
             this.form.deleteImageList.push(file.url)
