@@ -9,7 +9,7 @@ const state = {
     device: isMobile() ? 'mobile' : 'pc',
 
     //登陆页背景动画
-    loginBackgroundAnimation: 'firework',
+    loginBackgroundAnimation: 'sparkRain',
 
     //路由页面滚动高度
     scrollTop: 0,

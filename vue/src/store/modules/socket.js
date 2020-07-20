@@ -1,6 +1,6 @@
 import {MessageBox} from "element-ui"
 import {isEmpty} from "@/utils"
-import {socketUrl} from '@/config'
+import {useMock, socketUrl} from '@/config'
 import SocketIO from 'socket.io-client'
 import {createMutations} from "@/utils"
 
@@ -14,7 +14,7 @@ const mutations = createMutations(state)
 
 const actions = {
     init(context, user) {
-        if (isEmpty(user, user.id, user.token)) return
+        if (useMock || isEmpty(user, user.id, user.token)) return
 
         socket = initSocket(user)
 

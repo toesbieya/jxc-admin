@@ -1,9 +1,22 @@
-const {success,fail} = require('./util')
-const base = require('../src/config').apiPrefix
-const user = require('./data/user')
+const bodeParser = require('body-parser')
+const {success} = require('./util')
+const {apiPrefix, useMock} = require('../src/config')
 
-const routes = [
-    {url: '/login', method: 'post', res: user},
-]
+const routes = require('./controller')
 
-module.exports = app => routes.forEach(route => app[route.method](base + route.url, (req, res) => res.send(success(route.res))))
+module.exports = app => {
+    if (!useMock) return
+
+    app.use(bodeParser.json())
+
+    routes.forEach(route => {
+        app[route.method](
+            apiPrefix + route.url,
+            (req, res) => {
+                if (typeof route.res === 'function') {
+                    route.res(req, res)
+                }
+                else res.send(success(route.res))
+            })
+    })
+}

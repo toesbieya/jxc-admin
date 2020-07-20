@@ -29,20 +29,23 @@ module.exports = {
             warnings: true,
             errors: true
         },
-        proxy: {
-            [settings.apiPrefix]: {
-                target: 'http://localhost:8081',  //后台接口域名
-                ws: true,                         //如果要代理 websockets，配置这个参数
-                secure: false,                    //如果是https接口，需要配置这个参数
-                changeOrigin: true,               //是否跨域
-                pathRewrite: {
-                    [`^${settings.apiPrefix}`]: ''
-                }
-            }
-        },
-        /*before(app) {
+        proxy:
+            settings.useMock
+                ? null
+                : {
+                    [settings.apiPrefix]: {
+                        target: 'http://localhost:8081',  //后台接口域名
+                        ws: true,                         //如果要代理 websockets，配置这个参数
+                        secure: false,                    //如果是https接口，需要配置这个参数
+                        changeOrigin: true,               //是否跨域
+                        pathRewrite: {
+                            [`^${settings.apiPrefix}`]: ''
+                        }
+                    }
+                },
+        before(app) {
             require('./mock')(app)
-        }*/
+        }
     },
     configureWebpack: {
         name: settings.title,

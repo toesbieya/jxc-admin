@@ -7,18 +7,22 @@ module.exports = {
 
     title: 'BiuBiuBiu~',
 
-    //项目的部署路径
+    //项目的部署路径，始终以'/'开头，以'/'结束
     contextPath,
 
-    //全局axios的baseUrl
+    //全局axios的baseUrl、devServer的路由前缀
     apiPrefix: '/api',
 
     //路由模式，['hash','history']
     routerMode: 'history',
 
+    //是否在开发时使用mock，为true时不会启动websocket和代理
+    useMock: false,
+
     //socket连接地址
     socketUrl: isDev ? 'localhost:12580' : 'wss://toesbieya.cn',
 
+    //侧边栏顶上的logo地址
     sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
 
     errorLog: true,
