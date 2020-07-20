@@ -23,7 +23,7 @@
         and id not in (select mid from msg_state where uid = #{uid})
     </sql>
 
-    <insert id="insert" parameterType="com.toesbieya.my.model.entity.Msg">
+    <insert id="insert" parameterType="com.toesbieya.my.model.entity.Msg" useGeneratedKeys="true" keyProperty="id">
         insert into msg (title, content, type, cid, cname, ctime,
                          pid, pname, ptime, wid, wname, wtime, status, broadcast, recipient)
         values (#{title}, #{content}, #{type}, #{cid}, #{cname}, #{ctime}, #{pid},

@@ -37,7 +37,7 @@ public class MsgService {
 
     @UserAction("'添加消息：'+#msg.title")
     public Result add(Msg msg) {
-        msg.setId(msgMapper.insert(msg));
+        msgMapper.insert(msg);
         return Result.success("添加成功", msg);
     }
 
@@ -77,7 +77,7 @@ public class MsgService {
                 }
             }
         }
-        else result.setMsg("发布失败，" + result.getMsg());
+        else result.setMsg("发布失败，请刷新重试");
 
         return result;
     }
