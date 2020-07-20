@@ -54,7 +54,8 @@ module.exports = {
                         ]
                     },
                     '/frontend/utils',
-                    '/frontend/plugins'
+                    '/frontend/plugins',
+                    '/frontend/mock'
                 ]
             },
             {
