@@ -66,7 +66,9 @@
 
     export default {
         name: "stylePage",
+
         components: {AbstractTable, LinerProgress, FormDialog},
+
         data() {
             return {
                 dialog: false,
@@ -83,6 +85,7 @@
                 ]
             }
         },
+
         mounted() {
             const f = (type, time = 0) => {
                 setTimeout(() => {
@@ -99,9 +102,8 @@
                 f(t, i)
                 i += 200
             })
-        },
-        beforeDestroy() {
-            this.$notify.closeAll()
+
+            this.$once('hook:beforeDestroy', this.$notify.closeAll)
         }
     }
 </script>

@@ -13,10 +13,12 @@ export default {
     },
     mounted() {
         this.$_resizeHandler = debounce(this.$_resizeHandler)
-        window.addEventListener('resize', this.$_resizeHandler)
         this.$_resizeHandler()
-    },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.$_resizeHandler)
+
+        window.addEventListener('resize', this.$_resizeHandler)
+
+        this.$once('hook:beforeDestroy', () => {
+            window.removeEventListener('resize', this.$_resizeHandler)
+        })
     }
 }

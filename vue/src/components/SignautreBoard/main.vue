@@ -132,11 +132,11 @@
 
         mounted() {
             window.addEventListener('resize', this.resize)
-        },
 
-        beforeDestroy() {
-            this.clear()
-            window.removeEventListener('resize', this.resize)
+            this.$once('hook:beforeDestroy', () => {
+                this.clear()
+                window.removeEventListener('resize', this.resize)
+            })
         }
     }
 </script>

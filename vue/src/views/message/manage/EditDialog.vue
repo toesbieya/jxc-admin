@@ -68,7 +68,7 @@
 
         mixins: [dialogMixin],
 
-        components: {AbstractForm,AbstractFormItem,FormDialog, TinymceEditor, UserSelector},
+        components: {AbstractForm, AbstractFormItem, FormDialog, TinymceEditor, UserSelector},
 
         props: {
             value: {type: Boolean, default: false},

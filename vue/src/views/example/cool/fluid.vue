@@ -9,6 +9,7 @@
 
     export default {
         name: "fluid",
+
         data() {
             return {
                 sign: true,
@@ -18,6 +19,7 @@
                 parentDom: null
             }
         },
+
         methods: {
             $_initResizeEvent() {
                 window.addEventListener('resize', this.$_resizeHandler)
@@ -32,6 +34,7 @@
                 window.location.reload()
             }
         },
+
         mounted() {
             this.parentDom = document.querySelector('.app-main')
             this.width = this.parentDom.clientWidth
@@ -43,6 +46,7 @@
             this.$_initResizeEvent()
             this.$nextTick(() => this.start())
         },
+
         beforeDestroy() {
             this.$_destroyResizeEvent()
             this.close()

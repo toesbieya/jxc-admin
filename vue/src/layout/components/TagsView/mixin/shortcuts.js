@@ -42,9 +42,9 @@ export default {
 
     mounted() {
         window.addEventListener('keydown', this.shortcutsListen)
-    },
 
-    beforeDestroy() {
-        window.removeEventListener('keydown', this.shortcutsListen)
+        this.$once('hook:beforeDestroy', () => {
+            window.removeEventListener('keydown', this.shortcutsListen)
+        })
     }
 }

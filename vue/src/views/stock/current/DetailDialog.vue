@@ -2,11 +2,18 @@
     <form-dialog :value="value" :loading="false" :title="title" width="70%" @close="cancel" @open="search">
         <liner-progress :show="loading"/>
 
-        <abstract-table :data="tableData" border show-summary :summary-method="summary" :span-method="span">
+        <abstract-table
+                :data="tableData"
+                :highlight-current-row="false"
+                border
+                show-summary
+                :summary-method="summary"
+                :span-method="span"
+        >
             <el-table-column align="center" label="采购订单" show-overflow-tooltip>
                 <router-link
                         slot-scope="{row}"
-                        :to="{name:'purchaseOrder',params:{type:'see',id:row.cgddid}}"
+                        :to="{name:'purchaseOrderDetail',params:{type:'see',id:row.cgddid}}"
                         @click.native="cancel"
                 >
                     {{row.cgddid}}
@@ -16,7 +23,7 @@
             <el-table-column align="center" label="采购入库单" show-overflow-tooltip>
                 <router-link
                         slot-scope="{row}"
-                        :to="{name:'purchaseInbound',params:{type:'see',id:row.cgrkid}}"
+                        :to="{name:'purchaseInboundDetail',params:{type:'see',id:row.cgrkid}}"
                         @click.native="cancel"
                 >
                     {{row.cgrkid}}

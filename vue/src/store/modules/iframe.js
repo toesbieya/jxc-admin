@@ -9,8 +9,7 @@ const state = {
 const mutations = {
     ...createMutations(state),
     add(state, src) {
-        if (state.list.some(i => i === src)) return
-        state.list.push(src)
+        !state.list.includes(src) && state.list.push(src)
     },
     del(state, src) {
         const index = state.list.findIndex(i => i === src)

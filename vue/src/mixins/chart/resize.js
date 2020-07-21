@@ -7,6 +7,7 @@ export default {
             $_resizeHandler: null
         }
     },
+
     methods: {
         $_initResizeEvent() {
             window.addEventListener('resize', this.$_resizeHandler)
@@ -15,19 +16,17 @@ export default {
             window.removeEventListener('resize', this.$_resizeHandler)
         }
     },
+
     mounted() {
         this.$_resizeHandler = debounce(() => this.chart && this.chart.resize())
         this.$_initResizeEvent()
-        this.$nextTick(() => this.$_resizeHandler())
+        this.$nextTick(this.$_resizeHandler)
+        this.$once('hook:deactivated', this.$_destroyResizeEvent)
+        this.$once('hook:beforeDestroy', this.$_destroyResizeEvent)
     },
-    beforeDestroy() {
-        this.$_destroyResizeEvent()
-    },
+
     activated() {
         this.$_initResizeEvent()
-        this.$nextTick(() => this.$_resizeHandler())
-    },
-    deactivated() {
-        this.$_destroyResizeEvent()
+        this.$nextTick(this.$_resizeHandler)
     }
 }

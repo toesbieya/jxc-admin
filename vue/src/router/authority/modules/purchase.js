@@ -11,7 +11,7 @@ const router = {
         {
             path: 'order',
             name: 'purchaseOrder',
-            component: () => lazyLoadView(import('@/views/purchase/order')),
+            component: lazyLoadView(import('@/views/purchase/order')),
             meta: {title: '采购订单'}
         },
         {
@@ -19,7 +19,7 @@ const router = {
             name: 'purchaseOrderDetail',
             hidden: true,
             props: true,
-            component: () => lazyLoadView(import('@/views/purchase/order/detail')),
+            component: lazyLoadView(import('@/views/purchase/order/detail')),
             meta: {
                 title: '采购订单详情',
                 activeMenu: '/document/purchase/order',
@@ -30,7 +30,7 @@ const router = {
         {
             path: 'inbound',
             name: 'purchaseInbound',
-            component: () => lazyLoadView(import('@/views/purchase/inbound')),
+            component: lazyLoadView(import('@/views/purchase/inbound')),
             meta: {title: '采购入库'}
         },
         {
@@ -38,7 +38,7 @@ const router = {
             name: 'purchaseInboundDetail',
             hidden: true,
             props: true,
-            component: () => lazyLoadView(import('@/views/purchase/inbound/detail')),
+            component: lazyLoadView(import('@/views/purchase/inbound/detail')),
             meta: {
                 title: '采购入库详情',
                 activeMenu: '/document/purchase/inbound',

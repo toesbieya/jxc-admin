@@ -103,11 +103,8 @@
 
         mounted() {
             this.init()
-        },
-
-        beforeDestroy() {
-            this.destroy()
-        },
+            this.$once('hook:beforeDestroy', this.destroy)
+        }
     }
 </script>
 

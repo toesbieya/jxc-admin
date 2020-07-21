@@ -122,10 +122,8 @@
         mounted() {
             this.addEvent()
             this.$nextTick(() => this.$refs.username.focus())
-        },
 
-        beforeDestroy() {
-            this.removeEvent()
+            this.$once('hook:beforeDestroy', this.removeEvent)
         }
     }
 </script>

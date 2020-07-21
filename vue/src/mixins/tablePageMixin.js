@@ -38,7 +38,7 @@ const mixin = {
         tablePageNeedSearchMap: {
             deep: true,
             handler(v) {
-                if (this._routePath === this.$route.path){
+                if (this._routePath === this.$route.path) {
                     this.reSearch(v)
                 }
             }

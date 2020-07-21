@@ -61,6 +61,7 @@
 <script>
     import {debounce} from "@/utils"
     import {createLimitTree, getNodeId} from "@/utils/tree"
+    import {store, init} from '../store'
     import common from '../mixin'
 
     const PROVINCE_CITIES = ['北京市', '天津市', '上海市', '重庆市']
@@ -91,7 +92,7 @@
 
         computed: {
             regionTree() {
-                return this.$store.state.dataCache.regionTree
+                return store.data
             },
         },
 
@@ -235,7 +236,7 @@
             init() {
                 this.loading = true
                 const hasInit = this.regionTree.length > 0
-                const promise = () => hasInit ? Promise.resolve() : this.$store.dispatch('dataCache/initRegion')
+                const promise = () => hasInit ? Promise.resolve() : init()
                 return promise()
                     .then(() => this.limit ? this.limitApi() : Promise.resolve())
                     .then(data => {

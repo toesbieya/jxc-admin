@@ -103,15 +103,16 @@
         },
 
         mounted() {
-            this.$el.querySelector(".el-card__body").addEventListener('contextmenu', this.openContextMenu)
             waitUntilSuccess(
                 () => !isEmpty(this.form()),
                 () => this.form().$on('commit-success', this.commitSuccess)
             )
-        },
 
-        beforeDestroy() {
-            this.$el.querySelector(".el-card__body").removeEventListener('contextmenu', this.openContextMenu)
+            this.$el.querySelector(".el-card__body").addEventListener('contextmenu', this.openContextMenu)
+
+            this.$once('hook:beforeDestroy', () => {
+                this.$el.querySelector(".el-card__body").removeEventListener('contextmenu', this.openContextMenu)
+            })
         }
     }
 </script>

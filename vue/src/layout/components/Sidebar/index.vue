@@ -104,10 +104,10 @@
             if (this.sidebarAutoHidden) {
                 document.addEventListener('mousemove', this.moveEvent)
             }
-        },
 
-        beforeDestroy() {
-            document.removeEventListener('mousemove', this.moveEvent)
+            this.$once('hook:beforeDestroy', () => {
+                document.removeEventListener('mousemove', this.moveEvent)
+            })
         },
 
         render() {

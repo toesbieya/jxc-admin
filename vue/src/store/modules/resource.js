@@ -4,7 +4,7 @@ import authorityRoutes from '@/router/authority'
 import {needAuth} from "@/utils/auth"
 import {createTree} from "@/utils/tree"
 import {getAllResources} from "@/api/system/resource"
-import {emptyOrDefault, isEmpty} from "@/utils"
+import {isEmpty} from "@/utils"
 import {isExternal} from "@/utils/validate"
 
 const finalConstantRoutes = transformOriginRoutes(constantRoutes)

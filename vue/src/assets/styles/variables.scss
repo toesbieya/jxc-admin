@@ -26,7 +26,7 @@ $--color-warning: $--color-deep-orange;
 $--color-danger: $--color-red;
 $--color-info: $--color-teal;
 
-@mixin clearfix{
+@mixin clearfix {
     &::after {
         visibility: hidden;
         display: block;

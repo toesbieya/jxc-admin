@@ -137,12 +137,10 @@
 
         mounted() {
             this.addCapsLockEvent()
-            if (isEmpty(this.form.username)) this.$refs.username.focus()
-            else this.$refs.password.focus()
-        },
+            const key = isEmpty(this.form.username) ? 'username' : 'password'
+            this.$refs[key].focus()
 
-        beforeDestroy() {
-            this.removeEvent()
+            this.$once('hook:beforeDestroy', this.removeEvent)
         }
     }
 </script>

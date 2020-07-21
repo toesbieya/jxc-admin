@@ -22,7 +22,7 @@ const routes = [
         children: [
             {
                 path: 'index',
-                component: () => lazyLoadView(import('@/views/index')),
+                component: lazyLoadView(import('@/views/index')),
                 name: 'index',
                 meta: {title: '首页', affix: true, icon: 'home'}
             }
@@ -42,7 +42,7 @@ const routes = [
             {
                 path: 'index',
                 name: 'userCenter',
-                component: () => lazyLoadView(import('@/views/userCenter')),
+                component: lazyLoadView(import('@/views/userCenter')),
                 meta: {title: '个人中心', noCache: true, icon: 'user'},
             }
         ]

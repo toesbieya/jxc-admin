@@ -33,7 +33,7 @@ export function metaExtend(routes, meta) {
 
 export function lazyLoadView(component) {
     const AsyncHandler = () => ({component, loading: PageSkeleton})
-    return Promise.resolve({
+    return () => Promise.resolve({
         functional: true,
         render(h, {data, children}) {
             return h(AsyncHandler, data, children)

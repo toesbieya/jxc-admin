@@ -24,12 +24,14 @@
             <el-card header="出库商品">
                 <abstract-table :data="form.data" :highlight-current-row="false">
                     <el-table-column align="center" type="expand">
-                        <el-table slot-scope="{row}" :data="row.data" border show-summary :summary-method="summaryStock(row)">
+                        <el-table slot-scope="{row}" :data="row.data" border show-summary
+                                  :summary-method="summaryStock(row)">
                             <el-table-column align="center" label="#" type="index" width="80"/>
                             <el-table-column align="center">
                                 <template slot="header">
                                     出库数量
-                                    <el-button v-if="canSave" type="text" size="small" @click="openStock(row)">选择库存</el-button>
+                                    <el-button v-if="canSave" type="text" size="small" @click="openStock(row)">选择库存
+                                    </el-button>
                                 </template>
                                 <template v-slot="d">
                                     <el-input-number

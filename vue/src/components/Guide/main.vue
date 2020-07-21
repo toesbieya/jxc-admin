@@ -230,11 +230,12 @@
 
         mounted() {
             this.resize = debounce(this.resize)
-            window.addEventListener('resize', this.resize)
-        },
 
-        beforeDestroy() {
-            window.removeEventListener('resize', this.resize)
+            window.addEventListener('resize', this.resize)
+
+            this.$once('hook:beforeDestroy', () => {
+                window.removeEventListener('resize', this.resize)
+            })
         }
     }
 </script>

@@ -11,7 +11,7 @@ const router = {
         {
             path: 'order',
             name: 'sellOrder',
-            component: () => lazyLoadView(import('@/views/sell/order')),
+            component: lazyLoadView(import('@/views/sell/order')),
             meta: {title: '销售订单'}
         },
         {
@@ -19,7 +19,7 @@ const router = {
             name: 'purchaseOrderDetail',
             hidden: true,
             props: true,
-            component: () => lazyLoadView(import('@/views/sell/order/detail')),
+            component: lazyLoadView(import('@/views/sell/order/detail')),
             meta: {
                 title: '销售订单详情',
                 activeMenu: '/document/sell/order',
@@ -30,7 +30,7 @@ const router = {
         {
             path: 'outbound',
             name: 'sellOutbound',
-            component: () => lazyLoadView(import('@/views/sell/outbound')),
+            component: lazyLoadView(import('@/views/sell/outbound')),
             meta: {title: '销售出库'}
         },
         {
@@ -38,7 +38,7 @@ const router = {
             name: 'purchaseOutboundDetail',
             hidden: true,
             props: true,
-            component: () => lazyLoadView(import('@/views/sell/outbound/detail')),
+            component: lazyLoadView(import('@/views/sell/outbound/detail')),
             meta: {
                 title: '销售出库详情',
                 activeMenu: '/document/outbound/order',

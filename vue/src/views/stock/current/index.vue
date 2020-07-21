@@ -40,7 +40,7 @@
             </el-row>
 
             <el-row v-loading="config.loading" class="table-container">
-                <abstract-table :data="tableData" show-summary :summary-method="summary">
+                <abstract-table :data="tableData" :highlight-current-row="false" show-summary :summary-method="summary">
                     <el-table-column align="center" label="#" type="index" width="80"/>
                     <el-table-column align="center" label="商品分类" prop="cname" show-overflow-tooltip/>
                     <el-table-column align="center" label="库存数量" prop="total_num" show-overflow-tooltip/>

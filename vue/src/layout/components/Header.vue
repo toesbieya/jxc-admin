@@ -73,10 +73,8 @@
         mounted() {
             this.appMain = document.querySelector('.app-main')
             if (this.headerAutoHidden) this.addEvent()
-        },
 
-        beforeDestroy() {
-            this.removeEvent()
+            this.$once('hook:beforeDestroy', this.removeEvent)
         }
     }
 </script>

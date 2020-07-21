@@ -43,6 +43,7 @@ Object.keys(state).forEach(key => {
 
 const mutations = {
     ...createMutations(state),
+
     sidebarCollapse(state, v) {
         if (v && state.sidebarAutoHidden) {
             state.sidebarAutoHidden = false
@@ -50,6 +51,7 @@ const mutations = {
         state.sidebarCollapse = v
         setLocalPersonalSettings(state)
     },
+
     sidebarAutoHidden(state, v) {
         if (v && state.sidebarCollapse) {
             state.sidebarCollapse = false
