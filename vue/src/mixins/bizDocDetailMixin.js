@@ -205,7 +205,7 @@ export default {
                     if (!data || id !== data.id) return Promise.reject()
                     return Promise.resolve(mergeObj(this.form, data))
                 })
-                .then(this.afterInit || Promise.resolve)
+                .then(() => this.afterInit ? this.afterInit() : Promise.resolve())
                 .catch(e => {
                     console.log(e)
                     return elAlert(`获取${this.docName}数据失败，请重试`, this.close)

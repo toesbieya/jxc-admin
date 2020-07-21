@@ -132,7 +132,7 @@
             },
 
             readAll() {
-                readAll().then(this.search)
+                readAll().then(() => this.search())
             },
 
             transformType(type) {

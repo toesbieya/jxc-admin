@@ -66,7 +66,7 @@
         watch: {
             $route(to, from) {
                 this.decideRouteTransition && this.decideRouteTransition(to, from)
-                this.addTags(to).then(this.moveToCurrentTag)
+                this.addTags(to).then(() => this.moveToCurrentTag())
             },
 
             'contextmenu.show'(v) {
@@ -148,7 +148,7 @@
             closeAllTags() {
                 this.$store
                     .dispatch('tagsView/delAllViews')
-                    .then(this.gotoLastView)
+                    .then(() => this.gotoLastView())
             },
 
             gotoLastView() {

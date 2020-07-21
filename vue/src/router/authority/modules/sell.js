@@ -16,7 +16,7 @@ const router = {
         },
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
-            name: 'purchaseOrderDetail',
+            name: 'sellOrderDetail',
             hidden: true,
             props: true,
             component: lazyLoadView(import('@/views/sell/order/detail')),
