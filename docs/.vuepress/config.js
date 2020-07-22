@@ -6,7 +6,7 @@ module.exports = {
     host: 'localhost',
 
     // 输出目录
-    dest: 'dist',
+    dest: 'doc',
 
     // 主题配置
     themeConfig: {

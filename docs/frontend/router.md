@@ -14,16 +14,17 @@
 
 ### Route.meta Attributes：
 
-| 参数         | 说明                                             | 类型      | 默认                    |
-| :----------: | :----------------------------------------------: | :-------: | :---------------------: |
-| title        | 路由在侧边栏、面包屑、页签、搜索结果中的显示名称 | `string`  | -                       |
-| icon         | 图标名，支持svg-icon、el-icon                    | `string`  | -                       |
-| affix        | 是否在多页签中固定显示                           | `boolean` | -                       |
-| noCache      | true时缓存页面                                   | `boolean` | -                       |
-| activeMenu   | 侧边栏当前激活菜单的index                        | `string`  | -                       |
-| noAuth       | true时路由不需要鉴权                             | `boolean` | router/constant下为true |
-| iframe       | 需要打开的iframe的地址                           | `string`  | -                       |
-| isDetailPage | 是否是详情页                                     | `boolean` | -                       |
+| 参数         | 说明                                             | 类型       | 默认                    |
+| :----------: | :----------------------------------------------: | :--------: | :---------------------: |
+| title        | 路由在侧边栏、面包屑、页签、搜索结果中的显示名称 | `string`   | -                       |
+| dynamicTitle | 路由在面包屑、页签中的动态名称，参数为(to,from)  | `function` | -                       |
+| icon         | 图标名，支持svg-icon、el-icon                    | `string`   | -                       |
+| affix        | 是否在多页签中固定显示                           | `boolean`  | -                       |
+| noCache      | true时缓存页面                                   | `boolean`  | -                       |
+| activeMenu   | 侧边栏当前激活菜单的index                        | `string`   | -                       |
+| noAuth       | true时路由不需要鉴权                             | `boolean`  | router/constant下为true |
+| iframe       | 需要打开的iframe的地址                           | `string`   | -                       |
+| isDetailPage | 是否是详情页                                     | `boolean`  | -                       |
 
 ::: tip 注意
 路由meta上的affix、noAuth、noCache会被子路由继承，优先使用子路由的值
