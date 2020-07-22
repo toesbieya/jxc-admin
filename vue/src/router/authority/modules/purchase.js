@@ -17,13 +17,21 @@ const router = {
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
             name: 'purchaseOrderDetail',
-            hidden: true,
             props: true,
             component: lazyLoadView(import('@/views/purchase/order/detail')),
             meta: {
-                title: '采购订单详情',
+                dynamicTitle(to) {
+                    const {type, id} = to.params
+                    switch (type) {
+                        case 'add':
+                            return '添加采购订单'
+                        case 'edit':
+                            return `编辑采购订单${id}`
+                        case 'see':
+                            return `查看采购订单${id}`
+                    }
+                },
                 activeMenu: '/document/purchase/order',
-                noCache: true,
                 isDetailPage: true
             }
         },
@@ -36,13 +44,21 @@ const router = {
         {
             path: 'inbound/detail/:type(see|add|edit)/:id?',
             name: 'purchaseInboundDetail',
-            hidden: true,
             props: true,
             component: lazyLoadView(import('@/views/purchase/inbound/detail')),
             meta: {
-                title: '采购入库详情',
+                dynamicTitle(to) {
+                    const {type, id} = to.params
+                    switch (type) {
+                        case 'add':
+                            return '添加采购入库单'
+                        case 'edit':
+                            return `编辑采购入库单${id}`
+                        case 'see':
+                            return `查看采购入库单${id}`
+                    }
+                },
                 activeMenu: '/document/purchase/inbound',
-                noCache: true,
                 isDetailPage: true
             }
         }

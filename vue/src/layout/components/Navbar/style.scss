@@ -42,15 +42,12 @@
 
         .avatar-container {
             .avatar-wrapper {
-                margin-top: 2px;
-
-                .el-avatar {
-                    position: relative;
-                    top: 5px;
-                    margin-right: 5px;
-                }
+                display: flex;
+                align-items: center;
+                height: 100%;
 
                 span {
+                    margin-right: 5px;
                     font-size: 18px;
                 }
             }

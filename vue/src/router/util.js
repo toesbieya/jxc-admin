@@ -4,9 +4,16 @@ import {title} from "@/config"
 import PageSkeleton from "@/components/Skeleton/PageSkeleton"
 
 //拼接页面标题
-export function getPageTitle(route) {
-    const pageTitle = route.meta && route.meta.title
-    return pageTitle ? `${pageTitle} - ${title}` : title
+export function setPageTitle(route) {
+    const pageTitle = route.meta.title
+    document.title= pageTitle ? `${pageTitle} - ${title}` : title
+}
+
+//确定路由的标题
+export function specifyRouteTitle(to, from) {
+    if (typeof to.meta.dynamicTitle === 'function') {
+        to.meta.title = to.meta.dynamicTitle(to, from)
+    }
 }
 
 //将给定的白名单url转换为正则

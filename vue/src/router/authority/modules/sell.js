@@ -17,13 +17,21 @@ const router = {
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
             name: 'sellOrderDetail',
-            hidden: true,
             props: true,
             component: lazyLoadView(import('@/views/sell/order/detail')),
             meta: {
-                title: '销售订单详情',
+                dynamicTitle(to) {
+                    const {type, id} = to.params
+                    switch (type) {
+                        case 'add':
+                            return '添加销售订单'
+                        case 'edit':
+                            return `编辑销售订单${id}`
+                        case 'see':
+                            return `查看销售订单${id}`
+                    }
+                },
                 activeMenu: '/document/sell/order',
-                noCache: true,
                 isDetailPage: true
             }
         },
@@ -36,13 +44,21 @@ const router = {
         {
             path: 'outbound/detail/:type(see|add|edit)/:id?',
             name: 'purchaseOutboundDetail',
-            hidden: true,
             props: true,
             component: lazyLoadView(import('@/views/sell/outbound/detail')),
             meta: {
-                title: '销售出库详情',
+                dynamicTitle(to) {
+                    const {type, id} = to.params
+                    switch (type) {
+                        case 'add':
+                            return '添加销售出库单'
+                        case 'edit':
+                            return `编辑销售出库单${id}`
+                        case 'see':
+                            return `查看销售出库单${id}`
+                    }
+                },
                 activeMenu: '/document/outbound/order',
-                noCache: true,
                 isDetailPage: true
             }
         }

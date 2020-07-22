@@ -7,7 +7,7 @@
                 const {name, params} = JSON.parse(query.params)
                 this.$router.replace({name, params})
             }
-            else this.$router.replace({path: '/' + params.path, query})
+            else this.$router.replace({path: `/${params.path}`, query})
         },
 
         render: h => h()
