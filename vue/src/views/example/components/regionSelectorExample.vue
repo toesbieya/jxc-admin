@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 500px">
+    <div style="width: 300px">
         <div class="tip-row">
             行政区划选择，<a href="https://github.com/modood/Administrative-divisions-of-China" target="_blank">数据由此获取</a>
         </div>

@@ -6,7 +6,7 @@ import PageSkeleton from "@/components/Skeleton/PageSkeleton"
 //拼接页面标题
 export function setPageTitle(route) {
     const pageTitle = route.meta.title
-    document.title= pageTitle ? `${pageTitle} - ${title}` : title
+    document.title = pageTitle ? `${pageTitle} - ${title}` : title
 }
 
 //确定路由的标题

@@ -1,5 +1,5 @@
 <script type="text/jsx">
-    import {store,init} from '../store'
+    import {store, init} from '../store'
     import FormDialog from "@/components/FormDialog"
     import {createLimitTree, getNodeId} from "@/utils/tree"
 
@@ -56,7 +56,7 @@
 
         render() {
             return (
-                <dialog-form
+                <form-dialog
                     v-model={this.visible}
                     directives={[{name: 'drag-dialog'}]}
                     class="tree-dialog"
@@ -77,7 +77,7 @@
                             </span>
                         )}
                     </el-tree>
-                </dialog-form>
+                </form-dialog>
             )
         }
     }

@@ -12,28 +12,7 @@
                 :style="{ 'max-width': inputWidth - 32 + 'px', width: '100%' }"
         >
 
-            <span v-if="collapseTags && selected.length">
-                <el-tag
-                        :closable="!selectDisabled"
-                        :size="collapseTagSize"
-                        :hit="selected[0].hitState"
-                        type="info"
-                        @close="deleteTag($event, selected[0])"
-                        disable-transitions
-                >
-                    <span class="el-select__tags-text">{{ selected[0].currentLabel }}</span>
-                </el-tag>
-                <el-tag
-                        v-if="selected.length > 1"
-                        :closable="false"
-                        :size="collapseTagSize"
-                        type="info"
-                        disable-transitions
-                >
-                    <span class="el-select__tags-text">+ {{ selected.length - 1 }}</span>
-              </el-tag>
-            </span>
-            <transition-group @after-leave="resetInputHeight" v-if="!collapseTags">
+            <transition-group @after-leave="resetInputHeight">
                 <el-tag
                         v-for="item in selected"
                         :key="getValueKey(item)"
@@ -204,7 +183,6 @@
             defaultFirstOption: Boolean,
             reserveKeyword: Boolean,
             valueKey: {type: String, default: 'value'},
-            collapseTags: Boolean,
             popperAppendToBody: Boolean
         },
 
@@ -439,8 +417,7 @@
                 this.hoverIndex = -1
                 if (this.multiple && this.filterable) {
                     this.$nextTick(() => {
-                        const length = this.$refs.input.value.length * 15 + 20
-                        this.inputLength = this.collapseTags ? Math.min(50, length) : length
+                        this.inputLength = this.$refs.input.value.length * 15 + 20
                         this.managePlaceholder()
                         this.resetInputHeight()
                     })
@@ -483,25 +460,21 @@
             },
 
             getOption(value) {
-                let option
-                const isObject = Object.prototype.toString.call(value).toLowerCase() === '[object object]'
-                const isNull = Object.prototype.toString.call(value).toLowerCase() === '[object null]'
-                const isUndefined = Object.prototype.toString.call(value).toLowerCase() === '[object undefined]'
+                const type = v => Object.prototype.toString.call(v).toLowerCase()
+                const isObject = type(value) === '[object object]'
+                const isNull = type(value) === '[object null]'
+                const isUndefined = type(value) === '[object undefined]'
 
                 for (let i = this.cachedOptions.length - 1; i >= 0; i--) {
                     const cachedOption = this.cachedOptions[i]
                     const isEqual = isObject
                         ? getValueByPath(cachedOption.value, this.valueKey) === getValueByPath(value, this.valueKey)
                         : cachedOption.value === value
-                    if (isEqual) {
-                        option = cachedOption
-                        break
-                    }
+                    if (isEqual) return cachedOption
                 }
-                if (option) return option
-                const label = (!isObject && !isNull && !isUndefined)
-                    ? value : ''
-                let newOption = {
+
+                const label = (!isObject && !isNull && !isUndefined) ? value : ''
+                const newOption = {
                     value: value,
                     currentLabel: label
                 }
@@ -533,9 +506,7 @@
                     })
                 }
                 this.selected = result
-                this.$nextTick(() => {
-                    this.resetInputHeight()
-                })
+                this.$nextTick(() => this.resetInputHeight())
             },
 
             handleFocus(event) {
@@ -618,7 +589,7 @@
             },
 
             resetInputHeight() {
-                if (this.collapseTags && !this.filterable) return
+                if (!this.filterable) return
                 this.$nextTick(() => {
                     if (!this.$refs.reference) return
                     let inputChildNodes = this.$refs.reference.$el.childNodes
@@ -747,7 +718,7 @@
             },
 
             deleteTag(event, tag) {
-                let index = this.selected.indexOf(tag)
+                const index = this.selected.indexOf(tag)
                 if (index > -1 && !this.selectDisabled) {
                     const value = this.value.slice()
                     value.splice(index, 1)

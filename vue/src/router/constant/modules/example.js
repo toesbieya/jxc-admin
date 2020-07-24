@@ -77,6 +77,12 @@ const router = {
                     name: 'regionSelectorExample',
                     component: lazyLoadView(import('@/views/example/components/regionSelectorExample')),
                     meta: {title: '行政区划选择'}
+                },
+                {
+                    path: 'treeSelectExample',
+                    name: 'treeSelectExample',
+                    component: lazyLoadView(import('@/views/example/components/treeSelectExample')),
+                    meta: {title: '树选择'}
                 }
             ]
         },
