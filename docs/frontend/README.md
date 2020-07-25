@@ -41,7 +41,7 @@
 ## 目录结构
 ```
 ├── element-ui-personal        # element-ui增强
-├── mock                       # 项目mock，需打开devServer.before的注释
+├── mock                       # 项目mock
 ├── public                     # 静态资源文件夹
 ├── src
 │   ├── api                    # 数据请求集合
@@ -55,7 +55,8 @@
 │   │   └── request.js         # axios封装
 │   ├── directive              # 自定义指令集合
 │   ├── filters                # 自定义过滤器集合
-│   ├── layout                 # 布局文件夹，包含了导航栏、侧边栏、多页签、全局页脚、页面
+│   ├── globalMethods          # 全局方法，使用this.$xx调用
+│   ├── layout                 # 布局文件夹，包含了导航栏、侧边栏、多页签、全局页脚
 │   ├── mixins                 # 公用混入
 │   ├── plugin                 # 一些插件，均使用import()来动态引入
 │   ├── router

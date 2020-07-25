@@ -40,6 +40,7 @@ module.exports = {
                             '/frontend/components/region-selector',
                             '/frontend/components/search-form',
                             '/frontend/components/upload-file',
+                            '/frontend/components/tree-select',
                         ]
                     },
                     {

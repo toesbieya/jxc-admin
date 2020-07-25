@@ -35,8 +35,9 @@
 
 重复点击菜单可刷新路由，折叠时可以选择是否在折叠菜单上显示父级。
 
-侧边栏的滚动分两种情况，一种是整体的滚动，这是用 `<el-scrollbar>` 做的，不过缺点就是移动端体验不好。
-另一种是弹出菜单的滚动，这是用 `css` 做的，不用 `<el-scrollbar>` 是因为没办法避免bug，具体原因可以去看element-ui的 `submenu #handleMouseleave`。
+侧边栏的滚动分两种情况，一种是整体的滚动，这是用 `<el-scrollbar>` 做的。
+另一种是弹出菜单的滚动，这是用 `css` 做的，不用 `<el-scrollbar>` 是因为没办法避免bug，
+具体原因可以去看element-ui的 `<submenu> #handleMouseleave`。
 
 ## 全局页脚
 
