@@ -133,7 +133,6 @@
     import {isEmpty} from "@/utils"
     import {isInteger} from "@/utils/validate"
     import {mul, plus} from "@/utils/math"
-    import {timestamp2Date} from "@/filter"
 
     export default {
         name: "purchaseOrderDetail",
@@ -165,12 +164,13 @@
 
         computed: {
             headerDescription() {
+                const f = this.$options.filters.timestamp2Date
                 return [
                     {label: '创建人：', content: this.form.cname},
-                    {label: '创建时间：', content: timestamp2Date(this.form.ctime)},
+                    {label: '创建时间：', content: f(this.form.ctime)},
                     {label: '审核人：', content: this.form.vname},
-                    {label: '审核时间：', content: timestamp2Date(this.form.vtime)},
-                    {label: '完成时间：', content: timestamp2Date(this.form.ftime)}
+                    {label: '审核时间：', content: f(this.form.vtime)},
+                    {label: '完成时间：', content: f(this.form.ftime)}
                 ]
             },
             headerExtra() {

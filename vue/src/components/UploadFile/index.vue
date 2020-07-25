@@ -57,7 +57,6 @@
     * */
     import axios from 'axios'
     import {attachmentPrefix} from '@/config'
-    import {numberFormatter} from "@/filter"
     import {debounce, isEmpty} from '@/utils'
     import {elError} from "@/utils/message"
     import {isImage, isDoc, isPdf, isPpt, isRar, isXls, isTxt, isZip} from "@/utils/validate"
@@ -211,7 +210,7 @@
                 }
                 const maxSize = parseMaxSize(this.maxSize)
                 if (file.size > maxSize) {
-                    elError(`${file.name}的大小超出${numberFormatter(maxSize)}`)
+                    elError(`${file.name}的大小超出${this.$options.filters.numberFormatter(maxSize)}`)
                     return false
                 }
             },
