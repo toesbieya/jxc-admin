@@ -14,13 +14,16 @@
 
     export default {
         name: "userMessage",
+
         components: {MessageStream},
+
         data() {
             return {
                 tabs: [{label: '未读消息', name: 'unread'}, {label: '已读消息', name: 'read'}],
                 activeTab: 'unread',
             }
         },
+
         computed: {
             tabPosition() {
                 return this.$store.state.app.device === 'pc' ? 'left' : 'top'

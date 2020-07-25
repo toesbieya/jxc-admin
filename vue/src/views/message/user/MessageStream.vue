@@ -50,18 +50,22 @@
 
 <script>
     import tablePageMixin from '@/mixins/tablePageMixin'
-    import Empty from '@/components/Empty'
     import AutoHidden from "./AutoHidden"
+    import Empty from '@/components/Empty'
     import {search, read, readAll} from "@/api/message/user"
     import {isEmpty} from "@/utils"
 
     export default {
         name: "MessageStream",
+
         mixins: [tablePageMixin],
-        components: {Empty, AutoHidden},
+
+        components: {AutoHidden, Empty},
+
         props: {
             mode: String,
         },
+
         data() {
             return {
                 searchForm: {
@@ -69,6 +73,7 @@
                 },
             }
         },
+
         computed: {
             unreadCount() {
                 return this.$store.state.message.unreadCount
@@ -77,19 +82,24 @@
                 return this.mode === 'unread' && this.unreadCount > 0
             }
         },
+
         watch: {
             mode() {
                 this.search()
             }
         },
+
         methods: {
             search() {
                 if (this.config.loading) return
+                const unread = this.mode === 'unread'
+                const currentMode = this.mode
                 this.tableData = []
                 this.config.loading = true
-                search({...this.searchForm, unread: this.mode === 'unread'})
-                    .then(({list, total, data}) => {
-                        !isEmpty(data) && this.$store.commit('message/unreadCount', data)
+                search({...this.searchForm, unread})
+                    .then(({list, total}) => {
+                        if (this.mode !== currentMode) return
+                        unread && this.$store.commit('message/unreadCount', total)
                         this.searchForm.total = total
                         this.tableData = this.transformList(list)
                     })
