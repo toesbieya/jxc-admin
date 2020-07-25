@@ -40,7 +40,9 @@
 
         computed: {
             tree() {
-                return this.$store.state.dataCache.categoryTree
+                const arr = this.$store.state.dataCache.categoryTree
+                this.addDisabledAttr(arr)
+                return arr
             },
             selectableCategories() {
                 return this.$store.state.dataCache.categories.filter(i => i.type === 1)
@@ -50,12 +52,15 @@
         methods: {
             init() {
                 if (this.tree.length === 0) {
-                    getAll()
-                        .then(data => {
-                            data.forEach(i => i._disabled = i.type === 0)
-                            this.$store.commit('dataCache/categories', data)
-                        })
+                    getAll().then(data => this.$store.commit('dataCache/categories', data))
                 }
+            },
+
+            addDisabledAttr(arr) {
+                arr.forEach(i => {
+                    i._disabled = i.type !== 1
+                    i.children && this.addDisabledAttr(i.children)
+                })
             },
 
             change(v) {
