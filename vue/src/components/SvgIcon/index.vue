@@ -7,14 +7,8 @@
         functional: true,
 
         props: {
-            icon: {
-                type: String,
-                required: true
-            },
-            className: {
-                type: String,
-                default: ''
-            }
+            icon: String,
+            className: String
         },
 
         render(h, context) {

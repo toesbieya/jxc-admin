@@ -4,14 +4,14 @@
             v-bind="$props"
             v-on="$listeners"
             :visible="value"
-            custom-class="dialog-form"
+            custom-class="form-dialog"
     >
         <slot slot="title" name="title">{{title}}</slot>
 
-        <div class="dialog-form-container">
+        <div class="form-dialog-container">
             <loading-mask :show="loading"/>
             <el-scrollbar>
-                <div class="dialog-form-body">
+                <div class="form-dialog-body">
                     <slot/>
                 </div>
                 <div style="margin-bottom: 17px"/>
@@ -42,16 +42,16 @@
 </script>
 
 <style lang="scss">
-    .dialog-form {
+    .form-dialog {
         .el-dialog__body {
             padding: 0;
         }
 
-        .dialog-form-container {
+        .form-dialog-container {
             position: relative;
             width: 100%;
 
-            .dialog-form-body {
+            .form-dialog-body {
                 padding: 24px 24px 0
             }
 

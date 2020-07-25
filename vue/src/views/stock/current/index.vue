@@ -1,18 +1,19 @@
 <template>
-    <el-row type="flex">
-        <el-card class="card-container max-view-height" style="width: 250px;margin-right: 15px">
-            <el-input
-                    v-model="temp.filter"
-                    size="small"
-                    placeholder="筛选分类"
-                    clearable
-                    style="margin-bottom: 10px"
-                    @input="filter"
-            />
-            <category-tree ref="tree" :filter-node-method="filterNode" @node-click="nodeClick"/>
-        </el-card>
+    <el-card>
+        <extra-area>
+            <template v-slot:extra>
+                <el-input
+                        v-model="temp.filter"
+                        size="small"
+                        placeholder="筛选分类"
+                        clearable
+                        suffix-icon="el-icon-search"
+                        style="margin-bottom: 10px"
+                        @input="filter"
+                />
+                <category-tree ref="tree" :filter-node-method="filterNode" @node-click="nodeClick"/>
+            </template>
 
-        <el-card style="width: calc(100% - 250px)">
             <search-form>
                 <search-form-item label="商品分类：">
                     <el-input :value="temp.cname" maxlength="100" clearable @clear="clearCidSearch"/>
@@ -40,16 +41,14 @@
             </el-row>
 
             <el-row v-loading="config.loading" class="table-container">
-                <abstract-table :data="tableData" :highlight-current-row="false" show-summary :summary-method="summary">
+                <abstract-table :data="tableData" :highlight-current-row="false" show-summary
+                                :summary-method="summary">
                     <el-table-column align="center" label="#" type="index" width="80"/>
-                    <el-table-column align="center" label="商品分类" prop="cname" show-overflow-tooltip/>
+                    <el-table-column align="center" label="商品分类">
+                        <el-link slot-scope="{row}" @click="more(row)">{{row.cname}}</el-link>
+                    </el-table-column>
                     <el-table-column align="center" label="库存数量" prop="total_num" show-overflow-tooltip/>
                     <el-table-column align="center" label="总 值" prop="total_price" show-overflow-tooltip/>
-                    <el-table-column align="center" label="操作">
-                        <template v-slot="{row}">
-                            <el-button size="small" type="primary" @click="more(row)">详细</el-button>
-                        </template>
-                    </el-table-column>
                 </abstract-table>
 
                 <el-pagination
@@ -61,17 +60,18 @@
                         @current-change="pageChange"
                 />
             </el-row>
-        </el-card>
+        </extra-area>
 
         <detail-dialog v-model="detailDialog" :title="title" :cid="cid"/>
-    </el-row>
+    </el-card>
 </template>
 
 <script>
-    import SearchForm from "@/components/SearchForm"
-    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import CategoryTree from '@/bizComponents/CategoryTree'
     import DetailDialog from "./DetailDialog"
+    import ExtraArea from '@/components/ExtraArea'
+    import SearchForm from "@/components/SearchForm"
+    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
     import {baseUrl, search} from "@/api/stock/current"
     import {isEmpty, debounce} from "@/utils"
     import {plus} from "@/utils/math"
@@ -84,7 +84,7 @@
 
         mixins: [tableMixin],
 
-        components: {SearchForm, SearchFormItem, CategoryTree, DetailDialog},
+        components: {CategoryTree, DetailDialog, ExtraArea, SearchForm, SearchFormItem},
 
         data() {
             return {
@@ -143,7 +143,7 @@
             },
 
             filter(v) {
-                this.$refs.tree.$refs.tree.filter(v)
+                this.$refs.tree.filter(v)
             },
 
             mergeSearchForm() {

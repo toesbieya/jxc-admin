@@ -25,7 +25,14 @@
             }
         },
 
+        methods: {
+            filter(v){
+                this.$refs.tree.filter(v)
+            }
+        },
+
         mounted() {
+            if (this.data.length > 0) return
             getAll()
                 .then(data => this.$store.commit('dataCache/categories', data))
                 .finally(() => this.loading = false)

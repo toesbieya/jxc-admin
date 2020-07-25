@@ -25,14 +25,8 @@
         props: {
             value: String,
             readonly: Boolean,
-            height: {
-                type: String,
-                default: '400px'
-            },
-            width: {
-                type: String,
-                default: '100%'
-            }
+            height: {type: String, default: '400px'},
+            width: {type: String, default: '100%'}
         },
 
         data() {

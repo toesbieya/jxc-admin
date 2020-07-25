@@ -19,13 +19,13 @@
     import VMain from './components/Main'
     import VHeader from './components/Header'
     import VSidebar from './components/Sidebar'
-    import ResizeHandler from './mixin/ResizeHandler'
-    import {isEmpty} from "@/utils"
+    import offlineMixin from "@/layout/mixin/offline"
+    import resizeMixin from './mixin/resize'
 
     export default {
         name: 'Layout',
 
-        mixins: [ResizeHandler],
+        mixins: [offlineMixin, resizeMixin],
 
         components: {VMain, VSidebar, VHeader},
 
@@ -33,12 +33,6 @@
             ...mapState('app', ['device', 'hasHeader']),
 
             ...mapState('setting', ['useTagsView', 'sidebarCollapse']),
-
-            ...mapState('socket', ['online']),
-
-            ...mapState('user', {
-                isLogin: state => !isEmpty(state.id, state.token)
-            }),
 
             containerClass() {
                 return {
@@ -49,18 +43,8 @@
                 }
             },
 
-            showOfflineTip() {
-                return !this.online && this.isLogin
-            },
-
             showSidebarMask() {
                 return !this.sidebarCollapse && this.device === 'mobile'
-            }
-        },
-
-        watch: {
-            showOfflineTip(v) {
-                v ? this.$bottomTip('与服务器失去连接') : this.$bottomTip.close()
             }
         },
 

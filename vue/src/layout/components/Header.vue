@@ -1,13 +1,12 @@
 <template>
     <header
-            :class="{'hide-header':hideHeader}"
-            class="header-container"
-            @mouseenter="() => valueCtrl('mouseOutside',false)"
-            @mouseleave="() => valueCtrl('mouseOutside',true)"
+            :class="{'header-container':true,'hide-header':hideHeader}"
+            @mouseenter="() => this.mouseOutside = false"
+            @mouseleave="() => this.mouseOutside = true"
     >
-        <v-navbar @menu-show="e => valueCtrl('navbarMenuShow',e)"/>
+        <v-navbar @menu-show="e => this.navbarMenuShow = e"/>
 
-        <tags-view v-if="useTagsView" @menu-show="e => valueCtrl('tagsViewMenuShow',e)"/>
+        <tags-view v-if="useTagsView" @menu-show="e => this.tagsViewMenuShow = e"/>
     </header>
 </template>
 
@@ -42,6 +41,7 @@
         },
 
         watch: {
+            //多页签停用时清除所有页面缓存
             useTagsView(v) {
                 !v && this.$store.dispatch('tagsView/delAllViews')
             },
@@ -53,10 +53,6 @@
         },
 
         methods: {
-            valueCtrl(key, value) {
-                this[key] = value
-            },
-
             moveEvent(e) {
                 if (e.clientY <= 15) this.mouseOutside = false
             },

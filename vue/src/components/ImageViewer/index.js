@@ -27,7 +27,8 @@ const image = function ({index = 0, urlList}) {
 }
 
 image.close = function () {
-
+    if (!insertEl) return
+    window.lgData[insertEl.getAttribute('lg-uid')].destroy(true)
 }
 
 export default image
