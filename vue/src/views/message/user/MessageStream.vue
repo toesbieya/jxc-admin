@@ -53,7 +53,6 @@
     import AutoHidden from "./AutoHidden"
     import Empty from '@/components/Empty'
     import {search, read, readAll} from "@/api/message/user"
-    import {isEmpty} from "@/utils"
 
     export default {
         name: "MessageStream",

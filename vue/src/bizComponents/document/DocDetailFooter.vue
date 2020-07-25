@@ -4,7 +4,7 @@
             <slot name="left"/>
         </div>
         <div class="detail-page-footer-right">
-            <slot name="right"/>
+            <slot/>
         </div>
     </div>
 </template>

@@ -5,6 +5,14 @@
         background: #fff;
         border-bottom: 1px solid #e8eaec;
 
+        > .el-page-header {
+            padding: 0 0 24px 0;
+
+            .el-page-header__left:hover {
+                color: $--color-primary;
+            }
+        }
+
         > .el-row {
             display: flex;
             width: 100%;
@@ -13,20 +21,6 @@
             @media (max-width: 768px) {
                 display: block;
             }
-        }
-
-        &-close-btn {
-            font-size: 18px;
-        }
-
-        &-title {
-            margin-left: 5px;
-            font-weight: 500;
-            font-size: 20px;
-            line-height: 42px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
         }
 
         &-left {

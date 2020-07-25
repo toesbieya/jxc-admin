@@ -1,14 +1,7 @@
 <template functional>
     <div class="detail-page-header">
-        <el-row>
-            <el-button
-                    class="detail-page-header-close-btn"
-                    type="text"
-                    icon="el-icon-arrow-left"
-                    @click="listeners.close"
-            />
-            <span class="detail-page-header-title">{{props.title}}</span>
-        </el-row>
+        <el-page-header @back="listeners.close" :content="props.title"/>
+
         <el-row>
             <el-row class="detail-page-header-left">
                 <el-col v-for="i in props.description" :key="i.label" :xs="24" :sm="12">

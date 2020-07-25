@@ -9,27 +9,13 @@ import router from '@/router'
 import '@/assets/icons'
 import '@/utils/errorLog'
 import '@/directive'
-import * as filters from './filter'
-import BottomTip from '@/components/BottomTip'
-import Guide from '@/components/Guide'
-import ImageViewer from '@/components/ImageViewer'
-import PuzzleVerify from '@/components/PuzzleVerify'
-import Signature from '@/components/SignautreBoard'
+import filters from './filter'
+import globalMethods from '@/globalMethods'
 
 Vue.use(Element)
 Vue.use(ElementPersonal)
-
-//注册过滤器
-Object.keys(filters).forEach(key => {
-    Vue.filter(key, filters[key])
-})
-
-//注册插件
-Vue.prototype.$bottomTip = BottomTip
-Vue.prototype.$guide = Guide
-Vue.prototype.$image = ImageViewer
-Vue.prototype.$puzzleVerify = PuzzleVerify
-Vue.prototype.$signature = Signature
+Vue.use(filters)
+Vue.use(globalMethods)
 
 Vue.config.productionTip = false
 

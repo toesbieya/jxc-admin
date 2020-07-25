@@ -1,5 +1,5 @@
 <template>
-    <el-card header="单据历史" style="margin-top: 16px">
+    <collapse-card header="单据历史" style="margin-top: 16px">
         <abstract-table v-loading="loading" :data="data" :highlight-current-row="false">
             <el-table-column align="center" label="#" type="index" width="80"/>
             <el-table-column align="center" label="操作人" prop="uname"/>
@@ -7,18 +7,19 @@
             <el-table-column align="center" label="时 间" prop="time"/>
             <el-table-column align="center" label="备注" prop="info"/>
         </abstract-table>
-    </el-card>
+    </collapse-card>
 </template>
 
 <script>
     import AbstractTable from "@/components/AbstractTable"
+    import CollapseCard from '@/components/CollapseCard'
     import {getDocumentHistoryByPid} from "@/api/documentHistory"
     import {isEmpty, timeFormat} from "@/utils"
 
     export default {
         name: "DocHistory",
 
-        components: {AbstractTable},
+        components: {AbstractTable, CollapseCard},
 
         props: {id: String},
 

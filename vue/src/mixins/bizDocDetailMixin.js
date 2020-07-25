@@ -1,6 +1,7 @@
 import AbstractForm from '@/components/AbstractForm'
 import AbstractFormItem from "@/components/AbstractForm/AbstractFormItem"
 import AbstractTable from "@/components/AbstractTable"
+import CollapseCard from '@/components/CollapseCard'
 import DocDetailHeader from "@/bizComponents/document/DocDetailHeader"
 import DocDetailFooter from "@/bizComponents/document/DocDetailFooter"
 import DocHistory from '@/bizComponents/document/DocHistory'
@@ -18,6 +19,7 @@ export default {
         AbstractForm,
         AbstractFormItem,
         AbstractTable,
+        CollapseCard,
         DocDetailHeader,
         DocDetailFooter,
         DocHistory,

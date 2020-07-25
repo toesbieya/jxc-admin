@@ -8,20 +8,20 @@
         />
 
         <abstract-form :model="form" :rules="rules">
-            <el-card header="流程进度">
+            <collapse-card header="流程进度">
                 <doc-steps :status="form.status" :finish="form.finish" :type="type"/>
-            </el-card>
+            </collapse-card>
 
-            <el-card header="基础信息">
+            <collapse-card header="基础信息">
                 <abstract-form-item label="销售订单：" prop="pid">
                     <el-input v-if="canSave" :value="form.pid" readonly>
                         <el-button slot="append" @click="parentDialog=true">选择</el-button>
                     </el-input>
                     <template v-else>{{form.pid}}</template>
                 </abstract-form-item>
-            </el-card>
+            </collapse-card>
 
-            <el-card header="出库商品">
+            <collapse-card header="出库商品">
                 <abstract-table :data="form.data" :highlight-current-row="false">
                     <el-table-column align="center" type="expand">
                         <el-table slot-scope="{row}" :data="row.data" border show-summary
@@ -54,18 +54,18 @@
                     <el-table-column align="center" label="出库数量" prop="num" width="150"/>
                     <el-table-column align="center" label="订单剩余未出库数量" prop="remain_num" width="250"/>
                 </abstract-table>
-            </el-card>
+            </collapse-card>
 
-            <el-card header="附件">
+            <collapse-card header="附件">
                 <upload-file
                         :file-list="form.imageList"
                         :disabled="!canSave"
                         @remove="removeUpload"
                         @success="uploadSuccess"
                 />
-            </el-card>
+            </collapse-card>
 
-            <el-card header="备注">
+            <collapse-card header="备注">
                 <el-input
                         v-model="form.remark"
                         :rows="4"
@@ -74,20 +74,18 @@
                         show-word-limit
                         type="textarea"
                 />
-            </el-card>
+            </collapse-card>
         </abstract-form>
 
         <doc-history :id="form.id"/>
 
         <doc-detail-footer>
-            <template v-slot:right>
-                <el-button plain size="small" @click="close">关 闭</el-button>
-                <el-button v-if="canSave" size="small" type="primary" @click="save">保 存</el-button>
-                <el-button v-if="canCommit" size="small" type="primary" @click="commit">提 交</el-button>
-                <el-button v-if="canWithdraw" size="small" type="danger" @click="withdraw">撤 回</el-button>
-                <el-button v-if="canPass" size="small" type="success" @click="pass">通 过</el-button>
-                <el-button v-if="canReject" size="small" type="danger" @click="reject">驳 回</el-button>
-            </template>
+            <el-button plain size="small" @click="close">关 闭</el-button>
+            <el-button v-if="canSave" size="small" type="primary" @click="save">保 存</el-button>
+            <el-button v-if="canCommit" size="small" type="primary" @click="commit">提 交</el-button>
+            <el-button v-if="canWithdraw" size="small" type="danger" @click="withdraw">撤 回</el-button>
+            <el-button v-if="canPass" size="small" type="success" @click="pass">通 过</el-button>
+            <el-button v-if="canReject" size="small" type="danger" @click="reject">驳 回</el-button>
         </doc-detail-footer>
 
         <order-selector v-model="parentDialog" @select="selectParent"/>
@@ -97,16 +95,16 @@
 </template>
 
 <script>
+    import bizDocDetailMixin from "@/mixins/bizDocDetailMixin"
     import OrderSelector from "./components/OrderSelector"
     import StockSelector from "./components/StockSelector"
-    import bizDocDetailMixin from "@/mixins/bizDocDetailMixin"
     import {getDetailById as getStockDetail} from "@/api/stock/current"
     import {getSubById as getParentSubById} from "@/api/document/sell/order"
     import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/document/sell/outbound"
     import {isEmpty} from "@/utils"
     import {plus, sub} from "@/utils/math"
-    import {isInteger} from "@/utils/validate"
     import {elAlert} from "@/utils/message"
+    import {isInteger} from "@/utils/validate"
 
     export default {
         name: "sellOutboundDetail",

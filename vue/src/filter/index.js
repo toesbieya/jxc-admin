@@ -5,7 +5,7 @@ export function timestamp2Date(timestamp) {
     return timeFormat(null, new Date(timestamp))
 }
 
-/*经过多长时间，单位秒，最低时间为分钟*/
+//经过多长时间，单位秒，最低时间为分钟
 export function timePass(time) {
     if (!time || isNaN(time)) return 'NaN'
     if (time < 3600) return ~~(time / 60) + ' 分'
@@ -58,4 +58,10 @@ export function toThousandFilter(num) {
 export function uppercaseFirst(string) {
     if (isEmpty(string)) return ''
     return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
+export default function (Vue) {
+    Object
+        .entries({timestamp2Date, timePass, timeAgo, numberFormatter, toThousandFilter, uppercaseFirst})
+        .forEach(([key, value]) => Vue.filter(key, value))
 }
