@@ -95,11 +95,7 @@ public class MsgService {
     public PageResult<Msg> searchPersonal(MsgPersonalSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
         List<Msg> list = vo.isUnread() ? msgMapper.getUnreadByUser(vo) : msgMapper.getReadByUser(vo);
-        PageResult<Msg> result = new PageResult<>(list);
-        if (vo.isUnread()) {
-            result.setData(msgMapper.getUnreadCountByUser(vo));
-        }
-        return result;
+        return new PageResult<>(list);
     }
 
     public Result read(UserVo user, int id) {

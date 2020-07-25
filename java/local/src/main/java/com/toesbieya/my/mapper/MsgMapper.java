@@ -26,6 +26,4 @@ public interface MsgMapper {
     List<Msg> getReadByUser(MsgPersonalSearch search);
 
     List<Msg> getUnreadByUser(MsgPersonalSearch search);
-
-    Integer getUnreadCountByUser(MsgPersonalSearch search);
 }

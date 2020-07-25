@@ -34,11 +34,4 @@
         <include refid="unreadCondition"/>
         order by id desc
     </select>
-
-    <select id="getUnreadCountByUser" parameterType="cn.toesbieya.jxc.message.model.vo.MsgPersonalSearch"
-            resultType="java.lang.Integer">
-        select count(1)
-        from msg
-        <include refid="unreadCondition"/>
-    </select>
 </mapper>
