@@ -589,7 +589,6 @@
             },
 
             resetInputHeight() {
-                if (!this.filterable) return
                 this.$nextTick(() => {
                     if (!this.$refs.reference) return
                     let inputChildNodes = this.$refs.reference.$el.childNodes

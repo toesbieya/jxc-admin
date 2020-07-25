@@ -1,6 +1,10 @@
 <template>
-    <div>
-        <tree-select v-model="value" :data="data" multiple filterable :filter-method="filter"/>
+    <div style="width: 300px">
+        <div class="tip-row">单选</div>
+        <tree-select v-model="single" :data="data" filterable :filter-method="filter"/>
+
+        <div class="tip-row">多选</div>
+        <tree-select v-model="multiple" :data="data" multiple filterable :filter-method="filter"/>
     </div>
 </template>
 
@@ -14,7 +18,8 @@
 
         data() {
             return {
-                value: [],
+                single: '',
+                multiple: [],
                 data: [
                     {id: 1, label: '一级 1', children: [{id: 2, label: '二级 1-1'}, {id: 3, label: '二级 1-2'}]},
                     {id: 4, label: '一级 2', children: [{id: 5, label: '二级 2-1'}]},
