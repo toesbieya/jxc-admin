@@ -35,9 +35,9 @@
 <style lang="scss" scoped>
     @import "~@/assets/styles/variables.scss";
 
-    .app-breadcrumb.el-breadcrumb {
-        display: inline-block;
-        line-height: 50px;
+    .app-breadcrumb {
+        margin-left: 8px;
+        line-height: $nav-height;
 
         .no-redirect {
             color: $--color-gray;

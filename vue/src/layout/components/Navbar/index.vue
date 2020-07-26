@@ -1,20 +1,24 @@
 <template>
     <nav class="navbar">
-        <hamburger :is-active="!sidebarCollapse" @click="clickHamburger"/>
+        <div>
+            <hamburger class="navbar-item" :active="!sidebarCollapse" @click="sidebarCtrl"/>
 
-        <breadcrumb v-if="showBreadcrumb"/>
+            <div class="navbar-item" @click="refresh">
+                <i class="el-icon-refresh-right navbar-icon" title="刷新"/>
+            </div>
 
-        <div class="right-menu">
-            <search id="header-search" class="right-menu-item hidden-xs"/>
+            <breadcrumb v-if="showBreadcrumb"/>
+        </div>
 
-            <bell class="right-menu-item"/>
+        <div>
+            <bell class="navbar-item"/>
 
-            <div class="setting-btn right-menu-item hidden-xs" @click="settingDrawer=true">
+            <div class="setting-btn navbar-item hidden-xs" @click="settingDrawer=true">
                 <i class="el-icon-s-operation navbar-icon" title="个性设置"/>
             </div>
 
             <el-dropdown
-                    class="avatar-container right-menu-item"
+                    class="navbar-item"
                     trigger="click"
                     @visible-change="$emit('menu-show',$event)"
             >
@@ -78,8 +82,12 @@
         },
 
         methods: {
-            clickHamburger() {
+            sidebarCtrl() {
                 this.$store.commit('setting/sidebarCollapse', !this.sidebarCollapse)
+            },
+
+            refresh() {
+                this.$router.replace({path: `/redirect${this.$route.fullPath}`})
             },
 
             logout() {

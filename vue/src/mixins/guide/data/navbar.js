@@ -8,11 +8,11 @@ const steps = [
         content: '这是搜索栏，可以根据关键字搜索菜单',
     },
     {
-        element: '.setting-btn.right-menu-item',
+        element: '.setting-btn.navbar-item',
         content: '这是个性设置按钮，可以根据自己喜好进行一些设置',
     },
     {
-        element: '.avatar-container.right-menu-item',
+        element: '.avatar-container.navbar-item',
         content: '这是用户中心',
     },
     {

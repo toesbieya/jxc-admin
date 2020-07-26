@@ -1,56 +1,47 @@
 @import "~@/assets/styles/variables.scss";
 
 .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
     height: $nav-height;
+    padding: 0 12px;
     transition: height .3s ease-in-out;
-    overflow: hidden;
     position: relative;
     z-index: 9;
-    background: #fff;
+    background-color: #fff;
     box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+
+    > div {
+        display: flex;
+        height: 100%;
+    }
 
     .navbar-icon {
         font-size: 18px;
-        cursor: pointer;
-        vertical-align: middle;
     }
 
-    .right-menu {
-        float: right;
-        height: 100%;
-        line-height: $nav-height;
+    .navbar-item {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        color: #5a5e66;
+        transition: background .3s;
+        cursor: pointer;
 
-        &:focus {
-            outline: none;
+        &:hover {
+            background: rgba(0, 0, 0, .025)
         }
+    }
 
-        .right-menu-item {
-            display: inline-block;
-            position: relative;
-            padding: 0 8px;
-            height: 100%;
-            font-size: 0;
-            color: #5a5e66;
-            vertical-align: text-bottom;
-            transition: background .3s;
-            cursor: pointer;
+    .avatar-wrapper {
+        display: flex;
+        align-items: center;
 
-            &:hover:not(#header-search) {
-                background: rgba(0, 0, 0, .025)
-            }
-        }
-
-        .avatar-container {
-            .avatar-wrapper {
-                display: flex;
-                align-items: center;
-                height: 100%;
-
-                span {
-                    margin-right: 5px;
-                    font-size: 18px;
-                }
-            }
+        span {
+            margin-right: 5px;
+            font-size: 18px;
         }
     }
 }
