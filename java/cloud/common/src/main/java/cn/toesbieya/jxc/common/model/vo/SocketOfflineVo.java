@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SocketOfflineVo {
-    //用户的sessionKey
-    private String key;
+    //用户ID
+    private Integer uid;
 
     //断开时间
     private Long time;

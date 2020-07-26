@@ -4,7 +4,6 @@ import cn.toesbieya.jxc.common.constant.SessionConstant;
 import cn.toesbieya.jxc.common.constant.SocketConstant;
 import cn.toesbieya.jxc.common.model.vo.SocketOfflineVo;
 import cn.toesbieya.jxc.common.utils.RedisUtil;
-import cn.toesbieya.jxc.common.utils.SessionUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -52,9 +51,7 @@ public class SessionTask implements CommandLineRunner {
                         RedisUtil.del(sessionKey);
 
                         //删除离线表信息
-                        String token = sessionKey.replace(SessionConstant.REDIS_NAMESPACE, "");
-                        Integer uid = SessionUtil.getUidFromToken(token);
-                        RedisUtil.hdel(SocketConstant.REDIS_OFFLINE_USER, String.valueOf(uid));
+                        RedisUtil.hdel(SocketConstant.REDIS_OFFLINE_USER, sessionKey);
                     }
                 }
             });

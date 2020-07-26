@@ -5,7 +5,6 @@ import com.toesbieya.my.constant.SessionConstant;
 import com.toesbieya.my.constant.SocketConstant;
 import com.toesbieya.my.model.vo.SocketOfflineVo;
 import com.toesbieya.my.utils.RedisUtil;
-import com.toesbieya.my.utils.SessionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Async;
@@ -52,9 +51,7 @@ public class SessionTask {
                         RedisUtil.del(sessionKey);
 
                         //删除离线表信息
-                        String token = sessionKey.replace(SessionConstant.REDIS_NAMESPACE, "");
-                        Integer uid = SessionUtil.getUidFromToken(token);
-                        RedisUtil.hdel(SocketConstant.REDIS_OFFLINE_USER, String.valueOf(uid));
+                        RedisUtil.hdel(SocketConstant.REDIS_OFFLINE_USER, sessionKey);
                     }
                 }
             });

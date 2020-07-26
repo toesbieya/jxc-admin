@@ -95,7 +95,7 @@ public class RedisEventListenerConfig {
                     String token = channel.replace(expireTopic, "");
                     Integer uid = SessionUtil.getUidFromToken(token);
 
-                    server.logout(uid, "登陆信息过期，请重新登陆");
+                    server.logout(uid, token, "登陆信息过期，请重新登陆");
 
                     //删除离线表信息
                     RedisUtil.hdel(SocketConstant.REDIS_OFFLINE_USER, SessionConstant.REDIS_NAMESPACE + token);

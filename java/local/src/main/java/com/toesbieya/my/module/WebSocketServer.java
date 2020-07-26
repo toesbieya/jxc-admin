@@ -15,6 +15,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,12 @@ public class WebSocketServer {
 
     public void sendEvent(String event, Integer uid, Object data, BiConsumer<UserObject, SocketIOClient> consumer) {
         UserObject obj = socketMap.get(uid);
+        if (obj != null) {
+            sendEvent(event, obj, data, consumer);
+        }
+    }
 
-        if (obj == null) return;
-
+    public void sendEvent(String event, UserObject obj, Object data, BiConsumer<UserObject, SocketIOClient> consumer) {
         SocketIOClient client = server.getClient(obj.getUuid());
 
         if (client == null) return;
@@ -61,8 +65,17 @@ public class WebSocketServer {
     }
 
     public void logout(Integer uid, String msg) {
-        sendEvent(SocketConstant.EVENT_LOGOUT, uid, msg, (obj, client) -> {
-            SessionUtil.remove(obj.getToken());
+        logout(uid, null, msg);
+    }
+
+    public void logout(Integer uid, String token, String msg) {
+        UserObject obj = socketMap.get(uid);
+
+        //如果传入token且token不同说明不是当前登陆的用户，直接返回
+        if (obj == null || !StringUtils.isEmpty(token) && !obj.getToken().equals(token)) return;
+
+        sendEvent(SocketConstant.EVENT_LOGOUT, obj, msg, (o, client) -> {
+            SessionUtil.remove(o.getToken());
             client.disconnect();
         });
     }
@@ -70,11 +83,13 @@ public class WebSocketServer {
     @OnConnect
     public void onConnect(SocketIOClient client) {
         UserObject obj = new UserObject(client);
+        String sessionKey = obj.getKey();
         Integer uid = obj.getUid();
 
         //用户session是否过期？
-        if (!RedisUtil.exist(obj.getKey())) {
-            logout(uid, "登陆信息过期，请重新登陆");
+        if (!RedisUtil.exist(sessionKey)) {
+            client.sendEvent(SocketConstant.EVENT_LOGOUT, "登陆信息过期，请重新登陆");
+            client.disconnect();
             return;
         }
 
@@ -88,7 +103,7 @@ public class WebSocketServer {
         //放入在线用户ID集合
         RedisUtil.sadd(SocketConstant.REDIS_ONLINE_USER, uid);
         //移除离线表的信息
-        RedisUtil.hdel(SocketConstant.REDIS_OFFLINE_USER, String.valueOf(uid));
+        RedisUtil.hdel(SocketConstant.REDIS_OFFLINE_USER, sessionKey);
     }
 
     @OnDisconnect
@@ -114,8 +129,8 @@ public class WebSocketServer {
         if (RedisUtil.exist(sessionKey)) {
             RedisUtil.hset(
                     SocketConstant.REDIS_OFFLINE_USER,
-                    String.valueOf(uid),
-                    new SocketOfflineVo(sessionKey, now)
+                    sessionKey,
+                    new SocketOfflineVo(uid, now)
             );
         }
     }
