@@ -23,13 +23,13 @@
                 </div>
             </el-row>
             <el-row>
-                <el-button size="small" @click="dialog=true">默认按钮（点击打开dialog）</el-button>
+                <el-button size="small" @click="dialog=true">默认按钮（点击打开dialog</el-button>
                 <el-button size="small" plain type="dashed">dashed按钮</el-button>
                 <el-button size="small" type="primary">主要按钮</el-button>
-                <el-button size="small" type="success">成功按钮</el-button>
-                <el-button size="small" type="info">信息按钮</el-button>
-                <el-button size="small" type="warning">警告按钮</el-button>
-                <el-button size="small" type="danger">危险按钮</el-button>
+                <el-button size="small" type="success" @click="$message.success('成功消息')">成功按钮</el-button>
+                <el-button size="small" type="info" @click="$message.info('信息消息')">信息按钮</el-button>
+                <el-button size="small" type="warning" @click="$message.warning('警告消息')">警告按钮</el-button>
+                <el-button size="small" type="danger" @click="$message.error('错误消息')">危险按钮</el-button>
             </el-row>
             <el-row class="table-container">
                 <liner-progress show/>
@@ -39,13 +39,6 @@
                     <el-table-column label="电话" prop="tel"/>
                     <el-table-column label="年龄" prop="age"/>
                 </abstract-table>
-            </el-row>
-            <el-row style="min-height: 50px">
-                <el-tree
-                        :data="treeData"
-                        :expand-on-click-node="false"
-                        highlight-current
-                />
             </el-row>
         </el-card>
 
@@ -76,12 +69,6 @@
                     {name: '老王', address: '中国', tel: '13232423232', age: 18},
                     {name: '老王', address: '中国', tel: '13232423232', age: 18},
                     {name: '老王', address: '中国', tel: '13232423232', age: 18}
-                ],
-                treeData: [
-                    {
-                        id: 1, label: '测试',
-                        children: [{id: 2, label: '测试1'}, {id: 3, label: '测试2'}]
-                    }
                 ]
             }
         },
@@ -91,9 +78,8 @@
                 setTimeout(() => {
                     this.$notify({
                         title: type,
-                        message: '不会自动关闭',
-                        type,
-                        duration: 0
+                        message: '提示信息',
+                        type
                     })
                 }, time)
             }

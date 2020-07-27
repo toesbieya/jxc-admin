@@ -1,0 +1,29 @@
+.form-dialog {
+    .el-dialog__body {
+        padding: 0;
+    }
+
+    .form-dialog-container {
+        position: relative;
+        width: 100%;
+
+        .form-dialog-body {
+            padding: 24px 24px 0
+        }
+
+        .el-form {
+            padding: 0;
+        }
+
+        .el-upload.el-upload--picture-card {
+            height: 100px;
+            width: 100px;
+            line-height: 105px;
+        }
+
+        .el-upload-list .el-upload-list__item {
+            height: 100px;
+            width: 100px;
+        }
+    }
+}
