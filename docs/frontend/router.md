@@ -87,7 +87,7 @@ const whiteList = transformWhiteList(['/login', '/register', '/404', '/403'])
 ```js
 function lazyLoadView(component) {
     const AsyncHandler = () => ({component, loading: Skeleton})
-    return Promise.resolve({
+    return () => Promise.resolve({
         functional: true,
         render(h, {data, children}) {
             return h(AsyncHandler, data, children)
@@ -96,7 +96,7 @@ function lazyLoadView(component) {
 }
 
 //将路由配置中的component项改为以下形式
-component: () => lazyLoadView(import(...))
+component: lazyLoadView(import(...))
 ```
 
 关于 `AsyncHandler` 的更多选项，可以查看[官方文档](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%A4%84%E7%90%86%E5%8A%A0%E8%BD%BD%E7%8A%B6%E6%80%81)
