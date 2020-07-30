@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.RecAttachmentMapper">
-    <select id="getByPid" resultType="com.toesbieya.my.model.entity.RecAttachment">
+<mapper namespace="cn.toesbieya.jxc.mapper.RecAttachmentMapper">
+    <select id="getByPid" resultType="cn.toesbieya.jxc.model.entity.RecAttachment">
         select *
         from rec_attachment
         where pid = #{pid}
@@ -13,7 +13,7 @@
         where pid = #{pid}
     </select>
 
-    <insert id="add" parameterType="com.toesbieya.my.model.entity.RecAttachment">
+    <insert id="add" parameterType="cn.toesbieya.jxc.model.entity.RecAttachment">
         insert into rec_attachment (pid, name, time, sort, url,size)
         VALUES
         <foreach collection="list" item="i" separator=",">

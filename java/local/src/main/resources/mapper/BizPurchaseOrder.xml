@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.BizPurchaseOrderMapper">
+<mapper namespace="cn.toesbieya.jxc.mapper.BizPurchaseOrderMapper">
     <sql id="searchCondition">
         <if test="id!=null and id!=''">and id=#{id}</if>
         <if test="id_fuzzy!=null and id_fuzzy!=''">and id like "%"#{id_fuzzy}"%"</if>
@@ -19,26 +19,26 @@
         <if test="ftimeStart!=null">and ftime <![CDATA[ >= ]]> #{ftimeStart}</if>
         <if test="ftimeEnd!=null">and ftime <![CDATA[ <= ]]> #{ftimeEnd}</if>
     </sql>
-    <select id="getById" resultType="com.toesbieya.my.model.entity.BizPurchaseOrder">
+    <select id="getById" resultType="cn.toesbieya.jxc.model.entity.BizPurchaseOrder">
         select *
         from biz_purchase_order
         where id = #{id}
     </select>
-    <select id="getSubById" resultType="com.toesbieya.my.model.entity.BizPurchaseOrderSub">
+    <select id="getSubById" resultType="cn.toesbieya.jxc.model.entity.BizPurchaseOrderSub">
         select *
         from biz_purchase_order_sub
         where pid = #{id}
     </select>
-    <select id="search" resultType="com.toesbieya.my.model.entity.BizPurchaseOrder"
-            parameterType="com.toesbieya.my.model.vo.search.PurchaseOrderSearch">
+    <select id="search" resultType="cn.toesbieya.jxc.model.entity.BizPurchaseOrder"
+            parameterType="cn.toesbieya.jxc.model.vo.search.PurchaseOrderSearch">
         select *
         from biz_purchase_order
         where 1
         <include refid="searchCondition"/>
         order by ctime desc
     </select>
-    <select id="export" resultType="com.toesbieya.my.model.vo.export.PurchaseOrderExport"
-            parameterType="com.toesbieya.my.model.vo.search.PurchaseOrderSearch">
+    <select id="export" resultType="cn.toesbieya.jxc.model.vo.export.PurchaseOrderExport"
+            parameterType="cn.toesbieya.jxc.model.vo.search.PurchaseOrderSearch">
         select id,
         sname,
         cname,
@@ -55,7 +55,7 @@
         <include refid="searchCondition"/>
         order by ctime desc
     </select>
-    <insert id="insert" parameterType="com.toesbieya.my.model.entity.BizPurchaseOrder">
+    <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.BizPurchaseOrder">
         insert into biz_purchase_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
             id,sid,sname,cid,cname,ctime,finish,total,
@@ -76,14 +76,14 @@
             <if test="remark !=null and remark!=''">#{remark},</if>
         </trim>
     </insert>
-    <insert id="addSub" parameterType="com.toesbieya.my.model.entity.BizPurchaseOrderSub">
+    <insert id="addSub" parameterType="cn.toesbieya.jxc.model.entity.BizPurchaseOrderSub">
         INSERT INTO biz_purchase_order_sub(pid, cid, cname, num, price, remain_num)
         VALUES
         <foreach collection="list" item="i" separator=",">
             (#{i.pid},#{i.cid},#{i.cname},#{i.num},#{i.price},#{i.remain_num})
         </foreach>
     </insert>
-    <update id="update" parameterType="com.toesbieya.my.model.entity.BizPurchaseOrder">
+    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.BizPurchaseOrder">
         update biz_purchase_order
         set sid=#{sid},
             sname=#{sname},

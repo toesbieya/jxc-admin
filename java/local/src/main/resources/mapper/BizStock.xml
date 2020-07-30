@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.BizStockMapper">
+<mapper namespace="cn.toesbieya.jxc.mapper.BizStockMapper">
     <sql id="searchCondition">
         where 1
         <if test="id != null">
@@ -36,8 +36,8 @@
         and num > 0
     </sql>
 
-    <select id="search" parameterType="com.toesbieya.my.model.vo.search.StockSearch"
-            resultType="com.toesbieya.my.model.vo.result.StockSearchResult">
+    <select id="search" parameterType="cn.toesbieya.jxc.model.vo.search.StockSearch"
+            resultType="cn.toesbieya.jxc.model.vo.result.StockSearchResult">
         select cid,
                cname,
                sum(num) total_num,
@@ -47,7 +47,7 @@
         group by cid
     </select>
 
-    <select id="getDetail" resultType="com.toesbieya.my.model.entity.BizStock">
+    <select id="getDetail" resultType="cn.toesbieya.jxc.model.entity.BizStock">
         select *
         from biz_stock
         where cid in (${cids})
@@ -55,14 +55,14 @@
         order by cgddid desc, cgrkid desc
     </select>
 
-    <select id="getDetailById" resultType="com.toesbieya.my.model.entity.BizStock">
+    <select id="getDetailById" resultType="cn.toesbieya.jxc.model.entity.BizStock">
         select *
         from biz_stock
         where id in (${ids})
     </select>
 
-    <select id="export" parameterType="com.toesbieya.my.model.vo.search.StockSearch"
-            resultType="com.toesbieya.my.model.vo.export.StockExport">
+    <select id="export" parameterType="cn.toesbieya.jxc.model.vo.search.StockSearch"
+            resultType="cn.toesbieya.jxc.model.vo.export.StockExport">
         select a.cid,
                a.cname,
                a.total_num,
@@ -88,7 +88,7 @@
                 order by a.cid, b.cgddid desc, b.cgrkid desc
     </select>
 
-    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="com.toesbieya.my.model.entity.BizStock"
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="cn.toesbieya.jxc.model.entity.BizStock"
             useGeneratedKeys="true">
         insert into biz_stock
                 (cid, cname, num, price, ctime, cgrkid, cgddid)

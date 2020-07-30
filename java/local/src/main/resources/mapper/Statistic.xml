@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.StatisticMapper">
-    <select id="searchTotalProfit" resultType="com.toesbieya.my.model.entity.StatProfitTotal">
+<mapper namespace="cn.toesbieya.jxc.mapper.StatisticMapper">
+    <select id="searchTotalProfit" resultType="cn.toesbieya.jxc.model.entity.StatProfitTotal">
         select *
         from stat_profit_total
         where 1
@@ -9,7 +9,7 @@
         <if test="end!=null">and time <![CDATA[ <= ]]> #{end}</if>
     </select>
 
-    <select id="searchGoodsProfit" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
+    <select id="searchGoodsProfit" resultType="cn.toesbieya.jxc.model.entity.StatProfitGoods">
         select *
         from stat_profit_goods
         where 1
@@ -17,7 +17,7 @@
         <if test="end!=null">and time <![CDATA[ <= ]]> #{end}</if>
     </select>
 
-    <select id="searchFinishOrder" resultType="com.toesbieya.my.model.entity.StatFinishOrder">
+    <select id="searchFinishOrder" resultType="cn.toesbieya.jxc.model.entity.StatFinishOrder">
         select *
         from stat_finish_order
         where 1
@@ -25,7 +25,7 @@
         <if test="end!=null">and time <![CDATA[ <= ]]> #{end}</if>
     </select>
 
-    <select id="getHistoryTotalProfitGoods" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
+    <select id="getHistoryTotalProfitGoods" resultType="cn.toesbieya.jxc.model.entity.StatProfitGoods">
         select t1.*,
                t2.name cname
         from (select cid,
@@ -49,18 +49,18 @@
         where time = #{time}
     </select>
 
-    <insert id="insertFinishOrder" parameterType="com.toesbieya.my.model.entity.StatFinishOrder">
+    <insert id="insertFinishOrder" parameterType="cn.toesbieya.jxc.model.entity.StatFinishOrder">
         insert into stat_finish_order (purchase, sell, time)
         values (#{purchase}, #{sell}, #{time})
     </insert>
 
-    <insert id="insertProfitTotal" parameterType="com.toesbieya.my.model.entity.StatProfitTotal">
+    <insert id="insertProfitTotal" parameterType="cn.toesbieya.jxc.model.entity.StatProfitTotal">
         insert into stat_profit_total (purchase, sell, profit, time)
         values (#{purchase}, #{sell}, #{profit}, #{time})
     </insert>
 
     <insert id="insertProfitGoodsBatch" keyColumn="id" keyProperty="id"
-            parameterType="com.toesbieya.my.model.entity.StatProfitGoods"
+            parameterType="cn.toesbieya.jxc.model.entity.StatProfitGoods"
             useGeneratedKeys="true">
         insert into stat_profit_goods
         (cid, purchase, sell, profit, time)
@@ -90,7 +90,7 @@
           and ftime between unix_timestamp(cast(sysdate() as date) - interval 1 day) * 1000 and unix_timestamp(cast(sysdate() as date)) * 1000
     </select>
 
-    <select id="getPurchaseOrderDailyProfitGoods" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
+    <select id="getPurchaseOrderDailyProfitGoods" resultType="cn.toesbieya.jxc.model.entity.StatProfitGoods">
         select t1.*,
                t2.name cname
         from (select a.cid,
@@ -122,7 +122,7 @@
           and ftime between unix_timestamp(cast(sysdate() as date) - interval 1 day) * 1000 and unix_timestamp(cast(sysdate() as date)) * 1000
     </select>
 
-    <select id="getSellOrderDailyProfitGoods" resultType="com.toesbieya.my.model.entity.StatProfitGoods">
+    <select id="getSellOrderDailyProfitGoods" resultType="cn.toesbieya.jxc.model.entity.StatProfitGoods">
         select t1.*,
                t2.name cname
         from (select a.cid,

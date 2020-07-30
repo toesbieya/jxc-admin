@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.SysSupplierMapper">
+<mapper namespace="cn.toesbieya.jxc.mapper.SysSupplierMapper">
     <sql id="searchCondition">
         <if test="id!=null">and a.id=#{id}</if>
         <if test="name!=null and name!=''">and a.name like "%"#{name}"%"</if>
@@ -12,11 +12,11 @@
         <if test="startTime!=null">and a.ctime <![CDATA[ >= ]]> #{startTime}</if>
         <if test="endTime!=null">and a.ctime <![CDATA[ <= ]]> #{endTime}</if>
     </sql>
-    <insert id="add" parameterType="com.toesbieya.my.model.entity.SysSupplier">
+    <insert id="add" parameterType="cn.toesbieya.jxc.model.entity.SysSupplier">
         insert into sys_supplier (name,address,linkman,linkphone,ctime,region,status,remark)
         values(#{name},#{address},#{linkman},#{linkphone},#{ctime},#{region},#{status},#{remark})
     </insert>
-    <update id="update" parameterType="com.toesbieya.my.model.entity.SysSupplier">
+    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.SysSupplier">
         update sys_supplier
         set name=#{name},
         address=#{address},
@@ -33,20 +33,20 @@
         where id = #{id}
         and status = 0
     </delete>
-    <select id="get" resultType="com.toesbieya.my.model.entity.SysSupplier">
+    <select id="get" resultType="cn.toesbieya.jxc.model.entity.SysSupplier">
         select a.*,b.fullname region_name
         from sys_supplier a left join sys_region b on a.region=b.id
         where a.status = 1
     </select>
-    <select id="search" resultType="com.toesbieya.my.model.entity.SysSupplier"
-            parameterType="com.toesbieya.my.model.vo.search.SupplierSearch">
+    <select id="search" resultType="cn.toesbieya.jxc.model.entity.SysSupplier"
+            parameterType="cn.toesbieya.jxc.model.vo.search.SupplierSearch">
         select a.*,b.fullname region_name
         from sys_supplier a left join sys_region b on a.region=b.id
         where 1
         <include refid="searchCondition"/>
         order by a.ctime desc
     </select>
-    <select id="getById" resultType="com.toesbieya.my.model.entity.SysSupplier" parameterType="java.lang.Integer">
+    <select id="getById" resultType="cn.toesbieya.jxc.model.entity.SysSupplier" parameterType="java.lang.Integer">
         select *
         from sys_supplier
         where id = #{id}
@@ -59,7 +59,7 @@
             and id!=#{id}
         </if>
     </select>
-    <select id="getLimitRegion" resultType="com.toesbieya.my.model.vo.result.RegionValueResult">
+    <select id="getLimitRegion" resultType="cn.toesbieya.jxc.model.vo.result.RegionValueResult">
         select a.id,count(0) value
         from sys_region a join sys_supplier b on a.id = b.region
         group by a.id

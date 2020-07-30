@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.SysRoleMapper">
+<mapper namespace="cn.toesbieya.jxc.mapper.SysRoleMapper">
     <sql id="searchCondition">
         <if test="id!=null">and id=#{id}</if>
         <if test="name!=null and name!=''">and name like "%"#{name}"%"</if>
@@ -10,11 +10,11 @@
         <if test="startTime!=null">and ctime <![CDATA[ >= ]]> #{startTime}</if>
         <if test="endTime!=null">and ctime <![CDATA[ <= ]]> #{endTime}</if>
     </sql>
-    <insert id="add" parameterType="com.toesbieya.my.model.entity.SysRole">
+    <insert id="add" parameterType="cn.toesbieya.jxc.model.entity.SysRole">
         insert into sys_role (name, resource_id, cid, cname, ctime, status)
         values (#{name}, #{resource_id}, #{cid}, #{cname}, #{ctime}, #{status})
     </insert>
-    <update id="update" parameterType="com.toesbieya.my.model.entity.SysRole">
+    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.SysRole">
         update sys_role
         set name=#{name},
         resource_id=#{resource_id},
@@ -27,12 +27,12 @@
         where id = #{id}
         and status = 0
     </delete>
-    <select id="get" resultType="com.toesbieya.my.model.entity.SysRole">
+    <select id="get" resultType="cn.toesbieya.jxc.model.entity.SysRole">
         select *
         from sys_role
         where status = 1
     </select>
-    <select id="getAll" resultType="com.toesbieya.my.model.entity.SysRole">
+    <select id="getAll" resultType="cn.toesbieya.jxc.model.entity.SysRole">
         select *
         from sys_role
     </select>
@@ -45,8 +45,8 @@
             and id!=#{id}
         </if>
     </select>
-    <select id="search" resultType="com.toesbieya.my.model.entity.SysRole"
-            parameterType="com.toesbieya.my.model.vo.search.RoleSearch">
+    <select id="search" resultType="cn.toesbieya.jxc.model.entity.SysRole"
+            parameterType="cn.toesbieya.jxc.model.vo.search.RoleSearch">
         select *
         from sys_role
         where 1

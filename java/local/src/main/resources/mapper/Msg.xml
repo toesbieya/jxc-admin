@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.MsgMapper">
+<mapper namespace="cn.toesbieya.jxc.mapper.MsgMapper">
     <sql id="searchCondition">
         <if test="title != null and title != ''">
             and title like "%"#{title}"%"
@@ -23,14 +23,14 @@
         and id not in (select mid from msg_state where uid = #{uid})
     </sql>
 
-    <insert id="insert" parameterType="com.toesbieya.my.model.entity.Msg" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.Msg" useGeneratedKeys="true" keyProperty="id">
         insert into msg (title, content, type, cid, cname, ctime,
                          pid, pname, ptime, wid, wname, wtime, status, broadcast, recipient)
         values (#{title}, #{content}, #{type}, #{cid}, #{cname}, #{ctime}, #{pid},
                 #{pname}, #{ptime}, #{wid}, #{wname}, #{wtime}, #{status}, #{broadcast}, #{recipient})
     </insert>
 
-    <insert id="insertState" parameterType="com.toesbieya.my.model.entity.MsgState">
+    <insert id="insertState" parameterType="cn.toesbieya.jxc.model.entity.MsgState">
         insert into msg_state (mid, uid, time)
         values (#{mid}, #{uid}, #{time})
     </insert>
@@ -42,15 +42,15 @@
           and uid = #{uid}
     </select>
 
-    <select id="search" resultType="com.toesbieya.my.model.entity.Msg"
-            parameterType="com.toesbieya.my.model.vo.search.MsgSearch">
+    <select id="search" resultType="cn.toesbieya.jxc.model.entity.Msg"
+            parameterType="cn.toesbieya.jxc.model.vo.search.MsgSearch">
         select *
         from msg where 1
         <include refid="searchCondition"/>
         order by id desc
     </select>
 
-    <update id="update" parameterType="com.toesbieya.my.model.entity.Msg">
+    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.Msg">
         update msg
         set title=#{title},
             content=#{content},
@@ -84,8 +84,8 @@
           and status = 0
     </delete>
 
-    <select id="getReadByUser" parameterType="com.toesbieya.my.model.vo.search.MsgPersonalSearch"
-            resultType="com.toesbieya.my.model.entity.Msg">
+    <select id="getReadByUser" parameterType="cn.toesbieya.jxc.model.vo.search.MsgPersonalSearch"
+            resultType="cn.toesbieya.jxc.model.entity.Msg">
         select a.id,
                a.title,
                a.content,
@@ -98,8 +98,8 @@
         order by a.id desc
     </select>
 
-    <select id="getUnreadByUser" parameterType="com.toesbieya.my.model.vo.search.MsgPersonalSearch"
-            resultType="com.toesbieya.my.model.entity.Msg">
+    <select id="getUnreadByUser" parameterType="cn.toesbieya.jxc.model.vo.search.MsgPersonalSearch"
+            resultType="cn.toesbieya.jxc.model.entity.Msg">
         select id,
                title,
                content,

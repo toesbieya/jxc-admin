@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.BizSellOrderMapper">
+<mapper namespace="cn.toesbieya.jxc.mapper.BizSellOrderMapper">
     <sql id="searchCondition">
         <if test="id!=null and id!=''">and id=#{id}</if>
         <if test="id_fuzzy!=null and id_fuzzy!=''">and id like "%"#{id_fuzzy}"%"</if>
@@ -19,26 +19,26 @@
         <if test="ftimeStart!=null">and ftime <![CDATA[ >= ]]> #{ftimeStart}</if>
         <if test="ftimeEnd!=null">and ftime <![CDATA[ <= ]]> #{ftimeEnd}</if>
     </sql>
-    <select id="getById" resultType="com.toesbieya.my.model.entity.BizSellOrder">
+    <select id="getById" resultType="cn.toesbieya.jxc.model.entity.BizSellOrder">
         select *
         from biz_sell_order
         where id = #{id}
     </select>
-    <select id="getSubById" resultType="com.toesbieya.my.model.entity.BizSellOrderSub">
+    <select id="getSubById" resultType="cn.toesbieya.jxc.model.entity.BizSellOrderSub">
         select *
         from biz_sell_order_sub
         where pid = #{id}
     </select>
-    <select id="search" resultType="com.toesbieya.my.model.entity.BizSellOrder"
-            parameterType="com.toesbieya.my.model.vo.search.SellOrderSearch">
+    <select id="search" resultType="cn.toesbieya.jxc.model.entity.BizSellOrder"
+            parameterType="cn.toesbieya.jxc.model.vo.search.SellOrderSearch">
         select *
         from biz_sell_order
         where 1
         <include refid="searchCondition"/>
         order by ctime desc
     </select>
-    <select id="export" resultType="com.toesbieya.my.model.vo.export.SellOrderExport"
-            parameterType="com.toesbieya.my.model.vo.search.SellOrderSearch">
+    <select id="export" resultType="cn.toesbieya.jxc.model.vo.export.SellOrderExport"
+            parameterType="cn.toesbieya.jxc.model.vo.search.SellOrderSearch">
         select id,
         customer_name,
         cname,
@@ -55,7 +55,7 @@
         <include refid="searchCondition"/>
         order by ctime desc
     </select>
-    <insert id="insert" parameterType="com.toesbieya.my.model.entity.BizSellOrder">
+    <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.BizSellOrder">
         insert into biz_sell_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
             id,customer_id,customer_name,cid,cname,ctime,finish,total,
@@ -76,14 +76,14 @@
             <if test="remark !=null and remark!=''">#{remark},</if>
         </trim>
     </insert>
-    <insert id="addSub" parameterType="com.toesbieya.my.model.entity.BizSellOrderSub">
+    <insert id="addSub" parameterType="cn.toesbieya.jxc.model.entity.BizSellOrderSub">
         INSERT INTO biz_sell_order_sub(pid, cid, cname, num, price, remain_num)
         VALUES
         <foreach collection="list" item="i" separator=",">
             (#{i.pid},#{i.cid},#{i.cname},#{i.num},#{i.price},#{i.remain_num})
         </foreach>
     </insert>
-    <update id="update" parameterType="com.toesbieya.my.model.entity.BizSellOrder">
+    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.BizSellOrder">
         update biz_sell_order
         set customer_id=#{customer_id},
             customer_name=#{customer_name},

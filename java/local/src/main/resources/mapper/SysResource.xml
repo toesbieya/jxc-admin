@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.toesbieya.my.mapper.SysResourceMapper">
-    <select id="get" resultType="com.toesbieya.my.model.entity.SysResource">
+<mapper namespace="cn.toesbieya.jxc.mapper.SysResourceMapper">
+    <select id="get" resultType="cn.toesbieya.jxc.model.entity.SysResource">
         select id, pid, name, url
         from sys_resource
         where admin = 0
     </select>
-    <select id="getAll" resultType="com.toesbieya.my.model.entity.SysResource">
+    <select id="getAll" resultType="cn.toesbieya.jxc.model.entity.SysResource">
         select *
         from sys_resource
     </select>
-    <select id="getByRole" resultType="com.toesbieya.my.model.entity.SysResource" parameterType="java.lang.Integer">
+    <select id="getByRole" resultType="cn.toesbieya.jxc.model.entity.SysResource" parameterType="java.lang.Integer">
         select b.*
         from sys_role a
                  join sys_resource b on find_in_set(b.id, a.resource_id)
         where a.id = #{role}
     </select>
-    <update id="update" parameterType="com.toesbieya.my.model.entity.SysResource">
+    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.SysResource">
         update sys_resource
         set total_rate=#{total_rate},
             ip_rate=#{ip_rate}
