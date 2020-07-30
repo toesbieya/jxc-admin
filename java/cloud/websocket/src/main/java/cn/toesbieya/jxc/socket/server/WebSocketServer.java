@@ -82,7 +82,8 @@ public class WebSocketServer {
 
     @OnConnect
     public void onConnect(SocketIOClient client) {
-        UserObject obj = new UserObject(client);
+        UserObject obj = UserObject.getInstance(client);
+        if (obj == null) return;
         String sessionKey = obj.getKey();
         Integer uid = obj.getUid();
 
@@ -109,7 +110,8 @@ public class WebSocketServer {
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
         long now = System.currentTimeMillis();
-        UserObject obj = new UserObject(client);
+        UserObject obj = UserObject.getInstance(client);
+        if (obj == null) return;
 
         Integer uid = obj.getUid();
         String sessionKey = obj.getKey();
@@ -155,6 +157,15 @@ public class WebSocketServer {
             this.token = list.get(0);
             this.uuid = client.getSessionId();
             this.key = SessionConstant.REDIS_NAMESPACE + this.token;
+        }
+
+        public static UserObject getInstance(SocketIOClient client) {
+            try {
+                return new UserObject(client);
+            }
+            catch (Exception e) {
+                return null;
+            }
         }
     }
 }

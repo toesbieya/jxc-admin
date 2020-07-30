@@ -45,6 +45,8 @@ socket:
   port: 12580
   max-frame-payload-length: 1048576
   max-http-content-length: 1048576
+  #key-store: classpath:toesbieya.cn.jks
+  #key-store-password: PS17wnkE
 
 qiniu:
   access-key:
