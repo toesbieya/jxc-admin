@@ -7,6 +7,7 @@
 - redis 3.2+
 - node
 - npm
+- kkFileView 2.2.0（用于文件预览）
 - nacos 1.3.1-BETA（如果是local版则不需要，[下载地址](https://github.com/alibaba/nacos/releases)）
 
 ::: warning 注意
@@ -25,5 +26,6 @@
   通常只需要修改`socketUrl`、`attachmentPrefix`、`filePreviewPrefix`即可
 
 ::: warning 注意
-如果后端部署到服务器上，socket配置中的hostname需要是服务器的局域网ip，否则socket服务端创建不了
+如果后端部署到服务器上，socket配置中的hostname需要是服务器的局域网ip，否则socket服务端创建不了，
+此外，如果配置了socket.key-store，那么只能使用https连接socket服务。
 :::
