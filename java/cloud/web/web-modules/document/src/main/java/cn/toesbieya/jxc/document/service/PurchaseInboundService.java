@@ -111,8 +111,8 @@ public class PurchaseInboundService {
                         .type(DocHistoryEnum.COMMIT.getCode())
                         .uid(doc.getCid())
                         .uname(doc.getCname())
-                        .status_before(DocStatusEnum.DRAFT.getCode())
-                        .status_after(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusBefore(DocStatusEnum.DRAFT.getCode())
+                        .statusAfter(DocStatusEnum.WAIT_VERIFY.getCode())
                         .time(System.currentTimeMillis())
                         .build()
         );
@@ -138,8 +138,8 @@ public class PurchaseInboundService {
                         .type(DocHistoryEnum.WITHDRAW.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -183,7 +183,7 @@ public class PurchaseInboundService {
 
         //生成需要入库的商品列表
         for (BizPurchaseOrderSub orderSub : orderSubList) {
-            if (orderSub.getRemain_num().equals(BigDecimal.ZERO)) {
+            if (orderSub.getRemainNum().equals(BigDecimal.ZERO)) {
                 continue;
             }
 
@@ -198,18 +198,18 @@ public class PurchaseInboundService {
                             .build()
             );
 
-            BigDecimal gap = orderSub.getRemain_num().subtract(inboundSub.getNum());
+            BigDecimal gap = orderSub.getRemainNum().subtract(inboundSub.getNum());
 
-            //如果有任意一个采购商品的remain_num大于采购商品的num，则完成情况为进行中，否则为已完成
+            //如果有任意一个采购商品的remainNum大于采购商品的num，则完成情况为进行中，否则为已完成
             if (gap.compareTo(BigDecimal.ZERO) > 0) {
                 finish = DocFinishEnum.UNDERWAY;
             }
 
-            //更新采购订单子表的remain_num
+            //更新采购订单子表的remainNum
             orderSubMapper.update(
                     null,
                     Wrappers.lambdaUpdate(BizPurchaseOrderSub.class)
-                            .set(BizPurchaseOrderSub::getRemain_num, gap)
+                            .set(BizPurchaseOrderSub::getRemainNum, gap)
                             .eq(BizPurchaseOrderSub::getId, orderSub.getId())
             );
         }
@@ -234,8 +234,8 @@ public class PurchaseInboundService {
                         .builder()
                         .pid(id).type(DocHistoryEnum.PASS.getCode())
                         .uid(user.getId()).uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.VERIFIED.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.VERIFIED.getCode())
                         .time(now).info(info)
                         .build()
         );
@@ -260,8 +260,8 @@ public class PurchaseInboundService {
                         .type(DocHistoryEnum.REJECT.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -383,10 +383,10 @@ public class PurchaseInboundService {
             if (orderSub == null) {
                 return String.format("入库商品【%s】不在采购订单中", inboundSub.getCname());
             }
-            if (orderSub.getRemain_num().compareTo(BigDecimal.ZERO) <= 0) {
+            if (orderSub.getRemainNum().compareTo(BigDecimal.ZERO) <= 0) {
                 return String.format("入库商品【%s】已全部入库", inboundSub.getCname());
             }
-            if (orderSub.getRemain_num().compareTo(inboundSub.getNum()) < 0) {
+            if (orderSub.getRemainNum().compareTo(inboundSub.getNum()) < 0) {
                 return String.format("入库商品【%s】的数量超出订单数量", inboundSub.getCname());
             }
         }
@@ -422,10 +422,10 @@ public class PurchaseInboundService {
 
     private Wrapper<BizPurchaseInbound> getSearchCondition(PurchaseInboundSearch vo) {
         String pid = vo.getPid();
-        String pid_fuzzy = vo.getPid_fuzzy();
+        String pidFuzzy = vo.getPidFuzzy();
 
         return DocUtil.baseCondition(BizPurchaseInbound.class, vo)
                 .eq(pid != null, BizPurchaseInbound::getPid, pid)
-                .like(!StringUtils.isEmpty(pid_fuzzy), BizPurchaseInbound::getPid, pid_fuzzy);
+                .like(!StringUtils.isEmpty(pidFuzzy), BizPurchaseInbound::getPid, pidFuzzy);
     }
 }

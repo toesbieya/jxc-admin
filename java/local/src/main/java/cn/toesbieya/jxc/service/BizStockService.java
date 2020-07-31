@@ -23,7 +23,10 @@ public class BizStockService {
 
     private final ExcelUtil.CommonMergeOptions mergeOptions =
             new ExcelUtil.CommonMergeOptions(
-                    new String[]{"id", "cname", "total_num", "total_price", "cgddid", "cg_price", "cg_num"}, "cid", "id");
+                    new String[]{"id", "cname", "totalNum", "totalPrice", "cgddid", "cgPrice", "cgNum"},
+                    "cid",
+                    "id"
+            );
 
     public PageResult<StockSearchResult> search(StockSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());

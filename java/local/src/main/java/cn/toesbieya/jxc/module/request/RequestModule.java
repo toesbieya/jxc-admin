@@ -69,12 +69,12 @@ public class RequestModule {
         limitMap = new ConcurrentHashMap<>();
         List<SysResource> resources = resourceService.getAll();
         for (SysResource resource : resources) {
-            RateLimiterHelper helper = new RateLimiterHelper(resource.getTotal_rate(), resource.getIp_rate());
+            RateLimiterHelper helper = new RateLimiterHelper(resource.getTotalRate(), resource.getIpRate());
             limitMap.put(resource.getUrl(), helper);
         }
     }
 
-    public static void updateRate(String url, int totalRate, int ipRate) {
+    public static void updateRate(String url, long totalRate, long ipRate) {
         limitMap.remove(url);
         limitMap.put(url, new RateLimiterHelper(totalRate, ipRate));
     }

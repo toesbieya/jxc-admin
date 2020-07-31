@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class RateLimiterHelper {
     private RateLimiter limiter;
-    private int ipRate;
+    private long ipRate;
 
-    public RateLimiterHelper(int totalRate, int ipRate) {
+    public RateLimiterHelper(long totalRate, long ipRate) {
         this.limiter = RateLimiter.create(totalRate);
         this.ipRate = ipRate;
     }

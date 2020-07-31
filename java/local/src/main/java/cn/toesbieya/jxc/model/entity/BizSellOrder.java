@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class BizSellOrder extends BizDocument<BizSellOrderSub> {
-    private Integer customer_id;
-    private String customer_name;
+    private Integer customerId;
+    private String customerName;
     private Integer finish;
     private Long ftime;
     private BigDecimal total;

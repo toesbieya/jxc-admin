@@ -6,7 +6,7 @@ import cn.toesbieya.jxc.model.vo.search.UserActionSearch;
 import cn.toesbieya.jxc.utils.SessionUtil;
 import cn.toesbieya.jxc.service.RecService;
 import cn.toesbieya.jxc.utils.DateUtil;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

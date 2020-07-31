@@ -6,7 +6,7 @@ import cn.toesbieya.jxc.model.vo.result.PageResult;
 import cn.toesbieya.jxc.model.vo.search.RoleSearch;
 import com.github.pagehelper.PageHelper;
 import cn.toesbieya.jxc.mapper.SysRoleMapper;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -35,7 +35,7 @@ public class SysRoleService {
         if (roleMapper.isNameExist(role.getName(), null)) {
             return Result.fail("添加失败，角色名称重复");
         }
-        int rows = roleMapper.add(role);
+        int rows = roleMapper.insert(role);
         return rows > 0 ? Result.success("添加成功") : Result.fail("添加失败");
     }
 

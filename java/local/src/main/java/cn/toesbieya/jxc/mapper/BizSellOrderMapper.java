@@ -24,7 +24,7 @@ public interface BizSellOrderMapper {
 
     int update(BizSellOrder param);
 
-    int updateSubRemainNum(@Param("id") Integer id, @Param("remain_num") BigDecimal remain_num);
+    int updateSubRemainNum(@Param("id") Integer id, @Param("remain_num") BigDecimal remainNum);
 
     int pass(@Param("id") String id, @Param("vid") Integer vid, @Param("vname") String vname, @Param("vtime") long vtime);
 

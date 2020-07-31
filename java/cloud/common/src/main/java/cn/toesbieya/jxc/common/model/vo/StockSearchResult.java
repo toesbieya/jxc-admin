@@ -10,6 +10,6 @@ public class StockSearchResult implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer cid;
     private String cname;
-    private BigDecimal total_num;
-    private BigDecimal total_price;
+    private BigDecimal totalNum;
+    private BigDecimal totalPrice;
 }

@@ -18,8 +18,8 @@
     </select>
     <update id="update" parameterType="cn.toesbieya.jxc.model.entity.SysResource">
         update sys_resource
-        set total_rate=#{total_rate},
-            ip_rate=#{ip_rate}
+        set total_rate=#{totalRate},
+            ip_rate=#{ipRate}
         where id = #{id}
     </update>
 </mapper>

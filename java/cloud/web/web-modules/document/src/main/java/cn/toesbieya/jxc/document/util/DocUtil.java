@@ -54,7 +54,7 @@ public class DocUtil {
 
     public static <T extends BizDoc> LambdaQueryWrapper<T> baseCondition(Class<T> c, DocSearch vo) {
         String id = vo.getId();
-        String id_fuzzy = vo.getId_fuzzy();
+        String idFuzzy = vo.getIdFuzzy();
         Integer cid = vo.getCid();
         String cname = vo.getCname();
         Integer vid = vo.getVid();
@@ -67,7 +67,7 @@ public class DocUtil {
 
         return Wrappers.lambdaQuery(c)
                 .eq(!StringUtils.isEmpty(id), BizDoc::getId, id)
-                .like(!StringUtils.isEmpty(id_fuzzy), BizDoc::getId, id_fuzzy)
+                .like(!StringUtils.isEmpty(idFuzzy), BizDoc::getId, idFuzzy)
                 .eq(cid != null, BizDoc::getCid, cid)
                 .like(!StringUtils.isEmpty(cname), BizDoc::getCname, cname)
                 .eq(vid != null, BizDoc::getVid, vid)

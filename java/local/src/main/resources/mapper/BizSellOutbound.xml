@@ -3,9 +3,9 @@
 <mapper namespace="cn.toesbieya.jxc.mapper.BizSellOutboundMapper">
     <sql id="searchCondition">
         <if test="id!=null and id!=''">and id=#{id}</if>
-        <if test="id_fuzzy!=null and id_fuzzy!=''">and id like "%"#{id_fuzzy}"%"</if>
+        <if test="idFuzzy!=null and idFuzzy!=''">and id like "%"#{idFuzzy}"%"</if>
         <if test="pid!=null and pid!=''">and pid=#{pid}</if>
-        <if test="pid_fuzzy!=null and pid_fuzzy!=''">and pid like "%"#{pid_fuzzy}"%"</if>
+        <if test="pidFuzzy!=null and pidFuzzy!=''">and pid like "%"#{pidFuzzy}"%"</if>
         <if test="cid!=null">and cid=#{cid}</if>
         <if test="cname!=null and cname!=''">and cname like "%"#{cname}"%"</if>
         <if test="vid!=null">and vid=#{vid}</if>

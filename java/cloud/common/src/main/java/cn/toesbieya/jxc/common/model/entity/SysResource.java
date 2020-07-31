@@ -11,7 +11,7 @@ public class SysResource implements Serializable {
     private Integer pid;
     private String name;
     private String url;
-    private Integer admin;
-    private Long total_rate;
-    private Long ip_rate;
+    private boolean admin = false;
+    private Long totalRate;
+    private Long ipRate;
 }

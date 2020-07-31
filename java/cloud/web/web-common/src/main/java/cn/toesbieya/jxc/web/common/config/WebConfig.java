@@ -1,6 +1,7 @@
 package cn.toesbieya.jxc.web.common.config;
 
 import cn.toesbieya.jxc.common.config.FastJsonConfigFactory;
+import cn.toesbieya.jxc.web.common.interceptor.SecurityInterceptor;
 import cn.toesbieya.jxc.web.common.interceptor.UserActionInterceptor;
 import cn.toesbieya.jxc.web.common.interceptor.predicate.UserActionPredicate;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
@@ -37,6 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/**");
         registry.addInterceptor(new UserActionInterceptor(userActionPredicate)).addPathPatterns("/**");
     }
 

@@ -4,12 +4,14 @@ import cn.toesbieya.jxc.annoation.TimeCost;
 import cn.toesbieya.jxc.annoation.UserAction;
 import cn.toesbieya.jxc.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.enumeration.RecLoginHistoryEnum;
+import cn.toesbieya.jxc.mapper.SysRoleMapper;
 import cn.toesbieya.jxc.mapper.SysUserMapper;
 import cn.toesbieya.jxc.model.entity.SysResource;
+import cn.toesbieya.jxc.model.entity.SysRole;
 import cn.toesbieya.jxc.model.entity.SysUser;
 import cn.toesbieya.jxc.model.vo.*;
 import cn.toesbieya.jxc.utils.QiniuUtil;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.utils.SessionUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,6 +27,10 @@ public class AccountService {
     private SysResourceService resourceService;
     @Resource
     private RecService recService;
+    @Resource
+    private SysDepartmentService departmentService;
+    @Resource
+    private SysRoleMapper roleMapper;
 
     @TimeCost
     public Result login(LoginParam param, String ip) {
@@ -37,7 +43,7 @@ public class AccountService {
             return Result.fail("该用户已被禁用，请联系管理员");
         }
         Integer roleId = user.getRole();
-        if (user.getAdmin() != 1 && roleId == null) {
+        if (!user.isAdmin() && roleId == null) {
             return Result.fail("该用户尚未被分配角色，请联系管理员");
         }
 
@@ -53,25 +59,51 @@ public class AccountService {
         info.setToken(token);
 
         Map<String, Integer> userResourcesUrlMap = null;
-
         Set<Integer> userResourcesIdSet = null;
 
-        //获取用户的所有权限url
         if (roleId != null) {
-            List<SysResource> resources = resourceService.getByRole(user.getRole());
+            //获取用户的角色
+            SysRole role = roleMapper.selectById(roleId);
 
-            userResourcesUrlMap = new HashMap<>(128);
-            userResourcesIdSet = new HashSet<>(128);
+            if (role != null) {
+                //设置角色名称
+                String roleName = role.getName();
+                userVo.setRoleName(roleName);
+                info.setRoleName(roleName);
 
-            for (SysResource resource : resources) {
-                Integer resourceId = resource.getId();
-                userResourcesUrlMap.put(resource.getUrl(), resourceId);
-                userResourcesIdSet.add(resourceId);
+                //获取用户的权限列表
+                List<SysResource> resources = resourceService.getByRole(roleId);
+
+                userResourcesUrlMap = new HashMap<>(128);
+                userResourcesIdSet = new HashSet<>(128);
+
+                for (SysResource resource : resources) {
+                    Integer resourceId = resource.getId();
+                    userResourcesUrlMap.put(resource.getUrl(), resourceId);
+                    userResourcesIdSet.add(resourceId);
+                }
             }
         }
 
-        userVo.setResource_ids(userResourcesIdSet);
+        //获取用户部门
+        Integer deptId = user.getDept();
+        if (deptId != null) {
+            DepartmentVo dept = departmentService.getById(deptId);
+            if (dept != null) {
+                //设置用户的部门名称
+                String deptName = dept.getFullname();
+                userVo.setDeptName(deptName);
+                info.setDeptName(deptName);
+            }
+        }
 
+        //用户的数据范围
+        userVo.setDepartmentIds(departmentService.getUserDataScope(user));
+
+        //用户的权限ID集合
+        userVo.setResourceIds(userResourcesIdSet);
+
+        //返回给前端的用户权限表
         info.setResources(userResourcesUrlMap);
 
         //用户信息插入redis
@@ -106,7 +138,7 @@ public class AccountService {
         user.setStatus(GeneralStatusEnum.ENABLED.getCode());
         user.setCtime(System.currentTimeMillis());
 
-        userMapper.add(user);
+        userMapper.insert(user);
 
         return Result.success("注册成功");
     }

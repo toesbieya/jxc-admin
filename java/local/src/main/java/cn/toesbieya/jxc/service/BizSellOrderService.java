@@ -17,7 +17,7 @@ import cn.toesbieya.jxc.model.vo.search.StockSearch;
 import cn.toesbieya.jxc.model.vo.update.DocumentStatusUpdate;
 import cn.toesbieya.jxc.utils.DocumentUtil;
 import cn.toesbieya.jxc.utils.ExcelUtil;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -92,8 +92,8 @@ public class BizSellOrderService {
                         .type(DocHistoryEnum.COMMIT.getCode())
                         .uid(doc.getCid())
                         .uname(doc.getCname())
-                        .status_before(DocStatusEnum.DRAFT.getCode())
-                        .status_after(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusBefore(DocStatusEnum.DRAFT.getCode())
+                        .statusAfter(DocStatusEnum.WAIT_VERIFY.getCode())
                         .time(System.currentTimeMillis())
                         .build()
         );
@@ -119,8 +119,8 @@ public class BizSellOrderService {
                         .type(DocHistoryEnum.WITHDRAW.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -147,8 +147,8 @@ public class BizSellOrderService {
                         .type(DocHistoryEnum.PASS.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.VERIFIED.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.VERIFIED.getCode())
                         .time(now)
                         .info(info)
                         .build()
@@ -174,8 +174,8 @@ public class BizSellOrderService {
                         .type(DocHistoryEnum.REJECT.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -215,7 +215,7 @@ public class BizSellOrderService {
 
         for (BizSellOrderSub sub : subList) {
             sub.setPid(id);
-            sub.setRemain_num(sub.getNum());
+            sub.setRemainNum(sub.getNum());
         }
 
         //插入主表和子表
@@ -249,7 +249,7 @@ public class BizSellOrderService {
 
         //插入新的子表
         List<BizSellOrderSub> subList = doc.getData();
-        subList.forEach(sub->sub.setRemain_num(sub.getNum()));
+        subList.forEach(sub->sub.setRemainNum(sub.getNum()));
         mainMapper.addSub(subList);
 
         //附件增删
@@ -293,7 +293,7 @@ public class BizSellOrderService {
         for (int i = 0; i < subListLength; i++) {
             BizSellOrderSub sub = list.get(i);
             StockSearchResult stock = stockList.get(i);
-            if (sub.getNum().compareTo(stock.getTotal_num()) > 0) {
+            if (sub.getNum().compareTo(stock.getTotalNum()) > 0) {
                 return String.format("商品【%s】库存不足", sub.getCname());
             }
         }

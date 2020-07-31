@@ -9,7 +9,7 @@ import cn.toesbieya.jxc.utils.Util;
 import cn.toesbieya.jxc.utils.WebSocketUtil;
 import com.github.pagehelper.PageHelper;
 import cn.toesbieya.jxc.mapper.SysUserMapper;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -51,7 +51,7 @@ public class SysUserService {
         user.setCtime(System.currentTimeMillis());
         user.setPwd(DEFAULT_PWD);
 
-        userMapper.add(user);
+        userMapper.insert(user);
         return Result.success("添加成功");
     }
 
@@ -69,7 +69,7 @@ public class SysUserService {
     @UserAction("'删除用户：'+#user.name")
     @Transactional(rollbackFor = Exception.class)
     public Result del(SysUser user) {
-        int rows = userMapper.del(user.getId());
+        int rows = userMapper.deleteById(user.getId());
         WebSocketUtil.sendLogoutEvent(Collections.singletonList(user.getId()), "该用户已删除");
         return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新后重试");
     }

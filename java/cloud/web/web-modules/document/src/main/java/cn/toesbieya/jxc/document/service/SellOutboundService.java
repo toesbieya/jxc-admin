@@ -114,8 +114,8 @@ public class SellOutboundService {
                         .type(DocHistoryEnum.COMMIT.getCode())
                         .uid(doc.getCid())
                         .uname(doc.getCname())
-                        .status_before(DocStatusEnum.DRAFT.getCode())
-                        .status_after(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusBefore(DocStatusEnum.DRAFT.getCode())
+                        .statusAfter(DocStatusEnum.WAIT_VERIFY.getCode())
                         .time(System.currentTimeMillis())
                         .build()
         );
@@ -141,8 +141,8 @@ public class SellOutboundService {
                         .type(DocHistoryEnum.WITHDRAW.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -193,7 +193,7 @@ public class SellOutboundService {
         List<BizSellOrderSub> orderSubList = this.getOrderSubListByPid(pid);
 
         for (BizSellOrderSub orderSub : orderSubList) {
-            if (orderSub.getRemain_num().equals(BigDecimal.ZERO)) {
+            if (orderSub.getRemainNum().equals(BigDecimal.ZERO)) {
                 continue;
             }
 
@@ -201,18 +201,18 @@ public class SellOutboundService {
 
             if (outboundNum == null) continue;
 
-            BigDecimal gap = orderSub.getRemain_num().subtract(outboundNum);
+            BigDecimal gap = orderSub.getRemainNum().subtract(outboundNum);
 
-            //如果有任意一个采购商品的remain_num大于采购商品的num，则完成情况为进行中，否则为已完成
+            //如果有任意一个采购商品的remainNum大于采购商品的num，则完成情况为进行中，否则为已完成
             if (gap.compareTo(BigDecimal.ZERO) > 0) {
                 finish = DocFinishEnum.UNDERWAY;
             }
 
-            //更新采购订单子表的remain_num
+            //更新采购订单子表的remainNum
             orderSubMapper.update(
                     null,
                     Wrappers.lambdaUpdate(BizSellOrderSub.class)
-                            .set(BizSellOrderSub::getRemain_num, gap)
+                            .set(BizSellOrderSub::getRemainNum, gap)
                             .eq(BizSellOrderSub::getId, orderSub.getId())
             );
         }
@@ -238,8 +238,8 @@ public class SellOutboundService {
                         .type(DocHistoryEnum.PASS.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.VERIFIED.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.VERIFIED.getCode())
                         .time(now)
                         .info(info)
                         .build()
@@ -265,8 +265,8 @@ public class SellOutboundService {
                         .type(DocHistoryEnum.REJECT.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -395,10 +395,10 @@ public class SellOutboundService {
             if (orderSub == null) {
                 return "未在销售订单中找到对应的出库商品";
             }
-            if (orderSub.getRemain_num().equals(BigDecimal.ZERO)) {
+            if (orderSub.getRemainNum().equals(BigDecimal.ZERO)) {
                 return String.format("出库商品【%s】已全部出库", orderSub.getCname());
             }
-            if (orderSub.getRemain_num().compareTo(outboundCount.get(cid)) < 0) {
+            if (orderSub.getRemainNum().compareTo(outboundCount.get(cid)) < 0) {
                 return String.format("出库商品【%s】的数量超出订单数量", orderSub.getCname());
             }
             cids[index] = String.valueOf(cid);
@@ -445,11 +445,11 @@ public class SellOutboundService {
 
     private Wrapper<BizSellOutbound> getSearchCondition(SellOutboundSearch vo) {
         String pid = vo.getPid();
-        String pid_fuzzy = vo.getPid_fuzzy();
+        String pidFuzzy = vo.getPidFuzzy();
 
         return DocUtil.baseCondition(BizSellOutbound.class, vo)
                 .eq(pid != null, BizSellOutbound::getPid, pid)
-                .like(!StringUtils.isEmpty(pid_fuzzy), BizSellOutbound::getPid, pid_fuzzy);
+                .like(!StringUtils.isEmpty(pidFuzzy), BizSellOutbound::getPid, pidFuzzy);
     }
 
     private Map<Integer, BigDecimal> getOutboundCount(List<BizSellOutboundSub> list) {

@@ -51,8 +51,8 @@ public class SellOrderController {
 
     @PostMapping("add")
     public Result add(HttpServletRequest request, @RequestBody SellOrderVo vo) {
-        if (vo.getCustomer_id() == null
-                || StringUtils.isEmpty(vo.getCustomer_name())
+        if (vo.getCustomerId() == null
+                || StringUtils.isEmpty(vo.getCustomerName())
                 || vo.getTotal() == null) {
             return Result.fail("参数错误");
         }
@@ -122,8 +122,8 @@ public class SellOrderController {
 
     private String validateUpdate(BizSellOrder main) {
         if (StringUtils.isEmpty(main.getId())
-                || StringUtils.isEmpty(main.getCustomer_id())
-                || StringUtils.isEmpty(main.getCustomer_name())
+                || StringUtils.isEmpty(main.getCustomerId())
+                || StringUtils.isEmpty(main.getCustomerName())
                 || StringUtils.isEmpty(main.getCid())
                 || StringUtils.isEmpty(main.getCname())
                 || StringUtils.isEmpty(main.getCtime())

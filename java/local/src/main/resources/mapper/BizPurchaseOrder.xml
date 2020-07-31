@@ -3,7 +3,7 @@
 <mapper namespace="cn.toesbieya.jxc.mapper.BizPurchaseOrderMapper">
     <sql id="searchCondition">
         <if test="id!=null and id!=''">and id=#{id}</if>
-        <if test="id_fuzzy!=null and id_fuzzy!=''">and id like "%"#{id_fuzzy}"%"</if>
+        <if test="idFuzzy!=null and idFuzzy!=''">and id like "%"#{idFuzzy}"%"</if>
         <if test="sid!=null">and sid=#{sid}</if>
         <if test="sname!=null and sname!=''">and sname like "%"#{sname}"%"</if>
         <if test="cid!=null">and cid=#{cid}</if>
@@ -80,7 +80,7 @@
         INSERT INTO biz_purchase_order_sub(pid, cid, cname, num, price, remain_num)
         VALUES
         <foreach collection="list" item="i" separator=",">
-            (#{i.pid},#{i.cid},#{i.cname},#{i.num},#{i.price},#{i.remain_num})
+            (#{i.pid},#{i.cid},#{i.cname},#{i.num},#{i.price},#{i.remainNum})
         </foreach>
     </insert>
     <update id="update" parameterType="cn.toesbieya.jxc.model.entity.BizPurchaseOrder">

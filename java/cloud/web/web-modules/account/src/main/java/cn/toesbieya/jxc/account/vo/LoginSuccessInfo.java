@@ -11,9 +11,10 @@ import java.util.Map;
 public class LoginSuccessInfo {
     private Integer id;
     private String name;
-    private String role_name;
+    private String roleName;
+    private String deptName;
     private String avatar;
-    private Integer admin;
+    private boolean admin;
     private String token;
     private Map<String, Integer> resources;
 
@@ -21,6 +22,6 @@ public class LoginSuccessInfo {
         this.id = user.getId();
         this.name = user.getName();
         this.avatar = user.getAvatar();
-        this.admin = user.getAdmin();
+        this.admin = user.isAdmin();
     }
 }

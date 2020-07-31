@@ -1,4 +1,4 @@
-package cn.toesbieya.jxc.utils;
+package cn.toesbieya.jxc.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

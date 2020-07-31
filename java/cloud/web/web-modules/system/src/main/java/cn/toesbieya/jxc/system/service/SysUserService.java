@@ -41,7 +41,7 @@ public class SysUserService {
 
         Wrapper<SysUser> wrapper =
                 Wrappers.lambdaQuery(SysUser.class)
-                        .eq(SysUser::getAdmin, 0)
+                        .eq(SysUser::isAdmin, false)
                         .eq(id != null, SysUser::getId, id)
                         .like(!StringUtils.isEmpty(name), SysUser::getName, name)
                         .inSql(!StringUtils.isEmpty(roleIds), SysUser::getRole, roleIds)
@@ -84,7 +84,7 @@ public class SysUserService {
                 //设置用户的角色名称
                 SysRole matched = Util.find(roles, i -> i.getId().equals(userRoleId));
                 if (matched != null) {
-                    userVo.setRole_name(matched.getName());
+                    userVo.setRoleName(matched.getName());
                 }
             }
         });
@@ -120,6 +120,7 @@ public class SysUserService {
                 Wrappers.lambdaUpdate(SysUser.class)
                         .set(SysUser::getName, name)
                         .set(SysUser::getRole, user.getRole())
+                        .set(SysUser::getDept, user.getDept())
                         .set(SysUser::getStatus, user.getStatus())
                         .eq(SysUser::getId, id)
         );
@@ -133,7 +134,7 @@ public class SysUserService {
         int rows = userMapper.delete(
                 Wrappers.lambdaQuery(SysUser.class)
                         .eq(SysUser::getId, user.getId())
-                        .eq(SysUser::getAdmin, 0)
+                        .eq(SysUser::isAdmin, false)
         );
         WebSocketUtil.sendLogoutEvent(Collections.singletonList(user.getId()), "该用户已删除");
         return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新后重试");

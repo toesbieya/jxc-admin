@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.toesbieya.jxc.system.mapper.SysDepartmentMapper">
+    <select id="selectChildrenById" resultType="cn.toesbieya.jxc.common.model.vo.DepartmentVo">
+        with recursive t as (
+                select *,
+                       name as fullname
+                from sys_department
+                where id = #{id}
+                union all
+                select c.*,
+                       concat(t.fullname, ' > ', c.name) as fullname
+                from sys_department c,
+                     t
+                where c.pid = t.id
+                )
+        select *
+        from t;
+    </select>
+
+    <select id="selectParentsById" resultType="cn.toesbieya.jxc.common.model.vo.DepartmentVo">
+        with recursive t as (
+                select *,
+                       name as fullname
+                from sys_department
+                where id = #{id}
+                union all
+                select c.*,
+                       concat(c.name, ' > ', t.fullname) as fullname
+                from sys_department c,
+                     t
+                where c.id = t.pid
+                )
+        select *
+        from t;
+    </select>
+</mapper>

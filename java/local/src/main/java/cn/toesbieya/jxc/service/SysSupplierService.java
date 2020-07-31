@@ -7,7 +7,7 @@ import cn.toesbieya.jxc.model.vo.result.RegionValueResult;
 import cn.toesbieya.jxc.model.vo.search.SupplierSearch;
 import com.github.pagehelper.PageHelper;
 import cn.toesbieya.jxc.mapper.SysSupplierMapper;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

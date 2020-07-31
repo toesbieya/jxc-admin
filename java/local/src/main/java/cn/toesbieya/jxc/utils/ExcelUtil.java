@@ -1,5 +1,6 @@
 package cn.toesbieya.jxc.utils;
 
+import cn.toesbieya.jxc.model.vo.Result;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.Head;

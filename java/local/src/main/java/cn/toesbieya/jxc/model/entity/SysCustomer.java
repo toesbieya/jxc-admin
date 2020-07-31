@@ -16,7 +16,7 @@ public class SysCustomer {
     private String linkman;
     private String linkphone;
     private String region;
-    private String region_name;
+    private String regionName;
     private Integer status;
     private Long ctime;
     private String remark;

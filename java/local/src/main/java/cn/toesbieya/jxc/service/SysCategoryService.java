@@ -5,7 +5,7 @@ import cn.toesbieya.jxc.annoation.UserAction;
 import cn.toesbieya.jxc.model.entity.SysCategory;
 import cn.toesbieya.jxc.model.vo.search.CategorySearch;
 import cn.toesbieya.jxc.mapper.SysCategoryMapper;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

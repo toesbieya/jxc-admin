@@ -5,9 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@SpringBootApplication
-@MapperScan("cn.toesbieya.jxc.mapper")
 @EnableScheduling
+@MapperScan("cn.toesbieya.jxc.mapper")
+@SpringBootApplication
 public class MyApplication {
     public static void main(String[] args) {
         SpringApplication.run(MyApplication.class, args);

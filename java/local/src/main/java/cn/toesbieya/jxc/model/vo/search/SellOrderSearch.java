@@ -8,8 +8,8 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class SellOrderSearch extends DocumentSearch {
-    private Integer customer_id;
-    private String customer_name;
+    private Integer customerId;
+    private String customerName;
     private String finish;
     private Long ftimeStart;
     private Long ftimeEnd;

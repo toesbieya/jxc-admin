@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.controller;
 
 import cn.toesbieya.jxc.service.StatisticService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

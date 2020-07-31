@@ -7,7 +7,7 @@ import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.model.vo.search.PurchaseOrderSearch;
 import cn.toesbieya.jxc.model.vo.update.DocumentStatusUpdate;
 import cn.toesbieya.jxc.service.BizPurchaseOrderService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.utils.SessionUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;

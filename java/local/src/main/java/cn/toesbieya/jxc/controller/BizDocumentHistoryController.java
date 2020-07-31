@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.controller;
 
 import cn.toesbieya.jxc.model.vo.search.DocumentHistorySearch;
 import cn.toesbieya.jxc.service.BizDocumentHistoryService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

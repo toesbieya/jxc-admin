@@ -4,7 +4,7 @@
     <insert id="insertBatch" parameterType="cn.toesbieya.jxc.common.model.entity.BizPurchaseOrderSub">
         INSERT INTO biz_purchase_order_sub(pid, cid, cname, num, price, remain_num) VALUES
         <foreach collection="list" item="i" separator=",">
-            (#{i.pid}, #{i.cid}, #{i.cname}, #{i.num}, #{i.price}, #{i.remain_num})
+            (#{i.pid}, #{i.cid}, #{i.cname}, #{i.num}, #{i.price}, #{i.remainNum})
         </foreach>
     </insert>
 </mapper>

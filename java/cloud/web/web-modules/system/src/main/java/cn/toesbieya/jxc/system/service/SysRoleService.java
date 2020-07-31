@@ -83,8 +83,10 @@ public class SysRoleService implements RoleApi {
                 null,
                 Wrappers.lambdaUpdate(SysRole.class)
                         .set(SysRole::getName, name)
-                        .set(SysRole::getResource_id, role.getResource_id())
                         .set(SysRole::getStatus, role.getStatus())
+                        .set(SysRole::getScope, role.getScope())
+                        .set(SysRole::getDepartmentId, role.getDepartmentId())
+                        .set(SysRole::getResourceId, role.getResourceId())
                         .eq(SysRole::getId, id)
         );
         return rows > 0 ? Result.success("修改成功") : Result.fail("修改失败，请刷新重试");

@@ -1,16 +1,17 @@
 package cn.toesbieya.jxc.mapper;
 
 import cn.toesbieya.jxc.model.entity.SysDepartment;
+import cn.toesbieya.jxc.model.vo.DepartmentVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface SysDepartmentMapper {
-    List<SysDepartment> get();
+    List<DepartmentVo> selectChildrenById(@Param("id") int id);
 
-    List<SysDepartment> getAll();
+    List<DepartmentVo> selectParentsById(@Param("id") int id);
 
-    int add(SysDepartment department);
+    int insert(SysDepartment department);
 
     int update(SysDepartment department);
 

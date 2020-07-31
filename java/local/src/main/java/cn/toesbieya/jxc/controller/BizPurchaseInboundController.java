@@ -8,7 +8,7 @@ import cn.toesbieya.jxc.model.vo.search.PurchaseInboundSearch;
 import cn.toesbieya.jxc.model.vo.update.DocumentStatusUpdate;
 import cn.toesbieya.jxc.utils.SessionUtil;
 import cn.toesbieya.jxc.service.BizPurchaseInboundService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;

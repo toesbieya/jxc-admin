@@ -11,13 +11,13 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class ResourceVo extends SysResource {
-    private String fullName;
+    private String fullname;
 
     public ResourceVo(SysResource parent) {
         this.setId(parent.getId());
         this.setPid(parent.getPid());
         this.setName(parent.getName());
         this.setUrl(parent.getUrl());
-        this.setAdmin(parent.getAdmin());
+        this.setAdmin(parent.isAdmin());
     }
 }

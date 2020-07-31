@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 public class StockSearchResult {
     private Integer cid;
     private String cname;
-    private BigDecimal total_num;
-    private BigDecimal total_price;
+    private BigDecimal totalNum;
+    private BigDecimal totalPrice;
 }

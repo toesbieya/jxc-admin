@@ -1,5 +1,6 @@
 package cn.toesbieya.jxc.system.controller;
 
+import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysDepartment;
 import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.system.service.SysDepartmentService;
@@ -7,6 +8,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("department")
@@ -15,13 +18,15 @@ public class SysDepartmentController {
     private SysDepartmentService departmentService;
 
     @GetMapping("get")
-    public Result get() {
-        return Result.success(departmentService.get());
-    }
-
-    @GetMapping("getAll")
-    public Result getAll() {
-        return Result.success(departmentService.getAll());
+    public Result get(boolean all) {
+        List<SysDepartment> list = departmentService.getAll();
+        if (!all) {
+            list = list
+                    .stream()
+                    .filter(i -> i.getStatus().equals(GeneralStatusEnum.ENABLED.getCode()))
+                    .collect(Collectors.toList());
+        }
+        return Result.success(list);
     }
 
     @PostMapping("add")

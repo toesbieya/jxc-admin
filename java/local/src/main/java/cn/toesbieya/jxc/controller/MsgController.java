@@ -7,7 +7,7 @@ import cn.toesbieya.jxc.model.vo.search.MsgSearch;
 import cn.toesbieya.jxc.utils.SessionUtil;
 import cn.toesbieya.jxc.constant.MsgConstant;
 import cn.toesbieya.jxc.service.MsgService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 

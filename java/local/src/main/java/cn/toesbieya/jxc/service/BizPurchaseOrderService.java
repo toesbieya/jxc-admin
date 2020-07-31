@@ -18,7 +18,7 @@ import cn.toesbieya.jxc.utils.ExcelUtil;
 import com.github.pagehelper.PageHelper;
 import cn.toesbieya.jxc.mapper.BizDocumentHistoryMapper;
 import cn.toesbieya.jxc.utils.DocumentUtil;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,8 +89,8 @@ public class BizPurchaseOrderService {
                         .type(DocHistoryEnum.COMMIT.getCode())
                         .uid(doc.getCid())
                         .uname(doc.getCname())
-                        .status_before(DocStatusEnum.DRAFT.getCode())
-                        .status_after(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusBefore(DocStatusEnum.DRAFT.getCode())
+                        .statusAfter(DocStatusEnum.WAIT_VERIFY.getCode())
                         .time(System.currentTimeMillis())
                         .build()
         );
@@ -116,8 +116,8 @@ public class BizPurchaseOrderService {
                         .type(DocHistoryEnum.WITHDRAW.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -144,8 +144,8 @@ public class BizPurchaseOrderService {
                         .type(DocHistoryEnum.PASS.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.VERIFIED.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.VERIFIED.getCode())
                         .time(now)
                         .info(info)
                         .build()
@@ -171,8 +171,8 @@ public class BizPurchaseOrderService {
                         .type(DocHistoryEnum.REJECT.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -210,7 +210,7 @@ public class BizPurchaseOrderService {
         //设置子表的pid、剩余未出库数量
         for (BizPurchaseOrderSub sub : subList) {
             sub.setPid(id);
-            sub.setRemain_num(sub.getNum());
+            sub.setRemainNum(sub.getNum());
         }
 
         //插入主表和子表
@@ -243,7 +243,7 @@ public class BizPurchaseOrderService {
 
         //插入新的子表
         List<BizPurchaseOrderSub> subList = doc.getData();
-        subList.forEach(sub -> sub.setRemain_num(sub.getNum()));
+        subList.forEach(sub -> sub.setRemainNum(sub.getNum()));
         mainMapper.addSub(subList);
 
         //附件增删

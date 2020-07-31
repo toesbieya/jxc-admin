@@ -5,7 +5,7 @@ import cn.toesbieya.jxc.model.entity.SysUser;
 import cn.toesbieya.jxc.model.vo.search.UserSearch;
 import cn.toesbieya.jxc.utils.ThreadUtil;
 import cn.toesbieya.jxc.service.SysUserService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

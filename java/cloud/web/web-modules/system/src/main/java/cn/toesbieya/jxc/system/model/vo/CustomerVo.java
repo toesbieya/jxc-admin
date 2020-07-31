@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class CustomerVo extends SysCustomer {
-    private String region_name;
+    private String regionName;
 
     public CustomerVo(SysCustomer parent) {
         this.setId(parent.getId());

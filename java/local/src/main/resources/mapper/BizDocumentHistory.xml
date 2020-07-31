@@ -21,6 +21,6 @@
 
     <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.BizDocumentHistory">
         insert into biz_doc_history (pid, type, uid, uname, status_before, status_after, time, info)
-        VALUES (#{pid}, #{type}, #{uid}, #{uname}, #{status_before}, #{status_after}, #{time}, #{info})
+        VALUES (#{pid}, #{type}, #{uid}, #{uname}, #{statusBefore}, #{statusAfter}, #{time}, #{info})
     </insert>
 </mapper>

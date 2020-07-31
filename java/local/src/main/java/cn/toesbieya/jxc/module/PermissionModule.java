@@ -23,13 +23,13 @@ public class PermissionModule {
     private SysResourceService resourceService;
 
     public static boolean authority(UserVo user, String url) {
-        if (user.getAdmin() == 1 || !needAuthority(url)) {
+        if (user.isAdmin() || !needAuthority(url)) {
             return true;
         }
 
         if (adminUrlMap.containsKey(url)) return false;
 
-        Set<Integer> ids = user.getResource_ids();
+        Set<Integer> ids = user.getResourceIds();
 
         if (ids == null) return false;
 
@@ -48,7 +48,7 @@ public class PermissionModule {
 
         if (resources != null) {
             for (SysResource p : resources) {
-                if (p.getAdmin() == 1) {
+                if (p.isAdmin()) {
                     adminUrlMap.put(p.getUrl(), p.getId());
                 }
                 else urlMap.put(p.getUrl(), p.getId());

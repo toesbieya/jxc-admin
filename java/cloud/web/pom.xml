@@ -21,7 +21,6 @@
             <groupId>cn.toesbieya</groupId>
             <artifactId>common</artifactId>
         </dependency>
-
         <dependency>
             <groupId>cn.toesbieya</groupId>
             <artifactId>api</artifactId>

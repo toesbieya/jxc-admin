@@ -3,9 +3,9 @@
 <mapper namespace="cn.toesbieya.jxc.mapper.BizSellOrderMapper">
     <sql id="searchCondition">
         <if test="id!=null and id!=''">and id=#{id}</if>
-        <if test="id_fuzzy!=null and id_fuzzy!=''">and id like "%"#{id_fuzzy}"%"</if>
-        <if test="customer_id!=null">and customer_id=#{customer_id}</if>
-        <if test="customer_name!=null and customer_name!=''">and customer_name like "%"#{customer_name}"%"</if>
+        <if test="idFuzzy!=null and idFuzzy!=''">and id like "%"#{idFuzzy}"%"</if>
+        <if test="customerId!=null">and customer_id=#{customerId}</if>
+        <if test="customerName!=null and customerName!=''">and customer_name like "%"#{customerName}"%"</if>
         <if test="cid!=null">and cid=#{cid}</if>
         <if test="cname!=null and cname!=''">and cname like "%"#{cname}"%"</if>
         <if test="vid!=null">and vid=#{vid}</if>
@@ -67,7 +67,7 @@
             <if test="remark !=null and remark!=''">remark,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{id},#{customer_id},#{customer_name},#{cid},#{cname},#{ctime},0,#{total},
+            #{id},#{customerId},#{customerName},#{cid},#{cname},#{ctime},0,#{total},
             <if test="vid !=null">#{vid},</if>
             <if test="vname !=null and vname!=''">#{vname},</if>
             <if test="vtime !=null">#{vtime},</if>
@@ -80,13 +80,13 @@
         INSERT INTO biz_sell_order_sub(pid, cid, cname, num, price, remain_num)
         VALUES
         <foreach collection="list" item="i" separator=",">
-            (#{i.pid},#{i.cid},#{i.cname},#{i.num},#{i.price},#{i.remain_num})
+            (#{i.pid},#{i.cid},#{i.cname},#{i.num},#{i.price},#{i.remainNum})
         </foreach>
     </insert>
     <update id="update" parameterType="cn.toesbieya.jxc.model.entity.BizSellOrder">
         update biz_sell_order
-        set customer_id=#{customer_id},
-            customer_name=#{customer_name},
+        set customer_id=#{customerId},
+            customer_name=#{customerName},
             status=#{status},
             total=#{total},
             remark=#{remark}

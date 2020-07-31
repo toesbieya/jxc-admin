@@ -8,7 +8,7 @@ import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.model.vo.search.SellOrderSearch;
 import cn.toesbieya.jxc.model.vo.update.DocumentStatusUpdate;
 import cn.toesbieya.jxc.service.BizSellOrderService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -49,8 +49,8 @@ public class BizSellOrderController {
 
     @PostMapping("add")
     public Result add(@RequestBody BizSellOrder vo) {
-        if (vo.getCustomer_id() == null
-                || StringUtils.isEmpty(vo.getCustomer_name())
+        if (vo.getCustomerId() == null
+                || StringUtils.isEmpty(vo.getCustomerName())
                 || vo.getTotal() == null) {
             return Result.fail("参数错误");
         }
@@ -120,8 +120,8 @@ public class BizSellOrderController {
 
     private String validateUpdate(BizSellOrder main) {
         if (StringUtils.isEmpty(main.getId())
-                || StringUtils.isEmpty(main.getCustomer_id())
-                || StringUtils.isEmpty(main.getCustomer_name())
+                || StringUtils.isEmpty(main.getCustomerId())
+                || StringUtils.isEmpty(main.getCustomerName())
                 || StringUtils.isEmpty(main.getCid())
                 || StringUtils.isEmpty(main.getCname())
                 || StringUtils.isEmpty(main.getCtime())

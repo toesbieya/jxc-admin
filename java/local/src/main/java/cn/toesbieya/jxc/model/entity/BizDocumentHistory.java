@@ -15,8 +15,8 @@ public class BizDocumentHistory {
     private Integer type;
     private Integer uid;
     private String uname;
-    private Integer status_before;
-    private Integer status_after;
+    private Integer statusBefore;
+    private Integer statusAfter;
     private Long time;
     private String info;
 }

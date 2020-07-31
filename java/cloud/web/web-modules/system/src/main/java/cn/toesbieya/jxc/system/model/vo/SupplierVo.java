@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class SupplierVo extends SysSupplier {
-    private String region_name;
+    private String regionName;
 
     public SupplierVo(SysSupplier parent) {
         this.setId(parent.getId());

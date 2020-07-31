@@ -17,6 +17,7 @@ public class SysUser implements Serializable {
     private Integer role;
     private String avatar;
     private Long ctime;
-    private Integer admin;
+    private boolean admin = false;
     private Integer status;
+    private Integer dept;
 }

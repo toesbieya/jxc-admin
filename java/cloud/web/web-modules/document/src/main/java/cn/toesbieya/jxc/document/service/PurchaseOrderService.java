@@ -103,8 +103,8 @@ public class PurchaseOrderService {
                         .type(DocHistoryEnum.COMMIT.getCode())
                         .uid(doc.getCid())
                         .uname(doc.getCname())
-                        .status_before(DocStatusEnum.DRAFT.getCode())
-                        .status_after(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusBefore(DocStatusEnum.DRAFT.getCode())
+                        .statusAfter(DocStatusEnum.WAIT_VERIFY.getCode())
                         .time(System.currentTimeMillis())
                         .build()
         );
@@ -131,8 +131,8 @@ public class PurchaseOrderService {
                         .type(DocHistoryEnum.WITHDRAW.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -168,8 +168,8 @@ public class PurchaseOrderService {
                         .type(DocHistoryEnum.PASS.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.VERIFIED.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.VERIFIED.getCode())
                         .time(now)
                         .info(info)
                         .build()
@@ -195,8 +195,8 @@ public class PurchaseOrderService {
                         .type(DocHistoryEnum.REJECT.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -234,7 +234,7 @@ public class PurchaseOrderService {
         //设置子表的pid、剩余未出库数量
         for (BizPurchaseOrderSub sub : subList) {
             sub.setPid(id);
-            sub.setRemain_num(sub.getNum());
+            sub.setRemainNum(sub.getNum());
         }
 
         //插入主表和子表
@@ -276,7 +276,7 @@ public class PurchaseOrderService {
 
         //插入新的子表
         List<BizPurchaseOrderSub> subList = doc.getData();
-        subList.forEach(sub -> sub.setRemain_num(sub.getNum()));
+        subList.forEach(sub -> sub.setRemainNum(sub.getNum()));
         subMapper.insertBatch(subList);
 
         //附件增删

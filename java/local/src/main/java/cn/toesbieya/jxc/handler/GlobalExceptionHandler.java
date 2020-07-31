@@ -6,7 +6,7 @@ import cn.toesbieya.jxc.model.entity.RecUserAction;
 import cn.toesbieya.jxc.utils.ThreadUtil;
 import cn.toesbieya.jxc.utils.Util;
 import cn.toesbieya.jxc.service.RecService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.HttpRequestMethodNotSupportedException;

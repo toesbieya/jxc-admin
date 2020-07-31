@@ -32,7 +32,7 @@ public class StockService implements StockApi {
 
     private final ExcelUtil.CommonMergeOptions mergeOptions =
             new ExcelUtil.CommonMergeOptions(
-                    new String[]{"id", "cname", "total_num", "total_price", "cgddid", "cg_price", "cg_num"},
+                    new String[]{"id", "cname", "totalNum", "totalPrice", "cgddid", "cgPrice", "cgNum"},
                     "cid",
                     "id"
             );

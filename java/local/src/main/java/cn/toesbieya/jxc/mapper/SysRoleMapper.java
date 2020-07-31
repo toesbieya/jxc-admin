@@ -7,13 +7,15 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface SysRoleMapper {
+    SysRole selectById(@Param("id") int id);
+
     List<SysRole> get();
 
     List<SysRole> getAll();
 
     List<SysRole> search(RoleSearch vo);
 
-    int add(SysRole role);
+    int insert(SysRole role);
 
     int update(SysRole role);
 

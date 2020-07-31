@@ -81,10 +81,10 @@ public class AccountController {
 
     private String validateUpdatePwdParam(PasswordUpdateParam vo) {
         if (vo.getId() == null) return "修改失败，参数错误";
-        if (StringUtils.isEmpty(vo.getOld_pwd())) return "修改失败，原密码不能为空";
-        if (StringUtils.isEmpty(vo.getNew_pwd())) return "修改失败，新密码不能为空";
-        if (vo.getOld_pwd().equals(vo.getNew_pwd())) return "修改失败，新密码不得与旧密码相同";
-        if (vo.getNew_pwd().length() != 32) return "修改失败，密码参数有误";
+        if (StringUtils.isEmpty(vo.getOldPwd())) return "修改失败，原密码不能为空";
+        if (StringUtils.isEmpty(vo.getNewPwd())) return "修改失败，新密码不能为空";
+        if (vo.getOldPwd().equals(vo.getNewPwd())) return "修改失败，新密码不得与旧密码相同";
+        if (vo.getNewPwd().length() != 32) return "修改失败，密码参数有误";
         return null;
     }
 }

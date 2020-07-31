@@ -9,5 +9,5 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class SellOutboundSearch extends DocumentSearch {
     private String pid;
-    private String pid_fuzzy;
+    private String pidFuzzy;
 }

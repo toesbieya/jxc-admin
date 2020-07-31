@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.aspect;
 
 import cn.toesbieya.jxc.annoation.Lock;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.utils.RedisUtil;
 import cn.toesbieya.jxc.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class LockAspect {
     private final ThreadLocal<ArrayList<RedisUtil.Locker>> lockerThreadLocal = new ThreadLocal<>();
 
-    @Pointcut("@annotation(cn.toesbieya.jxc.annoation.Lock)&&execution(cn.toesbieya.jxc.utils.Result cn.toesbieya.jxc..*.*(..))")
+    @Pointcut("@annotation(cn.toesbieya.jxc.annoation.Lock)&&execution(cn.toesbieya.jxc.model.vo.Result cn.toesbieya.jxc..*.*(..))")
     public void pointCut() {
 
     }

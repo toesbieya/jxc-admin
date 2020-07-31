@@ -8,8 +8,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/repo?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
-    username: username
-    password: password
+    username:
+    password:
   redis:
     host: localhost
     port: 6379
@@ -32,6 +32,8 @@ spring:
 mybatis:
   mapper-locations:
     - classpath*:/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
 
 pagehelper:
   helperDialect: mysql

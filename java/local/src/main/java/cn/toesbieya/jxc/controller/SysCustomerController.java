@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.controller;
 import cn.toesbieya.jxc.model.entity.SysCustomer;
 import cn.toesbieya.jxc.model.vo.search.CustomerSearch;
 import cn.toesbieya.jxc.service.SysCustomerService;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 

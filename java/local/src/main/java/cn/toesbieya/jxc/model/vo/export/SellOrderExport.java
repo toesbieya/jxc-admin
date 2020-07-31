@@ -12,7 +12,7 @@ public class SellOrderExport {
 
     @ExcelProperty(value = "客户", index = 1)
     @ColumnWidth(30)
-    private String customer_name;
+    private String customerName;
 
     @ExcelProperty(value = "创建人", index = 2)
     @ColumnWidth(20)

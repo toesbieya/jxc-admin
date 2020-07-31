@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class PasswordUpdateParam {
     private Integer id;
-    private String new_pwd;
-    private String old_pwd;
+    private String newPwd;
+    private String oldPwd;
 }

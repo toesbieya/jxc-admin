@@ -14,9 +14,11 @@ import java.util.Set;
 @EqualsAndHashCode(callSuper = true)
 public class UserVo extends SysUser {
     private String token;
-    private String role_name;
+    private String roleName;
+    private String deptName;
     private boolean online = false;
-    private Set<Integer> resource_ids;
+    private Set<Integer> departmentIds;
+    private Set<Integer> resourceIds;
 
     public UserVo(SysUser parent) {
         this.setId(parent.getId());
@@ -25,7 +27,7 @@ public class UserVo extends SysUser {
         this.setRole(parent.getRole());
         this.setAvatar(parent.getAvatar());
         this.setCtime(parent.getCtime());
-        this.setAdmin(parent.getAdmin());
+        this.setAdmin(parent.isAdmin());
         this.setStatus(parent.getStatus());
     }
 }

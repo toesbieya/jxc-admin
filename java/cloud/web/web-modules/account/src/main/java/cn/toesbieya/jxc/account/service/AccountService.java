@@ -7,12 +7,14 @@ import cn.toesbieya.jxc.account.vo.LoginSuccessInfo;
 import cn.toesbieya.jxc.account.vo.PasswordUpdateParam;
 import cn.toesbieya.jxc.account.vo.RegisterParam;
 import cn.toesbieya.jxc.api.service.RecordApi;
+import cn.toesbieya.jxc.api.service.system.DepartmentApi;
 import cn.toesbieya.jxc.api.service.system.ResourceApi;
 import cn.toesbieya.jxc.api.service.system.RoleApi;
 import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.RecLoginHistory;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
+import cn.toesbieya.jxc.common.model.vo.DepartmentVo;
 import cn.toesbieya.jxc.common.model.vo.ResourceVo;
 import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
@@ -43,6 +45,8 @@ public class AccountService {
     private ResourceApi resourceApi;
     @Reference
     private RoleApi roleApi;
+    @Reference
+    public DepartmentApi departmentApi;
 
     @TimeCost
     public Result login(LoginParam param, String ip) {
@@ -60,10 +64,11 @@ public class AccountService {
             return Result.fail("该用户已被禁用，请联系管理员");
         }
         Integer roleId = user.getRole();
-        if (user.getAdmin() != 1 && roleId == null) {
+        if (!user.isAdmin() && roleId == null) {
             return Result.fail("该用户尚未被分配角色，请联系管理员");
         }
 
+        //设置token
         String token = SessionUtil.generateToken(user);
 
         //存入redis的数据
@@ -75,18 +80,17 @@ public class AccountService {
         info.setToken(token);
 
         Map<String, Integer> userResourcesUrlMap = null;
-
         Set<Integer> userResourcesIdSet = null;
 
-        //获取用户的所有权限url
         if (roleId != null) {
             //获取用户的角色
             SysRole role = roleApi.getRoleById(roleId);
 
             if (role != null) {
-                String role_name = role.getName();
-                userVo.setRole_name(role_name);
-                info.setRole_name(role_name);
+                //设置角色名称
+                String roleName = role.getName();
+                userVo.setRoleName(roleName);
+                info.setRoleName(roleName);
 
                 //获取用户的权限列表
                 List<ResourceVo> resources = resourceApi.getResourceByRole(role);
@@ -102,8 +106,25 @@ public class AccountService {
             }
         }
 
-        userVo.setResource_ids(userResourcesIdSet);
+        //获取用户部门
+        Integer deptId = user.getDept();
+        if (deptId != null) {
+            DepartmentVo dept = departmentApi.getById(deptId);
+            if (dept != null) {
+                //设置用户的部门名称
+                String deptName = dept.getFullname();
+                userVo.setDeptName(deptName);
+                info.setDeptName(deptName);
+            }
+        }
 
+        //用户的数据范围
+        userVo.setDepartmentIds(departmentApi.getUserDataScope(user));
+
+        //用户的权限ID集合
+        userVo.setResourceIds(userResourcesIdSet);
+
+        //返回给前端的用户权限表
         info.setResources(userResourcesUrlMap);
 
         //用户信息插入redis
@@ -164,9 +185,9 @@ public class AccountService {
         int rows = userMapper.update(
                 null,
                 Wrappers.lambdaUpdate(SysUser.class)
-                        .set(SysUser::getPwd, param.getNew_pwd())
+                        .set(SysUser::getPwd, param.getNewPwd())
                         .eq(SysUser::getId, param.getId())
-                        .eq(SysUser::getPwd, param.getOld_pwd())
+                        .eq(SysUser::getPwd, param.getOldPwd())
         );
         return rows > 0 ? Result.success("修改成功") : Result.fail("修改失败，请检查原密码是否正确");
     }

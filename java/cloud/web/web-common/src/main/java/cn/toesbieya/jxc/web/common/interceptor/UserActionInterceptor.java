@@ -6,12 +6,13 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class UserActionInterceptor implements HandlerInterceptor {
     private final UserActionPredicate predicate;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         if (predicate.allowed(request)) {
             ThreadUtil.quicklySetAction(request);
         }

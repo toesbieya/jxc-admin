@@ -2,36 +2,63 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.toesbieya.jxc.mapper.SysRoleMapper">
     <sql id="searchCondition">
-        <if test="id!=null">and id=#{id}</if>
-        <if test="name!=null and name!=''">and name like "%"#{name}"%"</if>
-        <if test="cid!=null">and cid=#{cid}</if>
-        <if test="cname!=null and cname!=''">and cname like "%"#{cname}"%"</if>
-        <if test="status!=null">and status=#{status}</if>
-        <if test="startTime!=null">and ctime <![CDATA[ >= ]]> #{startTime}</if>
-        <if test="endTime!=null">and ctime <![CDATA[ <= ]]> #{endTime}</if>
+        <if test="id != null">
+            and id=#{id}
+        </if>
+        <if test="name != null and name != ''">
+            and name like "%"#{name}"%"
+        </if>
+        <if test="cid != null">
+            and cid=#{cid}
+        </if>
+        <if test="cname != null and cname != ''">
+            and cname like "%"#{cname}"%"
+        </if>
+        <if test="status != null">
+            and status=#{status}
+        </if>
+        <if test="startTime != null">
+            and ctime <![CDATA[ >= ]]> #{startTime}
+        </if>
+        <if test="endTime != null">
+            and ctime <![CDATA[ <= ]]> #{endTime}
+        </if>
     </sql>
-    <insert id="add" parameterType="cn.toesbieya.jxc.model.entity.SysRole">
-        insert into sys_role (name, resource_id, cid, cname, ctime, status)
-        values (#{name}, #{resource_id}, #{cid}, #{cname}, #{ctime}, #{status})
+
+    <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.SysRole">
+        insert into sys_role (name, cid, cname, ctime, status, scope, department_id, resource_id)
+        values (#{name}, #{cid}, #{cname}, #{ctime}, #{status}, #{scope}, #{departmentId}, #{resourceId})
     </insert>
+
     <update id="update" parameterType="cn.toesbieya.jxc.model.entity.SysRole">
         update sys_role
         set name=#{name},
-        resource_id=#{resource_id},
-        status=#{status}
+            status=#{status},
+            scope=#{scope},
+            department_id=#{departmentId},
+            resource_id=#{resourceId}
         where id = #{id}
     </update>
+
     <delete id="del" parameterType="java.lang.Integer">
         delete
         from sys_role
         where id = #{id}
-        and status = 0
+          and status = 0
     </delete>
+
+    <select id="selectById" resultType="cn.toesbieya.jxc.model.entity.SysRole">
+        select *
+        from sys_role
+        where id = #{id}
+    </select>
+
     <select id="get" resultType="cn.toesbieya.jxc.model.entity.SysRole">
         select *
         from sys_role
         where status = 1
     </select>
+
     <select id="getAll" resultType="cn.toesbieya.jxc.model.entity.SysRole">
         select *
         from sys_role
@@ -40,16 +67,17 @@
     <select id="isNameExist" resultType="java.lang.Boolean">
         select if(count(0) > 0, 1, 0)
         from sys_role
-        where name = #{name}
-        <if test="id!=null">
-            and id!=#{id}
+                where name = #{name}
+        <if test="id != null">
+            and id != #{id}
         </if>
     </select>
+
     <select id="search" resultType="cn.toesbieya.jxc.model.entity.SysRole"
             parameterType="cn.toesbieya.jxc.model.vo.search.RoleSearch">
         select *
         from sys_role
-        where 1
+                where 1
         <include refid="searchCondition"/>
         order by ctime desc
     </select>

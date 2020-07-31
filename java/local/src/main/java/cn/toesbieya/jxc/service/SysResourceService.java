@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.service;
 import cn.toesbieya.jxc.model.entity.SysResource;
 import cn.toesbieya.jxc.mapper.SysResourceMapper;
 import cn.toesbieya.jxc.module.request.RequestModule;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -39,7 +39,7 @@ public class SysResourceService {
     public Result update(SysResource resource) {
         int rows = resourceMapper.update(resource);
         if (rows > 0) {
-            RequestModule.updateRate(resource.getUrl(), resource.getTotal_rate(), resource.getIp_rate());
+            RequestModule.updateRate(resource.getUrl(), resource.getTotalRate(), resource.getIpRate());
         }
         return Result.success("修改成功");
     }
@@ -53,7 +53,7 @@ public class SysResourceService {
             if (resource.getPid() == 0) {
                 url.put(resource.getId(), resource.getUrl());
                 name.put(resource.getId(), resource.getName());
-                resource.setFullName(resource.getName());
+                resource.setFullname(resource.getName());
                 continue;
             }
 
@@ -63,9 +63,9 @@ public class SysResourceService {
             assert !StringUtils.isEmpty(parentUrl) && !StringUtils.isEmpty(parentName);
 
             resource.setUrl(parentUrl + resource.getUrl());
-            resource.setFullName(parentName + " - " + resource.getName());
+            resource.setFullname(parentName + " - " + resource.getName());
             url.put(resource.getId(), resource.getUrl());
-            name.put(resource.getId(), resource.getFullName());
+            name.put(resource.getId(), resource.getFullname());
         }
     }
 }

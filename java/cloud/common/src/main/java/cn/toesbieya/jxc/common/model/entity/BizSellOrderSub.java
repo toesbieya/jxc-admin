@@ -11,5 +11,5 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(callSuper = true)
 public class BizSellOrderSub extends BizDocSub {
     private BigDecimal price;
-    private BigDecimal remain_num;
+    private BigDecimal remainNum;
 }

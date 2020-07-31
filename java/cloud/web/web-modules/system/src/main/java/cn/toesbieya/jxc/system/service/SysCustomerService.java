@@ -78,7 +78,7 @@ public class SysCustomerService {
             SysRegion matched = Util.find(regions, item -> customerVo.getRegion().equals(item.getId()));
 
             if (matched != null) {
-                customerVo.setRegion_name(matched.getName());
+                customerVo.setRegionName(matched.getName());
             }
         });
 

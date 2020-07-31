@@ -106,8 +106,8 @@ public class SellOrderService {
                         .type(DocHistoryEnum.COMMIT.getCode())
                         .uid(doc.getCid())
                         .uname(doc.getCname())
-                        .status_before(DocStatusEnum.DRAFT.getCode())
-                        .status_after(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusBefore(DocStatusEnum.DRAFT.getCode())
+                        .statusAfter(DocStatusEnum.WAIT_VERIFY.getCode())
                         .time(System.currentTimeMillis())
                         .build()
         );
@@ -133,8 +133,8 @@ public class SellOrderService {
                         .type(DocHistoryEnum.WITHDRAW.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -170,8 +170,8 @@ public class SellOrderService {
                         .type(DocHistoryEnum.PASS.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.VERIFIED.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.VERIFIED.getCode())
                         .time(now)
                         .info(info)
                         .build()
@@ -197,8 +197,8 @@ public class SellOrderService {
                         .type(DocHistoryEnum.REJECT.getCode())
                         .uid(user.getId())
                         .uname(user.getName())
-                        .status_before(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .status_after(DocStatusEnum.DRAFT.getCode())
+                        .statusBefore(DocStatusEnum.WAIT_VERIFY.getCode())
+                        .statusAfter(DocStatusEnum.DRAFT.getCode())
                         .time(System.currentTimeMillis())
                         .info(info)
                         .build()
@@ -238,7 +238,7 @@ public class SellOrderService {
 
         for (BizSellOrderSub sub : subList) {
             sub.setPid(id);
-            sub.setRemain_num(sub.getNum());
+            sub.setRemainNum(sub.getNum());
         }
 
         //插入主表和子表
@@ -268,8 +268,8 @@ public class SellOrderService {
         mainMapper.update(
                 null,
                 Wrappers.lambdaUpdate(BizSellOrder.class)
-                        .set(BizSellOrder::getCustomer_id, doc.getCustomer_id())
-                        .set(BizSellOrder::getCustomer_name, doc.getCustomer_name())
+                        .set(BizSellOrder::getCustomerId, doc.getCustomerId())
+                        .set(BizSellOrder::getCustomerName, doc.getCustomerName())
                         .set(BizSellOrder::getStatus, doc.getStatus())
                         .set(BizSellOrder::getTotal, doc.getTotal())
                         .set(BizSellOrder::getRemark, doc.getRemark())
@@ -281,7 +281,7 @@ public class SellOrderService {
 
         //插入新的子表
         List<BizSellOrderSub> subList = doc.getData();
-        subList.forEach(sub->sub.setRemain_num(sub.getNum()));
+        subList.forEach(sub->sub.setRemainNum(sub.getNum()));
         subMapper.insertBatch(subList);
 
         //附件增删
@@ -344,7 +344,7 @@ public class SellOrderService {
         for (int i = 0; i < subListLength; i++) {
             BizSellOrderSub sub = list.get(i);
             StockSearchResult stock = stockList.get(i);
-            if (sub.getNum().compareTo(stock.getTotal_num()) > 0) {
+            if (sub.getNum().compareTo(stock.getTotalNum()) > 0) {
                 return String.format("商品【%s】库存不足", sub.getCname());
             }
         }
@@ -353,15 +353,15 @@ public class SellOrderService {
     }
 
     private Wrapper<BizSellOrder> getSearchCondition(SellOrderSearch vo) {
-        Integer customer_id = vo.getCustomer_id();
-        String customer_name = vo.getCustomer_name();
+        Integer customerId = vo.getCustomerId();
+        String customerName = vo.getCustomerName();
         String finish = vo.getFinish();
         Long ftimeStart = vo.getFtimeStart();
         Long ftimeEnd = vo.getFtimeEnd();
 
         return DocUtil.baseCondition(BizSellOrder.class, vo)
-                .eq(customer_id != null, BizSellOrder::getCustomer_id, customer_id)
-                .like(!StringUtils.isEmpty(customer_name), BizSellOrder::getCustomer_name, customer_name)
+                .eq(customerId != null, BizSellOrder::getCustomerId, customerId)
+                .like(!StringUtils.isEmpty(customerName), BizSellOrder::getCustomerName, customerName)
                 .inSql(!StringUtils.isEmpty(finish), BizSellOrder::getFinish, finish)
                 .ge(ftimeStart != null, BizSellOrder::getCtime, ftimeStart)
                 .le(ftimeEnd != null, BizSellOrder::getCtime, ftimeEnd);

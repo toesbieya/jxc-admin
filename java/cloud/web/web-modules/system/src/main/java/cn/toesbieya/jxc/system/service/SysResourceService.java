@@ -24,7 +24,7 @@ public class SysResourceService implements ResourceApi {
     public List<ResourceVo> get() {
         List<SysResource> list = resourceMapper.selectList(
                 Wrappers.lambdaQuery(SysResource.class)
-                        .eq(SysResource::getAdmin, 0)
+                        .eq(SysResource::isAdmin, false)
         );
 
         return completeNode(list);
@@ -41,7 +41,7 @@ public class SysResourceService implements ResourceApi {
             return Collections.emptyList();
         }
 
-        String ids = role.getResource_id();
+        String ids = role.getResourceId();
 
         if (StringUtils.isEmpty(ids)) {
             return Collections.emptyList();
@@ -69,7 +69,7 @@ public class SysResourceService implements ResourceApi {
 
             //跳过顶级节点
             if (resource.getPid() == 0) {
-                vo.setFullName(name);
+                vo.setFullname(name);
 
                 urlMap.put(id, url);
                 nameMap.put(id, name);
@@ -83,13 +83,13 @@ public class SysResourceService implements ResourceApi {
 
                 assert !StringUtils.isEmpty(parentUrl) && !StringUtils.isEmpty(parentName);
 
-                String fullName = parentName + " - " + name;
+                String fullname = parentName + " - " + name;
 
                 vo.setUrl(parentUrl + url);
-                vo.setFullName(fullName);
+                vo.setFullname(fullname);
 
                 urlMap.put(id, url);
-                nameMap.put(id, fullName);
+                nameMap.put(id, fullname);
             }
 
             result.add(vo);

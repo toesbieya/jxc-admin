@@ -10,9 +10,9 @@ public class ThreadUtil {
     private static final ThreadLocal<UserVo> THREAD_LOCAL_USER = new ThreadLocal<>();
 
     public static void quicklySetAction(HttpServletRequest request) {
-        UserVo user = SessionUtil.get(request);
-
-        if (null == user) return;
+        UserVo user = getUser();
+        if (user == null) user = SessionUtil.get(request);
+        if (user == null) return;
 
         RecUserAction userAction = RecUserAction.builder()
                 .uid(user.getId())

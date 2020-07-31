@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.controller;
 
 import cn.toesbieya.jxc.utils.QiniuUtil;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

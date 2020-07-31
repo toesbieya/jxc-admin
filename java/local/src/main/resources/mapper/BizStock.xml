@@ -40,7 +40,7 @@
             resultType="cn.toesbieya.jxc.model.vo.result.StockSearchResult">
         select cid,
                cname,
-               sum(num) total_num,
+               sum(num)         total_num,
                sum(num * price) total_price
         from biz_stock
         <include refid="searchCondition"/>
@@ -69,14 +69,14 @@
                a.total_price,
                b.cgddid,
                b.cgrkid,
-               b.price cg_price,
+               b.price                                            cg_price,
                from_unixtime(b.ctime / 1000, '%Y-%m-%d %H:%m:%s') ctime,
-               c.num rk_num,
-               d.num cg_num
+               c.num                                              rk_num,
+               d.num                                              cg_num
                 from (
                 select cid,
                        cname,
-                       sum(num) total_num,
+                       sum(num)         total_num,
                        sum(num * price) total_price
                 from biz_stock
         <include refid="searchCondition"/>

@@ -1,5 +1,6 @@
 package cn.toesbieya.jxc.interceptor;
 
+import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.module.request.RequestModule;
 import cn.toesbieya.jxc.utils.*;
@@ -15,7 +16,7 @@ public class RateControlInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         UserVo user = SessionUtil.get(request);
 
-        if (user.getAdmin() == 1) return true;
+        if (user.isAdmin()) return true;
 
         String url = request.getServletPath();
         String ip = IpUtil.getIp(request);

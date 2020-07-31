@@ -25,7 +25,7 @@ public class ResourceConfig implements CommandLineRunner {
 
     public static boolean authority(UserVo user, String url) {
         //超级管理员放行
-        if (user.getAdmin() == 1) {
+        if (user.isAdmin()) {
             return true;
         }
         //普通用户访问admin权限的资源时拦截
@@ -37,7 +37,7 @@ public class ResourceConfig implements CommandLineRunner {
             return true;
         }
 
-        Set<Integer> ids = user.getResource_ids();
+        Set<Integer> ids = user.getResourceIds();
 
         return ids != null && ids.contains(urlMap.get(url));
     }
@@ -62,7 +62,7 @@ public class ResourceConfig implements CommandLineRunner {
         completeNode(resources);
 
         for (SysResource p : resources) {
-            if (p.getAdmin().equals(1)) {
+            if (p.isAdmin()) {
                 adminUrlMap.put(p.getUrl(), p.getId());
             }
             else urlMap.put(p.getUrl(), p.getId());

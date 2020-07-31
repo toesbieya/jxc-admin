@@ -13,7 +13,7 @@ import cn.toesbieya.jxc.model.vo.search.MsgSearch;
 import cn.toesbieya.jxc.utils.WebSocketUtil;
 import com.github.pagehelper.PageHelper;
 import cn.toesbieya.jxc.mapper.MsgMapper;
-import cn.toesbieya.jxc.utils.Result;
+import cn.toesbieya.jxc.model.vo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

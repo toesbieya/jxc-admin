@@ -9,7 +9,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class DocumentSearch extends BaseSearch {
     private String id;
-    private String id_fuzzy;
+    private String idFuzzy;
     private Integer cid;
     private String cname;
     private Integer vid;

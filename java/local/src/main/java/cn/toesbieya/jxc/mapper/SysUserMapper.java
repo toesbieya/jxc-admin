@@ -15,11 +15,11 @@ public interface SysUserMapper {
 
     boolean isNameExist(@Param("name") String name, @Param("id") Integer id);
 
-    int add(SysUser user);
+    int insert(SysUser user);
 
     int update(SysUser user);
 
-    int del(@Param("id") Integer id);
+    int deleteById(@Param("id") Integer id);
 
     int resetPwd(@Param("id") Integer id, @Param("pwd") String pwd);
 
