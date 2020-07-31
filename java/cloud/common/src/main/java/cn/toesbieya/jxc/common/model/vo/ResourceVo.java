@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.beans.BeanUtils;
 
 @Data
 @NoArgsConstructor
@@ -14,10 +15,6 @@ public class ResourceVo extends SysResource {
     private String fullname;
 
     public ResourceVo(SysResource parent) {
-        this.setId(parent.getId());
-        this.setPid(parent.getPid());
-        this.setName(parent.getName());
-        this.setUrl(parent.getUrl());
-        this.setAdmin(parent.isAdmin());
+        BeanUtils.copyProperties(parent, this);
     }
 }

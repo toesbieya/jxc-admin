@@ -17,13 +17,4 @@ public class BizSellOrder extends BizDoc {
     private Integer finish;
     private Long ftime;
     private BigDecimal total;
-
-    public BizSellOrder(BizSellOrder obj) {
-        super(obj);
-        this.customerId = obj.getCustomerId();
-        this.customerName = obj.getCustomerName();
-        this.finish = obj.getFinish();
-        this.ftime = obj.getFtime();
-        this.total = obj.getTotal();
-    }
 }

@@ -61,10 +61,12 @@ public class SysCategoryService {
     private String check(SysCategory category) {
         if (category.getPid() != 0) {
             SysCategory parent = categoryMapper.getById(category.getPid());
-            if (parent == null || parent.getType() == 1) return "父节点状态变更，请刷新后重试";
+            if (parent == null || parent.getType() == 1) {
+                return "父节点状态变更，请刷新后重试";
+            }
         }
         if (categoryMapper.isNameExist(category.getName(), category.getId())) {
-            return "分类【" + category.getName() + "】已存在";
+            return String.format("分类【%s】已存在",category.getName());
         }
 
         if (category.getId() != null && category.getType() == 1) {

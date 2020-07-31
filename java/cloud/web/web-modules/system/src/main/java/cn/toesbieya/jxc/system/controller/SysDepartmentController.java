@@ -2,6 +2,7 @@ package cn.toesbieya.jxc.system.controller;
 
 import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysDepartment;
+import cn.toesbieya.jxc.common.model.vo.DepartmentVo;
 import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.system.service.SysDepartmentService;
 import org.springframework.util.StringUtils;
@@ -19,7 +20,7 @@ public class SysDepartmentController {
 
     @GetMapping("get")
     public Result get(boolean all) {
-        List<SysDepartment> list = departmentService.getAll();
+        List<DepartmentVo> list = departmentService.getAll();
         if (!all) {
             list = list
                     .stream()

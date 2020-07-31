@@ -109,7 +109,7 @@ public class SysCategoryService {
                         .ne(id != null, SysCategory::getId, id)
         );
         if (exist != null && exist > 0) {
-            return "分类【" + category.getName() + "】已存在";
+            return String.format("分类【%s】已存在", category.getName());
         }
 
         Integer cid = category.getId();

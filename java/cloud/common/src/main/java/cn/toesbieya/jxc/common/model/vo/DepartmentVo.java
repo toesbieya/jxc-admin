@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.beans.BeanUtils;
 
 @Data
 @NoArgsConstructor
@@ -14,9 +15,6 @@ public class DepartmentVo extends SysDepartment {
     String fullname;
 
     public DepartmentVo(SysDepartment parent) {
-        this.setId(parent.getId());
-        this.setPid(parent.getPid());
-        this.setName(parent.getName());
-        this.setStatus(parent.getStatus());
+        BeanUtils.copyProperties(parent, this);
     }
 }

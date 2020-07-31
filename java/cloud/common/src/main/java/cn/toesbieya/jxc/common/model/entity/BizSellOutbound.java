@@ -11,9 +11,4 @@ import lombok.ToString;
 @NoArgsConstructor
 public class BizSellOutbound extends BizDoc {
     private String pid;
-
-    public BizSellOutbound(BizSellOutbound obj) {
-        super(obj);
-        this.pid = obj.getPid();
-    }
 }

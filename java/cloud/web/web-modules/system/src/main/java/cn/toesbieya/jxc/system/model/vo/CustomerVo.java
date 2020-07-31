@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.beans.BeanUtils;
 
 @Data
 @NoArgsConstructor
@@ -14,14 +15,6 @@ public class CustomerVo extends SysCustomer {
     private String regionName;
 
     public CustomerVo(SysCustomer parent) {
-        this.setId(parent.getId());
-        this.setName(parent.getName());
-        this.setAddress(parent.getAddress());
-        this.setLinkman(parent.getLinkman());
-        this.setLinkphone(parent.getLinkphone());
-        this.setRegion(parent.getRegion());
-        this.setStatus(parent.getStatus());
-        this.setCtime(parent.getCtime());
-        this.setRemark(parent.getRemark());
+        BeanUtils.copyProperties(parent, this);
     }
 }

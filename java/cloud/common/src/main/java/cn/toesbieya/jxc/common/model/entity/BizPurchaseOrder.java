@@ -17,13 +17,4 @@ public class BizPurchaseOrder extends BizDoc {
     private Integer finish;
     private Long ftime;
     private BigDecimal total;
-
-    public BizPurchaseOrder(BizPurchaseOrder obj) {
-        super(obj);
-        this.sid = obj.getSid();
-        this.sname = obj.getSname();
-        this.finish = obj.getFinish();
-        this.ftime = obj.getFtime();
-        this.total = obj.getTotal();
-    }
 }

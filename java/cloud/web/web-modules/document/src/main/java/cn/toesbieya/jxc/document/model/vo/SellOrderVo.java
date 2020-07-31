@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -21,6 +22,6 @@ public class SellOrderVo extends BizSellOrder {
     private List<String> deleteImageList;
 
     public SellOrderVo(BizSellOrder parent) {
-        super(parent);
+        BeanUtils.copyProperties(parent, this);
     }
 }

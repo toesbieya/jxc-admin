@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Set;
 
@@ -21,13 +22,6 @@ public class UserVo extends SysUser {
     private Set<Integer> resourceIds;
 
     public UserVo(SysUser parent) {
-        this.setId(parent.getId());
-        this.setName(parent.getName());
-        this.setPwd(parent.getPwd());
-        this.setRole(parent.getRole());
-        this.setAvatar(parent.getAvatar());
-        this.setCtime(parent.getCtime());
-        this.setAdmin(parent.isAdmin());
-        this.setStatus(parent.getStatus());
+        BeanUtils.copyProperties(parent,this);
     }
 }

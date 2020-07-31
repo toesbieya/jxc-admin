@@ -18,16 +18,4 @@ public class BizDoc implements Serializable {
     private Long vtime;
     private Integer status;
     private String remark;
-
-    public BizDoc(BizDoc doc) {
-        this.id = doc.getId();
-        this.cid = doc.getCid();
-        this.cname = doc.getCname();
-        this.ctime = doc.getCtime();
-        this.vid = doc.getVid();
-        this.vname = doc.getVname();
-        this.vtime = doc.getVtime();
-        this.status = doc.getStatus();
-        this.remark = doc.getRemark();
-    }
 }

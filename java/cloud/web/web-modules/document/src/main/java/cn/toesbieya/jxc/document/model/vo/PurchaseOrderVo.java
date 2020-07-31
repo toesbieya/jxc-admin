@@ -4,6 +4,7 @@ import cn.toesbieya.jxc.common.model.entity.BizPurchaseOrder;
 import cn.toesbieya.jxc.common.model.entity.BizPurchaseOrderSub;
 import cn.toesbieya.jxc.common.model.entity.RecAttachment;
 import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -18,6 +19,6 @@ public class PurchaseOrderVo extends BizPurchaseOrder {
     private List<String> deleteImageList;
 
     public PurchaseOrderVo(BizPurchaseOrder parent) {
-        super(parent);
+        BeanUtils.copyProperties(parent, this);
     }
 }
