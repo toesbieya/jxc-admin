@@ -40,7 +40,7 @@ const mutations = {
             map[item.url] = item.id
             return map
         }, {})
-        state.tree = createTree(data.filter(resource => resource.admin !== 1))
+        state.tree = createTree(data.filter(resource => resource.admin === false))
     },
     hasInitRoutes(state, sign) {
         state.hasInitRoutes = sign
@@ -114,7 +114,7 @@ function addFullPath(routes, basePath = '/') {
 
 //获取经过权限控制后的路由
 function getAuthorizedRoutes({resources, admin}) {
-    if (admin === 1) return finalAuthorityRoutes
+    if (admin === true) return finalAuthorityRoutes
     if (!resources) return []
     const arr = JSON.parse(JSON.stringify(finalAuthorityRoutes))
     filter(arr, i => !needAuth(i) || i.fullPath in resources)

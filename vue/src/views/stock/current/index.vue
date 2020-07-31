@@ -47,8 +47,8 @@
                     <el-table-column align="center" label="商品分类">
                         <el-link slot-scope="{row}" @click="more(row)">{{row.cname}}</el-link>
                     </el-table-column>
-                    <el-table-column align="center" label="库存数量" prop="total_num" show-overflow-tooltip/>
-                    <el-table-column align="center" label="总 值" prop="total_price" show-overflow-tooltip/>
+                    <el-table-column align="center" label="库存数量" prop="totalNum" show-overflow-tooltip/>
+                    <el-table-column align="center" label="总 值" prop="totalPrice" show-overflow-tooltip/>
                 </abstract-table>
 
                 <el-pagination
@@ -104,14 +104,14 @@
                     columns: [
                         {header: '序号', prop: 'id', width: 20, merge: true},
                         {header: '分类名称', prop: 'cname', width: 20, merge: true},
-                        {header: '库存总数', prop: 'total_num', width: 20, merge: true},
-                        {header: '库存总值', prop: 'total_price', width: 20, merge: true},
+                        {header: '库存总数', prop: 'totalNum', width: 20, merge: true},
+                        {header: '库存总值', prop: 'totalPrice', width: 20, merge: true},
                         {header: '采购订单号', prop: 'cgddid', width: 20, merge: true},
-                        {header: '采购单价', prop: 'cg_price', width: 20, merge: true},
-                        {header: '采购数量', prop: 'cg_num', width: 20, merge: true},
+                        {header: '采购单价', prop: 'cgPrice', width: 20, merge: true},
+                        {header: '采购数量', prop: 'cgNum', width: 20, merge: true},
                         {header: '采购入库单号', prop: 'cgrkid', width: 20},
                         {header: '入库时间', prop: 'ctime', width: 20},
-                        {header: '入库数量', prop: 'rk_num', width: 20},
+                        {header: '入库数量', prop: 'rkNum', width: 20},
                     ],
                     merge: {primaryKey: 'cid', orderKey: 'id'}
                 }
@@ -132,7 +132,7 @@
             summary({data}) {
                 let sum = ['合计', '', '', 0]
                 data.forEach(i => {
-                    sum[3] = plus(sum[3], i.total_price)
+                    sum[3] = plus(sum[3], i.totalPrice)
                 })
                 return sum
             },

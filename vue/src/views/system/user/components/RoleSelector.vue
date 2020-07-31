@@ -1,5 +1,5 @@
 <template>
-    <el-select :disabled="disabled" :value="value" clearable @clear="emit(null)" @input="emit">
+    <el-select :value="value" clearable @clear="emit(null)" @input="emit">
         <el-option
                 v-for="item in roles"
                 :key="item.id"
@@ -15,12 +15,7 @@
     export default {
         name: "RoleSelector",
 
-        props: {
-            value: Number,
-            disabled: {
-                type: Boolean, default: false
-            }
-        },
+        props: {value: Number},
 
         data() {
             return {

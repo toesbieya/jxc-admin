@@ -59,11 +59,11 @@
                             <span v-else>{{row.price}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="form.id" align="center" label="剩余未入库" prop="remain_num"/>
+                    <el-table-column v-if="form.id" align="center" label="剩余未入库" prop="remainNum"/>
                     <el-table-column v-if="form.id" align="center" label="入库情况" width="120">
                         <template v-slot="{row}">
-                            <span :class="{success:row.remain_num===0}" class="dot"/>
-                            {{row.remain_num===0?'已全部入库':'未全部入库'}}
+                            <span :class="{success:row.remainNum===0}" class="dot"/>
+                            {{row.remainNum===0?'已全部入库':'未全部入库'}}
                         </template>
                     </el-table-column>
                     <el-table-column v-if="canSave" align="center" label="操作" width="140">

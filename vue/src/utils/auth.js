@@ -6,7 +6,7 @@ export function needAuth(route) {
 }
 
 export function auth(path) {
-    if (store.state.user.admin === 1) return true
+    if (store.state.user.admin === true) return true
 
     const resourceMap = store.state.resource.dataMap
     if (!(path in resourceMap)) return true

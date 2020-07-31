@@ -15,11 +15,11 @@
             </search-form-item>
             <search-form-item label="创建时间：">
                 <el-date-picker
-                        v-model="temp.ctime"
-                        format="yyyy-MM-dd"
-                        range-separator="-"
-                        type="daterange"
-                        value-format="timestamp"
+                    v-model="temp.ctime"
+                    format="yyyy-MM-dd"
+                    range-separator="-"
+                    type="daterange"
+                    value-format="timestamp"
                 />
             </search-form-item>
         </search-form>
@@ -33,30 +33,30 @@
 
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table
-                    :data="tableData"
-                    @row-click="rowClick"
+                :data="tableData"
+                @row-click="rowClick"
             >
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="角色名" prop="name" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建人" prop="cname" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
-                    <template v-slot="{row}">{{row.ctime | timestamp2Date}}</template>
+                    <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="状 态" width="120">
                     <template v-slot="{row}">
                         <span :class="row.status===1?'success':'error'" class="dot"/>
-                        <span>{{row.status===1?'启用':'禁用'}}</span>
+                        <span>{{ row.status === 1 ? '启用' : '禁用' }}</span>
                     </template>
                 </el-table-column>
             </abstract-table>
 
             <el-pagination
-                    background
-                    :current-page="searchForm.page"
-                    :page-size="searchForm.pageSize"
-                    :total="searchForm.total"
-                    layout="total, prev, pager, next, jumper"
-                    @current-change="pageChange"
+                background
+                :current-page="searchForm.page"
+                :page-size="searchForm.pageSize"
+                :total="searchForm.total"
+                layout="total, prev, pager, next, jumper"
+                @current-change="pageChange"
             />
         </el-row>
 
@@ -65,110 +65,113 @@
 </template>
 
 <script>
-    import SearchForm from "@/components/SearchForm"
-    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
-    import EditDialog from './components/EditDialog'
-    import {delRole, searchRoles} from "@/api/system/role"
-    import {isEmpty} from '@/utils'
-    import {elConfirm, elError, elSuccess} from "@/utils/message"
-    import {auth} from "@/utils/auth"
-    import tableMixin from '@/mixins/tablePageMixin'
+import tableMixin from '@/mixins/tablePageMixin'
+import EditDialog from './EditDialog'
+import SearchForm from "@/components/SearchForm"
+import SearchFormItem from "@/components/SearchForm/SearchFormItem"
+import {baseUrl, delRole, searchRoles} from "@/api/system/role"
+import {isEmpty} from '@/utils'
+import {auth} from "@/utils/auth"
+import {elConfirm, elError, elSuccess} from "@/utils/message"
 
-    const baseUrl = '/system/role'
+export default {
+    name: "roleManagement",
 
-    export default {
-        name: "roleManagement",
+    mixins: [tableMixin],
 
-        mixins: [tableMixin],
+    components: {EditDialog, SearchForm, SearchFormItem},
 
-        components: {SearchForm, SearchFormItem, EditDialog},
+    data() {
+        return {
+            searchForm: {
+                name: '',
+                cname: '',
+                status: null
+            },
+            temp: {
+                ctime: []
+            },
+            editDialog: false
+        }
+    },
 
-        data() {
+    computed: {
+        canAdd() {
+            return auth(`${baseUrl}/add`)
+        },
+        canUpdate() {
+            return auth(`${baseUrl}/update`)
+        },
+        canDel() {
+            return auth(`${baseUrl}/del`)
+        }
+    },
+
+    methods: {
+        mergeSearchForm() {
             return {
-                searchForm: {
-                    name: '',
-                    cname: '',
-                    status: null
-                },
-                temp: {
-                    ctime: []
-                },
-                editDialog: false
+                ...this.searchForm,
+                startTime: this.temp.ctime ? this.temp.ctime[0] : null,
+                endTime: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null,
             }
         },
 
-        computed: {
-            canAdd() {
-                return auth(baseUrl + '/add')
-            },
-
-            canUpdate() {
-                return auth(baseUrl + '/update')
-            },
-
-            canDel() {
-                return auth(baseUrl + '/del')
-            }
+        str2intArray(str) {
+            if (isEmpty(str)) return []
+            return str.split(',').map(i => parseInt(i))
         },
 
-        methods: {
-            mergeSearchForm() {
-                return {
-                    ...this.searchForm,
-                    startTime: this.temp.ctime ? this.temp.ctime[0] : null,
-                    endTime: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null,
-                }
-            },
-
-            search() {
-                if (this.config.loading) return
-                this.config.loading = true
-                this.row = null
-                this.type = 'see'
-                searchRoles(this.mergeSearchForm())
-                    .then(({list, total}) => {
-                        list.forEach(i => {
-                            i.resource_id = isEmpty(i.resource_id) ? [] : i.resource_id.split(',').map(i => parseInt(i))
-                        })
-                        this.searchForm.total = total
-                        this.tableData = list
+        search() {
+            if (this.config.loading) return
+            this.config.loading = true
+            this.row = null
+            this.type = 'see'
+            searchRoles(this.mergeSearchForm())
+                .then(({list, total}) => {
+                    list.forEach(i => {
+                        i.departmentId = this.str2intArray(i.departmentId)
+                        i.resourceId = this.str2intArray(i.resourceId)
                     })
-                    .finally(() => this.config.loading = false)
-            },
+                    this.searchForm.total = total
+                    this.tableData = list
+                })
+                .finally(() => this.config.loading = false)
+        },
 
-            add() {
-                this.row = null
-                this.type = 'add'
-                this.editDialog = true
-            },
+        add() {
+            this.row = null
+            this.type = 'add'
+            this.editDialog = true
+        },
 
-            edit() {
-                if (!this.row) return elError('请选择要编辑的角色')
-                this.type = 'edit'
-                this.editDialog = true
-            },
+        edit() {
+            if (!this.row) return elError('请选择要编辑的角色')
+            this.type = 'edit'
+            this.editDialog = true
+        },
 
-            del() {
-                if (!this.row) return elError('请选择要删除的角色')
-                if (this.row.status === 1) return elError('不能删除已启用的角色')
-                if (this.config.operating) return
-                elConfirm(`确定删除角色【${this.row.name}】？`)
-                    .then(() => {
-                        this.config.operating = true
-                        return delRole({id: this.row.id, name: this.row.name})
-                    })
-                    .then(() => {
-                        elSuccess('删除成功')
-                        this.search()
-                    })
-                    .finally(() => this.config.operating = false)
-            },
+        del() {
+            if (!this.row) return elError('请选择要删除的角色')
+            const {id, name, status} = this.row
+            if (status === 1) return elError('不能删除已启用的角色')
+            if (this.config.operating) return
+            elConfirm(`确定删除角色【${name}】？`)
+                .then(() => {
+                    this.config.operating = true
+                    return delRole({id, name})
+                })
+                .then(() => {
+                    elSuccess('删除成功')
+                    this.search()
+                })
+                .finally(() => this.config.operating = false)
+        },
 
-            success(msg) {
-                elSuccess(msg)
-                this.editDialog = false
-                this.search()
-            }
+        success(msg) {
+            elSuccess(msg)
+            this.editDialog = false
+            this.search()
         }
     }
+}
 </script>

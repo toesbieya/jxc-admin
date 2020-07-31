@@ -165,22 +165,6 @@ a:hover {
     }
 }
 
-//印章
-.seal {
-    float: left;
-    border: solid .1em $--color-danger;
-    border-radius: .2em;
-    color: $--color-danger;
-    font-size: 23px;
-    font-weight: bold;
-    padding: .1em .5em;
-    bottom: 15px;
-
-    & + & {
-        margin-left: 20px;
-    }
-}
-
 .button-group {
     .el-button {
         margin-top: 10px;
@@ -198,6 +182,10 @@ a:hover {
     .el-button {
         width: 100%;
     }
+}
+
+.el-form-item__content > .el-tree {
+    margin-top: 8px;
 }
 
 

@@ -13,7 +13,7 @@ module.exports = [
             else res.send(success({
                 id: 1,
                 name: 'admin',
-                admin: 1,
+                admin: true,
                 token: 'test'
             }))
         }

@@ -44,7 +44,7 @@ service.interceptors.response.use(
 
         //未登录
         if (res.status === 401) {
-            if (store.state.user.prepare_logout) return Promise.reject()
+            if (store.state.user.prepareLogout) return Promise.reject()
             return MessageBox.alert('请登录后重试', {
                 type: 'warning',
                 beforeClose: (action, instance, done) => {

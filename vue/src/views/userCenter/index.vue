@@ -9,7 +9,7 @@
                 <el-tabs v-model="activeTab" stretch>
                     <el-tab-pane v-for="i in tabs" v-once :key="i.label" :name="i.name">
                         <span slot="label">
-                            {{i.label}}
+                            {{ i.label }}
                             <el-tooltip :content="i.intro" placement="top">
                                 <i v-if="i.intro" class="el-icon-question" style="color: #4AB7BD"/>
                             </el-tooltip>
@@ -28,26 +28,23 @@
 </template>
 
 <script>
-    import UserCard from "./components/UserCard"
-    import LoginHistory from "./components/LoginHistory"
+import LoginHistory from "./components/LoginHistory"
+import UserAction from "./components/UserAction"
+import UserCard from "./components/UserCard"
 
-    export default {
-        name: 'userCenter',
+export default {
+    name: 'userCenter',
 
-        components: {
-            UserCard,
-            LoginHistory,
-            UserAction: () => import('./components/UserAction')
-        },
+    components: {UserCard, LoginHistory, UserAction},
 
-        data() {
-            return {
-                activeTab: 'login-history',
-                tabs: [
-                    {label: '登录历史', name: 'login-history', intro: '只保留最近7天的记录'},
-                    {label: '操作记录', name: 'user-action', intro: '只保留最近7天的记录'},
-                ]
-            }
+    data() {
+        return {
+            activeTab: 'login-history',
+            tabs: [
+                {label: '登录历史', name: 'login-history', intro: '只保留最近7天的记录'},
+                {label: '操作记录', name: 'user-action', intro: '只保留最近7天的记录'},
+            ]
         }
     }
+}
 </script>

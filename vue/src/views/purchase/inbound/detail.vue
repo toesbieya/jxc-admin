@@ -140,12 +140,12 @@
                     pid: this.form.id,
                     cid: i.cid,
                     cname: i.cname,
-                    num: i.remain_num
+                    num: i.remainNum
                 }))
             },
             changeInboundNum(nv, ov, row) {
                 let parentSub = this.parentSubList.find(i => i.cid === row.cid)
-                if (!parentSub || nv > parentSub.remain_num) {
+                if (!parentSub || nv > parentSub.remainNum) {
                     return elAlert(`${row.cname}的入库数量超出采购数量`, () => row.num = ov)
                 }
             },
@@ -171,7 +171,7 @@
                     if (!parentSub) {
                         return `第${index}个商品不在采购订单中`
                     }
-                    if (parentSub.remain_num < sub.num) {
+                    if (parentSub.remainNum < sub.num) {
                         return `第${index}个商品的入库数量超出采购数量`
                     }
                     index++

@@ -9,11 +9,11 @@
                 label-width="100px"
                 status-icon
         >
-            <el-form-item label="旧密码：" prop="old_pwd">
-                <el-input v-model.trim="form.old_pwd" maxlength="100" type="password"/>
+            <el-form-item label="旧密码：" prop="oldPwd">
+                <el-input v-model.trim="form.oldPwd" maxlength="100" type="password"/>
             </el-form-item>
-            <el-form-item label="新密码：" prop="new_pwd">
-                <el-input v-model.trim="form.new_pwd" maxlength="100" type="password"/>
+            <el-form-item label="新密码：" prop="newPwd">
+                <el-input v-model.trim="form.newPwd" maxlength="100" type="password"/>
             </el-form-item>
         </el-form>
 
@@ -40,15 +40,15 @@
             return {
                 loading: false,
                 form: {
-                    old_pwd: null,
-                    new_pwd: null
+                    oldPwd: null,
+                    newPwd: null
                 },
                 rules: {
-                    old_pwd: [{required: true, message: '请输入原密码', trigger: 'change'}],
-                    new_pwd: [
+                    oldPwd: [{required: true, message: '请输入原密码', trigger: 'change'}],
+                    newPwd: [
                         {required: true, message: '请输入新密码', trigger: 'change'},
                         {
-                            validator: (r, v, c) => v !== this.form.old_pwd ? c() : c('新密码不得与旧密码相同'),
+                            validator: (r, v, c) => v !== this.form.oldPwd ? c() : c('新密码不得与旧密码相同'),
                             trigger: 'change'
                         },
                         {
@@ -68,8 +68,8 @@
 
         methods: {
             clearForm() {
-                this.form.old_pwd = null
-                this.form.new_pwd = null
+                this.form.oldPwd = null
+                this.form.newPwd = null
                 this.$nextTick(() => this.$refs.form.clearValidate())
             },
 
@@ -79,8 +79,8 @@
                     if (!v) return
                     this.loading = true
                     updateUserPwd({
-                        old_pwd: md5(this.form.old_pwd),
-                        new_pwd: md5(this.form.new_pwd),
+                        oldPwd: md5(this.form.oldPwd),
+                        newPwd: md5(this.form.newPwd),
                     })
                         .then(() => elSuccess('修改成功'))
                         .finally(() => {

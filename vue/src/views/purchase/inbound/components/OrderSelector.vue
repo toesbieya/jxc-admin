@@ -28,7 +28,7 @@
                                         @selection-change="row._selection=$event"
                                 >
                                     <el-table-column
-                                            :selectable="p=>p.remain_num>0"
+                                            :selectable="p=>p.remainNum>0"
                                             align="center"
                                             type="selection"
                                             width="60"
@@ -36,7 +36,7 @@
                                     <el-table-column align="center" label="#" type="index" width="80"/>
                                     <el-table-column align="center" label="商品" prop="cname" show-overflow-tooltip/>
                                     <el-table-column align="center" label="采购数量" prop="num"/>
-                                    <el-table-column align="center" label="未入库数量" prop="remain_num"/>
+                                    <el-table-column align="center" label="未入库数量" prop="remainNum"/>
                                 </el-table>
                                 <el-button
                                         size="small"

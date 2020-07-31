@@ -72,7 +72,7 @@
         },
 
         computed: {
-            ...mapState('user', ['avatar', 'name', 'prepare_logout']),
+            ...mapState('user', ['avatar', 'name', 'prepareLogout']),
 
             ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb']),
 
@@ -91,7 +91,7 @@
             },
 
             logout() {
-                if (this.prepare_logout) return
+                if (this.prepareLogout) return
                 elConfirm('确认退出?')
                     .then(() => this.$store.dispatch('user/logout'))
             }

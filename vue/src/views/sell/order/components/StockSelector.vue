@@ -28,7 +28,7 @@
                 >
                     <el-table-column align="center" type="selection" reserve-selection width="80"/>
                     <el-table-column align="center" label="商品分类" prop="cname" show-overflow-tooltip/>
-                    <el-table-column align="center" label="库存数量" prop="total_num" show-overflow-tooltip/>
+                    <el-table-column align="center" label="库存数量" prop="totalNum" show-overflow-tooltip/>
                 </el-table>
 
                 <el-pagination

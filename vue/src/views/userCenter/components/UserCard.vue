@@ -6,8 +6,11 @@
             <li>登录账号
                 <div class="user-right">{{ name }}</div>
             </li>
+            <li>所属部门
+                <div class="user-right">{{ deptName }}</div>
+            </li>
             <li>用户角色
-                <div class="user-right">{{ role_name }}</div>
+                <div class="user-right">{{ roleName }}</div>
             </li>
             <li>安全设置
                 <div class="user-right"><a @click="modifyPasswordDialog=true">修改密码</a></div>
@@ -21,56 +24,58 @@
 </template>
 
 <script>
-    import UserAccount from './Account'
-    import UploadAvatar from './Avatar'
-    import {mapState} from 'vuex'
+import {mapState} from 'vuex'
+import UploadAvatar from './Avatar'
+import UserAccount from './Account'
 
-    export default {
-        components: {UserAccount, UploadAvatar},
+export default {
+    name: 'UserCard',
 
-        data() {
-            return {
-                modifyPasswordDialog: false,
-                uploadAvatarDialog: false
-            }
-        },
+    components: {UploadAvatar, UserAccount},
 
-        computed: {
-            ...mapState('user', ['name', 'avatar', 'role_name', 'admin'])
+    data() {
+        return {
+            modifyPasswordDialog: false,
+            uploadAvatarDialog: false
         }
+    },
+
+    computed: {
+        ...mapState('user', ['name', 'avatar', 'roleName', 'deptName', 'admin'])
     }
+}
 </script>
 
 <style lang="scss">
-    .user-card {
-        .el-avatar {
-            margin: 0 auto;
-            display: block;
-            cursor: pointer;
+.user-card {
+    .el-avatar {
+        margin: 0 auto;
+        display: block;
+        cursor: pointer;
 
-            i {
-                line-height: 180px;
-                font-size: 150px;
-            }
+        i {
+            line-height: 180px;
+            font-size: 150px;
+        }
+    }
+
+    .user-info {
+        padding-left: 0;
+        list-style: none;
+
+        li {
+            border-bottom: 1px solid #F0F3F4;
+            padding: 11px 0;
+            font-size: 13px;
         }
 
-        .user-info {
-            padding-left: 0;
-            list-style: none;
+        .user-right {
+            float: right;
 
-            li {
-                border-bottom: 1px solid #F0F3F4;
-                padding: 11px 0;
-                font-size: 13px;
-            }
-
-            .user-right {
-                float: right;
-
-                a {
-                    color: #317EF3;
-                }
+            a {
+                color: #317EF3;
             }
         }
     }
+}
 </style>

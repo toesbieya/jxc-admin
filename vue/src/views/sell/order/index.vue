@@ -2,10 +2,10 @@
     <el-card v-loading="config.operating">
         <search-form>
             <search-form-item label="单 号：">
-                <el-input v-model="searchForm.id_fuzzy" clearable maxlength="50"/>
+                <el-input v-model="searchForm.idFuzzy" clearable maxlength="50"/>
             </search-form-item>
             <search-form-item label="客 户：">
-                <el-input v-model="searchForm.customer_name" clearable maxlength="50"/>
+                <el-input v-model="searchForm.customerName" clearable maxlength="50"/>
             </search-form-item>
             <search-form-item label="创建人：">
                 <el-input v-model="searchForm.cname" clearable maxlength="50"/>
@@ -83,13 +83,13 @@
                             <el-table-column align="center" label="商品" prop="cname" show-overflow-tooltip/>
                             <el-table-column align="center" label="销售数量" prop="num"/>
                             <el-table-column align="center" label="销售单价" prop="price"/>
-                            <el-table-column align="center" label="未出库数量" prop="remain_num"/>
+                            <el-table-column align="center" label="未出库数量" prop="remainNum"/>
                         </el-table>
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="单 号" prop="id" width="160" show-overflow-tooltip/>
-                <el-table-column align="center" label="客 户" prop="customer_name" show-overflow-tooltip/>
+                <el-table-column align="center" label="客 户" prop="customerName" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建人" prop="cname" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
                     <template v-slot="{row}">{{row.ctime | timestamp2Date}}</template>
@@ -144,7 +144,7 @@
             return {
                 baseUrl,
                 searchForm: {
-                    customer_name: null
+                    customerName: null
                 },
                 temp: {
                     finish: [],
@@ -154,7 +154,7 @@
                 excel: {
                     column: [
                         {header: '序号', prop: 'id'},
-                        {header: '客户', prop: 'customer_name', width: 30},
+                        {header: '客户', prop: 'customerName', width: 30},
                         {header: '创建人', prop: 'cname'},
                         {header: '创建时间', prop: 'ctime'},
                         {header: '审核人', prop: 'vname'},

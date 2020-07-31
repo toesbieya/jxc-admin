@@ -14,18 +14,18 @@
             <el-form-item label="访问路径：" prop="url">
                 <el-input :value="form.url" readonly/>
             </el-form-item>
-            <el-form-item label="总频率：" prop="total_rate">
+            <el-form-item label="总频率：" prop="totalRate">
                 <el-input-number
-                        v-model="form.total_rate"
+                        v-model="form.totalRate"
                         controls-position="right"
                         :min="1"
                         :step="1"
                         step-strictly size="small"
                 />
             </el-form-item>
-            <el-form-item label="单个IP频率：" prop="ip_rate">
+            <el-form-item label="单个IP频率：" prop="ipRate">
                 <el-input-number
-                        v-model="form.ip_rate"
+                        v-model="form.ipRate"
                         controls-position="right"
                         :min="1"
                         :step="1"
@@ -66,12 +66,12 @@
                     id: null,
                     fullName: null,
                     url: null,
-                    total_rate: 0,
-                    ip_rate: 0
+                    totalRate: 0,
+                    ipRate: 0
                 },
                 rules: {
-                    total_rate: [{required: true, message: '总频率不能为空', trigger: 'change'}],
-                    ip_rate: [{required: true, message: '单个ip的频率不能为空', trigger: 'change'}],
+                    totalRate: [{required: true, message: '总频率不能为空', trigger: 'change'}],
+                    ipRate: [{required: true, message: '单个ip的频率不能为空', trigger: 'change'}],
                 }
             }
         },

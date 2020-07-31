@@ -2,7 +2,7 @@
     <el-card v-loading="config.operating">
         <search-form>
             <search-form-item label="单 号：">
-                <el-input v-model="searchForm.id_fuzzy" clearable maxlength="50"/>
+                <el-input v-model="searchForm.idFuzzy" clearable maxlength="50"/>
             </search-form-item>
             <search-form-item label="供应商：">
                 <el-input v-model="searchForm.sname" clearable maxlength="50"/>
@@ -80,7 +80,7 @@
                             <el-table-column align="center" label="商品" prop="cname" show-overflow-tooltip/>
                             <el-table-column align="center" label="采购数量" prop="num"/>
                             <el-table-column align="center" label="采购单价" prop="price"/>
-                            <el-table-column align="center" label="未入库数量" prop="remain_num"/>
+                            <el-table-column align="center" label="未入库数量" prop="remainNum"/>
                         </el-table>
                     </template>
                 </el-table-column>

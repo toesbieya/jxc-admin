@@ -52,7 +52,7 @@
                     <el-table-column align="center" label="#" type="index" width="80"/>
                     <el-table-column align="center" label="商 品" prop="cname"/>
                     <el-table-column align="center" label="出库数量" prop="num" width="150"/>
-                    <el-table-column align="center" label="订单剩余未出库数量" prop="remain_num" width="250"/>
+                    <el-table-column align="center" label="订单剩余未出库数量" prop="remainNum" width="250"/>
                 </abstract-table>
             </collapse-card>
 
@@ -203,19 +203,19 @@
             selectStock(stocks) {
                 let res = []
                 let outboundNum = 0
-                let remain_num = this.row.remain_num
+                let remainNum = this.row.remainNum
                 for (let stock of stocks) {
-                    if (remain_num <= 0) break
+                    if (remainNum <= 0) break
                     let item = {
                         ...stock,
                         sid: stock.id,
                         pid: this.form.id,
                         max_num: stock.num,
-                        num: stock.num > remain_num ? remain_num : stock.num
+                        num: stock.num > remainNum ? remainNum : stock.num
                     }
                     outboundNum = plus(outboundNum, item.num)
                     res.push(item)
-                    remain_num -= stock.num
+                    remainNum -= stock.num
                 }
                 this.row.num = outboundNum
                 this.row.data = res
@@ -243,8 +243,8 @@
 
                 if (!outboundNum) return
 
-                if (outboundNum > displayTableRow.remain_num) {
-                    let correctNum = sub(displayTableRow.remain_num, sub(outboundNum, nv))
+                if (outboundNum > displayTableRow.remainNum) {
+                    let correctNum = sub(displayTableRow.remainNum, sub(outboundNum, nv))
                     if (correctNum < 0) correctNum = 0
                     else if (correctNum > row.max_num) correctNum = row.max_num
                     return elAlert(`${displayTableRow.cname}的出库数量超出销售数量`, () => row.num = ov)

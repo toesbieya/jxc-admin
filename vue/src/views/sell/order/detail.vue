@@ -13,11 +13,11 @@
             </collapse-card>
 
             <collapse-card header="基础信息">
-                <abstract-form-item label="客 户：" prop="customer_name">
-                    <el-input v-if="canSave" :value="form.customer_name" readonly>
+                <abstract-form-item label="客 户：" prop="customerName">
+                    <el-input v-if="canSave" :value="form.customerName" readonly>
                         <el-button slot="append" @click="customerDialog=true">选择</el-button>
                     </el-input>
-                    <template v-else>{{form.customer_name}}</template>
+                    <template v-else>{{form.customerName}}</template>
                 </abstract-form-item>
             </collapse-card>
 
@@ -49,11 +49,11 @@
                             <span v-else>{{row.price}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column align="center" label="剩余未出库" prop="remain_num"/>
+                    <el-table-column align="center" label="剩余未出库" prop="remainNum"/>
                     <el-table-column v-if="form.id" align="center" label="出库情况" width="120">
                         <template v-slot="{row}">
-                            <span :class="{success:row.remain_num===0}" class="dot"/>
-                            {{row.remain_num===0?'已全部出库':'未全部出库'}}
+                            <span :class="{success:row.remainNum===0}" class="dot"/>
+                            {{row.remainNum===0?'已全部出库':'未全部出库'}}
                         </template>
                     </el-table-column>
                     <div v-if="canSave" slot="append" class="table-add-btn">
@@ -132,14 +132,14 @@
                     getById, add, update, commit, withdraw, pass, reject
                 },
                 form: {
-                    customer_id: null,
-                    customer_name: null,
+                    customerId: null,
+                    customerName: null,
                     finish: 0,
                     ftime: null,
                     total: 0
                 },
                 rules: {
-                    customer_name: [{required: true, message: '客户不能为空', trigger: 'change'}]
+                    customerName: [{required: true, message: '客户不能为空', trigger: 'change'}]
                 },
                 customerDialog: false,
                 stockDialog: false
@@ -173,12 +173,12 @@
 
         methods: {
             selectCustomer(row) {
-                this.form.customer_id = row.id
-                this.form.customer_name = row.name
+                this.form.customerId = row.id
+                this.form.customerName = row.name
                 this.customerDialog = false
             },
             selectStock(stocks) {
-                this.form.data = stocks.map(i => ({cid: i.cid, cname: i.cname, num: i.total_num, price: 0}))
+                this.form.data = stocks.map(i => ({cid: i.cid, cname: i.cname, num: i.totalNum, price: 0}))
                 this.stockDialog = false
             },
             addSub() {
@@ -187,7 +187,7 @@
                     cname: null,
                     num: 0,
                     price: 0,
-                    remain_num: 0
+                    remainNum: 0
                 })
             },
             delSub(row, index) {

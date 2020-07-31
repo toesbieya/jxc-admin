@@ -9,8 +9,8 @@
             <abstract-table :data="tableData" @row-click="rowClick">
                 <el-table-column label="名称" prop="fullName" show-overflow-tooltip/>
                 <el-table-column label="访问路径" prop="url" show-overflow-tooltip/>
-                <el-table-column label="总频率" prop="total_rate" show-overflow-tooltip/>
-                <el-table-column label="单个IP频率" prop="ip_rate" show-overflow-tooltip/>
+                <el-table-column label="总频率" prop="totalRate" show-overflow-tooltip/>
+                <el-table-column label="单个IP频率" prop="ipRate" show-overflow-tooltip/>
             </abstract-table>
         </el-row>
 

@@ -2,12 +2,8 @@ import request from "@/config/request"
 
 export const baseUrl = `/system/department`
 
-export function getDepartments() {
-    return request.get(`${baseUrl}/get`).then(({data}) => data.data)
-}
-
-export function getAllDepartments() {
-    return request.get(`${baseUrl}/getAll`).then(({data}) => data.data)
+export function getDepartments(all = true) {
+    return request.get(`${baseUrl}/get?all=${all}`).then(({data}) => data.data)
 }
 
 export function addDepartment(data) {

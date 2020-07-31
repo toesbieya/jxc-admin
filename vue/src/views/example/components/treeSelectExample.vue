@@ -1,7 +1,7 @@
 <template>
     <div style="width: 300px">
         <div class="tip-row">单选</div>
-        <tree-select v-model="single" :data="data" filterable :filter-method="filter"/>
+        <tree-select v-model="single" :data="data" filterable :filter-method="filter" @input="singleInput"/>
 
         <div class="tip-row">多选</div>
         <tree-select v-model="multiple" :data="data" multiple filterable :filter-method="filter"/>
@@ -30,6 +30,10 @@
         methods: {
             filter(v, data) {
                 return data.label.includes(v)
+            },
+
+            singleInput(v,data) {
+                console.log(data)
             }
         }
     }

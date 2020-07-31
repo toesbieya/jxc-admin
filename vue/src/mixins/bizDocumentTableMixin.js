@@ -38,7 +38,7 @@ export default {
     data() {
         return {
             searchForm: {
-                id_fuzzy: null,
+                idFuzzy: null,
                 cname: null,
                 vname: null
             },

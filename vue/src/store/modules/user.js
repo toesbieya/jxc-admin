@@ -8,14 +8,15 @@ const user = getUser()
 
 const state = {
     //是否在退出的过程中，避免重复弹框
-    prepare_logout: '',
+    prepareLogout: '',
 
     /*用户基本信息*/
     id: emptyOrDefault(user.id, null),
     name: emptyOrDefault(user.name),
-    role_name: emptyOrDefault(user.role_name),
+    roleName: emptyOrDefault(user.roleName),
+    deptName: emptyOrDefault(user.deptName),
     avatar: emptyOrDefault(user.avatar),
-    admin: emptyOrDefault(user.admin),
+    admin: emptyOrDefault(user.admin, false),
     token: emptyOrDefault(user.token),
     resources: emptyOrDefault(user.resources, {})
 }
@@ -28,7 +29,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             login({username: username.trim(), password})
                 .then(user => {
-                    user.admin === 1 && (user.role_name = '超级管理员')
+                    user.admin === true && (user.roleName = '超级管理员')
                     user.avatar = autoCompleteUrl(user.avatar)
                     commit('$all', user)
                     setUser(user)
@@ -41,8 +42,8 @@ const actions = {
 
     logout({commit, state, dispatch}) {
         return new Promise((resolve, reject) => {
-            if (state.prepare_logout) return Promise.reject()
-            commit('prepare_logout', 'yes')
+            if (state.prepareLogout) return Promise.reject()
+            commit('prepareLogout', 'yes')
             logout(state.token)
                 .then(() => {
                     commit('resource/hasInitRoutes', false, {root: true})
@@ -57,7 +58,7 @@ const actions = {
                     window.location.reload()
                 })
                 .catch(error => reject(error))
-                .finally(() => commit('prepare_logout', ''))
+                .finally(() => commit('prepareLogout', ''))
         })
     },
 
