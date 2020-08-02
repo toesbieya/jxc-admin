@@ -13,6 +13,7 @@ spring:
   redis:
     host: localhost
     port: 6379
+    password:
     timeout: 3000
     lettuce:
       pool:
@@ -29,11 +30,17 @@ spring:
   aop:
     proxy-target-class: true
 
-mybatis:
+mybatis-plus:
   mapper-locations:
     - classpath*:/mapper/**/*.xml
   configuration:
-    map-underscore-to-camel-case: true
+    local-cache-scope: STATEMENT
+    cache-enabled: false
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    banner: false
+    db-config:
+      id-type: NONE
 
 pagehelper:
   helperDialect: mysql
@@ -43,7 +50,6 @@ pagehelper:
 
 socket:
   #hostname: 172.24.52.184
-  hostname: localhost
   port: 12580
   max-frame-payload-length: 1048576
   max-http-content-length: 1048576

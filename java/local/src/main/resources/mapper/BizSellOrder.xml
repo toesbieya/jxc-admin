@@ -1,133 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.toesbieya.jxc.mapper.BizSellOrderMapper">
-    <sql id="searchCondition">
-        <if test="id!=null and id!=''">and id=#{id}</if>
-        <if test="idFuzzy!=null and idFuzzy!=''">and id like "%"#{idFuzzy}"%"</if>
-        <if test="customerId!=null">and customer_id=#{customerId}</if>
-        <if test="customerName!=null and customerName!=''">and customer_name like "%"#{customerName}"%"</if>
-        <if test="cid!=null">and cid=#{cid}</if>
-        <if test="cname!=null and cname!=''">and cname like "%"#{cname}"%"</if>
-        <if test="vid!=null">and vid=#{vid}</if>
-        <if test="vname!=null and vname!=''">and vname like "%"#{vname}"%"</if>
-        <if test="status!=null and status!=''">and status in (${status})</if>
-        <if test="finish!=null and finish!=''">and finish in (${finish})</if>
-        <if test="ctimeStart!=null">and ctime <![CDATA[ >= ]]> #{ctimeStart}</if>
-        <if test="ctimeEnd!=null">and ctime <![CDATA[ <= ]]> #{ctimeEnd}</if>
-        <if test="vtimeStart!=null">and vtime <![CDATA[ >= ]]> #{vtimeStart}</if>
-        <if test="vtimeEnd!=null">and vtime <![CDATA[ <= ]]> #{vtimeEnd}</if>
-        <if test="ftimeStart!=null">and ftime <![CDATA[ >= ]]> #{ftimeStart}</if>
-        <if test="ftimeEnd!=null">and ftime <![CDATA[ <= ]]> #{ftimeEnd}</if>
-    </sql>
-    <select id="getById" resultType="cn.toesbieya.jxc.model.entity.BizSellOrder">
-        select *
-        from biz_sell_order
-        where id = #{id}
-    </select>
-    <select id="getSubById" resultType="cn.toesbieya.jxc.model.entity.BizSellOrderSub">
-        select *
-        from biz_sell_order_sub
-        where pid = #{id}
-    </select>
-    <select id="search" resultType="cn.toesbieya.jxc.model.entity.BizSellOrder"
-            parameterType="cn.toesbieya.jxc.model.vo.search.SellOrderSearch">
-        select *
-        from biz_sell_order
-        where 1
-        <include refid="searchCondition"/>
-        order by ctime desc
-    </select>
-    <select id="export" resultType="cn.toesbieya.jxc.model.vo.export.SellOrderExport"
-            parameterType="cn.toesbieya.jxc.model.vo.search.SellOrderSearch">
+    <select id="export" resultType="cn.toesbieya.jxc.model.vo.export.SellOrderExport">
         select id,
-        customer_name,
-        cname,
-        from_unixtime(ctime/1000,'%Y-%m-%d %H:%m:%s') ctime,
-        vname,
-        case status when 0 then '拟定' when 1 then'待审核' when 2 then '已审核' end status,
-        case finish when 0 then '未开始' when 1 then '进行中' when 2 then '已完成' end finish,
-        from_unixtime(vtime/1000,'%Y-%m-%d %H:%m:%s') vtime,
-        from_unixtime(ftime/1000,'%Y-%m-%d %H:%m:%s') ftime,
-        total,
-        remark
-        from biz_sell_order
-        where 1
-        <include refid="searchCondition"/>
-        order by ctime desc
+               customer_name,
+               cname,
+               from_unixtime(ctime / 1000, '%Y-%m-%d %H:%m:%s') ctime,
+               vname,
+               case status
+                       when 0 then '拟定'
+                       when 1 then '待审核'
+                       when 2 then '已审核'
+                       end                                      status,
+               case finish
+                       when 0 then '未开始'
+                       when 1 then '进行中'
+                       when 2 then '已完成'
+                       end                                      finish,
+               from_unixtime(vtime / 1000, '%Y-%m-%d %H:%m:%s') vtime,
+               from_unixtime(ftime / 1000, '%Y-%m-%d %H:%m:%s') ftime,
+               total,
+               remark
+        from biz_sell_order ${ew.customSqlSegment}
     </select>
-    <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.BizSellOrder">
-        insert into biz_sell_order
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            id,customer_id,customer_name,cid,cname,ctime,finish,total,
-            <if test="vid !=null">vid,</if>
-            <if test="vname !=null and vname!=''">vname,</if>
-            <if test="vtime !=null">vtime,</if>
-            <if test="status !=null">status,</if>
-            <if test="ftime !=null">ftime,</if>
-            <if test="remark !=null and remark!=''">remark,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{id},#{customerId},#{customerName},#{cid},#{cname},#{ctime},0,#{total},
-            <if test="vid !=null">#{vid},</if>
-            <if test="vname !=null and vname!=''">#{vname},</if>
-            <if test="vtime !=null">#{vtime},</if>
-            <if test="status !=null">#{status},</if>
-            <if test="ftime !=null">#{ftime},</if>
-            <if test="remark !=null and remark!=''">#{remark},</if>
-        </trim>
-    </insert>
-    <insert id="addSub" parameterType="cn.toesbieya.jxc.model.entity.BizSellOrderSub">
-        INSERT INTO biz_sell_order_sub(pid, cid, cname, num, price, remain_num)
-        VALUES
-        <foreach collection="list" item="i" separator=",">
-            (#{i.pid},#{i.cid},#{i.cname},#{i.num},#{i.price},#{i.remainNum})
-        </foreach>
-    </insert>
-    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.BizSellOrder">
-        update biz_sell_order
-        set customer_id=#{customerId},
-            customer_name=#{customerName},
-            status=#{status},
-            total=#{total},
-            remark=#{remark}
-        where id = #{id}
-    </update>
-    <update id="pass">
-        update biz_sell_order
-        set status=2,
-            vid=#{vid},
-            vname=#{vname},
-            vtime=#{vtime}
-        where id = #{id}
-          and status = 1
-    </update>
-    <update id="reject">
-        update biz_sell_order
-        set status=0
-        where id = #{id}
-          and status = 1
-    </update>
-    <delete id="del">
-        delete
-        from biz_sell_order
-        where id = #{id}
-          and status = 0
-    </delete>
-    <delete id="delSubByPid">
-        delete
-        from biz_sell_order_sub
-        where pid = #{pid}
-    </delete>
-    <update id="updateFinish">
-        update biz_sell_order
-        set finish=#{finish},
-            ftime=#{ftime}
-        where id = #{id}
-          and status = 2
-    </update>
-    <update id="updateSubRemainNum">
-        update biz_sell_order_sub
-        set remain_num=#{remain_num}
-        where id = #{id}
-    </update>
 </mapper>

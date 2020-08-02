@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class SellOutboundSearch extends DocumentSearch {
+public class SellOutboundSearch extends DocSearch {
     private String pid;
     private String pidFuzzy;
 }

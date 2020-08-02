@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.module.request;
 
-import cn.toesbieya.jxc.model.entity.SysResource;
-import cn.toesbieya.jxc.service.SysResourceService;
+import cn.toesbieya.jxc.model.vo.ResourceVo;
+import cn.toesbieya.jxc.service.sys.SysResourceService;
 import cn.toesbieya.jxc.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class RequestModule {
     private final static long EXPIRE_SECONDS = 10L;
     //url的总访问频率限制
     private static ConcurrentHashMap<String, RateLimiterHelper> limitMap;
-    private SysResourceService resourceService;
+    private SysResourceService service;
 
     /**
      * 未在resource表中配置的不进行限制
@@ -67,8 +67,8 @@ public class RequestModule {
 
     private void initLimitMap() {
         limitMap = new ConcurrentHashMap<>();
-        List<SysResource> resources = resourceService.getAll();
-        for (SysResource resource : resources) {
+        List<ResourceVo> resources = service.getAll();
+        for (ResourceVo resource : resources) {
             RateLimiterHelper helper = new RateLimiterHelper(resource.getTotalRate(), resource.getIpRate());
             limitMap.put(resource.getUrl(), helper);
         }
@@ -80,7 +80,7 @@ public class RequestModule {
     }
 
     @Autowired
-    public void setResourceService(SysResourceService resourceService) {
-        this.resourceService = resourceService;
+    public void setService(SysResourceService service) {
+        this.service = service;
     }
 }

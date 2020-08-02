@@ -14,10 +14,15 @@ public class PageResult<T> {
     public PageResult(List<T> list) {
         this.list = list;
         if (list instanceof Page) {
-            this.total = ((Page) list).getTotal();
+            this.total = ((Page<T>) list).getTotal();
         }
         else {
             this.total = list.size();
         }
+    }
+
+    public PageResult(long total, List<T> list) {
+        this.total = total;
+        this.list = list;
     }
 }

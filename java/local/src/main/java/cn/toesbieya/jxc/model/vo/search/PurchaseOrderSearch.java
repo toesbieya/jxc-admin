@@ -7,7 +7,7 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class PurchaseOrderSearch extends DocumentSearch {
+public class PurchaseOrderSearch extends DocSearch {
     private Integer sid;
     private String sname;
     private String finish;

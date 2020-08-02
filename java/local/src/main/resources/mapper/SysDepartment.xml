@@ -34,33 +34,4 @@
         select *
         from t;
     </select>
-
-    <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.SysDepartment">
-        insert into sys_department (pid, name, status)
-        VALUES (#{pid}, #{name}, #{status});
-    </insert>
-
-    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.SysDepartment">
-        update sys_department
-        set pid=#{pid},
-            name=#{name},
-            status=#{status}
-        where id = #{id}
-    </update>
-
-    <delete id="del">
-        delete
-        from sys_department
-        where id = #{id}
-    </delete>
-
-    <select id="nameExist" resultType="java.lang.Boolean">
-        select if(count(0) > 0, 1, 0)
-        from sys_department
-                where name = #{name}
-                  and pid = #{pid}
-        <if test="id != null">
-            and id != #{id}
-        </if>
-    </select>
 </mapper>

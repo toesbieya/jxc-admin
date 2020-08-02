@@ -21,7 +21,7 @@ import java.util.Map;
 @Slf4j
 public class StatisticService {
     @Resource
-    private StatisticMapper statisticMapper;
+    private StatisticMapper mapper;
 
     //获取首页四个色块的数据，在线用户、今日采购额、今日销售额、今日毛利润
     public FourBlockStat getFourBlock() {
@@ -29,8 +29,8 @@ public class StatisticService {
 
         FourBlockStat stat = new FourBlockStat();
 
-        BigDecimal purchase = statisticMapper.getPurchaseOrderDailyTotalPurchasePrice(now, null);
-        BigDecimal sell = statisticMapper.getSellOrderDailyTotalPurchasePrice(now, null);
+        BigDecimal purchase = mapper.getPurchaseOrderDailyTotalPurchasePrice(now, null);
+        BigDecimal sell = mapper.getSellOrderDailyTotalPurchasePrice(now, null);
 
         long onlineNum = WebSocketUtil.getOnlineUserNum();
 
@@ -45,25 +45,25 @@ public class StatisticService {
     //获取历史七天的每日采购额、销售额、毛利润
     public List<StatProfitTotal> getDailyProfitStat() {
         long lastWeekDay = DateUtil.getTimestampBeforeNow(7);
-        return statisticMapper.searchTotalProfit(lastWeekDay, null);
+        return mapper.searchTotalProfit(lastWeekDay, null);
     }
 
     //获取历史七天已完成的采购订单数、销售订单数
     public List<StatFinishOrder> getDailyFinishOrder() {
         long lastWeekDay = DateUtil.getTimestampBeforeNow(7);
-        return statisticMapper.searchFinishOrder(lastWeekDay, null);
+        return mapper.searchFinishOrder(lastWeekDay, null);
     }
 
     //获取每种商品的采购总额、销售总额、总毛利
     public Collection<StatProfitGoods> getTotalProfitGoods() {
         //获取历史的信息
-        List<StatProfitGoods> history = statisticMapper.getHistoryTotalProfitGoods();
+        List<StatProfitGoods> history = mapper.getHistoryTotalProfitGoods();
 
         //获取今日的信息
         long today = DateUtil.getTimestampNow();
         long nextDay = DateUtil.getTimestampBeforeNow(-1);
-        history.addAll(statisticMapper.getPurchaseOrderDailyProfitGoods(today, nextDay));
-        history.addAll(statisticMapper.getSellOrderDailyProfitGoods(today, nextDay));
+        history.addAll(mapper.getPurchaseOrderDailyProfitGoods(today, nextDay));
+        history.addAll(mapper.getSellOrderDailyProfitGoods(today, nextDay));
 
         Map<Integer, StatProfitGoods> map = new HashMap<>(history.size());
 

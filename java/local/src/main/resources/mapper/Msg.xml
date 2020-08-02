@@ -1,89 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.toesbieya.jxc.mapper.MsgMapper">
-    <sql id="searchCondition">
-        <if test="title != null and title != ''">
-            and title like "%"#{title}"%"
-        </if>
-        <if test="type != null and type != ''">
-            and type in (${type})
-        </if>
-        <if test="uid != null">
-            and uid=#{uid}
-        </if>
-        <if test="status != null and status != ''">
-            and status in (${status})
-        </if>
-    </sql>
-
-    <sql id="unreadCondition">
-        where status = 1
-        and ptime <![CDATA[ >= ]]> #{ctime}
-        and (broadcast = 1 or broadcast = 0 and find_in_set(recipient, #{uid}))
-        and id not in (select mid from msg_state where uid = #{uid})
-    </sql>
-
-    <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.Msg" useGeneratedKeys="true" keyProperty="id">
-        insert into msg (title, content, type, cid, cname, ctime,
-                         pid, pname, ptime, wid, wname, wtime, status, broadcast, recipient)
-        values (#{title}, #{content}, #{type}, #{cid}, #{cname}, #{ctime}, #{pid},
-                #{pname}, #{ptime}, #{wid}, #{wname}, #{wtime}, #{status}, #{broadcast}, #{recipient})
-    </insert>
-
-    <insert id="insertState" parameterType="cn.toesbieya.jxc.model.entity.MsgState">
-        insert into msg_state (mid, uid, time)
-        values (#{mid}, #{uid}, #{time})
-    </insert>
-
-    <select id="checkRead" resultType="boolean">
-        select if(count(1) > 0, 1, 0)
-        from msg_state
-        where mid = #{mid}
-          and uid = #{uid}
-    </select>
-
-    <select id="search" resultType="cn.toesbieya.jxc.model.entity.Msg"
-            parameterType="cn.toesbieya.jxc.model.vo.search.MsgSearch">
-        select *
-        from msg where 1
-        <include refid="searchCondition"/>
-        order by id desc
-    </select>
-
-    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.Msg">
-        update msg
-        set title=#{title},
-            content=#{content},
-            type=#{type},
-            pid=#{pid},
-            pname=#{pname},
-            ptime=#{ptime},
-            wid=#{wid},
-            wname=#{wname},
-            wtime=#{wtime},
-            status=#{status},
-            broadcast=#{broadcast},
-            recipient=#{recipient}
-        where id = #{id}
-    </update>
-
-    <update id="withdraw">
-        update msg
-        set status=#{status},
-            wid=#{wid},
-            wname=#{wname},
-            wtime=#{wtime}
-        where id = #{id}
-          and status = 1
-    </update>
-
-    <delete id="del">
-        delete
-        from msg
-        where id = #{id}
-          and status = 0
-    </delete>
-
     <select id="getReadByUser" parameterType="cn.toesbieya.jxc.model.vo.search.MsgPersonalSearch"
             resultType="cn.toesbieya.jxc.model.entity.Msg">
         select a.id,
@@ -107,7 +24,10 @@
                pname,
                ptime
         from msg
-        <include refid="unreadCondition"/>
+        where status = 1
+          and ptime <![CDATA[ >= ]]> #{ctime}
+          and (broadcast = 1 or broadcast = 0 and find_in_set(recipient, #{uid}))
+          and id not in (select mid from msg_state where uid = #{uid})
         order by id desc
     </select>
 </mapper>

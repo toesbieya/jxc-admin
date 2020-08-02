@@ -1,64 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.toesbieya.jxc.mapper.BizStockMapper">
-    <sql id="searchCondition">
-        where 1
-        <if test="id != null">
-            and id=#{id}
-        </if>
-        <if test="ids != null and ids != ''">
-            and id in (${ids})
-        </if>
-        <if test="cid != null">
-            and cid=#{cid}
-        </if>
-        <if test="cids != null and cids != ''">
-            and cid in (${cids})
-        </if>
-        <if test="cgddid != null and cgddid != ''">
-            and cgddid=#{cgddid}
-        </if>
-        <if test="cgddids != null and cgddids != ''">
-            and cgddid in (${cgddids})
-        </if>
-        <if test="cgrkid != null and cgrkid != ''">
-            and cgrkid=#{cgrkid}
-        </if>
-        <if test="cgrkids != null and cgrkids != ''">
-            and cgrkid in (${cgrkids})
-        </if>
-        <if test="startTime != null">
-            and ctime <![CDATA[ >= ]]> #{startTime}
-        </if>
-        <if test="endTime != null">
-            and ctime <![CDATA[ <= ]]> #{endTime}
-        </if>
-        and num > 0
-    </sql>
-
-    <select id="search" parameterType="cn.toesbieya.jxc.model.vo.search.StockSearch"
-            resultType="cn.toesbieya.jxc.model.vo.result.StockSearchResult">
+    <select id="search" resultType="cn.toesbieya.jxc.model.vo.result.StockSearchResult">
         select cid,
                cname,
                sum(num)         total_num,
                sum(num * price) total_price
-        from biz_stock
-        <include refid="searchCondition"/>
+        from biz_stock ${ew.customSqlSegment}
         group by cid
-    </select>
-
-    <select id="getDetail" resultType="cn.toesbieya.jxc.model.entity.BizStock">
-        select *
-        from biz_stock
-        where cid in (${cids})
-          and num > 0
-        order by cgddid desc, cgrkid desc
-    </select>
-
-    <select id="getDetailById" resultType="cn.toesbieya.jxc.model.entity.BizStock">
-        select *
-        from biz_stock
-        where id in (${ids})
     </select>
 
     <select id="export" parameterType="cn.toesbieya.jxc.model.vo.search.StockSearch"
@@ -73,26 +22,23 @@
                from_unixtime(b.ctime / 1000, '%Y-%m-%d %H:%m:%s') ctime,
                c.num                                              rk_num,
                d.num                                              cg_num
-                from (
-                select cid,
-                       cname,
-                       sum(num)         total_num,
-                       sum(num * price) total_price
-                from biz_stock
-        <include refid="searchCondition"/>
-        group by cid
-                ) a
-                join biz_stock b using (cid)
-                left join biz_purchase_inbound_sub c on c.cid = a.cid and c.pid = b.cgrkid
-                left join biz_purchase_order_sub d on c.cid = d.cid and d.pid = b.cgddid
-                order by a.cid, b.cgddid desc, b.cgrkid desc
+        from (
+                     select cid,
+                            cname,
+                            sum(num)         total_num,
+                            sum(num * price) total_price
+                     from biz_stock ${ew.customSqlSegment}
+                     group by cid
+                     ) a
+                     join biz_stock b using (cid)
+                     left join biz_purchase_inbound_sub c on c.cid = a.cid and c.pid = b.cgrkid
+                     left join biz_purchase_order_sub d on c.cid = d.cid and d.pid = b.cgddid
+        order by a.cid, b.cgddid desc, b.cgrkid desc
     </select>
 
-    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="cn.toesbieya.jxc.model.entity.BizStock"
+    <insert id="insertBatch" keyColumn="id" keyProperty="id" parameterType="cn.toesbieya.jxc.model.entity.BizStock"
             useGeneratedKeys="true">
-        insert into biz_stock
-                (cid, cname, num, price, ctime, cgrkid, cgddid)
-                values
+        insert into biz_stock (cid, cname, num, price, ctime, cgrkid, cgddid) values
         <foreach collection="list" item="item" separator=",">
             (#{item.cid,jdbcType=INTEGER}, #{item.cname,jdbcType=VARCHAR}, #{item.num,jdbcType=DECIMAL},
              #{item.price,jdbcType=DECIMAL}, #{item.ctime,jdbcType=BIGINT}, #{item.cgrkid,jdbcType=VARCHAR},

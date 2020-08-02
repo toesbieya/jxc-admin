@@ -1,16 +1,18 @@
 package cn.toesbieya.jxc.utils;
 
+import cn.toesbieya.jxc.config.QiniuConfig;
 import com.qiniu.common.QiniuException;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.Region;
 import com.qiniu.util.Auth;
-import cn.toesbieya.jxc.config.QiniuConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Slf4j
 @Component
@@ -61,5 +63,9 @@ public class QiniuUtil {
         } catch (QiniuException e) {
             log.info("七牛云批量删除文件失败,{}", e.getMessage());
         }
+    }
+
+    public static void deleteBatch(List<String> key) {
+        deleteBatch(key.toArray(new String[0]));
     }
 }

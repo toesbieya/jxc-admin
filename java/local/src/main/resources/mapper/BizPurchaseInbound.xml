@@ -1,111 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cn.toesbieya.jxc.mapper.BizPurchaseInboundMapper">
-    <sql id="searchCondition">
-        <if test="id!=null and id!=''">and id=#{id}</if>
-        <if test="idFuzzy!=null and idFuzzy!=''">and id like "%"#{idFuzzy}"%"</if>
-        <if test="pid!=null and pid!=''">and pid=#{pid}</if>
-        <if test="pidFuzzy!=null and pidFuzzy!=''">and pid like "%"#{pidFuzzy}"%"</if>
-        <if test="cid!=null">and cid=#{cid}</if>
-        <if test="cname!=null and cname!=''">and cname like "%"#{cname}"%"</if>
-        <if test="vid!=null">and vid=#{vid}</if>
-        <if test="vname!=null and vname!=''">and vname like "%"#{vname}"%"</if>
-        <if test="status!=null and status!=''">and status in (${status})</if>
-        <if test="ctimeStart!=null">and ctime <![CDATA[ >= ]]> #{ctimeStart}</if>
-        <if test="ctimeEnd!=null">and ctime <![CDATA[ <= ]]> #{ctimeEnd}</if>
-        <if test="vtimeStart!=null">and vtime <![CDATA[ >= ]]> #{vtimeStart}</if>
-        <if test="vtimeEnd!=null">and vtime <![CDATA[ <= ]]> #{vtimeEnd}</if>
-    </sql>
-    <select id="getById" resultType="cn.toesbieya.jxc.model.entity.BizPurchaseInbound">
-        select *
-        from biz_purchase_inbound
-        where id = #{id}
-    </select>
-    <select id="getSubById" resultType="cn.toesbieya.jxc.model.entity.BizPurchaseInboundSub">
-        select *
-        from biz_purchase_inbound_sub
-        where pid = #{id}
-    </select>
-    <select id="search" resultType="cn.toesbieya.jxc.model.entity.BizPurchaseInbound"
-            parameterType="cn.toesbieya.jxc.model.vo.search.PurchaseInboundSearch">
-        select *
-        from biz_purchase_inbound
-        where 1
-        <include refid="searchCondition"/>
-        order by ctime desc
-    </select>
-    <select id="export" resultType="cn.toesbieya.jxc.model.vo.export.PurchaseInboundExport"
-            parameterType="cn.toesbieya.jxc.model.vo.search.PurchaseInboundSearch">
+    <select id="export" resultType="cn.toesbieya.jxc.model.vo.export.PurchaseInboundExport">
         select id,
-        pid,
-        cname,
-        from_unixtime(ctime/1000,'%Y-%m-%d %H:%m:%s') ctime,
-        from_unixtime(vtime/1000,'%Y-%m-%d %H:%m:%s') vtime,
-        vname,
-        case status when 0 then '拟定' when 1 then'待审核' when 2 then '已审核' end status,
-        remark
-        from biz_purchase_inbound
-        where 1
-        <include refid="searchCondition"/>
-        order by ctime desc
+               pid,
+               cname,
+               from_unixtime(ctime / 1000, '%Y-%m-%d %H:%m:%s') ctime,
+               from_unixtime(vtime / 1000, '%Y-%m-%d %H:%m:%s') vtime,
+               vname,
+               case status
+                       when 0 then '拟定'
+                       when 1 then '待审核'
+                       when 2 then '已审核'
+                       end                                      status,
+               remark
+        from biz_purchase_inbound ${ew.customSqlSegment}
     </select>
-    <insert id="insert" parameterType="cn.toesbieya.jxc.model.entity.BizPurchaseInbound">
-        insert into biz_purchase_inbound
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            id,pid,cid,cname,ctime,
-            <if test="vid !=null">vid,</if>
-            <if test="vname !=null and vname!=''">vname,</if>
-            <if test="vtime !=null">vtime,</if>
-            <if test="status !=null">status,</if>
-            <if test="remark !=null and remark!=''">remark,</if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            #{id},#{pid},#{cid},#{cname},#{ctime},
-            <if test="vid !=null">#{vid},</if>
-            <if test="vname !=null and vname!=''">#{vname},</if>
-            <if test="vtime !=null">#{vtime},</if>
-            <if test="status !=null">#{status},</if>
-            <if test="remark !=null and remark!=''">#{remark},</if>
-        </trim>
-    </insert>
-    <insert id="addSub" parameterType="cn.toesbieya.jxc.model.entity.BizPurchaseInboundSub">
-        INSERT INTO biz_purchase_inbound_sub(pid, cid, cname, num)
-        VALUES
-        <foreach collection="list" item="i" separator=",">
-            (#{i.pid},#{i.cid},#{i.cname},#{i.num})
-        </foreach>
-    </insert>
-    <update id="update" parameterType="cn.toesbieya.jxc.model.entity.BizPurchaseInbound">
-        update biz_purchase_inbound
-        set pid=#{pid},
-        status=#{status},
-        remark=#{remark}
-        where id = #{id}
-    </update>
-    <update id="pass">
-        update biz_purchase_inbound
-        set status=2,
-        vid=#{vid},
-        vname=#{vname},
-        vtime=#{vtime}
-        where id = #{id}
-        and status = 1
-    </update>
-    <update id="reject">
-        update biz_purchase_inbound
-        set status=0
-        where id = #{id}
-        and status = 1
-    </update>
-    <delete id="del">
-        delete
-        from biz_purchase_inbound
-        where id = #{id}
-        and status = 0
-    </delete>
-    <delete id="delSubByPid">
-        delete
-        from biz_purchase_inbound_sub
-        where pid = #{pid}
-    </delete>
 </mapper>

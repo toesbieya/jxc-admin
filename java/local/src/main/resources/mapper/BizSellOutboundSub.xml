@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.toesbieya.jxc.mapper.BizSellOutboundSubMapper">
+    <insert id="insertBatch" parameterType="cn.toesbieya.jxc.model.entity.BizSellOutboundSub">
+        INSERT INTO biz_sell_outbound_sub(pid, sid, cid, cname, num) VALUES
+        <foreach collection="list" item="i" separator=",">
+            (#{i.pid}, #{i.sid}, #{i.cid}, #{i.cname}, #{i.num})
+        </foreach>
+    </insert>
+</mapper>

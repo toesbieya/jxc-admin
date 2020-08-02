@@ -11,7 +11,6 @@ public class SysResource {
     private Integer id;
     private Integer pid;
     private String name;
-    private String fullname;
     private String url;
     private boolean admin = false;
     private Long totalRate;

@@ -20,7 +20,7 @@ import javax.annotation.Resource;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @Resource
-    private RecService recService;
+    private RecService service;
 
     //抛出异常时希望返回给前台
     @ExceptionHandler(JsonResultException.class)
@@ -54,8 +54,10 @@ public class GlobalExceptionHandler {
     private void recordUserAction(Exception e) {
         RecUserAction action = ThreadUtil.getAction();
         if (action != null && !StringUtils.isEmpty(action.getAction())) {
+            action.setTime(System.currentTimeMillis());
             action.setError(Util.exception2Str(e));
-            recService.insertUserAction(action, UserActionEnum.FAIL);
+            action.setType(UserActionEnum.FAIL.getCode());
+            service.insertUserAction(action);
         }
         ThreadUtil.clearAll();
     }

@@ -7,6 +7,6 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class BizPurchaseInboundSub extends BizDocumentSub {
+public class BizPurchaseInboundSub extends BizDocSub {
 
 }

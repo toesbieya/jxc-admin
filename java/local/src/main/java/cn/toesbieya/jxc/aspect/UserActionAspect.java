@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 @Order(Integer.MAX_VALUE - 2)
 public class UserActionAspect {
     @Resource
-    private RecService recService;
+    private RecService service;
 
     @Pointcut("@annotation(cn.toesbieya.jxc.annoation.UserAction)&&execution(cn.toesbieya.jxc.model.vo.Result cn.toesbieya.jxc..*.*(..))")
     public void pointCut() {
@@ -36,9 +36,12 @@ public class UserActionAspect {
     @Around("pointCut()")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
         RecUserAction action = ThreadUtil.getAction();
+
         if (action == null) {
             return pjp.proceed();
         }
+
+        action.setTime(System.currentTimeMillis());
 
         MethodSignature signature = (MethodSignature) pjp.getSignature();
         Method method = signature.getMethod();
@@ -57,12 +60,13 @@ public class UserActionAspect {
         Result result = (Result) pjp.proceed();
 
         if (result.isSuccess()) {
-            recService.insertUserAction(action, UserActionEnum.SUCCESS);
+            action.setType(UserActionEnum.SUCCESS.getCode());
         }
         else {
+            action.setType(UserActionEnum.FAIL.getCode());
             action.setError(result.getMsg());
-            recService.insertUserAction(action, UserActionEnum.FAIL);
         }
+        service.insertUserAction(action);
 
         return result;
     }

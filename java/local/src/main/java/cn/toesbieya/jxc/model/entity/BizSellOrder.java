@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-public class BizSellOrder extends BizDocument<BizSellOrderSub> {
+public class BizSellOrder extends BizDoc {
     private Integer customerId;
     private String customerName;
     private Integer finish;

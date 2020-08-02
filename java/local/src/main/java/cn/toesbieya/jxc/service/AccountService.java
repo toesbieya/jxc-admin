@@ -4,15 +4,17 @@ import cn.toesbieya.jxc.annoation.TimeCost;
 import cn.toesbieya.jxc.annoation.UserAction;
 import cn.toesbieya.jxc.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.enumeration.RecLoginHistoryEnum;
-import cn.toesbieya.jxc.mapper.SysRoleMapper;
 import cn.toesbieya.jxc.mapper.SysUserMapper;
-import cn.toesbieya.jxc.model.entity.SysResource;
+import cn.toesbieya.jxc.model.entity.RecLoginHistory;
 import cn.toesbieya.jxc.model.entity.SysRole;
 import cn.toesbieya.jxc.model.entity.SysUser;
 import cn.toesbieya.jxc.model.vo.*;
+import cn.toesbieya.jxc.service.sys.SysDepartmentService;
+import cn.toesbieya.jxc.service.sys.SysResourceService;
+import cn.toesbieya.jxc.service.sys.SysRoleService;
 import cn.toesbieya.jxc.utils.QiniuUtil;
-import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.utils.SessionUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -30,11 +32,17 @@ public class AccountService {
     @Resource
     private SysDepartmentService departmentService;
     @Resource
-    private SysRoleMapper roleMapper;
+    private SysRoleService roleService;
 
     @TimeCost
     public Result login(LoginParam param, String ip) {
-        SysUser user = userMapper.getByNameAndPwd(param.getUsername(), param.getPassword());
+        long now = System.currentTimeMillis();
+
+        SysUser user = userMapper.selectOne(
+                Wrappers.lambdaQuery(SysUser.class)
+                        .eq(SysUser::getName, param.getUsername())
+                        .eq(SysUser::getPwd, param.getPassword())
+        );
 
         if (user == null) {
             return Result.fail("用户名或密码错误");
@@ -63,7 +71,7 @@ public class AccountService {
 
         if (roleId != null) {
             //获取用户的角色
-            SysRole role = roleMapper.selectById(roleId);
+            SysRole role = roleService.getRoleById(roleId);
 
             if (role != null) {
                 //设置角色名称
@@ -72,12 +80,12 @@ public class AccountService {
                 info.setRoleName(roleName);
 
                 //获取用户的权限列表
-                List<SysResource> resources = resourceService.getByRole(roleId);
+                List<ResourceVo> resources = resourceService.getResourceByRole(role);
 
                 userResourcesUrlMap = new HashMap<>(128);
                 userResourcesIdSet = new HashSet<>(128);
 
-                for (SysResource resource : resources) {
+                for (ResourceVo resource : resources) {
                     Integer resourceId = resource.getId();
                     userResourcesUrlMap.put(resource.getUrl(), resourceId);
                     userResourcesIdSet.add(resourceId);
@@ -110,14 +118,32 @@ public class AccountService {
         SessionUtil.save(userVo);
 
         //记录登陆信息
-        recService.insertLoginHistory(userVo, ip, RecLoginHistoryEnum.LOGIN);
+        recService.insertLoginHistory(
+                RecLoginHistory
+                        .builder()
+                        .uid(user.getId())
+                        .uname(user.getName())
+                        .ip(ip)
+                        .type(RecLoginHistoryEnum.LOGIN.getCode())
+                        .time(now)
+                        .build()
+        );
 
         return Result.success(info);
     }
 
     public Result logout(UserVo user, String ip) {
         if (user != null) {
-            recService.insertLoginHistory(user, ip, RecLoginHistoryEnum.LOGOUT);
+            recService.insertLoginHistory(
+                    RecLoginHistory
+                            .builder()
+                            .uid(user.getId())
+                            .uname(user.getName())
+                            .ip(ip)
+                            .type(RecLoginHistoryEnum.LOGOUT.getCode())
+                            .time(System.currentTimeMillis())
+                            .build()
+            );
             SessionUtil.remove(user.getToken());
         }
 
@@ -127,7 +153,10 @@ public class AccountService {
     public Result register(RegisterParam param) {
         String name = param.getUsername();
 
-        if (userMapper.isNameExist(name, null)) {
+        if (userMapper
+                .selectCount(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getName, name))
+                .equals(0)
+        ) {
             return Result.fail("该用户名称已存在");
         }
 
@@ -145,13 +174,24 @@ public class AccountService {
 
     @UserAction("'修改密码'")
     public Result updatePwd(PasswordUpdateParam param) {
-        int rows = userMapper.updatePwd(param);
+        int rows = userMapper.update(
+                null,
+                Wrappers.lambdaUpdate(SysUser.class)
+                        .set(SysUser::getPwd, param.getNewPwd())
+                        .eq(SysUser::getId, param.getId())
+                        .eq(SysUser::getPwd, param.getOldPwd())
+        );
         return rows > 0 ? Result.success("修改成功") : Result.fail("修改失败，请检查原密码是否正确");
     }
 
     @UserAction("'修改头像'")
     public Result updateAvatar(UserVo user, String avatar) {
-        int rows = userMapper.updateAvatar(user.getId(), avatar);
+        int rows = userMapper.update(
+                null,
+                Wrappers.lambdaUpdate(SysUser.class)
+                        .set(SysUser::getAvatar, avatar)
+                        .eq(SysUser::getId, user.getId())
+        );
 
         //更新成功后删除云上旧的头像，同时更新redis中的用户信息
         if (rows > 0) {
@@ -159,10 +199,8 @@ public class AccountService {
             if (!StringUtils.isEmpty(oldAvatar)) {
                 QiniuUtil.delete(oldAvatar);
             }
-
             user.setAvatar(avatar);
             SessionUtil.save(user);
-
             return Result.success("上传头像成功");
         }
 
@@ -173,6 +211,11 @@ public class AccountService {
     }
 
     public boolean checkName(String name, Integer id) {
-        return !userMapper.isNameExist(name, id);
+        Integer num = userMapper.selectCount(
+                Wrappers.lambdaQuery(SysUser.class)
+                        .eq(SysUser::getName, name)
+                        .ne(id != null, SysUser::getId, id)
+        );
+        return num != null && num > 0;
     }
 }

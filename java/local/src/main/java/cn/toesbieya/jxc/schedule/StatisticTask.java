@@ -21,11 +21,11 @@ import java.util.Map;
 @Slf4j
 public class StatisticTask {
     @Resource
-    private StatisticMapper statisticMapper;
+    private StatisticMapper mapper;
 
     @PostConstruct
     public void run() {
-        this.autoStat();
+        autoStat();
     }
 
     //每天零点统计信息
@@ -38,23 +38,23 @@ public class StatisticTask {
         long today = DateUtil.getTimestampNow();
 
         //检查是否已统计过昨日已完成的订单数
-        if (!statisticMapper.checkDailyFinishOrderExist(lastDay)) {
-            Integer lastDayPurchaseOrderFinish = statisticMapper.getPurchaseOrderLastDayFinishOrderNum();
-            Integer lastDaySellOrderFinish = statisticMapper.getSellOrderLastDayFinishOrderNum();
+        if (!mapper.checkDailyFinishOrderExist(lastDay)) {
+            Integer lastDayPurchaseOrderFinish = mapper.getPurchaseOrderLastDayFinishOrderNum();
+            Integer lastDaySellOrderFinish = mapper.getSellOrderLastDayFinishOrderNum();
 
             StatFinishOrder param = new StatFinishOrder();
             param.setPurchase(lastDayPurchaseOrderFinish);
             param.setSell(lastDaySellOrderFinish);
             param.setTime(lastDay);
 
-            statisticMapper.insertFinishOrder(param);
+            mapper.insertFinishOrder(param);
         }
 
         //检查是否已统计过昨日的采购额、销售额、毛利
-        if (!statisticMapper.checkDailyProfitExist(lastDay)) {
+        if (!mapper.checkDailyProfitExist(lastDay)) {
             //昨日各个商品的采购额、销售额
-            List<StatProfitGoods> purchaseProfitGoods = statisticMapper.getPurchaseOrderDailyProfitGoods(lastDay, today);
-            List<StatProfitGoods> sellProfitGoods = statisticMapper.getSellOrderDailyProfitGoods(lastDay, today);
+            List<StatProfitGoods> purchaseProfitGoods = mapper.getPurchaseOrderDailyProfitGoods(lastDay, today);
+            List<StatProfitGoods> sellProfitGoods = mapper.getSellOrderDailyProfitGoods(lastDay, today);
 
             //昨日的采购总额、销售总额
             BigDecimal totalPurchase = new BigDecimal(0);
@@ -104,10 +104,10 @@ public class StatisticTask {
             statProfitTotal.setProfit(totalProfit);
             statProfitTotal.setTime(lastDay);
 
-            statisticMapper.insertProfitTotal(statProfitTotal);
+            mapper.insertProfitTotal(statProfitTotal);
 
             if (purchaseProfitGoods.size() > 0) {
-                statisticMapper.insertProfitGoodsBatch(purchaseProfitGoods);
+                mapper.insertProfitGoodsBatch(purchaseProfitGoods);
             }
         }
 

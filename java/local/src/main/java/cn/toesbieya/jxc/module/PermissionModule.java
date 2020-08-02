@@ -1,8 +1,8 @@
 package cn.toesbieya.jxc.module;
 
-import cn.toesbieya.jxc.model.entity.SysResource;
+import cn.toesbieya.jxc.model.vo.ResourceVo;
 import cn.toesbieya.jxc.model.vo.UserVo;
-import cn.toesbieya.jxc.service.SysResourceService;
+import cn.toesbieya.jxc.service.sys.SysResourceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,7 @@ public class PermissionModule {
     private final static ConcurrentHashMap<String, Integer> urlMap = new ConcurrentHashMap<>(128);
     private final static ConcurrentHashMap<String, Integer> adminUrlMap = new ConcurrentHashMap<>(128);
     @Resource
-    private SysResourceService resourceService;
+    private SysResourceService service;
 
     public static boolean authority(UserVo user, String url) {
         if (user.isAdmin() || !needAuthority(url)) {
@@ -44,10 +44,10 @@ public class PermissionModule {
     public void init() {
         Instant start = Instant.now();
 
-        List<SysResource> resources = resourceService.getAll();
+        List<ResourceVo> resources = service.getAll();
 
         if (resources != null) {
-            for (SysResource p : resources) {
+            for (ResourceVo p : resources) {
                 if (p.isAdmin()) {
                     adminUrlMap.put(p.getUrl(), p.getId());
                 }

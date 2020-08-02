@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 @RequestMapping("record")
 public class RecController {
     @Resource
-    private RecService recService;
+    private RecService service;
 
     @PostMapping("searchLoginHistory")
     public Result searchLoginHistory(@RequestBody LoginHistorySearch vo) {
@@ -27,7 +27,7 @@ public class RecController {
         vo.setUid(user.getId());
         vo.setStartTime(DateUtil.getTimestampBeforeNow(7));
 
-        return Result.success(recService.searchLoginHistory(vo));
+        return Result.success(service.searchLoginHistory(vo));
     }
 
     @PostMapping("searchUserAction")
@@ -37,6 +37,6 @@ public class RecController {
         vo.setUid(user.getId());
         vo.setStartTime(DateUtil.getTimestampBeforeNow(7));
 
-        return Result.success(recService.searchUserAction(vo));
+        return Result.success(service.searchUserAction(vo));
     }
 }
