@@ -9,7 +9,7 @@
 
         <abstract-form :model="form" :rules="rules">
             <collapse-card header="流程进度">
-                <doc-steps :status="form.status" :type="type"/>
+                <doc-steps :status="form.status" :finish="form.finish" :type="type"/>
             </collapse-card>
 
             <collapse-card header="基础信息">
@@ -109,10 +109,10 @@
 </template>
 
 <script>
-    import bizDocDetailMixin from "@/mixins/bizDocDetailMixin"
+    import docDetailMixin from "@/mixins/docDetailMixin"
     import CustomerSelector from './components/CustomerSelector'
     import StockSelector from './components/StockSelector'
-    import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/document/sell/order"
+    import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/doc/sell/order"
     import {isEmpty} from "@/utils"
     import {mul, plus} from "@/utils/math"
     import {isInteger} from "@/utils/validate"
@@ -120,7 +120,7 @@
     export default {
         name: "sellOrderDetail",
 
-        mixins: [bizDocDetailMixin],
+        mixins: [docDetailMixin],
 
         components: {CustomerSelector, StockSelector},
 

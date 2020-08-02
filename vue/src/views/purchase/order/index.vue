@@ -12,11 +12,11 @@
             </search-form-item>
             <search-form-item label="创建时间：">
                 <el-date-picker
-                        v-model="temp.ctime"
-                        format="yyyy-MM-dd"
-                        range-separator="-"
-                        type="daterange"
-                        value-format="timestamp"
+                    v-model="temp.ctime"
+                    format="yyyy-MM-dd"
+                    range-separator="-"
+                    type="daterange"
+                    value-format="timestamp"
                 />
             </search-form-item>
             <search-form-item label="审核人：">
@@ -24,11 +24,11 @@
             </search-form-item>
             <search-form-item label="审核时间：">
                 <el-date-picker
-                        v-model="temp.vtime"
-                        format="yyyy-MM-dd"
-                        range-separator="-"
-                        type="daterange"
-                        value-format="timestamp"
+                    v-model="temp.vtime"
+                    format="yyyy-MM-dd"
+                    range-separator="-"
+                    type="daterange"
+                    value-format="timestamp"
                 />
             </search-form-item>
             <search-form-item label="状 态：">
@@ -47,11 +47,11 @@
             </search-form-item>
             <search-form-item label="结束时间：">
                 <el-date-picker
-                        v-model="temp.ftime"
-                        format="yyyy-MM-dd"
-                        range-separator="-"
-                        type="daterange"
-                        value-format="timestamp"
+                    v-model="temp.ftime"
+                    format="yyyy-MM-dd"
+                    range-separator="-"
+                    type="daterange"
+                    value-format="timestamp"
                 />
             </search-form-item>
         </search-form>
@@ -68,9 +68,9 @@
 
         <el-row v-loading="config.loading" class="table-container">
             <abstract-table
-                    :data="tableData"
-                    @row-click="rowClick"
-                    @expand-change="getSubList"
+                :data="tableData"
+                @row-click="rowClick"
+                @expand-change="getSubList"
             >
                 <el-table-column align="center" type="expand">
                     <template v-slot="{row}">
@@ -89,91 +89,96 @@
                 <el-table-column align="center" label="供应商" prop="sname" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建人" prop="cname" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
-                    <template v-slot="{row}">{{row.ctime | timestamp2Date}}</template>
+                    <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="审核人" prop="vname" show-overflow-tooltip/>
                 <el-table-column align="center" label="审核时间" width="150" show-overflow-tooltip>
-                    <template v-slot="{row}">{{row.vtime | timestamp2Date}}</template>
+                    <template v-slot="{row}">{{ row.vtime | timestamp2Date }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="状 态" width="120">
                     <template v-slot="{row}">
                         <span :class="{primary:row.status===1,success:row.status===2}" class="dot"/>
-                        {{getStatus(row.status)}}
+                        {{ getStatus(row.status) }}
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="完成情况" width="120">
                     <template v-slot="{row}">
                         <span :class="{primary:row.finish===1,success:row.finish===2}" class="dot"/>
-                        {{getFinish(row.finish)}}
+                        {{ getFinish(row.finish) }}
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="完成时间" width="150" show-overflow-tooltip>
-                    <template v-slot="{row}">{{row.ftime | timestamp2Date}}</template>
+                    <template v-slot="{row}">{{ row.ftime | timestamp2Date }}</template>
                 </el-table-column>
             </abstract-table>
+
             <el-pagination
-                    background
-                    :current-page="searchForm.page"
-                    :page-size="searchForm.pageSize"
-                    :total="searchForm.total"
-                    layout="total, prev, pager, next, jumper"
-                    @current-change="pageChange"
+                background
+                :current-page="searchForm.page"
+                :page-size="searchForm.pageSize"
+                :total="searchForm.total"
+                layout="total, prev, pager, next, jumper"
+                @current-change="pageChange"
             />
         </el-row>
     </el-card>
 </template>
 
 <script>
-    import SearchForm from '@/components/SearchForm'
-    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
-    import documentTableMixin from '@/mixins/bizDocumentTableMixin'
-    import {baseUrl, del, getSubById, search} from "@/api/document/purchase/order"
+import docTableMixin from '@/mixins/docTableMixin'
+import SearchForm from '@/components/SearchForm'
+import SearchFormItem from "@/components/SearchForm/SearchFormItem"
+import {baseUrl, del, getSubById, search} from "@/api/doc/purchase/order"
 
-    export default {
-        name: "purchaseOrder",
-        mixins: [documentTableMixin],
-        components: {SearchForm, SearchFormItem},
-        data() {
-            return {
-                baseUrl,
-                searchForm: {
-                    sname: null
-                },
-                temp: {
-                    finish: [],
-                    ftime: []
-                },
-                api: {search, del, getSubById},
-                excel: {
-                    column: [
-                        {header: '序号', prop: 'id'},
-                        {header: '供应商', prop: 'sname', width: 30},
-                        {header: '创建人', prop: 'cname'},
-                        {header: '创建时间', prop: 'ctime'},
-                        {header: '审核人', prop: 'vname'},
-                        {header: '审核时间', prop: 'vtime'},
-                        {header: '状态', prop: 'status'},
-                        {header: '完成情况', prop: 'finish'},
-                        {header: '完成时间', prop: 'ftime'},
-                        {header: '备注', prop: 'remark', width: 50}
-                    ]
-                }
+export default {
+    name: "purchaseOrder",
+
+    mixins: [docTableMixin],
+
+    components: {SearchForm, SearchFormItem},
+
+    data() {
+        return {
+            baseUrl,
+            searchForm: {
+                sname: null
+            },
+            temp: {
+                finish: [],
+                ftime: []
+            },
+            api: {search, del, getSubById},
+            excel: {
+                column: [
+                    {header: '序号', prop: 'id'},
+                    {header: '供应商', prop: 'sname', width: 30},
+                    {header: '创建人', prop: 'cname'},
+                    {header: '创建时间', prop: 'ctime'},
+                    {header: '审核人', prop: 'vname'},
+                    {header: '审核时间', prop: 'vtime'},
+                    {header: '状态', prop: 'status'},
+                    {header: '完成情况', prop: 'finish'},
+                    {header: '完成时间', prop: 'ftime'},
+                    {header: '备注', prop: 'remark', width: 50}
+                ]
             }
-        },
-        methods: {
-            mergeSearchForm() {
-                return {
-                    ...this.searchForm,
-                    status: this.temp.status.join(','),
-                    finish: this.temp.finish.join(','),
-                    ctimeStart: this.temp.ctime ? this.temp.ctime[0] : null,
-                    ctimeEnd: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null,
-                    vtimeStart: this.temp.vtime ? this.temp.vtime[0] : null,
-                    vtimeEnd: this.temp.vtime ? this.temp.vtime[1] + 86400000 : null,
-                    ftimeStart: this.temp.ftime ? this.temp.ftime[0] : null,
-                    ftimeEnd: this.temp.ftime ? this.temp.ftime[1] + 86400000 : null,
-                }
+        }
+    },
+
+    methods: {
+        mergeSearchForm() {
+            return {
+                ...this.searchForm,
+                status: this.temp.status.join(','),
+                finish: this.temp.finish.join(','),
+                ctimeStart: this.temp.ctime ? this.temp.ctime[0] : null,
+                ctimeEnd: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null,
+                vtimeStart: this.temp.vtime ? this.temp.vtime[0] : null,
+                vtimeEnd: this.temp.vtime ? this.temp.vtime[1] + 86400000 : null,
+                ftimeStart: this.temp.ftime ? this.temp.ftime[0] : null,
+                ftimeEnd: this.temp.ftime ? this.temp.ftime[1] + 86400000 : null,
             }
         }
     }
+}
 </script>

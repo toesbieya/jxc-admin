@@ -6,7 +6,7 @@
             </search-form-item>
             <search-form-item label="行政区域：">
                 <region-selector
-                        :value="temp.region_name"
+                        :value="temp.regionName"
                         limit
                         :limit-api="getLimitRegion"
                         get-children-on-select
@@ -51,7 +51,7 @@
             <abstract-table :data="tableData" @row-click="rowClick">
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="客 户" prop="name" show-overflow-tooltip/>
-                <el-table-column align="center" label="行政区域" prop="region_name" show-overflow-tooltip/>
+                <el-table-column align="center" label="行政区域" prop="regionName" show-overflow-tooltip/>
                 <el-table-column align="center" label="地 址" prop="address" show-overflow-tooltip/>
                 <el-table-column align="center" label="联系人" prop="linkman" show-overflow-tooltip/>
                 <el-table-column align="center" label="联系电话" prop="linkphone" show-overflow-tooltip/>
@@ -65,6 +65,7 @@
                     </template>
                 </el-table-column>
             </abstract-table>
+
             <el-pagination
                     background
                     :current-page="searchForm.page"
@@ -110,7 +111,7 @@
                     status: null
                 },
                 temp: {
-                    region_name: null,
+                    regionName: null,
                     ctime: []
                 },
                 editDialog: false
@@ -138,12 +139,12 @@
 
             clearSidSearch() {
                 this.searchForm.region = null
-                this.temp.region_name = null
+                this.temp.regionName = null
             },
 
             selectRegion(obj, ids) {
                 this.searchForm.region = ids.join(',')
-                this.temp.region_name = obj.fullname
+                this.temp.regionName = obj.fullname
             },
 
             mergeSearchForm() {

@@ -78,10 +78,10 @@
 </template>
 
 <script>
-    import bizDocDetailMixin from "@/mixins/bizDocDetailMixin"
+    import docDetailMixin from "@/mixins/docDetailMixin"
     import OrderSelector from './components/OrderSelector'
-    import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/document/purchase/inbound"
-    import {getSubById as getParentSubById} from "@/api/document/purchase/order"
+    import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/doc/purchase/inbound"
+    import {getSubById as getParentSubById} from "@/api/doc/purchase/order"
     import {isEmpty} from "@/utils"
     import {elAlert} from "@/utils/message"
     import {isInteger} from "@/utils/validate"
@@ -89,7 +89,7 @@
     export default {
         name: "purchaseInboundDetail",
 
-        mixins: [bizDocDetailMixin],
+        mixins: [docDetailMixin],
 
         components: {OrderSelector},
 

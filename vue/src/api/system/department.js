@@ -1,6 +1,7 @@
 import request from "@/config/request"
+import BASE from './baseUrl'
 
-export const baseUrl = `/system/department`
+export const baseUrl = `${BASE}/department`
 
 export function getDepartments(all = true) {
     return request.get(`${baseUrl}/get?all=${all}`).then(({data}) => data.data)

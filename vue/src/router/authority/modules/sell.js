@@ -3,7 +3,7 @@ import Layout from '@/layout'
 import {lazyLoadView} from "@/router/util"
 
 const router = {
-    path: '/document/sell',
+    path: '/doc/sell',
     component: Layout,
     alwaysShow: true,
     meta: {title: '销售管理', icon: 'sell'},
@@ -31,7 +31,7 @@ const router = {
                             return `查看销售订单${id}`
                     }
                 },
-                activeMenu: '/document/sell/order',
+                activeMenu: '/doc/sell/order',
                 isDetailPage: true
             }
         },
@@ -58,7 +58,7 @@ const router = {
                             return `查看销售出库单${id}`
                     }
                 },
-                activeMenu: '/document/outbound/order',
+                activeMenu: '/doc/sell/outbound',
                 isDetailPage: true
             }
         }

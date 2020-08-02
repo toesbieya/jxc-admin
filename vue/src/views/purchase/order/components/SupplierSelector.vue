@@ -37,7 +37,7 @@
                 >
                     <el-table-column align="center" label="#" type="index" width="80"/>
                     <el-table-column align="center" label="供应商" prop="name" show-overflow-tooltip/>
-                    <el-table-column align="center" label="行政区域" prop="region_name" show-overflow-tooltip/>
+                    <el-table-column align="center" label="行政区域" prop="regionName" show-overflow-tooltip/>
                     <el-table-column align="center" label="地 址" prop="address" show-overflow-tooltip/>
                     <el-table-column align="center" label="联系人" prop="linkman" show-overflow-tooltip/>
                     <el-table-column align="center" label="联系电话" prop="linkphone" show-overflow-tooltip/>

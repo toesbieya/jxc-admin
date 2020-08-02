@@ -1,6 +1,7 @@
 import request from "@/config/request"
+import BASE from './baseUrl'
 
-export const baseUrl = '/message/user'
+export const baseUrl = `${BASE}/user`
 
 export function search(data) {
     return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)

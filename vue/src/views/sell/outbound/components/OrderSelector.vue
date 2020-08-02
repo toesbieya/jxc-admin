@@ -42,7 +42,7 @@
                                         size="small"
                                         style="margin-top: 10px"
                                         type="primary"
-                                        @click="confirm(row)"
+                                        @click="() => confirm(row)"
                                 >
                                     确定
                                 </el-button>
@@ -69,7 +69,7 @@
     import LinerProgress from '@/components/LinerProgress'
     import dialogMixin from "@/mixins/dialogMixin"
     import tableMixin from '@/mixins/tablePageMixin'
-    import {getSubById, search} from "@/api/document/sell/order"
+    import {getSubById, search} from "@/api/doc/sell/order"
     import {elError} from "@/utils/message"
 
     export default {

@@ -1,6 +1,7 @@
 import request from "@/config/request"
+import BASE from '../baseUrl'
 
-export const baseUrl = '/document/purchase/inbound'
+export const baseUrl = `${BASE}/purchase/inbound`
 
 export function getById(id) {
     return request.get(`${baseUrl}/getById?id=${id}`).then(({data}) => data.data)

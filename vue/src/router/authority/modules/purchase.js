@@ -3,7 +3,7 @@ import Layout from '@/layout'
 import {lazyLoadView} from "@/router/util"
 
 const router = {
-    path: '/document/purchase',
+    path: '/doc/purchase',
     component: Layout,
     alwaysShow: true,
     meta: {title: '采购管理', icon: 'shopping'},
@@ -31,7 +31,7 @@ const router = {
                             return `查看采购订单${id}`
                     }
                 },
-                activeMenu: '/document/purchase/order',
+                activeMenu: '/doc/purchase/order',
                 isDetailPage: true
             }
         },
@@ -58,7 +58,7 @@ const router = {
                             return `查看采购入库单${id}`
                     }
                 },
-                activeMenu: '/document/purchase/inbound',
+                activeMenu: '/doc/purchase/inbound',
                 isDetailPage: true
             }
         }

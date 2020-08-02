@@ -56,7 +56,7 @@
     import AbstractFormItem from "@/components/AbstractForm/AbstractFormItem"
     import FormDialog from '@/components/FormDialog'
     import TinymceEditor from "@/components/TinymceEditor"
-    import {SimpleMultipleUserSelector as UserSelector} from '@/bizComponents/UserSelector'
+    import {SimpleMultipleUserSelector as UserSelector} from '@/components/biz/UserSelector'
     import dialogMixin from "@/mixins/dialogMixin"
     import {add, update, publish, withdraw} from "@/api/message/manage"
     import {isEmpty, mergeObj, resetObj} from '@/utils'

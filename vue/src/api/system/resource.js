@@ -1,10 +1,7 @@
 import request from "@/config/request"
+import BASE from './baseUrl'
 
-export const baseUrl = `/system/resource`
-
-export function getResources() {
-    return request.get(`${baseUrl}/get`).then(({data}) => data.data)
-}
+export const baseUrl = `${BASE}/resource`
 
 export function getAllResources() {
     return request.get(`${baseUrl}/getAll`).then(({data}) => data.data)

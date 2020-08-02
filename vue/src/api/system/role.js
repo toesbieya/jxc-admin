@@ -1,6 +1,7 @@
 import request from "@/config/request"
+import BASE from './baseUrl'
 
-export const baseUrl = `/system/role`
+export const baseUrl = `${BASE}/role`
 
 export function searchRoles(data) {
     return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)

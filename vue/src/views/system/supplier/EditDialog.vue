@@ -11,9 +11,9 @@
             <el-form-item label="名 称：" prop="name">
                 <el-input v-model="form.name" :readonly="!canEdit" maxlength="20"/>
             </el-form-item>
-            <el-form-item label="行政区域：" prop="region_name">
+            <el-form-item label="行政区域：" prop="regionName">
                 <region-selector
-                        :value="form.region_name"
+                        :value="form.regionName"
                         :readonly="!canEdit"
                         @clear="clearRegion"
                         @select="selectRegion"
@@ -87,7 +87,7 @@
                     linkman: null,
                     linkphone: null,
                     region: null,
-                    region_name: null,
+                    regionName: null,
                     status: 1,
                     remark: null
                 },
@@ -97,7 +97,7 @@
                     linkman: [{required: true, message: '联系人不能为空', trigger: 'change'}],
                     linkphone: [{required: true, message: '联系电话不能为空', trigger: 'change'}],
                     status: [{required: true, message: '状态不能为空', trigger: 'change'}],
-                    region_name: [{required: true, message: '行政区域不能为空', trigger: 'change'}],
+                    regionName: [{required: true, message: '行政区域不能为空', trigger: 'change'}],
                 }
             }
         },
@@ -134,12 +134,12 @@
         methods: {
             clearRegion() {
                 this.form.region = null
-                this.form.region_name = null
+                this.form.regionName = null
             },
 
             selectRegion(obj) {
                 this.form.region = obj.id
-                this.form.region_name = obj.fullname
+                this.form.regionName = obj.fullname
             },
 
             open() {

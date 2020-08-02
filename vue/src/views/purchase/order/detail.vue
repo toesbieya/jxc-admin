@@ -124,10 +124,10 @@
 </template>
 
 <script>
-    import bizDocDetailMixin from "@/mixins/bizDocDetailMixin"
+    import docDetailMixin from "@/mixins/docDetailMixin"
     import CategorySelector from './components/CategorySelector'
     import SupplierSelector from './components/SupplierSelector'
-    import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/document/purchase/order"
+    import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/doc/purchase/order"
     import {isEmpty} from "@/utils"
     import {mul, plus} from "@/utils/math"
     import {isInteger} from "@/utils/validate"
@@ -135,7 +135,7 @@
     export default {
         name: "purchaseOrderDetail",
 
-        mixins: [bizDocDetailMixin],
+        mixins: [docDetailMixin],
 
         components: {CategorySelector, SupplierSelector},
 

@@ -67,7 +67,7 @@
 </template>
 
 <script>
-    import CategoryTree from '@/bizComponents/CategoryTree'
+    import CategoryTree from '@/components/biz/CategoryTree'
     import DetailDialog from "./DetailDialog"
     import ExtraArea from '@/components/ExtraArea'
     import SearchForm from "@/components/SearchForm"

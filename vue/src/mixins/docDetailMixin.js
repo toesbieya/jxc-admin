@@ -2,12 +2,12 @@ import AbstractForm from '@/components/AbstractForm'
 import AbstractFormItem from "@/components/AbstractForm/AbstractFormItem"
 import AbstractTable from "@/components/AbstractTable"
 import CollapseCard from '@/components/CollapseCard'
-import DocDetailHeader from "@/bizComponents/document/DocDetailHeader"
-import DocDetailFooter from "@/bizComponents/document/DocDetailFooter"
-import DocHistory from '@/bizComponents/document/DocHistory'
-import DocSteps from '@/bizComponents/document/DocSteps'
+import DocDetailHeader from "@/components/biz/doc/DocDetailHeader"
+import DocDetailFooter from "@/components/biz/doc/DocDetailFooter"
+import DocHistory from '@/components/biz/doc/DocHistory'
+import DocSteps from '@/components/biz/doc/DocSteps'
 import UploadFile from '@/components/UploadFile'
-import {commonMethods} from "@/mixins/bizDocumentTableMixin"
+import {commonMethods} from "@/mixins/docTableMixin"
 import {isEmpty, mergeObj} from '@/utils'
 import {elAlert, elConfirm, elPrompt, elSuccess} from "@/utils/message"
 import {deleteUpload} from "@/utils/file"

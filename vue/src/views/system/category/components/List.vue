@@ -18,7 +18,7 @@
     import {del, getAll} from "@/api/system/category"
     import ContextMenu from "@/components/ContextMenu"
     import ContextMenuItem from "@/components/ContextMenu/ContextMenuItem"
-    import CategoryTree from '@/bizComponents/CategoryTree'
+    import CategoryTree from '@/components/biz/CategoryTree'
 
     export default {
         components: {ContextMenuItem, ContextMenu, CategoryTree},

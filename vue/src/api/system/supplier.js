@@ -1,6 +1,7 @@
 import request from "@/config/request"
+import BASE from './baseUrl'
 
-export const baseUrl = `/system/supplier`
+export const baseUrl = `${BASE}/supplier`
 
 export function getLimitRegion() {
     return request.get(`${baseUrl}/getLimitRegion`).then(({data}) => data.data)
