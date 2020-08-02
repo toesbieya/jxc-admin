@@ -2,7 +2,7 @@
 
 后端分local和cloud版，对应 `java/local` 和 `java/cloud` 目录，可以根据自行选择。
 
-local版基于SpringBoot、SpringMVC、Mybatis开发。
+local版基于SpringBoot、SpringMVC、Mybatis-Plus开发。
 
 cloud版基于SpringBoot、SpringCloud、SpringCloudAlibaba、SpringMVC、Mybatis-Plus开发
 ，服务间调用使用dubbo，未使用分布式事务。

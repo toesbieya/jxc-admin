@@ -48,7 +48,6 @@
 │   ├── assets
 │   │   │── icons              # 项目所有svg icons
 │   │   └── styles             # 样式集合
-│   ├── bizComponents          # 公用业务组件
 │   ├── components             # 公用组件
 │   ├── config
 │   │   │── index.js           # 基础配置项
