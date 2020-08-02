@@ -53,62 +53,62 @@
 </template>
 
 <script>
-    import AbstractTable from '@/components/AbstractTable'
-    import LinerProgress from '@/components/LinerProgress'
-    import FormDialog from "@/components/FormDialog"
+import AbstractTable from '@/components/AbstractTable'
+import LinerProgress from '@/components/LinerProgress'
+import FormDialog from "@/components/FormDialog"
 
-    export default {
-        name: "stylePage",
+export default {
+    name: "stylePage",
 
-        components: {AbstractTable, LinerProgress, FormDialog},
+    components: {AbstractTable, LinerProgress, FormDialog},
 
-        data() {
-            return {
-                dialog: false,
-                tableData: [
-                    {name: '老王', address: '中国', tel: '13232423232', age: 18},
-                    {name: '老王', address: '中国', tel: '13232423232', age: 18},
-                    {name: '老王', address: '中国', tel: '13232423232', age: 18}
-                ]
-            }
-        },
-
-        mounted() {
-            const f = (type, time = 0) => {
-                setTimeout(() => {
-                    this.$notify({
-                        title: type,
-                        message: '提示信息',
-                        type
-                    })
-                }, time)
-            }
-            let i = 0;
-            ['success', 'info', 'warning', 'error'].forEach(t => {
-                f(t, i)
-                i += 200
-            })
-
-            this.$once('hook:beforeDestroy', this.$notify.closeAll)
+    data() {
+        return {
+            dialog: false,
+            tableData: [
+                {name: '老王', address: '中国', tel: '13232423232', age: 18},
+                {name: '老王', address: '中国', tel: '13232423232', age: 18},
+                {name: '老王', address: '中国', tel: '13232423232', age: 18}
+            ]
         }
+    },
+
+    mounted() {
+        const f = (type, time = 0) => {
+            setTimeout(() => {
+                this.$notify({
+                    title: type,
+                    message: '提示信息',
+                    type
+                })
+            }, time)
+        }
+        let i = 0;
+        ['success', 'info', 'warning', 'error'].forEach(t => {
+            f(t, i)
+            i += 200
+        })
+
+        this.$once('hook:beforeDestroy', this.$notify.closeAll)
     }
+}
 </script>
 
 <style lang="scss" scoped>
-    .el-message {
-        position: static;
-        transform: translateX(0);
+.el-message {
+    position: static;
+    transform: translateX(0);
 
-        & + .el-message {
-            margin-left: 20px;
-        }
-    }
-
-    .el-row + .el-row {
-        margin-top: 20px;
-    }
-
-    .el-tag + .el-tag {
+    & + .el-message {
         margin-left: 20px;
     }
+}
+
+.el-row + .el-row {
+    margin-top: 20px;
+}
+
+.el-tag + .el-tag {
+    margin-left: 20px;
+}
 </style>

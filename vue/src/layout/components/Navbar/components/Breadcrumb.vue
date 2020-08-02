@@ -9,39 +9,39 @@
 </template>
 
 <script>
-    export default {
-        data: () => ({data: []}),
+export default {
+    data: () => ({data: []}),
 
-        watch: {
-            $route(route) {
-                if (route.path.startsWith('/redirect')) return
-                this.getBreadcrumb()
-            }
-        },
-
-        methods: {
-            getBreadcrumb() {
-                // only show routes with meta.title
-                this.data = this.$route.matched.filter(item => item.meta.title)
-            }
-        },
-
-        mounted() {
+    watch: {
+        $route(route) {
+            if (route.path.startsWith('/redirect')) return
             this.getBreadcrumb()
         }
+    },
+
+    methods: {
+        getBreadcrumb() {
+            // only show routes with meta.title
+            this.data = this.$route.matched.filter(item => item.meta.title)
+        }
+    },
+
+    mounted() {
+        this.getBreadcrumb()
     }
+}
 </script>
 
 <style lang="scss" scoped>
-    @import "~@/assets/styles/variables.scss";
+@import "~@/assets/styles/variables.scss";
 
-    .app-breadcrumb {
-        margin-left: 8px;
-        line-height: $nav-height;
+.app-breadcrumb {
+    margin-left: 8px;
+    line-height: $nav-height;
 
-        .no-redirect {
-            color: $--color-gray;
-            cursor: text;
-        }
+    .no-redirect {
+        color: $--color-gray;
+        cursor: text;
     }
+}
 </style>

@@ -1,12 +1,12 @@
 <template>
     <form-dialog :loading="loading" title="编辑" :value="value" @close="cancel" @open="open">
         <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                label-position="right"
-                label-width="120px"
-                status-icon
+            ref="form"
+            :model="form"
+            :rules="rules"
+            label-position="right"
+            label-width="120px"
+            status-icon
         >
             <el-form-item label="名 称：" prop="name">
                 <el-input :value="form.fullName" readonly/>
@@ -16,20 +16,20 @@
             </el-form-item>
             <el-form-item label="总频率：" prop="totalRate">
                 <el-input-number
-                        v-model="form.totalRate"
-                        controls-position="right"
-                        :min="1"
-                        :step="1"
-                        step-strictly size="small"
+                    v-model="form.totalRate"
+                    controls-position="right"
+                    :min="1"
+                    :step="1"
+                    step-strictly size="small"
                 />
             </el-form-item>
             <el-form-item label="单个IP频率：" prop="ipRate">
                 <el-input-number
-                        v-model="form.ipRate"
-                        controls-position="right"
-                        :min="1"
-                        :step="1"
-                        step-strictly size="small"
+                    v-model="form.ipRate"
+                    controls-position="right"
+                    :min="1"
+                    :step="1"
+                    step-strictly size="small"
                 />
             </el-form-item>
         </el-form>
@@ -42,61 +42,61 @@
 </template>
 
 <script>
-    import FormDialog from '@/components/FormDialog'
-    import dialogMixin from "@/mixins/dialogMixin"
-    import {updateResource} from "@/api/system/resource"
-    import {mergeObj, resetObj} from '@/utils'
+import FormDialog from '@/components/FormDialog'
+import dialogMixin from "@/mixins/dialogMixin"
+import {updateResource} from "@/api/system/resource"
+import {mergeObj, resetObj} from '@/utils'
 
-    export default {
-        name: "EditDialog",
+export default {
+    name: "EditDialog",
 
-        mixins: [dialogMixin],
+    mixins: [dialogMixin],
 
-        components: {FormDialog},
+    components: {FormDialog},
 
-        props: {
-            value: {type: Boolean, default: false},
-            data: {type: Object, default: () => ({})},
-        },
+    props: {
+        value: {type: Boolean, default: false},
+        data: {type: Object, default: () => ({})},
+    },
 
-        data() {
-            return {
-                loading: false,
-                form: {
-                    id: null,
-                    fullName: null,
-                    url: null,
-                    totalRate: 0,
-                    ipRate: 0
-                },
-                rules: {
-                    totalRate: [{required: true, message: '总频率不能为空', trigger: 'change'}],
-                    ipRate: [{required: true, message: '单个ip的频率不能为空', trigger: 'change'}],
-                }
-            }
-        },
-
-        methods: {
-            open() {
-                this.$nextTick(() => mergeObj(this.form, this.data))
+    data() {
+        return {
+            loading: false,
+            form: {
+                id: null,
+                fullName: null,
+                url: null,
+                totalRate: 0,
+                ipRate: 0
             },
-
-            cancel() {
-                this.closeDialog()
-                resetObj(this.form)
-                this.$nextTick(() => this.$refs.form.clearValidate())
-            },
-
-            confirm() {
-                if (this.loading) return
-                this.$refs.form.validate(v => {
-                    if (!v) return
-                    this.loading = true
-                    updateResource(this.form)
-                        .then(({msg}) => this.$emit('success', msg))
-                        .finally(() => this.loading = false)
-                })
+            rules: {
+                totalRate: [{required: true, message: '总频率不能为空', trigger: 'change'}],
+                ipRate: [{required: true, message: '单个ip的频率不能为空', trigger: 'change'}],
             }
         }
+    },
+
+    methods: {
+        open() {
+            this.$nextTick(() => mergeObj(this.form, this.data))
+        },
+
+        cancel() {
+            this.closeDialog()
+            resetObj(this.form)
+            this.$nextTick(() => this.$refs.form.clearValidate())
+        },
+
+        confirm() {
+            if (this.loading) return
+            this.$refs.form.validate(v => {
+                if (!v) return
+                this.loading = true
+                updateResource(this.form)
+                    .then(({msg}) => this.$emit('success', msg))
+                    .finally(() => this.loading = false)
+            })
+        }
     }
+}
 </script>

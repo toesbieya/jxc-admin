@@ -52,188 +52,188 @@
 </template>
 
 <script>
-    import AbstractForm from "@/components/AbstractForm"
-    import AbstractFormItem from "@/components/AbstractForm/AbstractFormItem"
-    import FormDialog from '@/components/FormDialog'
-    import TinymceEditor from "@/components/TinymceEditor"
-    import {SimpleMultipleUserSelector as UserSelector} from '@/components/biz/UserSelector'
-    import dialogMixin from "@/mixins/dialogMixin"
-    import {add, update, publish, withdraw} from "@/api/message/manage"
-    import {isEmpty, mergeObj, resetObj} from '@/utils'
-    import {elAlert, elConfirm, elSuccess} from "@/utils/message"
-    import {auth} from "@/utils/auth"
+import AbstractForm from "@/components/AbstractForm"
+import AbstractFormItem from "@/components/AbstractForm/AbstractFormItem"
+import FormDialog from '@/components/FormDialog'
+import TinymceEditor from "@/components/TinymceEditor"
+import {SimpleMultipleUserSelector as UserSelector} from '@/components/biz/UserSelector'
+import dialogMixin from "@/mixins/dialogMixin"
+import {add, update, publish, withdraw} from "@/api/message/manage"
+import {isEmpty, mergeObj, resetObj} from '@/utils'
+import {elAlert, elConfirm, elSuccess} from "@/utils/message"
+import {auth} from "@/utils/auth"
 
-    export default {
-        name: "EditDialog",
+export default {
+    name: "EditDialog",
 
-        mixins: [dialogMixin],
+    mixins: [dialogMixin],
 
-        components: {AbstractForm, AbstractFormItem, FormDialog, TinymceEditor, UserSelector},
+    components: {AbstractForm, AbstractFormItem, FormDialog, TinymceEditor, UserSelector},
 
-        props: {
-            value: {type: Boolean, default: false},
-            type: {type: String, default: 'see'},
-            data: {
-                type: Object,
-                default: () => ({})
-            },
-            baseUrl: String
+    props: {
+        value: {type: Boolean, default: false},
+        type: {type: String, default: 'see'},
+        data: {
+            type: Object,
+            default: () => ({})
         },
+        baseUrl: String
+    },
 
-        data() {
-            return {
-                loading: false,
-                needSearch: false,
-                form: {
-                    id: null,
-                    title: null,
-                    resume: null,
-                    content: null,
-                    type: 0,
-                    cname: null,
-                    ctime: null,
-                    pname: null,
-                    ptime: null,
-                    wname: null,
-                    wtime: null,
-                    status: 0,
-                    broadcast: 1,
-                    recipient: []
-                },
-                rules: {
-                    title: [{required: true, message: '请输入标题', trigger: 'change'}],
-                    type: [{required: true, message: '请选择消息类型', trigger: 'change'}],
-                    broadcast: [{required: true, message: '请选择通知对象', trigger: 'change'}]
-                }
+    data() {
+        return {
+            loading: false,
+            needSearch: false,
+            form: {
+                id: null,
+                title: null,
+                resume: null,
+                content: null,
+                type: 0,
+                cname: null,
+                ctime: null,
+                pname: null,
+                ptime: null,
+                wname: null,
+                wtime: null,
+                status: 0,
+                broadcast: 1,
+                recipient: []
+            },
+            rules: {
+                title: [{required: true, message: '请输入标题', trigger: 'change'}],
+                type: [{required: true, message: '请选择消息类型', trigger: 'change'}],
+                broadcast: [{required: true, message: '请选择通知对象', trigger: 'change'}]
+            }
+        }
+    },
+
+    computed: {
+        title() {
+            if (isEmpty(this.type)) return ''
+            switch (this.type) {
+                case 'see':
+                    return '查看消息'
+                case 'add':
+                    return '添加消息'
+                case 'edit':
+                    return '编辑消息'
             }
         },
 
-        computed: {
-            title() {
-                if (isEmpty(this.type)) return ''
-                switch (this.type) {
-                    case 'see':
-                        return '查看消息'
-                    case 'add':
-                        return '添加消息'
-                    case 'edit':
-                        return '编辑消息'
-                }
-            },
-
-            canSave() {
-                //add模式有添加权限、edit模式有编辑权限且status=0
-                return this.type === 'add' && auth(this.baseUrl + '/add')
-                    || this.form.status === 0 && this.type === 'edit' && auth(this.baseUrl + '/update')
-            },
-
-            canPublish() {
-                //有发布权限、add模式或edit模式且status=0
-                return auth(this.baseUrl + '/publish') && (this.type === 'add' || this.type === 'edit' && this.form.status === 0)
-            },
-
-            canWithdraw() {
-                //有撤回权限、edit模式且status=1
-                return auth(this.baseUrl + '/withdraw')
-                    && this.type === 'edit'
-                    && this.form.status === 1
-            },
+        canSave() {
+            //add模式有添加权限、edit模式有编辑权限且status=0
+            return this.type === 'add' && auth(this.baseUrl + '/add')
+                || this.form.status === 0 && this.type === 'edit' && auth(this.baseUrl + '/update')
         },
 
-        methods: {
-            open() {
-                if (this.type === 'add') return
-                mergeObj(this.form, this.data)
-                const recipient = this.data.recipient || ''
-                this.form.recipient = recipient.split(',').map(i => parseInt(i))
-            },
+        canPublish() {
+            //有发布权限、add模式或edit模式且status=0
+            return auth(this.baseUrl + '/publish') && (this.type === 'add' || this.type === 'edit' && this.form.status === 0)
+        },
 
-            clearForm() {
-                resetObj(this.form)
-                this.form.broadcast = 1
-                this.needSearch = false
-                this.loading = false
-                this.$nextTick(() => this.$refs.form.clearValidate())
-            },
+        canWithdraw() {
+            //有撤回权限、edit模式且status=1
+            return auth(this.baseUrl + '/withdraw')
+                && this.type === 'edit'
+                && this.form.status === 1
+        },
+    },
 
-            cancel() {
-                this.closeDialog()
-                this.needSearch && this.$emit('search')
+    methods: {
+        open() {
+            if (this.type === 'add') return
+            mergeObj(this.form, this.data)
+            const recipient = this.data.recipient || ''
+            this.form.recipient = recipient.split(',').map(i => parseInt(i))
+        },
 
-                setTimeout(() => this.clearForm(), 200)
-                this.loading = false
-            },
+        clearForm() {
+            resetObj(this.form)
+            this.form.broadcast = 1
+            this.needSearch = false
+            this.loading = false
+            this.$nextTick(() => this.$refs.form.clearValidate())
+        },
 
-            save() {
-                if (this.loading) return
-                this.$refs.form.validate(v => {
-                    if (!v) return
-                    this.loading = true
-                    const data = this.transformForm()
-                    let promise = this.type === 'add' ? add(data) : update(data)
-                    promise
-                        .then(({data, msg}) => {
-                            this.needSearch = true
-                            elSuccess(msg)
-                            if (this.type === 'add') {
-                                this.form.id = data.id
-                                this.form.cname = data.cname
-                                this.form.ctime = data.ctime
-                            }
-                            this.$emit('update:type', 'edit')
-                        })
-                        .finally(() => this.loading = false)
-                })
-            },
+        cancel() {
+            this.closeDialog()
+            this.needSearch && this.$emit('search')
 
-            publish() {
-                if (this.loading) return
-                this.$refs.form.validate(v => {
-                    if (!v) return
-                    if (this.validate) {
-                        let valid = this.validate()
-                        if (!isEmpty(valid)) return elAlert(valid)
-                    }
-                    elConfirm('确认发布？')
-                        .then(() => this.loading = true)
-                        .then(() => publish(this.transformForm()))
-                        .then(({data, msg}) => {
-                            elSuccess(msg)
-                            this.needSearch = true
+            setTimeout(() => this.clearForm(), 200)
+            this.loading = false
+        },
 
+        save() {
+            if (this.loading) return
+            this.$refs.form.validate(v => {
+                if (!v) return
+                this.loading = true
+                const data = this.transformForm()
+                let promise = this.type === 'add' ? add(data) : update(data)
+                promise
+                    .then(({data, msg}) => {
+                        this.needSearch = true
+                        elSuccess(msg)
+                        if (this.type === 'add') {
                             this.form.id = data.id
                             this.form.cname = data.cname
                             this.form.ctime = data.ctime
-                            this.form.pid = data.pid
-                            this.form.pname = data.pname
-                            this.form.ptime = data.ptime
-                            this.form.status = data.status
-
-                            this.$emit('update:type', 'edit')
-                        })
-                        .finally(() => this.loading = false)
-                })
-            },
-
-            withdraw() {
-                if (this.loading) return
-                elConfirm('确认撤回？')
-                    .then(() => {
-                        this.loading = true
-                        return withdraw({id: this.form.id})
-                    })
-                    .then(({msg}) => {
-                        elSuccess(msg)
-                        this.needSearch = true
-                        this.closeDialog()
+                        }
+                        this.$emit('update:type', 'edit')
                     })
                     .finally(() => this.loading = false)
-            },
+            })
+        },
 
-            transformForm() {
-                if (this.form.broadcast === 1) return this.form
-                else return {...this.form, recipient: this.form.recipient.join(',')}
-            }
+        publish() {
+            if (this.loading) return
+            this.$refs.form.validate(v => {
+                if (!v) return
+                if (this.validate) {
+                    let valid = this.validate()
+                    if (!isEmpty(valid)) return elAlert(valid)
+                }
+                elConfirm('确认发布？')
+                    .then(() => this.loading = true)
+                    .then(() => publish(this.transformForm()))
+                    .then(({data, msg}) => {
+                        elSuccess(msg)
+                        this.needSearch = true
+
+                        this.form.id = data.id
+                        this.form.cname = data.cname
+                        this.form.ctime = data.ctime
+                        this.form.pid = data.pid
+                        this.form.pname = data.pname
+                        this.form.ptime = data.ptime
+                        this.form.status = data.status
+
+                        this.$emit('update:type', 'edit')
+                    })
+                    .finally(() => this.loading = false)
+            })
+        },
+
+        withdraw() {
+            if (this.loading) return
+            elConfirm('确认撤回？')
+                .then(() => {
+                    this.loading = true
+                    return withdraw({id: this.form.id})
+                })
+                .then(({msg}) => {
+                    elSuccess(msg)
+                    this.needSearch = true
+                    this.closeDialog()
+                })
+                .finally(() => this.loading = false)
+        },
+
+        transformForm() {
+            if (this.form.broadcast === 1) return this.form
+            else return {...this.form, recipient: this.form.recipient.join(',')}
         }
     }
+}
 </script>

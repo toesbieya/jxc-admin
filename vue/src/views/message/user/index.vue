@@ -10,59 +10,59 @@
 </template>
 
 <script>
-    import MessageStream from './MessageStream'
+import MessageStream from './MessageStream'
 
-    export default {
-        name: "userMessage",
+export default {
+    name: "userMessage",
 
-        components: {MessageStream},
+    components: {MessageStream},
 
-        data() {
-            return {
-                tabs: [{label: '未读消息', name: 'unread'}, {label: '已读消息', name: 'read'}],
-                activeTab: 'unread',
-            }
+    data() {
+        return {
+            tabs: [{label: '未读消息', name: 'unread'}, {label: '已读消息', name: 'read'}],
+            activeTab: 'unread',
+        }
+    },
+
+    computed: {
+        tabPosition() {
+            return this.$store.state.app.device === 'pc' ? 'left' : 'top'
         },
-
-        computed: {
-            tabPosition() {
-                return this.$store.state.app.device === 'pc' ? 'left' : 'top'
-            },
-            tabContentClass() {
-                return this.tabPosition === 'left' ? 'tab-main-right' : 'tab-main-top'
-            }
+        tabContentClass() {
+            return this.tabPosition === 'left' ? 'tab-main-right' : 'tab-main-top'
         }
     }
+}
 </script>
 
 <style lang="scss">
-    .user-message-page {
-        .el-tabs--left {
-            .el-tabs__item.is-left {
-                text-align: center;
+.user-message-page {
+    .el-tabs--left {
+        .el-tabs__item.is-left {
+            text-align: center;
 
-                &.is-active {
-                    background: #f0faff;
-                }
-            }
-
-            .el-tabs__header.is-left {
-                min-width: 200px;
+            &.is-active {
+                background: #f0faff;
             }
         }
 
-        .el-tabs__item {
-            font-size: 16px;
-        }
-
-        .tab-main {
-            &-right {
-                padding: 8px 40px;
-            }
-
-            &-bottom {
-                padding: 20px 40px;
-            }
+        .el-tabs__header.is-left {
+            min-width: 200px;
         }
     }
+
+    .el-tabs__item {
+        font-size: 16px;
+    }
+
+    .tab-main {
+        &-right {
+            padding: 8px 40px;
+        }
+
+        &-bottom {
+            padding: 20px 40px;
+        }
+    }
+}
 </style>

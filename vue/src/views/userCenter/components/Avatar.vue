@@ -3,25 +3,25 @@
         <el-row class="avatar-cropper">
             <div class="img-wrapper">
                 <vue-cropper
-                        ref="cropper"
-                        :img="img"
-                        :info="false"
-                        autoCrop
-                        autoCropHeight="200px"
-                        autoCropWidth="200px"
-                        fixedBox
-                        full
-                        outputType="png"
-                        @wheel.native.prevent="scale"
+                    ref="cropper"
+                    :img="img"
+                    :info="false"
+                    autoCrop
+                    autoCropHeight="200px"
+                    autoCropWidth="200px"
+                    fixedBox
+                    full
+                    outputType="png"
+                    @wheel.native.prevent="scale"
                 />
             </div>
 
             <input
-                    ref="input"
-                    accept="image/png, image/jpeg, image/gif, image/jpg"
-                    style="display: none"
-                    type="file"
-                    @change="chooseImage"
+                ref="input"
+                accept="image/png, image/jpeg, image/gif, image/jpg"
+                style="display: none"
+                type="file"
+                @change="chooseImage"
             >
         </el-row>
 
@@ -34,101 +34,101 @@
 </template>
 
 <script>
-    import {VueCropper} from 'vue-cropper'
-    import FormDialog from '@/components/FormDialog'
-    import dialogMixin from "@/mixins/dialogMixin"
-    import {elError, elSuccess} from "@/utils/message"
-    import {autoCompleteUrl, upload} from "@/utils/file"
-    import {updateAvatar} from "@/api/account"
+import {VueCropper} from 'vue-cropper'
+import FormDialog from '@/components/FormDialog'
+import dialogMixin from "@/mixins/dialogMixin"
+import {elError, elSuccess} from "@/utils/message"
+import {autoCompleteUrl, upload} from "@/utils/file"
+import {updateAvatar} from "@/api/account"
 
-    export default {
-        name: "Avatar",
+export default {
+    name: "Avatar",
 
-        mixins: [dialogMixin],
+    mixins: [dialogMixin],
 
-        components: {VueCropper, FormDialog},
+    components: {VueCropper, FormDialog},
 
-        props: {
-            value: Boolean
+    props: {
+        value: Boolean
+    },
+
+    data() {
+        return {
+            loading: false,
+            img: '',
+            name: ''
+        }
+    },
+
+    methods: {
+        chooseImage(e) {
+            if (this.loading) return
+            this.clear()
+            let file = e.target.files[0]
+            if (!file.type.includes('image')) {
+                return elError('请上传图片')
+            }
+            if (file.size > 1048576) {
+                return elError('上传的图片不能大于1M')
+            }
+            this.name = file.name
+            let reader = new FileReader()
+            reader.onload = e => {
+                this.img = window.URL.createObjectURL(new Blob([e.target.result]))
+            }
+            reader.readAsArrayBuffer(file)
         },
 
-        data() {
-            return {
-                loading: false,
-                img: '',
-                name: ''
-            }
+        confirm() {
+            if (!this.img) return elError('请先上传图片')
+            if (this.loading) return
+            this.loading = true
+            this.$refs.cropper.getCropBlob(data => {
+                upload(new Blob([data]), this.name)
+                    .then(({key}) => updateAvatar(key))
+                    .then(({key, msg}) => {
+                        this.$store.commit('user/avatar', autoCompleteUrl(key))
+                        this.$store.dispatch('user/refresh')
+                        elSuccess(msg)
+                    })
+                    .finally(() => this.cancel())
+            })
         },
 
-        methods: {
-            chooseImage(e) {
-                if (this.loading) return
-                this.clear()
-                let file = e.target.files[0]
-                if (!file.type.includes('image')) {
-                    return elError('请上传图片')
-                }
-                if (file.size > 1048576) {
-                    return elError('上传的图片不能大于1M')
-                }
-                this.name = file.name
-                let reader = new FileReader()
-                reader.onload = e => {
-                    this.img = window.URL.createObjectURL(new Blob([e.target.result]))
-                }
-                reader.readAsArrayBuffer(file)
-            },
+        clear() {
+            this.loading = false
+            this.$refs.cropper.clearCrop()
+            if (this.img) window.URL.revokeObjectURL(this.img)
+            this.img = ''
+            this.name = ''
+        },
 
-            confirm() {
-                if (!this.img) return elError('请先上传图片')
-                if (this.loading) return
-                this.loading = true
-                this.$refs.cropper.getCropBlob(data => {
-                    upload(new Blob([data]), this.name)
-                        .then(({key}) => updateAvatar(key))
-                        .then(({key, msg}) => {
-                            this.$store.commit('user/avatar', autoCompleteUrl(key))
-                            this.$store.dispatch('user/refresh')
-                            elSuccess(msg)
-                        })
-                        .finally(() => this.cancel())
-                })
-            },
+        scale(e) {
+            const eventDelta = e.wheelDelta || -(e.detail || 0) * 40
+            this.$refs.cropper.changeScale(eventDelta / 120)
+        },
 
-            clear() {
-                this.loading = false
-                this.$refs.cropper.clearCrop()
-                if (this.img) window.URL.revokeObjectURL(this.img)
-                this.img = ''
-                this.name = ''
-            },
-
-            scale(e) {
-                const eventDelta = e.wheelDelta || -(e.detail || 0) * 40
-                this.$refs.cropper.changeScale(eventDelta / 120)
-            },
-
-            cancel() {
-                this.closeDialog()
-                this.clear()
-            }
+        cancel() {
+            this.closeDialog()
+            this.clear()
         }
     }
+}
 </script>
 
 <style lang="scss">
-    .avatar-cropper {
-        .cropper-crop-box {
-            border: 1px solid #39f;
-            border-radius: 50%;
-            overflow: hidden;
-        }
-
-        .img-wrapper {
-            height: 500px;
-            width: 100%;
-            display: inline-block;
-            border: 1px solid #ebebeb;
-        }
+.avatar-cropper {
+    .cropper-crop-box {
+        border: 1px solid #39f;
+        border-radius: 50%;
+        overflow: hidden;
     }
+
+    .img-wrapper {
+        height: 500px;
+        width: 100%;
+        display: inline-block;
+        border: 1px solid #ebebeb;
+    }
+}
 </style>

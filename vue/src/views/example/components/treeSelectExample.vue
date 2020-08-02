@@ -9,32 +9,32 @@
 </template>
 
 <script>
-    import TreeSelect from '@/components/TreeSelect'
+import TreeSelect from '@/components/TreeSelect'
 
-    export default {
-        name: "treeSelectExample",
+export default {
+    name: "treeSelectExample",
 
-        components: {TreeSelect},
+    components: {TreeSelect},
 
-        data() {
-            return {
-                single: '',
-                multiple: [],
-                data: [
-                    {id: 1, label: '一级 1', children: [{id: 2, label: '二级 1-1'}, {id: 3, label: '二级 1-2'}]},
-                    {id: 4, label: '一级 2', children: [{id: 5, label: '二级 2-1'}]},
-                ],
-            }
+    data() {
+        return {
+            single: '',
+            multiple: [],
+            data: [
+                {id: 1, label: '一级 1', children: [{id: 2, label: '二级 1-1'}, {id: 3, label: '二级 1-2'}]},
+                {id: 4, label: '一级 2', children: [{id: 5, label: '二级 2-1'}]},
+            ],
+        }
+    },
+
+    methods: {
+        filter(v, data) {
+            return data.label.includes(v)
         },
 
-        methods: {
-            filter(v, data) {
-                return data.label.includes(v)
-            },
-
-            singleInput(v,data) {
-                console.log(data)
-            }
+        singleInput(v, data) {
+            console.log(data)
         }
     }
+}
 </script>

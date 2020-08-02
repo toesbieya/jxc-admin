@@ -19,57 +19,57 @@
 </template>
 
 <script>
-    import SearchForm from "@/components/SearchForm"
-    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
-    import EditDialog from './EditDialog'
-    import {getAllResources} from "@/api/system/resource"
-    import {elError, elSuccess} from "@/utils/message"
-    import {auth} from "@/utils/auth"
-    import {createTreeByWorker} from "@/utils/tree"
-    import tableMixin from '@/mixins/tablePageMixin'
+import SearchForm from "@/components/SearchForm"
+import SearchFormItem from "@/components/SearchForm/SearchFormItem"
+import EditDialog from './EditDialog'
+import {getAllResources} from "@/api/system/resource"
+import {elError, elSuccess} from "@/utils/message"
+import {auth} from "@/utils/auth"
+import {createTreeByWorker} from "@/utils/tree"
+import tableMixin from '@/mixins/tablePageMixin'
 
-    const baseUrl = '/system/resource'
+const baseUrl = '/system/resource'
 
-    export default {
-        name: "resourceManagement",
+export default {
+    name: "resourceManagement",
 
-        mixins: [tableMixin],
+    mixins: [tableMixin],
 
-        components: {SearchForm, SearchFormItem, EditDialog},
+    components: {SearchForm, SearchFormItem, EditDialog},
 
-        data() {
-            return {
-                editDialog: false
-            }
+    data() {
+        return {
+            editDialog: false
+        }
+    },
+
+    computed: {
+        canUpdate() {
+            return auth(baseUrl + '/update')
+        }
+    },
+
+    methods: {
+        search() {
+            if (this.config.loading) return
+            this.config.loading = true
+            this.row = null
+            getAllResources()
+                .then(data => createTreeByWorker(data))
+                .then(data => this.tableData = data)
+                .finally(() => this.config.loading = false)
         },
 
-        computed: {
-            canUpdate() {
-                return auth(baseUrl + '/update')
-            }
+        edit() {
+            if (!this.row) return elError('请选择要编辑的资源')
+            this.editDialog = true
         },
 
-        methods: {
-            search() {
-                if (this.config.loading) return
-                this.config.loading = true
-                this.row = null
-                getAllResources()
-                    .then(data => createTreeByWorker(data))
-                    .then(data => this.tableData = data)
-                    .finally(() => this.config.loading = false)
-            },
-
-            edit() {
-                if (!this.row) return elError('请选择要编辑的资源')
-                this.editDialog = true
-            },
-
-            success(msg) {
-                elSuccess(msg)
-                this.editDialog = false
-                this.search()
-            }
+        success(msg) {
+            elSuccess(msg)
+            this.editDialog = false
+            this.search()
         }
     }
+}
 </script>

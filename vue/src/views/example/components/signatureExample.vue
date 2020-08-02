@@ -11,19 +11,19 @@
 </template>
 
 <script>
-    export default {
-        name: 'signatureExample',
-        data() {
-            return {
-                src: null
-            }
-        },
-        methods: {
-            signature() {
-                this.$signature({
-                    image: this.src, onConfirm: img => this.src = img
-                })
-            }
+export default {
+    name: 'signatureExample',
+    data() {
+        return {
+            src: null
+        }
+    },
+    methods: {
+        signature() {
+            this.$signature({
+                image: this.src, onConfirm: img => this.src = img
+            })
         }
     }
+}
 </script>

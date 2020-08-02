@@ -13,112 +13,112 @@
 </template>
 
 <script>
-    import {isEmpty, waitUntilSuccess} from '@/utils'
-    import {elConfirm, elError, elSuccess} from "@/utils/message"
-    import {del, getAll} from "@/api/system/category"
-    import ContextMenu from "@/components/ContextMenu"
-    import ContextMenuItem from "@/components/ContextMenu/ContextMenuItem"
-    import CategoryTree from '@/components/biz/CategoryTree'
+import {isEmpty, waitUntilSuccess} from '@/utils'
+import {elConfirm, elError, elSuccess} from "@/utils/message"
+import {del, getAll} from "@/api/system/category"
+import ContextMenu from "@/components/ContextMenu"
+import ContextMenuItem from "@/components/ContextMenu/ContextMenuItem"
+import CategoryTree from '@/components/biz/CategoryTree'
 
-    export default {
-        components: {ContextMenuItem, ContextMenu, CategoryTree},
+export default {
+    components: {ContextMenuItem, ContextMenu, CategoryTree},
 
-        props: ['form'],
+    props: ['form'],
 
-        data() {
-            return {
-                loading: false,
-                maxLevel: 4,
-                currentCategory: null,
-                contextmenu: {
-                    show: false,
-                    left: 0,
-                    top: 0
-                }
+    data() {
+        return {
+            loading: false,
+            maxLevel: 4,
+            currentCategory: null,
+            contextmenu: {
+                show: false,
+                left: 0,
+                top: 0
             }
-        },
-
-        computed: {
-            canAdd() {
-                return !this.currentCategory
-                    || this.currentCategory.type === 0 && this.currentCategory.level < this.maxLevel
-            }
-        },
-
-        methods: {
-            get() {
-                this.loading = true
-                this.currentCategory = null
-                this.contextmenu.show = false
-                getAll()
-                    .then(data => this.$store.commit('dataCache/categories', data))
-                    .finally(() => this.loading = false)
-            },
-
-            add() {
-                this.$emit('add', this.currentCategory)
-            },
-
-            see(obj, node) {
-                this.currentCategory = {...obj, level: node.level}
-                this.$emit('see', this.currentCategory, node.parent ? node.parent.data : null)
-            },
-
-            edit() {
-                this.$emit('edit', this.currentCategory, this.currentCategory.parent)
-            },
-
-            del() {
-                if (isEmpty(this.currentCategory)) return elError('请选择要删除的分类')
-                if (this.currentCategory.children.length > 0) {
-                    return elError('请先删除该分类下的子节点')
-                }
-                if (this.loading) return
-                elConfirm(`确认删除【${this.currentCategory.name}】分类？`)
-                    .then(() => {
-                        this.loading = true
-                        return del({id: this.currentCategory.id, name: this.currentCategory.name})
-                    })
-                    .then(() => this.commitSuccess('删除成功'))
-            },
-
-            commitSuccess(msg) {
-                elSuccess(msg)
-                this.get()
-            },
-
-            openContextMenu(e, obj, node) {
-                e.preventDefault()
-                this.currentCategory = obj ? {
-                    ...obj,
-                    level: node.level,
-                    parent: node.parent ? node.parent.data : null
-                } : null
-                this.$refs.tree.$refs.tree.setCurrentKey(obj ? obj.id : null)
-                const {left, top} = this.$el.getBoundingClientRect()
-                this.contextmenu.left = e.clientX - left + 15
-                this.contextmenu.top = e.clientY - top
-                this.contextmenu.show = true
-            }
-        },
-
-        mounted() {
-            waitUntilSuccess(
-                () => !isEmpty(this.form()),
-                () => this.form().$on('commit-success', this.commitSuccess)
-            )
-
-            this.$el.querySelector(".el-card__body").addEventListener('contextmenu', this.openContextMenu)
-
-            this.$once('hook:beforeDestroy', () => {
-                this.$el.querySelector(".el-card__body").removeEventListener('contextmenu', this.openContextMenu)
-            })
         }
+    },
+
+    computed: {
+        canAdd() {
+            return !this.currentCategory
+                || this.currentCategory.type === 0 && this.currentCategory.level < this.maxLevel
+        }
+    },
+
+    methods: {
+        get() {
+            this.loading = true
+            this.currentCategory = null
+            this.contextmenu.show = false
+            getAll()
+                .then(data => this.$store.commit('dataCache/categories', data))
+                .finally(() => this.loading = false)
+        },
+
+        add() {
+            this.$emit('add', this.currentCategory)
+        },
+
+        see(obj, node) {
+            this.currentCategory = {...obj, level: node.level}
+            this.$emit('see', this.currentCategory, node.parent ? node.parent.data : null)
+        },
+
+        edit() {
+            this.$emit('edit', this.currentCategory, this.currentCategory.parent)
+        },
+
+        del() {
+            if (isEmpty(this.currentCategory)) return elError('请选择要删除的分类')
+            if (this.currentCategory.children.length > 0) {
+                return elError('请先删除该分类下的子节点')
+            }
+            if (this.loading) return
+            elConfirm(`确认删除【${this.currentCategory.name}】分类？`)
+                .then(() => {
+                    this.loading = true
+                    return del({id: this.currentCategory.id, name: this.currentCategory.name})
+                })
+                .then(() => this.commitSuccess('删除成功'))
+        },
+
+        commitSuccess(msg) {
+            elSuccess(msg)
+            this.get()
+        },
+
+        openContextMenu(e, obj, node) {
+            e.preventDefault()
+            this.currentCategory = obj ? {
+                ...obj,
+                level: node.level,
+                parent: node.parent ? node.parent.data : null
+            } : null
+            this.$refs.tree.$refs.tree.setCurrentKey(obj ? obj.id : null)
+            const {left, top} = this.$el.getBoundingClientRect()
+            this.contextmenu.left = e.clientX - left + 15
+            this.contextmenu.top = e.clientY - top
+            this.contextmenu.show = true
+        }
+    },
+
+    mounted() {
+        waitUntilSuccess(
+            () => !isEmpty(this.form()),
+            () => this.form().$on('commit-success', this.commitSuccess)
+        )
+
+        this.$el.querySelector(".el-card__body").addEventListener('contextmenu', this.openContextMenu)
+
+        this.$once('hook:beforeDestroy', () => {
+            this.$el.querySelector(".el-card__body").removeEventListener('contextmenu', this.openContextMenu)
+        })
     }
+}
 </script>
 
 <style scoped>
-    .card-container {
-        min-width: 250px;
-    }
+.card-container {
+    min-width: 250px;
+}
 </style>

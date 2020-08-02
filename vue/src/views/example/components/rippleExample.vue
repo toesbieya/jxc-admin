@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    export default {
-        name: "rippleExample"
-    }
+export default {
+    name: "rippleExample"
+}
 </script>

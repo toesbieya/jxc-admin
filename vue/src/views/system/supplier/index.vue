@@ -6,12 +6,12 @@
             </search-form-item>
             <search-form-item label="行政区域：">
                 <region-selector
-                        :value="temp.regionName"
-                        limit
-                        :limit-api="getLimitRegion"
-                        get-children-on-select
-                        @clear="clearSidSearch"
-                        @select="selectRegion"
+                    :value="temp.regionName"
+                    limit
+                    :limit-api="getLimitRegion"
+                    get-children-on-select
+                    @clear="clearSidSearch"
+                    @select="selectRegion"
                 />
             </search-form-item>
             <search-form-item label="地 址：">
@@ -31,11 +31,11 @@
             </search-form-item>
             <search-form-item label="创建时间：">
                 <el-date-picker
-                        v-model="temp.ctime"
-                        format="yyyy-MM-dd"
-                        range-separator="-"
-                        type="daterange"
-                        value-format="timestamp"
+                    v-model="temp.ctime"
+                    format="yyyy-MM-dd"
+                    range-separator="-"
+                    type="daterange"
+                    value-format="timestamp"
                 />
             </search-form-item>
         </search-form>
@@ -56,23 +56,23 @@
                 <el-table-column align="center" label="联系人" prop="linkman" show-overflow-tooltip/>
                 <el-table-column align="center" label="联系电话" prop="linkphone" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
-                    <template v-slot="{row}">{{row.ctime | timestamp2Date}}</template>
+                    <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="状 态" width="120">
                     <template v-slot="{row}">
                         <span :class="row.status===1?'success':'error'" class="dot"/>
-                        <span>{{row.status===1?'启用':'禁用'}}</span>
+                        <span>{{ row.status === 1 ? '启用' : '禁用' }}</span>
                     </template>
                 </el-table-column>
             </abstract-table>
 
             <el-pagination
-                    background
-                    :current-page="searchForm.page"
-                    :page-size="searchForm.pageSize"
-                    :total="searchForm.total"
-                    layout="total, prev, pager, next, jumper"
-                    @current-change="pageChange"
+                background
+                :current-page="searchForm.page"
+                :page-size="searchForm.pageSize"
+                :total="searchForm.total"
+                layout="total, prev, pager, next, jumper"
+                @current-change="pageChange"
             />
         </el-row>
 
@@ -81,122 +81,122 @@
 </template>
 
 <script>
-    import SearchForm from "@/components/SearchForm"
-    import SearchFormItem from "@/components/SearchForm/SearchFormItem"
-    import RegionSelector from "@/components/RegionSelector"
-    import EditDialog from './EditDialog'
-    import {delSupplier, getLimitRegion, getSuppliers} from "@/api/system/supplier"
-    import {isEmpty} from '@/utils'
-    import {elConfirm, elError, elSuccess} from "@/utils/message"
-    import {auth} from "@/utils/auth"
-    import tableMixin from '@/mixins/tablePageMixin'
+import SearchForm from "@/components/SearchForm"
+import SearchFormItem from "@/components/SearchForm/SearchFormItem"
+import RegionSelector from "@/components/RegionSelector"
+import EditDialog from './EditDialog'
+import {delSupplier, getLimitRegion, getSuppliers} from "@/api/system/supplier"
+import {isEmpty} from '@/utils'
+import {elConfirm, elError, elSuccess} from "@/utils/message"
+import {auth} from "@/utils/auth"
+import tableMixin from '@/mixins/tablePageMixin'
 
-    const baseUrl = '/system/supplier'
+const baseUrl = '/system/supplier'
 
-    export default {
-        name: "supplierManagement",
+export default {
+    name: "supplierManagement",
 
-        mixins: [tableMixin],
+    mixins: [tableMixin],
 
-        components: {SearchForm, SearchFormItem, EditDialog, RegionSelector},
+    components: {SearchForm, SearchFormItem, EditDialog, RegionSelector},
 
-        data() {
+    data() {
+        return {
+            searchForm: {
+                name: '',
+                address: '',
+                linkman: '',
+                linkphone: '',
+                region: null,
+                status: null
+            },
+            temp: {
+                regionName: null,
+                ctime: []
+            },
+            editDialog: false
+        }
+    },
+
+    computed: {
+        canAdd() {
+            return auth(baseUrl + '/add')
+        },
+
+        canUpdate() {
+            return auth(baseUrl + '/update')
+        },
+
+        canDel() {
+            return auth(baseUrl + '/del')
+        }
+    },
+
+    methods: {
+        getLimitRegion() {
+            return getLimitRegion()
+        },
+
+        clearSidSearch() {
+            this.searchForm.region = null
+            this.temp.regionName = null
+        },
+
+        selectRegion(obj, ids) {
+            this.searchForm.region = ids.join(',')
+            this.temp.regionName = obj.fullname
+        },
+
+        mergeSearchForm() {
             return {
-                searchForm: {
-                    name: '',
-                    address: '',
-                    linkman: '',
-                    linkphone: '',
-                    region: null,
-                    status: null
-                },
-                temp: {
-                    regionName: null,
-                    ctime: []
-                },
-                editDialog: false
+                ...this.searchForm,
+                startTime: this.temp.ctime ? this.temp.ctime[0] : null,
+                endTime: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null
             }
         },
 
-        computed: {
-            canAdd() {
-                return auth(baseUrl + '/add')
-            },
-
-            canUpdate() {
-                return auth(baseUrl + '/update')
-            },
-
-            canDel() {
-                return auth(baseUrl + '/del')
-            }
+        search() {
+            if (this.config.loading) return
+            this.config.loading = true
+            this.row = null
+            this.type = 'see'
+            getSuppliers(this.mergeSearchForm())
+                .then(({list, total}) => {
+                    this.searchForm.total = total
+                    this.tableData = list
+                })
+                .finally(() => this.config.loading = false)
         },
 
-        methods: {
-            getLimitRegion() {
-                return getLimitRegion()
-            },
+        add() {
+            this.type = 'add'
+            this.editDialog = true
+        },
 
-            clearSidSearch() {
-                this.searchForm.region = null
-                this.temp.regionName = null
-            },
+        edit() {
+            if (isEmpty(this.row)) return elError('请选择要编辑的供应商')
+            this.type = 'edit'
+            this.editDialog = true
+        },
 
-            selectRegion(obj, ids) {
-                this.searchForm.region = ids.join(',')
-                this.temp.regionName = obj.fullname
-            },
+        del() {
+            if (isEmpty(this.row)) return elError('请选择要删除的供应商')
+            if (this.config.operating) return
+            elConfirm(`确定删除供应商【${this.row.name}】？`)
+                .then(() => {
+                    this.config.operating = true
+                    return delSupplier({id: this.row.id, name: this.row.name})
+                })
+                .then(() => this.success('删除成功'))
+                .finally(() => this.config.operating = false)
+        },
 
-            mergeSearchForm() {
-                return {
-                    ...this.searchForm,
-                    startTime: this.temp.ctime ? this.temp.ctime[0] : null,
-                    endTime: this.temp.ctime ? this.temp.ctime[1] + 86400000 : null
-                }
-            },
-
-            search() {
-                if (this.config.loading) return
-                this.config.loading = true
-                this.row = null
-                this.type = 'see'
-                getSuppliers(this.mergeSearchForm())
-                    .then(({list, total}) => {
-                        this.searchForm.total = total
-                        this.tableData = list
-                    })
-                    .finally(() => this.config.loading = false)
-            },
-
-            add() {
-                this.type = 'add'
-                this.editDialog = true
-            },
-
-            edit() {
-                if (isEmpty(this.row)) return elError('请选择要编辑的供应商')
-                this.type = 'edit'
-                this.editDialog = true
-            },
-
-            del() {
-                if (isEmpty(this.row)) return elError('请选择要删除的供应商')
-                if (this.config.operating) return
-                elConfirm(`确定删除供应商【${this.row.name}】？`)
-                    .then(() => {
-                        this.config.operating = true
-                        return delSupplier({id: this.row.id, name: this.row.name})
-                    })
-                    .then(() => this.success('删除成功'))
-                    .finally(() => this.config.operating = false)
-            },
-
-            success(msg) {
-                elSuccess(msg)
-                this.editDialog = false
-                this.search()
-                this.$refs.tree.init()
-            }
+        success(msg) {
+            elSuccess(msg)
+            this.editDialog = false
+            this.search()
+            this.$refs.tree.init()
         }
     }
+}
 </script>

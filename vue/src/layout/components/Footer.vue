@@ -7,19 +7,19 @@
 </template>
 
 <script>
-    export default {
-        name: "Footer"
-    }
+export default {
+    name: "Footer"
+}
 </script>
 
 <style lang="scss">
-    .page-footer {
-        padding: 48px 24px 24px 24px;
-        text-align: center;
+.page-footer {
+    padding: 48px 24px 24px 24px;
+    text-align: center;
 
-        .copyright {
-            color: #808695;
-            font-size: 14px;
-        }
+    .copyright {
+        color: #808695;
+        font-size: 14px;
     }
+}
 </style>

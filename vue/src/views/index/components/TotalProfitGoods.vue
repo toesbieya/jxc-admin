@@ -9,64 +9,64 @@
 </template>
 
 <script>
-    import PieChart from "@/components/Charts/PieChart"
-    import {getTotalProfitGoods} from '@/api/statistic'
+import PieChart from "@/components/Charts/PieChart"
+import {getTotalProfitGoods} from '@/api/statistic'
 
-    export default {
-        name: "TotalProfitGoods",
+export default {
+    name: "TotalProfitGoods",
 
-        components: {PieChart},
+    components: {PieChart},
 
-        data() {
-            return {
-                loading: false,
-                purchase: {
-                    title: '各个商品总采购额',
-                    data: []
-                },
-                sell: {
-                    title: '各个商品总销售额',
-                    data: []
-                },
-                profit: {
-                    title: '各个商品总毛利润',
-                    data: []
-                }
-            }
-        },
-
-        methods: {
-            getTitle(type) {
-                return this[type].title
+    data() {
+        return {
+            loading: false,
+            purchase: {
+                title: '各个商品总采购额',
+                data: []
             },
-
-            getData(type) {
-                return this[type].data
+            sell: {
+                title: '各个商品总销售额',
+                data: []
             },
-
-            init() {
-                if (this.loading) return
-                this.loading = true
-                getTotalProfitGoods()
-                    .then(data => {
-                        const purchase = []
-                        const sell = []
-                        const profit = []
-                        data.forEach(i => {
-                            if (i.purchase) purchase.push({name: i.cname, value: i.purchase})
-                            if (i.sell) sell.push({name: i.cname, value: i.sell})
-                            if (i.profit) profit.push({name: i.cname, value: i.profit})
-                        })
-                        this.purchase.data = purchase
-                        this.sell.data = sell
-                        this.profit.data = profit
-                    })
-                    .finally(() => this.loading = false)
+            profit: {
+                title: '各个商品总毛利润',
+                data: []
             }
-        },
-
-        mounted() {
-            this.init()
         }
+    },
+
+    methods: {
+        getTitle(type) {
+            return this[type].title
+        },
+
+        getData(type) {
+            return this[type].data
+        },
+
+        init() {
+            if (this.loading) return
+            this.loading = true
+            getTotalProfitGoods()
+                .then(data => {
+                    const purchase = []
+                    const sell = []
+                    const profit = []
+                    data.forEach(i => {
+                        if (i.purchase) purchase.push({name: i.cname, value: i.purchase})
+                        if (i.sell) sell.push({name: i.cname, value: i.sell})
+                        if (i.profit) profit.push({name: i.cname, value: i.profit})
+                    })
+                    this.purchase.data = purchase
+                    this.sell.data = sell
+                    this.profit.data = profit
+                })
+                .finally(() => this.loading = false)
+        }
+    },
+
+    mounted() {
+        this.init()
     }
+}
 </script>

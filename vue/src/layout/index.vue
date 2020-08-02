@@ -15,68 +15,68 @@
 </template>
 
 <script>
-    import {mapState} from 'vuex'
-    import VMain from './components/Main'
-    import VHeader from './components/Header'
-    import VSidebar from './components/Sidebar'
-    import offlineMixin from "@/layout/mixin/offline"
-    import resizeMixin from './mixin/resize'
+import {mapState} from 'vuex'
+import VMain from './components/Main'
+import VHeader from './components/Header'
+import VSidebar from './components/Sidebar'
+import offlineMixin from "@/layout/mixin/offline"
+import resizeMixin from './mixin/resize'
 
-    export default {
-        name: 'Layout',
+export default {
+    name: 'Layout',
 
-        mixins: [offlineMixin, resizeMixin],
+    mixins: [offlineMixin, resizeMixin],
 
-        components: {VMain, VSidebar, VHeader},
+    components: {VMain, VSidebar, VHeader},
 
-        computed: {
-            ...mapState('app', ['device', 'hasHeader']),
+    computed: {
+        ...mapState('app', ['device', 'hasHeader']),
 
-            ...mapState('setting', ['useTagsView', 'sidebarCollapse']),
+        ...mapState('setting', ['useTagsView', 'sidebarCollapse']),
 
-            containerClass() {
-                return {
-                    'el-container': true,
-                    'main-container': true,
-                    'has-header': this.hasHeader,
-                    'has-tags-view': this.useTagsView
-                }
-            },
-
-            showSidebarMask() {
-                return !this.sidebarCollapse && this.device === 'mobile'
+        containerClass() {
+            return {
+                'el-container': true,
+                'main-container': true,
+                'has-header': this.hasHeader,
+                'has-tags-view': this.useTagsView
             }
         },
 
-        methods: {
-            collapseSidebar() {
-                this.$store.commit('setting/sidebarCollapse', true)
-            }
+        showSidebarMask() {
+            return !this.sidebarCollapse && this.device === 'mobile'
+        }
+    },
+
+    methods: {
+        collapseSidebar() {
+            this.$store.commit('setting/sidebarCollapse', true)
         }
     }
+}
 </script>
 
 <style lang="scss">
-    .app-wrapper {
-        position: relative;
-        height: 100%;
+.app-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    flex-direction: row;
+
+    .drawer-bg {
+        background: rgba(0, 0, 0, .5);
+        backdrop-filter: blur(10px);
         width: 100%;
-        flex-direction: row;
-
-        .drawer-bg {
-            background: rgba(0, 0, 0, .5);
-            backdrop-filter: blur(10px);
-            width: 100%;
-            top: 0;
-            height: 100%;
-            position: fixed;
-            z-index: 9;
-        }
-
-        .main-container {
-            overflow: hidden;
-            position: relative;
-            flex-direction: column;
-        }
+        top: 0;
+        height: 100%;
+        position: fixed;
+        z-index: 9;
     }
+
+    .main-container {
+        overflow: hidden;
+        position: relative;
+        flex-direction: column;
+    }
+}
 </style>

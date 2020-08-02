@@ -15,14 +15,14 @@
 </template>
 
 <script>
-    import PanelGroup from './components/PanelGroup'
-    import DailyProfitStat from "./components/DailyProfitStat"
-    import DailyFinishOrderStat from "./components/DailyFinishOrderStat"
-    import TotalProfitGoods from "./components/TotalProfitGoods"
+import PanelGroup from './components/PanelGroup'
+import DailyProfitStat from "./components/DailyProfitStat"
+import DailyFinishOrderStat from "./components/DailyFinishOrderStat"
+import TotalProfitGoods from "./components/TotalProfitGoods"
 
-    export default {
-        name: 'index',
+export default {
+    name: 'index',
 
-        components: {PanelGroup, DailyProfitStat, DailyFinishOrderStat, TotalProfitGoods}
-    }
+    components: {PanelGroup, DailyProfitStat, DailyFinishOrderStat, TotalProfitGoods}
+}
 </script>

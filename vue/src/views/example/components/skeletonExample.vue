@@ -22,41 +22,41 @@
 </template>
 
 <script>
-    import QSkeleton from '@/components/Skeleton'
-    import {skeletonAnimations, skeletonTypes} from '@/components/Skeleton/constant'
+import QSkeleton from '@/components/Skeleton'
+import {skeletonAnimations, skeletonTypes} from '@/components/Skeleton/constant'
 
-    export default {
-        name: "skeletonExample",
-        components: {QSkeleton},
-        data() {
-            return {
-                skeletonTypes,
-                skeletonAnimations
-            }
+export default {
+    name: "skeletonExample",
+    components: {QSkeleton},
+    data() {
+        return {
+            skeletonTypes,
+            skeletonAnimations
         }
     }
+}
 </script>
 
 <style lang="scss" scoped>
-    @import "~@/assets/styles/variables.scss";
+@import "~@/assets/styles/variables.scss";
 
-    .q-skeleton + .q-skeleton {
-        margin-top: 20px;
-    }
+.q-skeleton + .q-skeleton {
+    margin-top: 20px;
+}
 
-    .bg-primary {
-        background: $--color-primary;
-    }
+.bg-primary {
+    background: $--color-primary;
+}
 
-    .bg-info {
-        background-color: $--color-teal;
-    }
+.bg-info {
+    background-color: $--color-teal;
+}
 
-    .bg-warning {
-        background-color: $--color-warning;
-    }
+.bg-warning {
+    background-color: $--color-warning;
+}
 
-    .bg-error {
-        background-color: $--color-danger;
-    }
+.bg-error {
+    background-color: $--color-danger;
+}
 </style>

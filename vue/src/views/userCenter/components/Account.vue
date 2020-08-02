@@ -1,13 +1,13 @@
 <template>
     <form-dialog :loading="loading" title="修改密码" :value="value" width="30%" @close="cancel">
         <el-form
-                ref="form"
-                :model="form"
-                :rules="rules"
-                size="small"
-                label-position="right"
-                label-width="100px"
-                status-icon
+            ref="form"
+            :model="form"
+            :rules="rules"
+            size="small"
+            label-position="right"
+            label-width="100px"
+            status-icon
         >
             <el-form-item label="旧密码：" prop="oldPwd">
                 <el-input v-model.trim="form.oldPwd" maxlength="100" type="password"/>
@@ -25,75 +25,75 @@
 </template>
 
 <script>
-    import md5 from "js-md5"
-    import FormDialog from '@/components/FormDialog'
-    import dialogMixin from "@/mixins/dialogMixin"
-    import {updateUserPwd} from "@/api/account"
-    import {elSuccess} from "@/utils/message"
+import md5 from "js-md5"
+import FormDialog from '@/components/FormDialog'
+import dialogMixin from "@/mixins/dialogMixin"
+import {updateUserPwd} from "@/api/account"
+import {elSuccess} from "@/utils/message"
 
-    export default {
-        mixins: [dialogMixin],
+export default {
+    mixins: [dialogMixin],
 
-        components: {FormDialog},
+    components: {FormDialog},
 
-        data() {
-            return {
-                loading: false,
-                form: {
-                    oldPwd: null,
-                    newPwd: null
-                },
-                rules: {
-                    oldPwd: [{required: true, message: '请输入原密码', trigger: 'change'}],
-                    newPwd: [
-                        {required: true, message: '请输入新密码', trigger: 'change'},
-                        {
-                            validator: (r, v, c) => v !== this.form.oldPwd ? c() : c('新密码不得与旧密码相同'),
-                            trigger: 'change'
-                        },
-                        {
-                            min: 6,
-                            max: 32,
-                            message: '请输入6-32位的密码',
-                            trigger: 'change'
-                        }
-                    ]
-                }
-            }
-        },
-
-        props: {
-            value: Boolean
-        },
-
-        methods: {
-            clearForm() {
-                this.form.oldPwd = null
-                this.form.newPwd = null
-                this.$nextTick(() => this.$refs.form.clearValidate())
+    data() {
+        return {
+            loading: false,
+            form: {
+                oldPwd: null,
+                newPwd: null
             },
-
-            confirm() {
-                if (this.loading) return
-                this.$refs.form.validate(v => {
-                    if (!v) return
-                    this.loading = true
-                    updateUserPwd({
-                        oldPwd: md5(this.form.oldPwd),
-                        newPwd: md5(this.form.newPwd),
-                    })
-                        .then(() => elSuccess('修改成功'))
-                        .finally(() => {
-                            this.loading = false
-                            this.closeDialog()
-                        })
-                })
-            },
-
-            cancel() {
-                this.closeDialog()
-                this.clearForm()
+            rules: {
+                oldPwd: [{required: true, message: '请输入原密码', trigger: 'change'}],
+                newPwd: [
+                    {required: true, message: '请输入新密码', trigger: 'change'},
+                    {
+                        validator: (r, v, c) => v !== this.form.oldPwd ? c() : c('新密码不得与旧密码相同'),
+                        trigger: 'change'
+                    },
+                    {
+                        min: 6,
+                        max: 32,
+                        message: '请输入6-32位的密码',
+                        trigger: 'change'
+                    }
+                ]
             }
         }
+    },
+
+    props: {
+        value: Boolean
+    },
+
+    methods: {
+        clearForm() {
+            this.form.oldPwd = null
+            this.form.newPwd = null
+            this.$nextTick(() => this.$refs.form.clearValidate())
+        },
+
+        confirm() {
+            if (this.loading) return
+            this.$refs.form.validate(v => {
+                if (!v) return
+                this.loading = true
+                updateUserPwd({
+                    oldPwd: md5(this.form.oldPwd),
+                    newPwd: md5(this.form.newPwd),
+                })
+                    .then(() => elSuccess('修改成功'))
+                    .finally(() => {
+                        this.loading = false
+                        this.closeDialog()
+                    })
+            })
+        },
+
+        cancel() {
+            this.closeDialog()
+            this.clearForm()
+        }
     }
+}
 </script>

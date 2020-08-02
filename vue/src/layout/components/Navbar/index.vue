@@ -18,13 +18,13 @@
             </div>
 
             <el-dropdown
-                    class="navbar-item"
-                    trigger="click"
-                    @visible-change="$emit('menu-show',$event)"
+                class="navbar-item"
+                trigger="click"
+                @visible-change="$emit('menu-show',$event)"
             >
                 <div class="avatar-wrapper">
                     <el-avatar :size="30" :src="avatar" icon="el-icon-user-solid"/>
-                    <span class="hidden-xs">{{name}}</span>
+                    <span class="hidden-xs">{{ name }}</span>
                 </div>
                 <el-dropdown-menu class="user-dropdown" slot="dropdown">
                     <router-link to="/user/index">
@@ -48,55 +48,55 @@
 </template>
 
 <script>
-    import Hamburger from './components/Hamburger'
-    import Breadcrumb from './components/Breadcrumb'
-    import Search from './components/HeaderSearch'
-    import Bell from "./components/Bell"
-    import SettingDrawer from './components/SettingDrawer'
-    import {mapState} from 'vuex'
-    import GuideMixin from '@/mixins/guide'
-    import {auth} from "@/utils/auth"
-    import {elConfirm} from "@/utils/message"
+import Hamburger from './components/Hamburger'
+import Breadcrumb from './components/Breadcrumb'
+import Search from './components/HeaderSearch'
+import Bell from "./components/Bell"
+import SettingDrawer from './components/SettingDrawer'
+import {mapState} from 'vuex'
+import GuideMixin from '@/mixins/guide'
+import {auth} from "@/utils/auth"
+import {elConfirm} from "@/utils/message"
 
-    export default {
-        name: 'navbar',
+export default {
+    name: 'navbar',
 
-        mixins: [GuideMixin.navbar],
+    mixins: [GuideMixin.navbar],
 
-        components: {Hamburger, Breadcrumb, Search, Bell, SettingDrawer},
+    components: {Hamburger, Breadcrumb, Search, Bell, SettingDrawer},
 
-        data() {
-            return {
-                settingDrawer: false
-            }
+    data() {
+        return {
+            settingDrawer: false
+        }
+    },
+
+    computed: {
+        ...mapState('user', ['avatar', 'name', 'prepareLogout']),
+
+        ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb']),
+
+        showSystemResource() {
+            return auth('/system/resource')
+        }
+    },
+
+    methods: {
+        sidebarCtrl() {
+            this.$store.commit('setting/sidebarCollapse', !this.sidebarCollapse)
         },
 
-        computed: {
-            ...mapState('user', ['avatar', 'name', 'prepareLogout']),
-
-            ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb']),
-
-            showSystemResource() {
-                return auth('/system/resource')
-            }
+        refresh() {
+            this.$router.replace({path: `/redirect${this.$route.fullPath}`})
         },
 
-        methods: {
-            sidebarCtrl() {
-                this.$store.commit('setting/sidebarCollapse', !this.sidebarCollapse)
-            },
-
-            refresh() {
-                this.$router.replace({path: `/redirect${this.$route.fullPath}`})
-            },
-
-            logout() {
-                if (this.prepareLogout) return
-                elConfirm('确认退出?')
-                    .then(() => this.$store.dispatch('user/logout'))
-            }
+        logout() {
+            if (this.prepareLogout) return
+            elConfirm('确认退出?')
+                .then(() => this.$store.dispatch('user/logout'))
         }
     }
+}
 </script>
 
 <style lang="scss" src="./style.scss"></style>

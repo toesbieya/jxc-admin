@@ -1,13 +1,13 @@
 <template>
     <el-dialog
-            v-drag-dialog
-            :visible="value"
-            append-to-body
-            title="选择销售订单"
-            width="70%"
-            top="50px"
-            @close="cancel"
-            @open="search"
+        v-drag-dialog
+        :visible="value"
+        append-to-body
+        title="选择销售订单"
+        width="70%"
+        top="50px"
+        @close="cancel"
+        @open="search"
     >
         <el-scrollbar>
             <el-row>
@@ -22,16 +22,16 @@
                             <liner-progress :show="row._loading"/>
                             <div style="text-align: center" v-show="!row._loading">
                                 <el-table
-                                        :data="row.data"
-                                        row-key="id"
-                                        border
-                                        @selection-change="row._selection=$event"
+                                    :data="row.data"
+                                    row-key="id"
+                                    border
+                                    @selection-change="row._selection=$event"
                                 >
                                     <el-table-column
-                                            :selectable="p=>p.remainNum>0"
-                                            align="center"
-                                            type="selection"
-                                            width="60"
+                                        :selectable="p=>p.remainNum>0"
+                                        align="center"
+                                        type="selection"
+                                        width="60"
                                     />
                                     <el-table-column align="center" label="#" type="index" width="80"/>
                                     <el-table-column align="center" label="商品" prop="cname" show-overflow-tooltip/>
@@ -39,10 +39,10 @@
                                     <el-table-column align="center" label="未出库数量" prop="remainNum"/>
                                 </el-table>
                                 <el-button
-                                        size="small"
-                                        style="margin-top: 10px"
-                                        type="primary"
-                                        @click="() => confirm(row)"
+                                    size="small"
+                                    style="margin-top: 10px"
+                                    type="primary"
+                                    @click="() => confirm(row)"
                                 >
                                     确定
                                 </el-button>
@@ -53,11 +53,11 @@
                     <el-table-column align="center" label="单号" prop="id" show-overflow-tooltip/>
                     <el-table-column align="center" label="创建人" prop="cname" show-overflow-tooltip/>
                     <el-table-column align="center" label="创建时间" show-overflow-tooltip>
-                        <template v-slot="{row}">{{row.ctime | timestamp2Date}}</template>
+                        <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
                     </el-table-column>
                     <el-table-column align="center" label="审核人" prop="vname" show-overflow-tooltip/>
                     <el-table-column align="center" label="审核时间" show-overflow-tooltip>
-                        <template v-slot="{row}">{{row.vtime | timestamp2Date}}</template>
+                        <template v-slot="{row}">{{ row.vtime | timestamp2Date }}</template>
                     </el-table-column>
                 </abstract-table>
             </el-row>
@@ -66,77 +66,77 @@
 </template>
 
 <script>
-    import LinerProgress from '@/components/LinerProgress'
-    import dialogMixin from "@/mixins/dialogMixin"
-    import tableMixin from '@/mixins/tablePageMixin'
-    import {getSubById, search} from "@/api/doc/sell/order"
-    import {elError} from "@/utils/message"
+import LinerProgress from '@/components/LinerProgress'
+import dialogMixin from "@/mixins/dialogMixin"
+import tableMixin from '@/mixins/tablePageMixin'
+import {getSubById, search} from "@/api/doc/sell/order"
+import {elError} from "@/utils/message"
 
-    export default {
-        name: "OrderSelector",
+export default {
+    name: "OrderSelector",
 
-        mixins: [dialogMixin, tableMixin],
+    mixins: [dialogMixin, tableMixin],
 
-        components: {LinerProgress},
+    components: {LinerProgress},
 
-        props: {value: Boolean},
+    props: {value: Boolean},
 
-        data() {
-            return {
-                searchForm: {
-                    status: 2,
-                    finish: '0,1'
-                }
-            }
-        },
-
-        methods: {
-            search() {
-                if (!this.value || this.config.loading) return
-                this.config.loading = true
-                this.row = null
-                search(this.searchForm)
-                    .then(({list, total}) => {
-                        list.forEach(i => {
-                            i._loading = false //加载状态
-                            i._loaded = false //是否已经加载完成
-                            i._selection = [] //选中的
-                        })
-                        this.searchForm.total = total
-                        this.tableData = list
-                    })
-                    .finally(() => this.config.loading = false)
-            },
-
-            getSubList(row) {
-                if (row._loaded || row._loading) return
-                row._loading = true
-                getSubById(row.id)
-                    .then(data => {
-                        row.data = data
-                        row._loaded = true
-                    })
-                    .finally(() => row._loading = false)
-            },
-
-            confirm(row) {
-                if (row._selection.length <= 0) return elError('请选择要出库的商品')
-                this.$emit('select', row.id, row._selection)
-                this.cancel()
-            },
-
-            cancel() {
-                this.closeDialog()
-                this.tableData = []
+    data() {
+        return {
+            searchForm: {
+                status: 2,
+                finish: '0,1'
             }
         }
+    },
+
+    methods: {
+        search() {
+            if (!this.value || this.config.loading) return
+            this.config.loading = true
+            this.row = null
+            search(this.searchForm)
+                .then(({list, total}) => {
+                    list.forEach(i => {
+                        i._loading = false //加载状态
+                        i._loaded = false //是否已经加载完成
+                        i._selection = [] //选中的
+                    })
+                    this.searchForm.total = total
+                    this.tableData = list
+                })
+                .finally(() => this.config.loading = false)
+        },
+
+        getSubList(row) {
+            if (row._loaded || row._loading) return
+            row._loading = true
+            getSubById(row.id)
+                .then(data => {
+                    row.data = data
+                    row._loaded = true
+                })
+                .finally(() => row._loading = false)
+        },
+
+        confirm(row) {
+            if (row._selection.length <= 0) return elError('请选择要出库的商品')
+            this.$emit('select', row.id, row._selection)
+            this.cancel()
+        },
+
+        cancel() {
+            this.closeDialog()
+            this.tableData = []
+        }
     }
+}
 </script>
 
 <style lang="scss" scoped>
-    .el-table {
-        .nets-table-btn {
-            margin: 0 auto;
-        }
+.el-table {
+    .nets-table-btn {
+        margin: 0 auto;
     }
+}
 </style>

@@ -12,12 +12,12 @@
 </template>
 
 <script>
-    import CategoryList from './components/List'
-    import EditForm from './components/Form'
+import CategoryList from './components/List'
+import EditForm from './components/Form'
 
-    export default {
-        name: "categorySetting",
+export default {
+    name: "categorySetting",
 
-        components: {CategoryList, EditForm}
-    }
+    components: {CategoryList, EditForm}
+}
 </script>

@@ -3,47 +3,47 @@
 </template>
 
 <script>
-    import {logic, resize} from "@/mixins/chart"
+import {logic, resize} from "@/mixins/chart"
 
-    export default {
-        mixins: [resize, logic],
+export default {
+    mixins: [resize, logic],
 
-        props: {
-            title: String,
-            data: Array
-        },
+    props: {
+        title: String,
+        data: Array
+    },
 
-        watch: {
-            data: {
-                deep: true,
-                handler(val) {
-                    if (!window.echarts) return
-                    this.init(val)
-                }
-            }
-        },
-
-        methods: {
-            init(data) {
-                this.chart.setOption({
-                    title: {
-                        text: this.title,
-                        left: 'center',
-                        align: 'right'
-                    },
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: '{b} : {c} ({d}%)'
-                    },
-                    series: [
-                        {
-                            type: 'pie',
-                            center: ['50%', '58%'],
-                            data
-                        }
-                    ]
-                })
+    watch: {
+        data: {
+            deep: true,
+            handler(val) {
+                if (!window.echarts) return
+                this.init(val)
             }
         }
+    },
+
+    methods: {
+        init(data) {
+            this.chart.setOption({
+                title: {
+                    text: this.title,
+                    left: 'center',
+                    align: 'right'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b} : {c} ({d}%)'
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        center: ['50%', '58%'],
+                        data
+                    }
+                ]
+            })
+        }
     }
+}
 </script>

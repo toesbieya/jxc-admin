@@ -19,23 +19,23 @@
 </template>
 
 <script>
-    import RegionSelector from '@/components/RegionSelector'
+import RegionSelector from '@/components/RegionSelector'
 
-    export default {
-        name: "regionSelectorExample",
-        components: {RegionSelector},
-        data() {
-            return {
-                value: '北京市'
-            }
+export default {
+    name: "regionSelectorExample",
+    components: {RegionSelector},
+    data() {
+        return {
+            value: '北京市'
+        }
+    },
+    methods: {
+        clear() {
+            this.value = null
         },
-        methods: {
-            clear() {
-                this.value = null
-            },
-            select(obj) {
-                this.value = obj.fullname
-            }
+        select(obj) {
+            this.value = obj.fullname
         }
     }
+}
 </script>

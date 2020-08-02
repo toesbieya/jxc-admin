@@ -5,25 +5,25 @@
 </template>
 
 <script>
-    export default {
-        name: "ColorCheckGroup",
+export default {
+    name: "ColorCheckGroup",
 
-        provide() {
-            return {
-                colorCheckGroup: this
-            }
-        },
+    provide() {
+        return {
+            colorCheckGroup: this
+        }
+    },
 
-        props: {value: String},
+    props: {value: String},
 
-        data: () => ({children: []})
-    }
+    data: () => ({children: []})
+}
 </script>
 
 <style lang="scss">
-    @import "~@/assets/styles/variables.scss";
+@import "~@/assets/styles/variables.scss";
 
-    .color-checkbox-group {
-        @include clearfix
-    }
+.color-checkbox-group {
+    @include clearfix
+}
 </style>

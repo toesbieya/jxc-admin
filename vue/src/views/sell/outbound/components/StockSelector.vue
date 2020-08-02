@@ -1,13 +1,13 @@
 <template>
     <el-dialog
-            v-drag-dialog
-            :visible="value"
-            append-to-body
-            title="选择库存商品"
-            width="70%"
-            top="50px"
-            @close="cancel"
-            @open="search"
+        v-drag-dialog
+        :visible="value"
+        append-to-body
+        title="选择库存商品"
+        width="70%"
+        top="50px"
+        @close="cancel"
+        @open="search"
     >
         <el-scrollbar>
             <el-row>
@@ -20,11 +20,11 @@
                 <liner-progress :show="loading"/>
 
                 <el-table
-                        ref="table"
-                        :data="tableData"
-                        current-row-key="id"
-                        row-key="id"
-                        @selection-change="selection=$event"
+                    ref="table"
+                    :data="tableData"
+                    current-row-key="id"
+                    row-key="id"
+                    @selection-change="selection=$event"
                 >
                     <el-table-column align="center" type="selection" reserve-selection width="80"/>
                     <el-table-column align="center" label="商品分类" prop="cname" show-overflow-tooltip/>
@@ -38,52 +38,52 @@
 </template>
 
 <script>
-    import dialogMixin from "@/mixins/dialogMixin"
-    import LinerProgress from '@/components/LinerProgress'
-    import {getDetail} from "@/api/stock/current"
-    import {elError} from "@/utils/message"
+import dialogMixin from "@/mixins/dialogMixin"
+import LinerProgress from '@/components/LinerProgress'
+import {getDetail} from "@/api/stock/current"
+import {elError} from "@/utils/message"
 
-    export default {
-        name: "StockSelector",
+export default {
+    name: "StockSelector",
 
-        mixins: [dialogMixin],
+    mixins: [dialogMixin],
 
-        components: {LinerProgress},
+    components: {LinerProgress},
 
-        props: {
-            value: Boolean,
-            cid: Number,
-            row: Object
+    props: {
+        value: Boolean,
+        cid: Number,
+        row: Object
+    },
+
+    data() {
+        return {
+            loading: false,
+            tableData: [],
+            selection: []
+        }
+    },
+
+    methods: {
+        search() {
+            if (!this.value || this.loading) return
+            this.loading = true
+            this.$refs.table && this.$refs.table.clearSelection()
+            getDetail(this.cid)
+                .then(data => this.tableData = data)
+                .finally(() => this.loading = false)
         },
 
-        data() {
-            return {
-                loading: false,
-                tableData: [],
-                selection: []
-            }
+        confirm() {
+            if (this.selection.length <= 0) return elError('请选择商品')
+            this.$emit('select', this.selection)
         },
 
-        methods: {
-            search() {
-                if (!this.value || this.loading) return
-                this.loading = true
-                this.$refs.table && this.$refs.table.clearSelection()
-                getDetail(this.cid)
-                    .then(data => this.tableData = data)
-                    .finally(() => this.loading = false)
-            },
-
-            confirm() {
-                if (this.selection.length <= 0) return elError('请选择商品')
-                this.$emit('select', this.selection)
-            },
-
-            cancel() {
-                this.closeDialog()
-                this.$refs.table.clearSelection()
-                this.tableData = []
-            }
+        cancel() {
+            this.closeDialog()
+            this.$refs.table.clearSelection()
+            this.tableData = []
         }
     }
+}
 </script>

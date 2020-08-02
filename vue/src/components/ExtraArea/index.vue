@@ -13,31 +13,31 @@
 </template>
 
 <script type="text/jsx">
-    export default {
-        name: "ExtraArea",
+export default {
+    name: "ExtraArea",
 
-        props: {
-            extra: {type: Number, default: 5}
+    props: {
+        extra: {type: Number, default: 5}
+    },
+
+    data() {
+        return {
+            expanded: false
+        }
+    },
+
+    computed: {
+        extraSpan() {
+            return this.expanded ? 0 : this.extra
         },
-
-        data() {
-            return {
-                expanded: false
-            }
+        defaultSpan() {
+            return 23 - this.extraSpan
         },
-
-        computed: {
-            extraSpan() {
-                return this.expanded ? 0 : this.extra
-            },
-            defaultSpan() {
-                return 23 - this.extraSpan
-            },
-            iconClass() {
-                return `el-icon-arrow-${this.expanded ? 'right' : 'left'}`
-            }
+        iconClass() {
+            return `el-icon-arrow-${this.expanded ? 'right' : 'left'}`
         }
     }
+}
 </script>
 
 
