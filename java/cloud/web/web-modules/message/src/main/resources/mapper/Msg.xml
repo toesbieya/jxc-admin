@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.toesbieya.jxc.message.mapper.MsgMapper">
-    <sql id="unreadCondition">
-        where status = 1
-        and ptime <![CDATA[ >= ]]> #{ctime}
-        and (broadcast = 1 or broadcast = 0 and find_in_set(recipient, #{uid}))
-        and id not in (select mid from msg_state where uid = #{uid})
-    </sql>
-
     <select id="getReadByUser" parameterType="cn.toesbieya.jxc.message.model.vo.MsgPersonalSearch"
             resultType="cn.toesbieya.jxc.common.model.entity.Msg">
         select a.id,
@@ -31,7 +24,10 @@
                pname,
                ptime
         from msg
-        <include refid="unreadCondition"/>
+        where status = 1
+          and ptime <![CDATA[ >= ]]> #{ctime}
+          and (broadcast = 1 or broadcast = 0 and find_in_set(recipient, #{uid}))
+          and id not in (select mid from msg_state where uid = #{uid})
         order by id desc
     </select>
 </mapper>

@@ -19,11 +19,13 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @org.apache.dubbo.config.annotation.Service
@@ -58,8 +60,7 @@ public class RecordService implements RecordApi {
                         .orderByDesc(RecLoginHistory::getTime);
 
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
-        List<RecLoginHistory> list = loginHistoryMapper.selectList(wrapper);
-        return new PageResult<>(list);
+        return new PageResult<>(loginHistoryMapper.selectList(wrapper));
     }
 
     public PageResult<RecUserAction> searchUserAction(UserActionSearch vo) {
@@ -83,8 +84,7 @@ public class RecordService implements RecordApi {
                         .orderByDesc(RecUserAction::getTime);
 
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
-        List<RecUserAction> list = userActionMapper.selectList(wrapper);
-        return new PageResult<>(list);
+        return new PageResult<>(userActionMapper.selectList(wrapper));
     }
 
     public List<RecAttachment> getAttachmentByPid(String pid) {
@@ -104,29 +104,31 @@ public class RecordService implements RecordApi {
         List<RecAttachment> uploadImageList = vo.getUploadImageList();
         List<String> deleteImageList = vo.getDeleteImageList();
 
-        if (uploadImageList != null && uploadImageList.size() > 0) {
+        if (!CollectionUtils.isEmpty(uploadImageList)) {
             attachmentMapper.insertBatch(uploadImageList);
         }
-
-        if (deleteImageList != null && deleteImageList.size() > 0) {
+        if (!CollectionUtils.isEmpty(deleteImageList)) {
             attachmentMapper.delete(
                     Wrappers.lambdaQuery(RecAttachment.class)
                             .in(RecAttachment::getUrl, deleteImageList)
             );
-
             qiniuUtil.deleteBatch(deleteImageList.toArray(new String[0]));
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void delAttachmentByPid(String pid) {
-        List<String> urls = attachmentMapper.getUrlByPid(pid);
+        List<RecAttachment> list = attachmentMapper.selectList(
+                Wrappers.lambdaQuery(RecAttachment.class)
+                        .eq(RecAttachment::getPid, pid)
+        );
 
-        if (urls.size() == 0) return;
+        if (CollectionUtils.isEmpty(list)) return;
 
         attachmentMapper.delete(Wrappers.lambdaQuery(RecAttachment.class).eq(RecAttachment::getPid, pid));
 
-        qiniuUtil.deleteBatch(urls.toArray(new String[0]));
+        List<String> urls = list.stream().map(RecAttachment::getUrl).collect(Collectors.toList());
+        qiniuUtil.deleteBatch(urls);
     }
 
     @Async("dbInsertExecutor")
@@ -134,16 +136,13 @@ public class RecordService implements RecordApi {
         if (StringUtils.isEmpty(history.getAddress())) {
             history.setAddress(IpUtil.getIpAddress(history.getIp()));
         }
-
         history.setId(null);
-
         loginHistoryMapper.insert(history);
     }
 
     @Async("dbInsertExecutor")
     public void insertUserAction(RecUserAction action) {
         action.setId(null);
-
         userActionMapper.insert(action);
     }
 }

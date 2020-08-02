@@ -15,15 +15,15 @@ import javax.annotation.Resource;
 @RequestMapping("record")
 public class RecordController {
     @Resource
-    private RecordService recordService;
+    private RecordService service;
 
     @PostMapping("searchLoginHistory")
     public Result searchLoginHistory(@RequestBody LoginHistorySearch vo) {
-        return Result.success(recordService.searchLoginHistory(vo));
+        return Result.success(service.searchLoginHistory(vo));
     }
 
     @PostMapping("searchUserAction")
     public Result searchUserAction(@RequestBody UserActionSearch vo) {
-        return Result.success(recordService.searchUserAction(vo));
+        return Result.success(service.searchUserAction(vo));
     }
 }

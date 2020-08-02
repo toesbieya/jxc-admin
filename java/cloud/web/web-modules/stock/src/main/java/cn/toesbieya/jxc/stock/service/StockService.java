@@ -28,7 +28,7 @@ import java.util.List;
 @org.apache.dubbo.config.annotation.Service
 public class StockService implements StockApi {
     @Resource
-    private StockMapper stockMapper;
+    private StockMapper mapper;
 
     private final ExcelUtil.CommonMergeOptions mergeOptions =
             new ExcelUtil.CommonMergeOptions(
@@ -39,35 +39,35 @@ public class StockService implements StockApi {
 
     public PageResult<StockSearchResult> search(StockSearch vo) {
         PageHelper.startPage(vo.getPage(), vo.getPageSize());
-        return new PageResult<>(this.getByCondition(vo));
+        return new PageResult<>(getByCondition(vo));
+    }
+
+    @Override
+    public List<StockSearchResult> getByCondition(StockSearch vo) {
+        return mapper.search(getSearchCondition(vo));
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public List<BizStock> getDetail(String cids) {
-        return stockMapper.selectList(
+        return mapper.selectList(
                 Wrappers.lambdaQuery(BizStock.class)
                         .inSql(!StringUtils.isEmpty(cids), BizStock::getCid, cids)
-                        .ge(BizStock::getNum, 0)
+                        .gt(BizStock::getNum, 0)
                         .orderByDesc(BizStock::getCgddid, BizStock::getCgrkid)
         );
     }
 
     public List<BizStock> getDetailById(String ids) {
-        return stockMapper.selectList(
+        return mapper.selectList(
                 Wrappers.lambdaQuery(BizStock.class)
                         .inSql(!StringUtils.isEmpty(ids), BizStock::getId, ids)
         );
     }
 
     public void export(StockSearch vo, HttpServletResponse response) throws Exception {
-        List<StockExport> list = stockMapper.export(getSearchCondition(vo));
+        List<StockExport> list = mapper.export(getSearchCondition(vo));
         ExcelUtil.export(list, response, "库存导出", mergeOptions);
-    }
-
-    @Override
-    public List<StockSearchResult> getByCondition(StockSearch vo) {
-        return stockMapper.search(getSearchCondition(vo));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class StockService implements StockApi {
         if (CollectionUtils.isEmpty(list)) {
             throw new JsonResultException("入库失败，没有需要入库的商品");
         }
-        stockMapper.insertBatch(list);
+        mapper.insertBatch(list);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class StockService implements StockApi {
             throw new JsonResultException("出库失败，没有需要出库的商品");
         }
         for (StockOutboundVo vo : list) {
-            int rows = stockMapper.outbound(vo.getId(), vo.getNum());
+            int rows = mapper.outbound(vo.getId(), vo.getNum());
             if (rows < 1) {
                 throw new JsonResultException("出库失败");
             }

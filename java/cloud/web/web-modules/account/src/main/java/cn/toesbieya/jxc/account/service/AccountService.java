@@ -22,7 +22,6 @@ import cn.toesbieya.jxc.common.utils.SessionUtil;
 import cn.toesbieya.jxc.web.common.annoation.TimeCost;
 import cn.toesbieya.jxc.web.common.annoation.UserAction;
 import cn.toesbieya.jxc.web.common.utils.QiniuUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
@@ -50,12 +49,13 @@ public class AccountService {
 
     @TimeCost
     public Result login(LoginParam param, String ip) {
-        Wrapper<SysUser> wrapper =
+        long now = System.currentTimeMillis();
+
+        SysUser user = userMapper.selectOne(
                 Wrappers.lambdaQuery(SysUser.class)
                         .eq(SysUser::getName, param.getUsername())
-                        .eq(SysUser::getPwd, param.getPassword());
-
-        SysUser user = userMapper.selectOne(wrapper);
+                        .eq(SysUser::getPwd, param.getPassword())
+        );
 
         if (user == null) {
             return Result.fail("用户名或密码错误");
@@ -132,12 +132,13 @@ public class AccountService {
 
         //记录登陆信息
         recordApi.insertLoginHistory(
-                RecLoginHistory.builder()
+                RecLoginHistory
+                        .builder()
                         .uid(user.getId())
                         .uname(user.getName())
                         .ip(ip)
                         .type(RecLoginHistoryEnum.LOGIN.getCode())
-                        .time(System.currentTimeMillis())
+                        .time(now)
                         .build()
         );
 
@@ -147,7 +148,8 @@ public class AccountService {
     public Result logout(UserVo user, String ip) {
         if (user != null) {
             recordApi.insertLoginHistory(
-                    RecLoginHistory.builder()
+                    RecLoginHistory
+                            .builder()
                             .uid(user.getId())
                             .uname(user.getName())
                             .ip(ip)
@@ -164,7 +166,10 @@ public class AccountService {
     public Result register(RegisterParam param) {
         String name = param.getUsername();
 
-        if (0 != userMapper.selectCount(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getName, name))) {
+        if (userMapper
+                .selectCount(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getName, name))
+                .equals(0)
+        ) {
             return Result.fail("该用户名称已存在");
         }
 
@@ -207,10 +212,8 @@ public class AccountService {
             if (!StringUtils.isEmpty(oldAvatar)) {
                 qiniuUtil.delete(oldAvatar);
             }
-
             user.setAvatar(avatar);
             SessionUtil.save(user);
-
             return Result.success("上传头像成功");
         }
 
@@ -221,10 +224,11 @@ public class AccountService {
     }
 
     public boolean checkName(String name, Integer id) {
-        return 0 == userMapper.selectCount(
+        Integer num = userMapper.selectCount(
                 Wrappers.lambdaQuery(SysUser.class)
                         .eq(SysUser::getName, name)
                         .ne(id != null, SysUser::getId, id)
         );
+        return num == null || num.equals(0);
     }
 }

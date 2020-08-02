@@ -8,7 +8,6 @@ import lombok.ToString;
 @Data
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
 public class BizSellOutbound extends BizDoc {
     private String pid;
 }

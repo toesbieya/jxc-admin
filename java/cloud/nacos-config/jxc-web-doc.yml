@@ -1,0 +1,4 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /doc

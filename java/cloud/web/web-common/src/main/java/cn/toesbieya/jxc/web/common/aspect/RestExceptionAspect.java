@@ -39,14 +39,14 @@ public class RestExceptionAspect {
     //@RequestParam没有匹配到值
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public Result handle(MissingServletRequestParameterException e) {
-        log.error(e.getMessage(),e);
+        log.error(e.getMessage(), e);
         return Result.fail("get参数有误");
     }
 
     //@RequestBody没有匹配到值
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Result handle(HttpMessageNotReadableException e) {
-        log.error(e.getMessage(),e);
+        log.error(e.getMessage(), e);
         return Result.fail("post参数有误");
     }
 
@@ -68,13 +68,12 @@ public class RestExceptionAspect {
 
     private void recordUserAction(Exception e) {
         RecUserAction action = ThreadUtil.getAction();
-
         if (action != null && !StringUtils.isEmpty(action.getAction())) {
+            action.setTime(System.currentTimeMillis());
             action.setError(Util.exception2Str(e));
             action.setType(UserActionEnum.FAIL.getCode());
             recordApi.insertUserAction(action);
         }
-
         ThreadUtil.clearAll();
     }
 }

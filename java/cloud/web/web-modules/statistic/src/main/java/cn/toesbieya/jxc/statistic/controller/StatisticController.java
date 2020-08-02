@@ -12,25 +12,25 @@ import javax.annotation.Resource;
 @RequestMapping("statistic")
 public class StatisticController {
     @Resource
-    private StatisticService statisticService;
+    private StatisticService service;
 
     @GetMapping("getFourBlock")
     public Result getFourBlock() {
-        return Result.success(statisticService.getFourBlock());
+        return Result.success(service.getFourBlock());
     }
 
     @GetMapping("getDailyProfitStat")
     public Result getDailyProfitStat() {
-        return Result.success(statisticService.getDailyProfitStat());
+        return Result.success(service.getDailyProfitStat());
     }
 
     @GetMapping("getDailyFinishOrder")
     public Result getDailyFinishOrder() {
-        return Result.success(statisticService.getDailyFinishOrder());
+        return Result.success(service.getDailyFinishOrder());
     }
 
     @GetMapping("getTotalProfitGoods")
     public Result getTotalProfitGoods() {
-        return Result.success(statisticService.getTotalProfitGoods());
+        return Result.success(service.getTotalProfitGoods());
     }
 }

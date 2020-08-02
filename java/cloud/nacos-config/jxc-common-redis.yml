@@ -2,6 +2,7 @@ spring:
   redis:
     host: localhost
     port: 6379
+    password:
     timeout: 3000
     lettuce:
       pool:

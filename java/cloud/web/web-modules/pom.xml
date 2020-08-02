@@ -15,7 +15,7 @@
         <module>statistic</module>
         <module>system</module>
         <module>stock</module>
-        <module>document</module>
+        <module>doc</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

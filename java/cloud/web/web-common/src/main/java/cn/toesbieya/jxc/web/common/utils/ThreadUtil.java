@@ -15,12 +15,14 @@ public class ThreadUtil {
         if (user == null) user = SessionUtil.get(request);
         if (user == null) return;
 
-        RecUserAction userAction = RecUserAction.builder()
-                .uid(user.getId())
-                .uname(user.getName())
-                .ip(IpUtil.getIp(request))
-                .url(request.getServletPath())
-                .build();
+        RecUserAction userAction =
+                RecUserAction
+                        .builder()
+                        .uid(user.getId())
+                        .uname(user.getName())
+                        .ip(IpUtil.getIp(request))
+                        .url(request.getServletPath())
+                        .build();
 
         setAction(userAction);
     }

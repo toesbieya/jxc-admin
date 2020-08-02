@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.toesbieya.jxc.doc.mapper.PurchaseOrderSubMapper">
+    <insert id="insertBatch" parameterType="cn.toesbieya.jxc.common.model.entity.BizPurchaseOrderSub">
+        insert into biz_purchase_order_sub(pid, cid, cname, num, price, remain_num) values
+        <foreach collection="list" item="i" separator=",">
+            (#{i.pid}, #{i.cid}, #{i.cname}, #{i.num}, #{i.price}, #{i.remainNum})
+        </foreach>
+    </insert>
+</mapper>

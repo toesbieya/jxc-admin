@@ -4,12 +4,12 @@
     <select id="selectChildrenById" resultType="cn.toesbieya.jxc.common.model.vo.DepartmentVo">
         with recursive t as (
                 select *,
-                       name as fullname
+                       name  fullname
                 from sys_department
                 where id = #{id}
                 union all
                 select c.*,
-                       concat(t.fullname, ' > ', c.name) as fullname
+                       concat(t.fullname, ' > ', c.name)  fullname
                 from sys_department c,
                      t
                 where c.pid = t.id
@@ -21,12 +21,12 @@
     <select id="selectParentsById" resultType="cn.toesbieya.jxc.common.model.vo.DepartmentVo">
         with recursive t as (
                 select *,
-                       name as fullname
+                       name  fullname
                 from sys_department
                 where id = #{id}
                 union all
                 select c.*,
-                       concat(c.name, ' > ', t.fullname) as fullname
+                       concat(c.name, ' > ', t.fullname)  fullname
                 from sys_department c,
                      t
                 where c.id = t.pid

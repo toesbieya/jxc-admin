@@ -22,10 +22,10 @@ spring:
           predicates:
             - Path=/account/**
 
-        - id: jxc-web-document
-          uri: lb://jxc-web-document
+        - id: jxc-web-doc
+          uri: lb://jxc-web-doc
           predicates:
-            - Path=/document/**
+            - Path=/doc/**
 
         - id: jxc-web-message
           uri: lb://jxc-web-message

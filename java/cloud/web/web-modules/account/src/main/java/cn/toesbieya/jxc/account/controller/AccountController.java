@@ -7,8 +7,8 @@ import cn.toesbieya.jxc.account.vo.RegisterParam;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
 import cn.toesbieya.jxc.common.model.vo.Result;
-import cn.toesbieya.jxc.common.utils.SessionUtil;
 import cn.toesbieya.jxc.web.common.utils.IpUtil;
+import cn.toesbieya.jxc.web.common.utils.SessionUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,46 +22,46 @@ import java.net.URLDecoder;
 @RequestMapping("account")
 public class AccountController {
     @Resource
-    private AccountService accountService;
+    private AccountService service;
 
     @PostMapping("login")
     public Result login(HttpServletRequest request, @Valid @RequestBody LoginParam param) {
-        return accountService.login(param, IpUtil.getIp(request));
+        return service.login(param, IpUtil.getIp(request));
     }
 
     @GetMapping("logout")
     public Result logout(HttpServletRequest request) {
-        UserVo user = SessionUtil.get(request);
-        return accountService.logout(user, IpUtil.getIp(request));
+        UserVo user = SessionUtil.get();
+        return service.logout(user, IpUtil.getIp(request));
     }
 
     @PostMapping("register")
     public Result register(@Valid @RequestBody RegisterParam param) {
-        return accountService.register(param);
+        return service.register(param);
     }
 
     @PostMapping("updatePwd")
-    public Result updatePwd(HttpServletRequest request, @RequestBody PasswordUpdateParam param) {
-        SysUser user = SessionUtil.get(request);
+    public Result updatePwd(@RequestBody PasswordUpdateParam param) {
+        SysUser user = SessionUtil.get();
         param.setId(user.getId());
 
         String errMsg = validateUpdatePwdParam(param);
         if (errMsg != null) return Result.fail(errMsg);
 
-        return accountService.updatePwd(param);
+        return service.updatePwd(param);
     }
 
     @GetMapping("updateAvatar")
-    public Result updateAvatar(HttpServletRequest request, @RequestParam String key) throws UnsupportedEncodingException {
+    public Result updateAvatar(@RequestParam String key) throws UnsupportedEncodingException {
         if (StringUtils.isEmpty(key)) return Result.fail("参数错误");
 
-        UserVo user = SessionUtil.get(request);
-        return accountService.updateAvatar(user, URLDecoder.decode(key, "utf-8"));
+        UserVo user = SessionUtil.get();
+        return service.updateAvatar(user, URLDecoder.decode(key, "utf-8"));
     }
 
     @GetMapping("validate")
-    public Result validate(HttpServletRequest request, @RequestParam String pwd) {
-        SysUser current = SessionUtil.get(request);
+    public Result validate(@RequestParam String pwd) {
+        SysUser current = SessionUtil.get();
 
         if (!pwd.equals(current.getPwd())) {
             return Result.fail("校验失败");
@@ -76,7 +76,7 @@ public class AccountController {
             return Result.success();
         }
 
-        return Result.success(accountService.checkName(name, id) ? null : "该用户名已存在");
+        return Result.success(service.checkName(name, id) ? null : "该用户名已存在");
     }
 
     private String validateUpdatePwdParam(PasswordUpdateParam vo) {

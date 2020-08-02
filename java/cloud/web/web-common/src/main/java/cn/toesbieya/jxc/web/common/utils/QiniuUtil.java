@@ -13,6 +13,8 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @DependsOn("redisUtil")
@@ -20,6 +22,20 @@ public class QiniuUtil {
     private final QiniuConfig config;
     private final Auth auth;
     private final BucketManager bucketManager;
+
+    @Autowired
+    public QiniuUtil(QiniuConfig config) {
+        this.config = config;
+
+        if (StringUtils.isEmpty(config.getAccessKey())) {
+            this.auth = null;
+            this.bucketManager = null;
+            return;
+        }
+
+        this.auth = Auth.create(config.getAccessKey(), config.getSecretKey());
+        this.bucketManager = new BucketManager(this.auth, new Configuration(Region.huadong()));
+    }
 
     public String getToken() {
         String key = config.getRedisCacheKey();
@@ -54,17 +70,7 @@ public class QiniuUtil {
         }
     }
 
-    @Autowired
-    public QiniuUtil(QiniuConfig config) {
-        this.config = config;
-
-        if (StringUtils.isEmpty(config.getAccessKey())) {
-            this.auth = null;
-            this.bucketManager = null;
-            return;
-        }
-
-        this.auth = Auth.create(config.getAccessKey(), config.getSecretKey());
-        this.bucketManager = new BucketManager(this.auth, new Configuration(Region.huadong()));
+    public void deleteBatch(List<String> key) {
+        deleteBatch(key.toArray(new String[0]));
     }
 }
