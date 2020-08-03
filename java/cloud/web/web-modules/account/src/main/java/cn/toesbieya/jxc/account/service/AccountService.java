@@ -166,10 +166,7 @@ public class AccountService {
     public Result register(RegisterParam param) {
         String name = param.getUsername();
 
-        if (userMapper
-                .selectCount(Wrappers.lambdaQuery(SysUser.class).eq(SysUser::getName, name))
-                .equals(0)
-        ) {
+        if (checkName(name, null)) {
             return Result.fail("该用户名称已存在");
         }
 
