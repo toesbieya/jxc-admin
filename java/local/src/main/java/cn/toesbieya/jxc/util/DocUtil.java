@@ -1,4 +1,4 @@
-package cn.toesbieya.jxc.utils;
+package cn.toesbieya.jxc.util;
 
 import cn.toesbieya.jxc.constant.DocConstant;
 import cn.toesbieya.jxc.model.entity.BizDoc;

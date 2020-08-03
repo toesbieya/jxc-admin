@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.module.request;
 
 import cn.toesbieya.jxc.model.vo.ResourceVo;
 import cn.toesbieya.jxc.service.sys.SysResourceService;
-import cn.toesbieya.jxc.utils.RedisUtil;
+import cn.toesbieya.jxc.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package cn.toesbieya.jxc.utils;
+package cn.toesbieya.jxc.util;
 
 import com.google.common.io.ByteStreams;
 import lombok.extern.slf4j.Slf4j;

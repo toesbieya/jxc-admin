@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.interceptor;
 
-import cn.toesbieya.jxc.utils.ThreadUtil;
+import cn.toesbieya.jxc.util.ThreadUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

@@ -4,9 +4,9 @@ import cn.toesbieya.jxc.model.entity.StatFinishOrder;
 import cn.toesbieya.jxc.model.entity.StatProfitGoods;
 import cn.toesbieya.jxc.model.entity.StatProfitTotal;
 import cn.toesbieya.jxc.model.vo.statictis.FourBlockStat;
-import cn.toesbieya.jxc.utils.WebSocketUtil;
+import cn.toesbieya.jxc.util.WebSocketUtil;
 import cn.toesbieya.jxc.mapper.StatisticMapper;
-import cn.toesbieya.jxc.utils.DateUtil;
+import cn.toesbieya.jxc.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

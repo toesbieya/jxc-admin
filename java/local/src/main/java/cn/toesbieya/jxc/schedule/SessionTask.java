@@ -4,7 +4,7 @@ import cn.toesbieya.jxc.constant.SessionConstant;
 import cn.toesbieya.jxc.constant.SocketConstant;
 import cn.toesbieya.jxc.model.vo.SocketOfflineVo;
 import com.alibaba.fastjson.JSONObject;
-import cn.toesbieya.jxc.utils.RedisUtil;
+import cn.toesbieya.jxc.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Async;

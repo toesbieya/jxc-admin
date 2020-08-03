@@ -11,7 +11,7 @@ import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.model.vo.result.PageResult;
 import cn.toesbieya.jxc.model.vo.result.RegionValueResult;
 import cn.toesbieya.jxc.model.vo.search.CustomerSearch;
-import cn.toesbieya.jxc.utils.Util;
+import cn.toesbieya.jxc.util.Util;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;

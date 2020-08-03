@@ -1,4 +1,4 @@
-package cn.toesbieya.jxc.utils;
+package cn.toesbieya.jxc.util;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

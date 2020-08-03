@@ -1,4 +1,4 @@
-package cn.toesbieya.jxc.utils;
+package cn.toesbieya.jxc.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

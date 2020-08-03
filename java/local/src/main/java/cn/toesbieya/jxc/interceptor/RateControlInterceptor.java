@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.interceptor;
 import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.module.request.RequestModule;
-import cn.toesbieya.jxc.utils.*;
+import cn.toesbieya.jxc.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 

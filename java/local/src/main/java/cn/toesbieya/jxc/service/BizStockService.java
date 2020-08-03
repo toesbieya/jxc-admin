@@ -6,7 +6,7 @@ import cn.toesbieya.jxc.model.vo.export.StockExport;
 import cn.toesbieya.jxc.model.vo.result.PageResult;
 import cn.toesbieya.jxc.model.vo.result.StockSearchResult;
 import cn.toesbieya.jxc.model.vo.search.StockSearch;
-import cn.toesbieya.jxc.utils.ExcelUtil;
+import cn.toesbieya.jxc.util.ExcelUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;

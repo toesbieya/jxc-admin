@@ -12,8 +12,7 @@ import cn.toesbieya.jxc.model.vo.*;
 import cn.toesbieya.jxc.service.sys.SysDepartmentService;
 import cn.toesbieya.jxc.service.sys.SysResourceService;
 import cn.toesbieya.jxc.service.sys.SysRoleService;
-import cn.toesbieya.jxc.utils.QiniuUtil;
-import cn.toesbieya.jxc.utils.SessionUtil;
+import cn.toesbieya.jxc.util.SessionUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -33,6 +32,8 @@ public class AccountService {
     private SysDepartmentService departmentService;
     @Resource
     private SysRoleService roleService;
+    @Resource
+    private FileService fileService;
 
     @TimeCost
     public Result login(LoginParam param, String ip) {
@@ -197,7 +198,7 @@ public class AccountService {
         if (rows > 0) {
             String oldAvatar = user.getAvatar();
             if (!StringUtils.isEmpty(oldAvatar)) {
-                QiniuUtil.delete(oldAvatar);
+                fileService.delete(oldAvatar);
             }
             user.setAvatar(avatar);
             SessionUtil.save(user);
@@ -205,7 +206,7 @@ public class AccountService {
         }
 
         //否则删除此次上传至云的头像
-        QiniuUtil.delete(avatar);
+        fileService.delete(avatar);
 
         return Result.fail("上传头像失败");
     }

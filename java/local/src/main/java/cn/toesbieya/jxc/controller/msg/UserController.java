@@ -4,7 +4,7 @@ import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.model.vo.search.MsgPersonalSearch;
 import cn.toesbieya.jxc.service.msg.MsgUserService;
-import cn.toesbieya.jxc.utils.SessionUtil;
+import cn.toesbieya.jxc.util.SessionUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

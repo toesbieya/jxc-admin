@@ -4,7 +4,7 @@ import cn.toesbieya.jxc.model.entity.StatFinishOrder;
 import cn.toesbieya.jxc.model.entity.StatProfitGoods;
 import cn.toesbieya.jxc.model.entity.StatProfitTotal;
 import cn.toesbieya.jxc.mapper.StatisticMapper;
-import cn.toesbieya.jxc.utils.DateUtil;
+import cn.toesbieya.jxc.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;

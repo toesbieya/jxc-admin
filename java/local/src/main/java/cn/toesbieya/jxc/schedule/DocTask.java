@@ -1,8 +1,8 @@
 package cn.toesbieya.jxc.schedule;
 
 import cn.toesbieya.jxc.constant.DocConstant;
-import cn.toesbieya.jxc.utils.DateUtil;
-import cn.toesbieya.jxc.utils.RedisUtil;
+import cn.toesbieya.jxc.util.DateUtil;
+import cn.toesbieya.jxc.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Async;

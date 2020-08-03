@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.controller.sys;
 import cn.toesbieya.jxc.model.entity.RecUserAction;
 import cn.toesbieya.jxc.model.entity.SysUser;
 import cn.toesbieya.jxc.model.vo.search.UserSearch;
-import cn.toesbieya.jxc.utils.ThreadUtil;
+import cn.toesbieya.jxc.util.ThreadUtil;
 import cn.toesbieya.jxc.service.sys.SysUserService;
 import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.util.StringUtils;

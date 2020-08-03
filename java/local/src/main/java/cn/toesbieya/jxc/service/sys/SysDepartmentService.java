@@ -8,7 +8,7 @@ import cn.toesbieya.jxc.model.entity.SysRole;
 import cn.toesbieya.jxc.model.entity.SysUser;
 import cn.toesbieya.jxc.model.vo.DepartmentVo;
 import cn.toesbieya.jxc.model.vo.Result;
-import cn.toesbieya.jxc.utils.Util;
+import cn.toesbieya.jxc.util.Util;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

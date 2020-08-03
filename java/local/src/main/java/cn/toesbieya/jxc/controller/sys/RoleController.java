@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.controller.sys;
 import cn.toesbieya.jxc.model.entity.SysRole;
 import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.model.vo.search.RoleSearch;
-import cn.toesbieya.jxc.utils.SessionUtil;
+import cn.toesbieya.jxc.util.SessionUtil;
 import cn.toesbieya.jxc.service.sys.SysRoleService;
 import cn.toesbieya.jxc.model.vo.Result;
 import org.springframework.util.StringUtils;

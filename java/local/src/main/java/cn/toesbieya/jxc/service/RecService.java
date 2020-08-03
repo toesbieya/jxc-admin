@@ -9,8 +9,7 @@ import cn.toesbieya.jxc.model.entity.RecUserAction;
 import cn.toesbieya.jxc.model.vo.result.PageResult;
 import cn.toesbieya.jxc.model.vo.search.LoginHistorySearch;
 import cn.toesbieya.jxc.model.vo.search.UserActionSearch;
-import cn.toesbieya.jxc.utils.IpUtil;
-import cn.toesbieya.jxc.utils.QiniuUtil;
+import cn.toesbieya.jxc.util.IpUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
@@ -34,6 +33,8 @@ public class RecService {
     private RecUserActionMapper userActionMapper;
     @Resource
     private RecAttachmentMapper attachmentMapper;
+    @Resource
+    private FileService fileService;
 
     public PageResult<RecLoginHistory> searchLoginHistory(LoginHistorySearch vo) {
         Integer uid = vo.getUid();
@@ -104,7 +105,7 @@ public class RecService {
                     Wrappers.lambdaQuery(RecAttachment.class)
                             .in(RecAttachment::getUrl, deleteImageList)
             );
-            QiniuUtil.deleteBatch(deleteImageList);
+            fileService.deleteBatch(deleteImageList);
         }
     }
 
@@ -119,7 +120,7 @@ public class RecService {
         attachmentMapper.delete(Wrappers.lambdaQuery(RecAttachment.class).eq(RecAttachment::getPid, pid));
 
         List<String> urls = list.stream().map(RecAttachment::getUrl).collect(Collectors.toList());
-        QiniuUtil.deleteBatch(urls);
+        fileService.deleteBatch(urls);
     }
 
     @Async("dbInsertExecutor")

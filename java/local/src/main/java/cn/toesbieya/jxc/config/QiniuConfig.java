@@ -1,22 +1,16 @@
 package cn.toesbieya.jxc.config;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
-@Component
-@ConfigurationProperties("qiniu")
-@Data
+@Configuration
+@EnableConfigurationProperties(QiniuProperty.class)
+@DependsOn("redisUtil")
 public class QiniuConfig {
-    private String accessKey;
-
-    private String secretKey;
-
-    private String bucket;
-
-    //临时上传凭证的有效期，单位秒
-    private Integer tokenExpire = 3600;
-
-    //临时上传凭证的redis键名
-    private String redisCacheKey = "qiniu-token";
+    @Bean
+    public QiniuTemplate qiniuTemplate(QiniuProperty property) {
+        return new QiniuTemplate(property);
+    }
 }
