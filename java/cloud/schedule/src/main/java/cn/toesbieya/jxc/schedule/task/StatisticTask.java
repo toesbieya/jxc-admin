@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.schedule.task;
 import cn.toesbieya.jxc.common.model.entity.StatFinishOrder;
 import cn.toesbieya.jxc.common.model.entity.StatProfitGoods;
 import cn.toesbieya.jxc.common.model.entity.StatProfitTotal;
-import cn.toesbieya.jxc.common.utils.DateUtil;
+import cn.toesbieya.jxc.common.util.DateUtil;
 import cn.toesbieya.jxc.schedule.mapper.StatisticMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

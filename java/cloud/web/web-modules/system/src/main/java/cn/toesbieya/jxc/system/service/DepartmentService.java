@@ -1,13 +1,13 @@
 package cn.toesbieya.jxc.system.service;
 
-import cn.toesbieya.jxc.api.service.system.DepartmentApi;
+import cn.toesbieya.jxc.api.system.DepartmentApi;
 import cn.toesbieya.jxc.common.enumeration.DataScopeEnum;
 import cn.toesbieya.jxc.common.model.entity.SysDepartment;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
 import cn.toesbieya.jxc.common.model.vo.DepartmentVo;
 import cn.toesbieya.jxc.common.model.vo.Result;
-import cn.toesbieya.jxc.common.utils.Util;
+import cn.toesbieya.jxc.common.util.Util;
 import cn.toesbieya.jxc.system.mapper.SysDepartmentMapper;
 import cn.toesbieya.jxc.web.common.annoation.UserAction;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

@@ -7,8 +7,8 @@ import cn.toesbieya.jxc.account.vo.RegisterParam;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
 import cn.toesbieya.jxc.common.model.vo.Result;
-import cn.toesbieya.jxc.web.common.utils.IpUtil;
-import cn.toesbieya.jxc.web.common.utils.SessionUtil;
+import cn.toesbieya.jxc.web.common.util.IpUtil;
+import cn.toesbieya.jxc.web.common.util.SessionUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 

@@ -5,7 +5,7 @@ import cn.toesbieya.jxc.common.model.entity.SysUser;
 import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.system.model.vo.RoleSearch;
 import cn.toesbieya.jxc.system.service.RoleService;
-import cn.toesbieya.jxc.web.common.utils.SessionUtil;
+import cn.toesbieya.jxc.web.common.util.SessionUtil;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 

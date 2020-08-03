@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.system.service;
 
-import cn.toesbieya.jxc.api.service.system.RoleApi;
+import cn.toesbieya.jxc.api.system.RoleApi;
 import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
 import cn.toesbieya.jxc.common.model.vo.Result;

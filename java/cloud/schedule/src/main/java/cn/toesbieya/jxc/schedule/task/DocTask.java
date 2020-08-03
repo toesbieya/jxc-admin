@@ -1,8 +1,8 @@
 package cn.toesbieya.jxc.schedule.task;
 
 import cn.toesbieya.jxc.common.constant.DocConstant;
-import cn.toesbieya.jxc.common.utils.DateUtil;
-import cn.toesbieya.jxc.common.utils.RedisUtil;
+import cn.toesbieya.jxc.common.util.DateUtil;
+import cn.toesbieya.jxc.common.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.DependsOn;

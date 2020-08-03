@@ -1,12 +1,13 @@
 package cn.toesbieya.jxc.web.common.aspect;
 
-import cn.toesbieya.jxc.api.service.RecordApi;
+import cn.toesbieya.jxc.api.RecordApi;
 import cn.toesbieya.jxc.common.exception.JsonResultException;
 import cn.toesbieya.jxc.common.model.entity.RecUserAction;
 import cn.toesbieya.jxc.common.model.vo.Result;
-import cn.toesbieya.jxc.common.utils.Util;
+import cn.toesbieya.jxc.common.util.Util;
 import cn.toesbieya.jxc.web.common.enumeration.UserActionEnum;
-import cn.toesbieya.jxc.web.common.utils.ThreadUtil;
+import cn.toesbieya.jxc.web.common.util.ThreadUtil;
+import cn.toesbieya.jxc.web.common.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -39,14 +40,14 @@ public class RestExceptionAspect {
     //@RequestParam没有匹配到值
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public Result handle(MissingServletRequestParameterException e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return Result.fail("get参数有误");
     }
 
     //@RequestBody没有匹配到值
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public Result handle(HttpMessageNotReadableException e) {
-        log.error(e.getMessage(), e);
+        log.error(e.getMessage());
         return Result.fail("post参数有误");
     }
 
@@ -61,7 +62,7 @@ public class RestExceptionAspect {
     //最终捕获
     @ExceptionHandler(Exception.class)
     public Result handle(Exception e) {
-        log.error("服务运行异常", e);
+        log.error(String.format("服务运行异常,访问路径：%s", WebUtil.getRequest().getServletPath()), e);
         recordUserAction(e);
         return Result.fail("服务运行异常");
     }

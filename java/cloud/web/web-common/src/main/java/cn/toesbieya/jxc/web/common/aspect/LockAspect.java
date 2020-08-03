@@ -1,8 +1,8 @@
 package cn.toesbieya.jxc.web.common.aspect;
 
 import cn.toesbieya.jxc.common.model.vo.Result;
-import cn.toesbieya.jxc.common.utils.RedisUtil;
-import cn.toesbieya.jxc.common.utils.SpringUtil;
+import cn.toesbieya.jxc.common.util.RedisUtil;
+import cn.toesbieya.jxc.common.util.SpringUtil;
 import cn.toesbieya.jxc.web.common.annoation.Lock;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

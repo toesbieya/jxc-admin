@@ -2,8 +2,8 @@ package cn.toesbieya.jxc.doc.util;
 
 import cn.toesbieya.jxc.common.constant.DocConstant;
 import cn.toesbieya.jxc.common.model.entity.BizDoc;
-import cn.toesbieya.jxc.common.utils.DateUtil;
-import cn.toesbieya.jxc.common.utils.RedisUtil;
+import cn.toesbieya.jxc.common.util.DateUtil;
+import cn.toesbieya.jxc.common.util.RedisUtil;
 import cn.toesbieya.jxc.doc.model.vo.DocSearch;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;

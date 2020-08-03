@@ -1,4 +1,4 @@
 server:
-  port: 8002
+  port: 8003
   servlet:
     context-path: /message

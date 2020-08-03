@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.record.service;
 
-import cn.toesbieya.jxc.api.service.RecordApi;
-import cn.toesbieya.jxc.api.vo.AttachmentOperation;
+import cn.toesbieya.jxc.api.FileApi;
+import cn.toesbieya.jxc.api.RecordApi;
 import cn.toesbieya.jxc.common.model.entity.RecAttachment;
 import cn.toesbieya.jxc.common.model.entity.RecLoginHistory;
 import cn.toesbieya.jxc.common.model.entity.RecUserAction;
@@ -11,11 +11,11 @@ import cn.toesbieya.jxc.record.mapper.RecUserActionMapper;
 import cn.toesbieya.jxc.record.model.vo.LoginHistorySearch;
 import cn.toesbieya.jxc.record.model.vo.UserActionSearch;
 import cn.toesbieya.jxc.web.common.model.vo.PageResult;
-import cn.toesbieya.jxc.web.common.utils.IpUtil;
-import cn.toesbieya.jxc.web.common.utils.QiniuUtil;
+import cn.toesbieya.jxc.web.common.util.IpUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,8 +36,8 @@ public class RecordService implements RecordApi {
     private RecUserActionMapper userActionMapper;
     @Resource
     private RecAttachmentMapper attachmentMapper;
-    @Resource
-    private QiniuUtil qiniuUtil;
+    @Reference
+    private FileApi fileApi;
 
     public PageResult<RecLoginHistory> searchLoginHistory(LoginHistorySearch vo) {
         Integer uid = vo.getUid();
@@ -87,6 +87,7 @@ public class RecordService implements RecordApi {
         return new PageResult<>(userActionMapper.selectList(wrapper));
     }
 
+    @Override
     public List<RecAttachment> getAttachmentByPid(String pid) {
         if (StringUtils.isEmpty(pid)) {
             return Collections.emptyList();
@@ -99,23 +100,22 @@ public class RecordService implements RecordApi {
         );
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
-    public void handleAttachment(AttachmentOperation vo) {
-        List<RecAttachment> uploadImageList = vo.getUploadImageList();
-        List<String> deleteImageList = vo.getDeleteImageList();
-
-        if (!CollectionUtils.isEmpty(uploadImageList)) {
-            attachmentMapper.insertBatch(uploadImageList);
+    public void handleAttachment(List<RecAttachment> upload, List<String> delete) {
+        if (!CollectionUtils.isEmpty(upload)) {
+            attachmentMapper.insertBatch(upload);
         }
-        if (!CollectionUtils.isEmpty(deleteImageList)) {
+        if (!CollectionUtils.isEmpty(delete)) {
             attachmentMapper.delete(
                     Wrappers.lambdaQuery(RecAttachment.class)
-                            .in(RecAttachment::getUrl, deleteImageList)
+                            .in(RecAttachment::getUrl, delete)
             );
-            qiniuUtil.deleteBatch(deleteImageList.toArray(new String[0]));
+            fileApi.deleteBatch(delete);
         }
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void delAttachmentByPid(String pid) {
         List<RecAttachment> list = attachmentMapper.selectList(
@@ -128,9 +128,10 @@ public class RecordService implements RecordApi {
         attachmentMapper.delete(Wrappers.lambdaQuery(RecAttachment.class).eq(RecAttachment::getPid, pid));
 
         List<String> urls = list.stream().map(RecAttachment::getUrl).collect(Collectors.toList());
-        qiniuUtil.deleteBatch(urls);
+        fileApi.deleteBatch(urls);
     }
 
+    @Override
     @Async("dbInsertExecutor")
     public void insertLoginHistory(RecLoginHistory history) {
         if (StringUtils.isEmpty(history.getAddress())) {
@@ -140,6 +141,7 @@ public class RecordService implements RecordApi {
         loginHistoryMapper.insert(history);
     }
 
+    @Override
     @Async("dbInsertExecutor")
     public void insertUserAction(RecUserAction action) {
         action.setId(null);

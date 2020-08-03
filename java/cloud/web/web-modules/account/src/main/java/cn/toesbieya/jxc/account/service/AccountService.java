@@ -6,10 +6,11 @@ import cn.toesbieya.jxc.account.vo.LoginParam;
 import cn.toesbieya.jxc.account.vo.LoginSuccessInfo;
 import cn.toesbieya.jxc.account.vo.PasswordUpdateParam;
 import cn.toesbieya.jxc.account.vo.RegisterParam;
-import cn.toesbieya.jxc.api.service.RecordApi;
-import cn.toesbieya.jxc.api.service.system.DepartmentApi;
-import cn.toesbieya.jxc.api.service.system.ResourceApi;
-import cn.toesbieya.jxc.api.service.system.RoleApi;
+import cn.toesbieya.jxc.api.FileApi;
+import cn.toesbieya.jxc.api.RecordApi;
+import cn.toesbieya.jxc.api.system.DepartmentApi;
+import cn.toesbieya.jxc.api.system.ResourceApi;
+import cn.toesbieya.jxc.api.system.RoleApi;
 import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.RecLoginHistory;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
@@ -18,10 +19,9 @@ import cn.toesbieya.jxc.common.model.vo.DepartmentVo;
 import cn.toesbieya.jxc.common.model.vo.ResourceVo;
 import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
-import cn.toesbieya.jxc.common.utils.SessionUtil;
+import cn.toesbieya.jxc.common.util.SessionUtil;
 import cn.toesbieya.jxc.web.common.annoation.TimeCost;
 import cn.toesbieya.jxc.web.common.annoation.UserAction;
-import cn.toesbieya.jxc.web.common.utils.QiniuUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
@@ -36,8 +36,8 @@ import java.util.*;
 public class AccountService {
     @Resource
     private SysUserMapper userMapper;
-    @Resource
-    private QiniuUtil qiniuUtil;
+    @Reference
+    private FileApi fileApi;
     @Reference
     private RecordApi recordApi;
     @Reference
@@ -210,7 +210,7 @@ public class AccountService {
         if (rows > 0) {
             String oldAvatar = user.getAvatar();
             if (!StringUtils.isEmpty(oldAvatar)) {
-                qiniuUtil.delete(oldAvatar);
+                fileApi.delete(oldAvatar);
             }
             user.setAvatar(avatar);
             SessionUtil.save(user);
@@ -218,7 +218,7 @@ public class AccountService {
         }
 
         //否则删除此次上传至云的头像
-        qiniuUtil.delete(avatar);
+        fileApi.delete(avatar);
 
         return Result.fail("上传头像失败");
     }

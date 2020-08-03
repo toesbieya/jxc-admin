@@ -1,4 +1,4 @@
 server:
-  port: 8006
+  port: 8007
   servlet:
     context-path: /system

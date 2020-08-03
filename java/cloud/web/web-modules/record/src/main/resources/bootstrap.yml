@@ -10,7 +10,6 @@ spring:
         shared-configs:
           - data-id: jxc-common-database.yml
           - data-id: jxc-common-redis.yml
-          - data-id: jxc-common-qiniu.yml
       discovery:
         server-addr: 127.0.0.1:8848
 
@@ -22,3 +21,5 @@ dubbo:
     base-packages: cn.toesbieya.jxc.record.service
   registry:
     address: nacos://127.0.0.1:8848
+  cloud:
+    subscribed-services: jxc-web-file

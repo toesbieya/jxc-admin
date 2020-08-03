@@ -1,8 +1,7 @@
 package cn.toesbieya.jxc.doc.service;
 
-import cn.toesbieya.jxc.api.service.RecordApi;
-import cn.toesbieya.jxc.api.service.StockApi;
-import cn.toesbieya.jxc.api.vo.AttachmentOperation;
+import cn.toesbieya.jxc.api.RecordApi;
+import cn.toesbieya.jxc.api.StockApi;
 import cn.toesbieya.jxc.common.model.entity.*;
 import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.common.model.vo.StockSearch;
@@ -21,7 +20,7 @@ import cn.toesbieya.jxc.doc.util.DocUtil;
 import cn.toesbieya.jxc.web.common.annoation.Lock;
 import cn.toesbieya.jxc.web.common.annoation.UserAction;
 import cn.toesbieya.jxc.web.common.model.vo.PageResult;
-import cn.toesbieya.jxc.web.common.utils.ExcelUtil;
+import cn.toesbieya.jxc.web.common.util.ExcelUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;
@@ -252,7 +251,7 @@ public class SellOrderService {
             attachment.setPid(id);
             attachment.setTime(time);
         }
-        recordApi.handleAttachment(new AttachmentOperation(uploadImageList, null));
+        recordApi.handleAttachment(uploadImageList, null);
 
         return Result.success("添加成功", id);
     }
@@ -291,7 +290,7 @@ public class SellOrderService {
             attachment.setPid(docId);
             attachment.setTime(time);
         }
-        recordApi.handleAttachment(new AttachmentOperation(uploadImageList, doc.getDeleteImageList()));
+        recordApi.handleAttachment(uploadImageList, doc.getDeleteImageList());
 
         return Result.success("修改成功");
     }

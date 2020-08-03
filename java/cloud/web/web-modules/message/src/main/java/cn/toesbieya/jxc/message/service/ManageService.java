@@ -4,7 +4,7 @@ import cn.toesbieya.jxc.common.constant.SocketConstant;
 import cn.toesbieya.jxc.common.model.entity.Msg;
 import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.common.model.vo.SocketEventVo;
-import cn.toesbieya.jxc.common.utils.WebSocketUtil;
+import cn.toesbieya.jxc.common.util.WebSocketUtil;
 import cn.toesbieya.jxc.message.constant.MsgConstant;
 import cn.toesbieya.jxc.message.mapper.MsgMapper;
 import cn.toesbieya.jxc.message.model.vo.MsgSearch;

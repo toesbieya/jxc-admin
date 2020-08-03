@@ -1,12 +1,12 @@
 package cn.toesbieya.jxc.web.common.aspect;
 
-import cn.toesbieya.jxc.api.service.RecordApi;
+import cn.toesbieya.jxc.api.RecordApi;
 import cn.toesbieya.jxc.common.model.entity.RecUserAction;
 import cn.toesbieya.jxc.common.model.vo.Result;
-import cn.toesbieya.jxc.common.utils.SpringUtil;
+import cn.toesbieya.jxc.common.util.SpringUtil;
 import cn.toesbieya.jxc.web.common.annoation.UserAction;
 import cn.toesbieya.jxc.web.common.enumeration.UserActionEnum;
-import cn.toesbieya.jxc.web.common.utils.ThreadUtil;
+import cn.toesbieya.jxc.web.common.util.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.Reference;
 import org.aspectj.lang.ProceedingJoinPoint;

@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.schedule.task;
 import cn.toesbieya.jxc.common.constant.SessionConstant;
 import cn.toesbieya.jxc.common.constant.SocketConstant;
 import cn.toesbieya.jxc.common.model.vo.SocketOfflineVo;
-import cn.toesbieya.jxc.common.utils.RedisUtil;
+import cn.toesbieya.jxc.common.util.RedisUtil;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.system.service;
 import cn.toesbieya.jxc.common.model.entity.SysCustomer;
 import cn.toesbieya.jxc.common.model.entity.SysRegion;
 import cn.toesbieya.jxc.common.model.vo.Result;
-import cn.toesbieya.jxc.common.utils.Util;
+import cn.toesbieya.jxc.common.util.Util;
 import cn.toesbieya.jxc.system.mapper.SysCustomerMapper;
 import cn.toesbieya.jxc.system.mapper.SysRegionMapper;
 import cn.toesbieya.jxc.system.model.vo.CustomerSearch;

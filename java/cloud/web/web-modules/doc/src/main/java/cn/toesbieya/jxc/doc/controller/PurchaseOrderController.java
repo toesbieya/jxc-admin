@@ -10,7 +10,7 @@ import cn.toesbieya.jxc.doc.model.vo.DocStatusUpdate;
 import cn.toesbieya.jxc.doc.model.vo.PurchaseOrderSearch;
 import cn.toesbieya.jxc.doc.model.vo.PurchaseOrderVo;
 import cn.toesbieya.jxc.doc.service.PurchaseOrderService;
-import cn.toesbieya.jxc.web.common.utils.SessionUtil;
+import cn.toesbieya.jxc.web.common.util.SessionUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;

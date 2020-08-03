@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.stock.service;
 
-import cn.toesbieya.jxc.api.service.StockApi;
+import cn.toesbieya.jxc.api.StockApi;
 import cn.toesbieya.jxc.common.exception.JsonResultException;
 import cn.toesbieya.jxc.common.model.entity.BizStock;
 import cn.toesbieya.jxc.common.model.vo.StockOutboundVo;
@@ -9,7 +9,7 @@ import cn.toesbieya.jxc.common.model.vo.StockSearchResult;
 import cn.toesbieya.jxc.stock.mapper.StockMapper;
 import cn.toesbieya.jxc.stock.model.vo.StockExport;
 import cn.toesbieya.jxc.web.common.model.vo.PageResult;
-import cn.toesbieya.jxc.web.common.utils.ExcelUtil;
+import cn.toesbieya.jxc.web.common.util.ExcelUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.pagehelper.PageHelper;

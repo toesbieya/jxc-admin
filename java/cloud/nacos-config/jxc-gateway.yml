@@ -27,6 +27,11 @@ spring:
           predicates:
             - Path=/doc/**
 
+        - id: jxc-web-file
+          uri: lb://jxc-web-file
+          predicates:
+            - Path=/file/**
+
         - id: jxc-web-message
           uri: lb://jxc-web-message
           predicates:

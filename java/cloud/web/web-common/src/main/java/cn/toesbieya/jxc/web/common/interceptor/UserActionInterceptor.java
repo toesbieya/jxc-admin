@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.web.common.interceptor;
 
 import cn.toesbieya.jxc.web.common.interceptor.predicate.UserActionPredicate;
-import cn.toesbieya.jxc.web.common.utils.ThreadUtil;
+import cn.toesbieya.jxc.web.common.util.ThreadUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;

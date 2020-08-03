@@ -11,6 +11,7 @@
     <modules>
         <module>web-modules</module>
         <module>web-common</module>
+        <module>file</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 
@@ -41,7 +42,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-dubbo</artifactId>

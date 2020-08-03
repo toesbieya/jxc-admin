@@ -11,7 +11,7 @@ mybatis-plus:
   configuration:
     local-cache-scope: STATEMENT
     cache-enabled: false
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     banner: false
     db-config:

@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.system.service;
 
-import cn.toesbieya.jxc.api.service.system.ResourceApi;
+import cn.toesbieya.jxc.api.system.ResourceApi;
 import cn.toesbieya.jxc.common.model.entity.SysResource;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
 import cn.toesbieya.jxc.common.model.vo.ResourceVo;
