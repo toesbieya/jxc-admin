@@ -1,4 +1,5 @@
 import request from "@/config/request"
+import {isEmpty} from "@/utils"
 
 export const baseUrl = '/account'
 
@@ -27,5 +28,7 @@ export function validate(pwd) {
 }
 
 export function checkName(name, id) {
-    return request.get(`${baseUrl}/checkName?name=${name}&id=${id}`).then(({data}) => data)
+    let param = `?name=${name}`
+    if (!isEmpty(id)) param += `&id=${id}`
+    return request.get(`${baseUrl}/checkName${param}`).then(({data}) => data)
 }

@@ -76,7 +76,7 @@ public class AccountController {
             return Result.success();
         }
 
-        return Result.success(service.checkName(name, id) ? null : "该用户名已存在");
+        return Result.success(service.checkName(name, id) ? "该用户名已存在" : null);
     }
 
     private String validateUpdatePwdParam(PasswordUpdateParam vo) {

@@ -223,6 +223,7 @@ public class AccountService {
         return Result.fail("上传头像失败");
     }
 
+    //用户名重复时返回true
     public boolean checkName(String name, Integer id) {
         Integer num = userMapper.selectCount(
                 Wrappers.lambdaQuery(SysUser.class)
