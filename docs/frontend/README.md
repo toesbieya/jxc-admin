@@ -45,18 +45,18 @@
 ├── public                     # 静态资源文件夹
 ├── src
 │   ├── api                    # 数据请求集合
-│   ├── assets
-│   │   │── icons              # 项目所有svg icons
-│   │   └── styles             # 样式集合
-│   ├── components             # 公用组件
+│   ├── asset
+│   │   │── icon               # 项目所有svg icons
+│   │   └── style              # 样式集合
+│   ├── component              # 公用组件
 │   ├── config
 │   │   │── index.js           # 基础配置项
 │   │   └── request.js         # axios封装
 │   ├── directive              # 自定义指令集合
-│   ├── filters                # 自定义过滤器集合
-│   ├── globalMethods          # 全局方法，使用this.$xx调用
+│   ├── filter                 # 自定义过滤器集合
+│   ├── globalMethod           # 全局方法，使用this.$xx调用
 │   ├── layout                 # 布局文件夹，包含了导航栏、侧边栏、多页签、全局页脚
-│   ├── mixins                 # 公用混入
+│   ├── mixin                  # 公用混入
 │   ├── plugin                 # 一些插件，均使用import()来动态引入
 │   ├── router
 │   │   │── authority          # 需要鉴权的路由集合
@@ -65,7 +65,7 @@
 │   │   └── util.js
 │   ├── store                  # vuex配置
 │   ├── utils                  # 工具类
-│   ├── views                  # 路由页面集合
+│   ├── view                   # 路由页面集合
 │   ├── App.vue
 │   └── main.js
 ```
