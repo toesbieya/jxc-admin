@@ -86,25 +86,23 @@
 </template>
 
 <script>
+import tableMixin from '@/mixin/tablePageMixin'
+import EditDialog from './component/EditDialog'
+import RoleSelector from './component/RoleSelector'
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/SearchFormItem"
-import RoleSelector from './component/RoleSelector'
-import EditDialog from './component/EditDialog'
-import {delUser, getUsers, kick, resetUserPwd} from "@/api/system/user"
+import {baseUrl, delUser, getUsers, kick, resetUserPwd} from "@/api/system/user"
 import {isEmpty} from '@/util'
+import {auth} from "@/util/auth"
 import {autoCompleteUrl} from "@/util/file"
 import {elConfirm, elError, elSuccess} from "@/util/message"
-import {auth} from "@/util/auth"
-import tableMixin from '@/mixin/tablePageMixin'
-
-const baseUrl = '/system/user'
 
 export default {
     name: "userManagement",
 
     mixins: [tableMixin],
 
-    components: {SearchForm, SearchFormItem, RoleSelector, EditDialog},
+    components: {EditDialog, RoleSelector, SearchForm, SearchFormItem},
 
     data() {
         return {

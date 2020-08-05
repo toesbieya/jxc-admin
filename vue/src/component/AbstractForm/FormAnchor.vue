@@ -21,8 +21,8 @@ export default {
     props: {
         reference: Function,
         data: {type: Array, default: () => []},
-        offsetTop: Number,
-        bounds: Number,
+        offsetTop: {type: Number, default: 15},
+        bounds: {type: Number, default: 0},
         getContainer: {
             type: Function,
             default: () => document.querySelector('#app .app-main>.el-scrollbar>.el-scrollbar__wrap')
@@ -32,13 +32,13 @@ export default {
     data: () => ({cur: null}),
 
     methods: {
-        getCur(offsetTop = 0, bounds = 5) {
+        getCur(offsetTop, bounds) {
             const sections = []
             const container = this.getContainer()
             this.data.forEach(({ref}) => {
                 const target = this.getDomFromRef(ref)
                 const top = getOffsetTop(target, container)
-                if (top < offsetTop + bounds) {
+                if (top <= offsetTop + bounds) {
                     sections.push({ref, top})
                 }
             })
@@ -58,22 +58,20 @@ export default {
         click(ref) {
             if (!ref || this.animating || !this.reference) return
             this.cur = ref
-            const {offsetTop, getContainer, targetOffset} = this
+            const {offsetTop, getContainer} = this
             const container = getContainer()
             const scrollTop = getScroll(container, true)
             const targetElement = this.getDomFromRef(ref)
             if (!targetElement) return
             const eleOffsetTop = getOffsetTop(targetElement, container)
-            let y = scrollTop + eleOffsetTop
-            y -= targetOffset !== undefined ? targetOffset : offsetTop || 0
+            const y = scrollTop + eleOffsetTop - offsetTop
             this.animating = true
             scrollTo(y, {callback: () => this.animating = false, getContainer})
         },
 
         scroll() {
             if (this.animating || !this.reference) return
-            const {offsetTop, bounds, targetOffset} = this
-            this.cur = this.getCur(targetOffset !== undefined ? targetOffset : offsetTop || 0, bounds)
+            this.cur = this.getCur(this.offsetTop, this.bounds)
         }
     },
 

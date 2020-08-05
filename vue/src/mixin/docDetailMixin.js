@@ -209,11 +209,12 @@ export default {
             this.api.getById(id)
                 .then(data => {
                     if (!data || id !== data.id) return Promise.reject()
+                    this.modifyDataBeforeMerge && this.modifyDataBeforeMerge(data)
                     return Promise.resolve(mergeObj(this.form, data))
                 })
                 .then(() => this.afterInit ? this.afterInit() : Promise.resolve())
                 .catch(e => {
-                    console.log(e)
+                    console.error(e)
                     return elAlert(`获取${this.docName}数据失败，请重试`, this.close)
                 })
                 .finally(() => this.loading = false)

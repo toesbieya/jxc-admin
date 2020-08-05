@@ -244,8 +244,8 @@ export default {
             }
             return null
         },
-        afterInit() {
-            this.form.data.forEach(item => item.__editable = false)
+        modifyDataBeforeMerge(data) {
+            data.data.forEach(item => item._editable = false)
         }
     }
 }

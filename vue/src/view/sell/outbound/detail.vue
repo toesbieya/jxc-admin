@@ -165,7 +165,7 @@ export default {
 
     methods: {
         afterInit() {
-            if (this.type === 'add') return
+            if (this.type === 'add') return Promise.resolve()
             const ids = this.form.data.map(i => i.sid).join(',')
             return Promise.all([
                 getParentSubById(this.form.pid),
