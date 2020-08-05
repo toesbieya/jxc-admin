@@ -67,7 +67,7 @@ public class SysResourceService {
             String name = resource.getName();
 
             //跳过顶级节点
-            if (resource.getPid() == 0) {
+            if (resource.getPid().equals(0)) {
                 vo.setFullname(name);
 
                 urlMap.put(id, url);
@@ -87,7 +87,7 @@ public class SysResourceService {
                 vo.setUrl(parentUrl + url);
                 vo.setFullname(fullname);
 
-                urlMap.put(id, url);
+                urlMap.put(id, vo.getUrl());
                 nameMap.put(id, fullname);
             }
 
