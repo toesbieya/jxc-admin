@@ -1,7 +1,7 @@
-import MenuItem from "./components/Menu/MenuItem"
-import Submenu from "./components/Menu/Submenu"
-import Message from "./components/Message"
-//import Select from './components/Select/Select'
+import MenuItem from "./component/Menu/MenuItem"
+import Submenu from "./component/Menu/Submenu"
+import Message from "./component/Message"
+//import Select from './component/Select/Select'
 
 const components = [MenuItem, Submenu]
 

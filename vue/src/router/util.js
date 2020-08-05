@@ -1,7 +1,7 @@
 import {pathToRegexp} from 'path-to-regexp'
-import {isEmpty} from "@/utils"
+import {isEmpty} from "@/util"
 import {title} from "@/config"
-import PageSkeleton from "@/components/Skeleton/PageSkeleton"
+import PageSkeleton from "@/component/Skeleton/PageSkeleton"
 
 //拼接页面标题
 export function setPageTitle(route) {

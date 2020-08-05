@@ -1,0 +1,86 @@
+@import "~@/asset/style/variables.scss";
+
+.tags-view-container {
+    height: $tags-view-height;
+    background: #f0f0f0;
+    border-bottom: 1px solid #d8dce5;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+
+    .tags-view-wrapper {
+        white-space: nowrap;
+        position: relative;
+        box-shadow: inset 0 0 3px 2px hsla(0, 0%, 39.2%, .1);
+
+        .tags-view-item {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            height: 32px;
+            line-height: 35px;
+            color: $--color-gray;
+            background: #fff;
+            border-radius: 3px;
+            padding: 0 12px;
+            font-size: 12px;
+            margin: 4px;
+            user-select: none;
+
+            &:first-of-type {
+                margin-left: 15px;
+            }
+
+            &:last-of-type {
+                margin-right: 15px;
+            }
+
+            &::before {
+                content: '';
+                background: #e8eaec;
+                display: inline-block;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                position: relative;
+                top: 1px;
+                margin-right: 5px;
+            }
+
+            &.active {
+                color: $--color-primary;
+
+                &::before {
+                    background: $--color-primary;
+                }
+            }
+
+            .el-icon-close {
+                vertical-align: 2px;
+                border-radius: 50%;
+                font-size: 14px;
+                margin-left: 10px;
+
+                &:before {
+                    vertical-align: -3px;
+                }
+
+                &:hover {
+                    color: #3A71A8;
+                }
+            }
+        }
+
+        .el-scrollbar__bar {
+            display: none;
+        }
+
+        .el-scrollbar__wrap {
+            height: 57px;
+        }
+    }
+
+    .flip-list-move {
+        transition: transform 0.3s;
+    }
+}
+
+

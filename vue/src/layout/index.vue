@@ -16,9 +16,9 @@
 
 <script>
 import {mapState} from 'vuex'
-import VMain from './components/Main'
-import VHeader from './components/Header'
-import VSidebar from './components/Sidebar'
+import VMain from './component/Main'
+import VHeader from './component/Header'
+import VSidebar from './component/Sidebar'
 import offlineMixin from "@/layout/mixin/offline"
 import resizeMixin from './mixin/resize'
 

@@ -1,4 +1,4 @@
-import {isEmpty, timeFormat} from '@/utils'
+import {isEmpty, timeFormat} from '@/util'
 
 export function timestamp2Date(timestamp) {
     if (isEmpty(timestamp)) return ''

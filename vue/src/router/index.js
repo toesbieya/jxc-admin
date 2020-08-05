@@ -16,8 +16,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from "@/store"
 import NProgress from 'nprogress'
-import {isUserExist} from "@/utils/storage"
-import {auth, needAuth} from "@/utils/auth"
+import {isUserExist} from "@/util/storage"
+import {auth, needAuth} from "@/util/auth"
 import {setPageTitle, specifyRouteTitle, transformWhiteList, metaExtend} from './util'
 import {contextPath, routerMode} from '@/config'
 import constantRoutes from '@/router/constant'

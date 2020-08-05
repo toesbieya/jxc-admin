@@ -1,0 +1,47 @@
+@import "~@/asset/style/variables.scss";
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: $nav-height;
+    padding: 0 12px;
+    transition: height .3s ease-in-out;
+    position: relative;
+    z-index: 9;
+    background-color: #fff;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+
+    > div {
+        display: flex;
+        height: 100%;
+    }
+
+    .navbar-icon {
+        font-size: 18px;
+    }
+
+    .navbar-item {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        color: #5a5e66;
+        transition: background .3s;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(0, 0, 0, .025)
+        }
+    }
+
+    .avatar-wrapper {
+        display: flex;
+        align-items: center;
+
+        span {
+            margin-right: 5px;
+            font-size: 18px;
+        }
+    }
+}

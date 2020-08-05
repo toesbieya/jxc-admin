@@ -1,4 +1,4 @@
-import {isEmpty} from "@/utils"
+import {isEmpty} from "@/util"
 
 export default {
     computed: {

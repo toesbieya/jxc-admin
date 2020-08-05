@@ -2,20 +2,20 @@ import Vue from 'vue'
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import Element from 'element-ui'
 import ElementPersonal from '@ele'
-import '@/assets/styles/index.scss' // global css
+import '@/asset/style/index.scss' // global css
 import App from '@/App'
 import store from '@/store'
 import router from '@/router'
-import '@/assets/icons'
-import '@/utils/errorLog'
+import '@/asset/icon'
+import '@/util/errorLog'
 import '@/directive'
 import filters from './filter'
-import globalMethods from '@/globalMethods'
+import globalMethod from '@/globalMethod'
 
 Vue.use(Element)
 Vue.use(ElementPersonal)
 Vue.use(filters)
-Vue.use(globalMethods)
+Vue.use(globalMethod)
 
 Vue.config.productionTip = false
 

@@ -1,5 +1,5 @@
-import {debounce} from '@/utils'
-import {isMobile} from "@/utils/browser"
+import {debounce} from '@/util'
+import {isMobile} from "@/util/browser"
 
 export default {
     methods: {

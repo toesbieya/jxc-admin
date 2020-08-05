@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "svgo": "svgo -f src/assets/icons/svg --config=src/assets/icons/svgo.yml"
+    "svgo": "svgo -f src/asset/icon/svg --config=src/asset/icon/svgo.yml"
   },
   "dependencies": {
     "axios": "^0.19.2",

@@ -1,4 +1,4 @@
-import {createWorker} from "@/utils/worker"
+import {createWorker} from "@/util/worker"
 
 export default function (uint8Array, quality = 75, speed = 4) {
     const {protocol, host} = document.location
