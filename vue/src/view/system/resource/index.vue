@@ -19,23 +19,21 @@
 </template>
 
 <script>
+import tableMixin from '@/mixin/tablePageMixin'
+import EditDialog from './EditDialog'
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/SearchFormItem"
-import EditDialog from './EditDialog'
-import {getAllResources} from "@/api/system/resource"
-import {elError, elSuccess} from "@/util/message"
+import {baseUrl, getAllResources} from "@/api/system/resource"
 import {auth} from "@/util/auth"
+import {elError, elSuccess} from "@/util/message"
 import {createTreeByWorker} from "@/util/tree"
-import tableMixin from '@/mixin/tablePageMixin'
-
-const baseUrl = '/system/resource'
 
 export default {
     name: "resourceManagement",
 
     mixins: [tableMixin],
 
-    components: {SearchForm, SearchFormItem, EditDialog},
+    components: {EditDialog, SearchForm, SearchFormItem},
 
     data() {
         return {
@@ -45,7 +43,7 @@ export default {
 
     computed: {
         canUpdate() {
-            return auth(baseUrl + '/update')
+            return auth(`${baseUrl}/update`)
         }
     },
 

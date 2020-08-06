@@ -2,9 +2,12 @@
 * 列表页通用混入
 * 引用者必须要有search方法
 * */
+import AbstractPagination from '@/component/AbstractPagination'
 import AbstractTable from '@/component/AbstractTable'
 
 const mixin = {
+    components: {AbstractPagination, AbstractTable},
+
     data() {
         return {
             searchForm: {
@@ -21,8 +24,6 @@ const mixin = {
             type: 'see'
         }
     },
-
-    components: {AbstractTable},
 
     computed: {
         tablePageNeedSearchMap() {

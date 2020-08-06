@@ -37,23 +37,16 @@
                     </el-table-column>
                 </abstract-table>
 
-                <el-pagination
-                    background
-                    :current-page="searchForm.page"
-                    :page-size="searchForm.pageSize"
-                    :total="searchForm.total"
-                    layout="total, prev, pager, next, jumper"
-                    @current-change="pageChange"
-                />
+                <abstract-pagination :model="searchForm" @current-change="pageChange"/>
             </el-row>
         </el-scrollbar>
     </el-dialog>
 </template>
 
 <script>
-import LinerProgress from '@/component/LinerProgress'
 import dialogMixin from "@/mixin/dialogMixin"
 import tableMixin from '@/mixin/tablePageMixin'
+import LinerProgress from '@/component/LinerProgress'
 import {getCustomers} from "@/api/system/customer"
 import {elError} from "@/util/message"
 

@@ -14,14 +14,21 @@
 * */
 import Vue from 'vue'
 import Router from 'vue-router'
-import store from "@/store"
 import NProgress from 'nprogress'
-import {isUserExist} from "@/util/storage"
-import {auth, needAuth} from "@/util/auth"
-import {setPageTitle, specifyRouteTitle, transformWhiteList, metaExtend} from './util'
 import {contextPath, routerMode} from '@/config'
 import constantRoutes from '@/router/constant'
 import authorityRoutes from '@/router/authority'
+import {auth, needAuth} from "@/util/auth"
+import {isUserExist} from "@/util/storage"
+import {
+    setPageTitle,
+    specifyRouteTitle,
+    transformWhiteList,
+    metaExtend,
+    needExtraRedirect,
+    initMenuAndResource,
+    iframeControl
+} from './util'
 
 Vue.use(Router)
 
@@ -73,32 +80,5 @@ router.beforeEach(async (to, from, next) => {
 })
 
 router.afterEach(() => NProgress.done())
-
-//判断是否需要一次额外的redirect跳转
-function needExtraRedirect(to, from) {
-    //若是详情页之间的跳转，借助redirect避免组件复用
-    const isToDetailPage = to.meta.isDetailPage,
-        isFromDetailPage = from.meta.isDetailPage
-
-    return isToDetailPage !== undefined && isToDetailPage === isFromDetailPage
-}
-
-//初始化菜单和权限
-function initMenuAndResource() {
-    if (!store.state.resource.hasInitRoutes) {
-        return store.dispatch('resource/init', store.state.user)
-    }
-    return Promise.resolve()
-}
-
-//判断是否需要打开iframe
-function iframeControl(to, from) {
-    let iframe = to.meta.iframe
-    const operate = iframe ? 'open' : 'close'
-    if (to.path === `/redirect${from.path}`) {
-        iframe = from.meta.iframe
-    }
-    return store.dispatch(`iframe/${operate}`, iframe)
-}
 
 export default router

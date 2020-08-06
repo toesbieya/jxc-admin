@@ -46,46 +46,32 @@
                 </el-table-column>
             </abstract-table>
 
-            <el-pagination
-                background
-                :current-page="searchForm.page"
-                :page-size="searchForm.pageSize"
-                :total="searchForm.total"
-                layout="total, prev, pager, next, jumper"
-                @current-change="pageChange"
-            />
+            <abstract-pagination :model="searchForm" @current-change="pageChange"/>
         </el-row>
 
-        <edit-dialog
-            v-model="editDialog"
-            :base-url="baseUrl"
-            :data="row"
-            :type.sync="type"
-            @search="search"
-        />
+        <edit-dialog v-model="editDialog" :data="row" :type.sync="type" @search="search"/>
     </el-card>
 </template>
 
 <script>
+import tableMixin from '@/mixin/tablePageMixin'
+import EditDialog from './EditDialog'
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/SearchFormItem"
-import EditDialog from './EditDialog'
-import {search, del} from "@/api/message/manage"
+import {baseUrl, search, del} from "@/api/message/manage"
 import {isEmpty} from '@/util'
-import {elConfirm, elError, elSuccess} from "@/util/message"
 import {auth} from "@/util/auth"
-import tableMixin from '@/mixin/tablePageMixin'
+import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
     name: "messageManagement",
 
     mixins: [tableMixin],
 
-    components: {SearchForm, SearchFormItem, EditDialog},
+    components: {EditDialog, SearchForm, SearchFormItem},
 
     data() {
         return {
-            baseUrl: '/message/manage',
             searchForm: {
                 title: null,
                 type: null,
@@ -99,15 +85,13 @@ export default {
 
     computed: {
         canAdd() {
-            return auth(this.baseUrl + '/add')
+            return auth(`${baseUrl}/add`)
         },
-
         canUpdate() {
-            return auth(this.baseUrl + '/update')
+            return auth(`${baseUrl}/update`)
         },
-
         canDel() {
-            return auth(this.baseUrl + '/del')
+            return auth(`${baseUrl}/del`)
         }
     },
 

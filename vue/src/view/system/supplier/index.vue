@@ -66,14 +66,7 @@
                 </el-table-column>
             </abstract-table>
 
-            <el-pagination
-                background
-                :current-page="searchForm.page"
-                :page-size="searchForm.pageSize"
-                :total="searchForm.total"
-                layout="total, prev, pager, next, jumper"
-                @current-change="pageChange"
-            />
+            <abstract-pagination :model="searchForm" @current-change="pageChange"/>
         </el-row>
 
         <edit-dialog v-model="editDialog" :data="row" :type="type" @success="success"/>
@@ -81,24 +74,22 @@
 </template>
 
 <script>
+import tableMixin from '@/mixin/tablePageMixin'
+import EditDialog from './EditDialog'
+import RegionSelector from "@/component/RegionSelector"
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/SearchFormItem"
-import RegionSelector from "@/component/RegionSelector"
-import EditDialog from './EditDialog'
-import {delSupplier, getLimitRegion, getSuppliers} from "@/api/system/supplier"
+import {baseUrl, delSupplier, getLimitRegion, getSuppliers} from "@/api/system/supplier"
 import {isEmpty} from '@/util'
-import {elConfirm, elError, elSuccess} from "@/util/message"
 import {auth} from "@/util/auth"
-import tableMixin from '@/mixin/tablePageMixin'
-
-const baseUrl = '/system/supplier'
+import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
     name: "supplierManagement",
 
     mixins: [tableMixin],
 
-    components: {SearchForm, SearchFormItem, EditDialog, RegionSelector},
+    components: {EditDialog, RegionSelector, SearchForm, SearchFormItem},
 
     data() {
         return {
@@ -120,15 +111,13 @@ export default {
 
     computed: {
         canAdd() {
-            return auth(baseUrl + '/add')
+            return auth(`${baseUrl}/add`)
         },
-
         canUpdate() {
-            return auth(baseUrl + '/update')
+            return auth(`${baseUrl}/update`)
         },
-
         canDel() {
-            return auth(baseUrl + '/del')
+            return auth(`${baseUrl}/del`)
         }
     },
 

@@ -51,14 +51,7 @@
                     <el-table-column align="center" label="总 值" prop="totalPrice" show-overflow-tooltip/>
                 </abstract-table>
 
-                <el-pagination
-                    background
-                    :current-page="searchForm.page"
-                    :page-size="searchForm.pageSize"
-                    :total="searchForm.total"
-                    layout="total, prev, pager, next, jumper"
-                    @current-change="pageChange"
-                />
+                <abstract-pagination :model="searchForm" @current-change="pageChange"/>
             </el-row>
         </extra-area>
 
@@ -67,6 +60,7 @@
 </template>
 
 <script>
+import tableMixin from '@/mixin/tablePageMixin'
 import CategoryTree from '@/component/biz/CategoryTree'
 import DetailDialog from "./DetailDialog"
 import ExtraArea from '@/component/ExtraArea'
@@ -74,10 +68,9 @@ import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/SearchFormItem"
 import {baseUrl, search} from "@/api/stock/current"
 import {isEmpty, debounce} from "@/util"
-import {plus} from "@/util/math"
 import {exportExcel} from "@/util/excel"
+import {plus} from "@/util/math"
 import {getNodeId} from "@/util/tree"
-import tableMixin from '@/mixin/tablePageMixin'
 
 export default {
     name: "currentStock",

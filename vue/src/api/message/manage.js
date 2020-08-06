@@ -1,7 +1,7 @@
 import request from "@/config/request"
 import BASE from './baseUrl'
 
-const baseUrl = `${BASE}/manage`
+export const baseUrl = `${BASE}/manage`
 
 export function search(data) {
     return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)

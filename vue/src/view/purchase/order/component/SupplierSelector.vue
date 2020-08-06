@@ -23,6 +23,7 @@
                 添加供应商
             </el-button>
         </el-row>
+
         <el-scrollbar>
             <el-row class="table-container">
                 <liner-progress :show="config.loading"/>
@@ -51,32 +52,30 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination
-                    background
-                    :current-page="searchForm.page"
-                    :page-size="searchForm.pageSize"
-                    :total="searchForm.total"
-                    layout="total, prev, pager, next, jumper"
-                    @current-change="pageChange"
-                />
+
+                <abstract-pagination :model="searchForm" @current-change="pageChange"/>
             </el-row>
         </el-scrollbar>
     </el-dialog>
 </template>
 
 <script>
-import LinerProgress from '@/component/LinerProgress'
 import dialogMixin from "@/mixin/dialogMixin"
 import tableMixin from '@/mixin/tablePageMixin'
+import LinerProgress from '@/component/LinerProgress'
 import {getSuppliers} from "@/api/system/supplier"
-import {elError} from "@/util/message"
 import {auth} from "@/util/auth"
+import {elError} from "@/util/message"
 
 export default {
     name: "SupplierSelector",
+
     mixins: [dialogMixin, tableMixin],
+
     components: {LinerProgress},
+
     props: {value: Boolean},
+
     data() {
         return {
             searchForm: {
@@ -84,11 +83,13 @@ export default {
             }
         }
     },
+
     computed: {
         canGoToSysSupplierPage() {
             return auth('/system/supplier')
         }
     },
+
     methods: {
         search() {
             if (!this.value || this.config.loading) return

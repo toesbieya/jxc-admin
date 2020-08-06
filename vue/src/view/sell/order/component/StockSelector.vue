@@ -31,23 +31,16 @@
                     <el-table-column align="center" label="库存数量" prop="totalNum" show-overflow-tooltip/>
                 </el-table>
 
-                <el-pagination
-                    background
-                    :current-page="searchForm.page"
-                    :page-size="searchForm.pageSize"
-                    :total="searchForm.total"
-                    layout="total, prev, pager, next, jumper"
-                    @current-change="pageChange"
-                />
+                <abstract-pagination :model="searchForm" @current-change="pageChange"/>
             </el-row>
         </el-scrollbar>
     </el-dialog>
 </template>
 
 <script>
-import LinerProgress from '@/component/LinerProgress'
 import dialogMixin from "@/mixin/dialogMixin"
 import tableMixin from '@/mixin/tablePageMixin'
+import LinerProgress from '@/component/LinerProgress'
 import {search} from "@/api/stock/current"
 import {elError} from "@/util/message"
 

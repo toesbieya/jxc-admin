@@ -8,19 +8,12 @@
             <el-table-column align="center" label="备注" prop="info"/>
         </abstract-table>
 
-        <el-pagination
-            background
-            :current-page="searchForm.page"
-            :page-size="searchForm.pageSize"
-            :total="searchForm.total"
-            hide-on-single-page
-            layout="total, prev, pager, next, jumper"
-            @current-change="pageChange"
-        />
+        <abstract-pagination :model="searchForm" @current-change="pageChange"/>
     </div>
 </template>
 
 <script>
+import AbstractPagination from '@/component/AbstractPagination'
 import AbstractTable from "@/component/AbstractTable"
 import {searchHistory} from "@/api/doc/history"
 import {isEmpty, timeFormat} from "@/util"
@@ -28,7 +21,7 @@ import {isEmpty, timeFormat} from "@/util"
 export default {
     name: "DocHistory",
 
-    components: {AbstractTable},
+    components: {AbstractPagination, AbstractTable},
 
     props: {id: String},
 

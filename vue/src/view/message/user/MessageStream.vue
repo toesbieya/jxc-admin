@@ -35,15 +35,7 @@
                 </el-timeline-item>
             </el-timeline>
 
-            <el-pagination
-                background
-                :current-page="searchForm.page"
-                :page-size="searchForm.pageSize"
-                :total="searchForm.total"
-                hide-on-single-page
-                layout="prev, pager, next"
-                @current-change="pageChange"
-            />
+            <abstract-pagination :model="searchForm" @current-change="pageChange"/>
         </template>
     </div>
 </template>

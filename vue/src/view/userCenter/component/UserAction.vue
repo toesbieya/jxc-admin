@@ -25,14 +25,7 @@
             </el-table-column>
         </abstract-table>
 
-        <el-pagination
-            background
-            :current-page="searchForm.page"
-            :page-size="searchForm.pageSize"
-            :total="searchForm.total"
-            layout="total, prev, pager, next, jumper"
-            @current-change="pageChange"
-        />
+        <abstract-pagination :model="searchForm" @current-change="pageChange"/>
     </div>
 </template>
 
