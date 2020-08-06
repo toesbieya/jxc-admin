@@ -174,6 +174,7 @@ public class AccountService {
         user.setName(name);
         user.setPwd(param.getPassword());
         user.setRole(1);
+        user.setDept(1);
         user.setStatus(GeneralStatusEnum.ENABLED.getCode());
         user.setCtime(System.currentTimeMillis());
 
