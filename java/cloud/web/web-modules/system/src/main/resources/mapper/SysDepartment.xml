@@ -15,7 +15,7 @@
                 where c.pid = t.id
                 )
         select *
-        from t;
+        from t
     </select>
 
     <select id="selectParentsById" resultType="cn.toesbieya.jxc.common.model.vo.DepartmentVo">
@@ -32,6 +32,6 @@
                 where c.id = t.pid
                 )
         select *
-        from t;
+        from t
     </select>
 </mapper>

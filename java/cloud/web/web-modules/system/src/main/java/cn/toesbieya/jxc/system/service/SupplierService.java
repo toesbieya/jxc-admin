@@ -74,7 +74,7 @@ public class SupplierService {
         });
 
         //获取关联的行政区域的名称
-        List<SysRegion> regions = regionIds.size() > 0 ? regionMapper.selectBatchIds(regionIds) : Collections.emptyList();
+        List<SysRegion> regions = regionIds.isEmpty() ? Collections.emptyList() : regionMapper.selectBatchIds(regionIds);
         list.forEach(supplierVo -> {
             SysRegion matched = Util.find(regions, item -> supplierVo.getRegion().equals(item.getId()));
             if (matched != null) {

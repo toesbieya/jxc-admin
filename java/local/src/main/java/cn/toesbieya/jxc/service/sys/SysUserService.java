@@ -5,6 +5,7 @@ import cn.toesbieya.jxc.mapper.SysRoleMapper;
 import cn.toesbieya.jxc.mapper.SysUserMapper;
 import cn.toesbieya.jxc.model.entity.SysRole;
 import cn.toesbieya.jxc.model.entity.SysUser;
+import cn.toesbieya.jxc.model.vo.DepartmentVo;
 import cn.toesbieya.jxc.model.vo.Result;
 import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.model.vo.result.PageResult;
@@ -30,6 +31,8 @@ public class SysUserService {
     private SysUserMapper userMapper;
     @Resource
     private SysRoleMapper roleMapper;
+    @Resource
+    private SysDepartmentService departmentService;
 
     public PageResult<UserVo> search(UserSearch vo) {
         Integer id = vo.getId();
@@ -56,33 +59,47 @@ public class SysUserService {
 
         int userNum = users.size();
 
-        //当前在线的用户id
-        Set<Integer> onlineUserIds = WebSocketUtil.getOnlineUserIds();
-
         //传递给前端的结果集
         List<UserVo> result = new ArrayList<>(userNum);
 
+        //当前在线的用户id
+        Set<Integer> onlineUserIds = WebSocketUtil.getOnlineUserIds();
+
         //查询得到的用户的角色id
         Set<Integer> userRoleIds = new HashSet<>(userNum);
+        //查询得到的用户的部门id
+        Set<Integer> userDeptIds = new HashSet<>(userNum);
 
         users.forEach(user -> {
             result.add(new UserVo(user));
             Integer rid = user.getRole();
+            Integer deptId = user.getDept();
             if (rid != null) userRoleIds.add(rid);
+            if (deptId != null) userDeptIds.add(deptId);
         });
 
-        List<SysRole> roles = userRoleIds.size() > 0 ? roleMapper.selectBatchIds(userRoleIds) : Collections.emptyList();
+        List<SysRole> roles = userRoleIds.isEmpty() ? Collections.emptyList() : roleMapper.selectBatchIds(userRoleIds);
+        List<DepartmentVo> depts = userDeptIds.isEmpty() ? Collections.emptyList() : departmentService.getAll();
 
         result.forEach(userVo -> {
             //设置在线情况
             userVo.setOnline(Util.some(onlineUserIds, i -> userVo.getId().equals(i)));
 
-            Integer userRoleId = userVo.getRole();
-            if (userRoleId != null) {
-                //设置用户的角色名称
-                SysRole matched = Util.find(roles, i -> i.getId().equals(userRoleId));
+            //设置用户的角色名称
+            Integer roleId = userVo.getRole();
+            if (roleId != null) {
+                SysRole matched = Util.find(roles, i -> i.getId().equals(roleId));
                 if (matched != null) {
                     userVo.setRoleName(matched.getName());
+                }
+            }
+
+            //设置部门名称
+            Integer deptId = userVo.getDept();
+            if (deptId != null) {
+                DepartmentVo matched = Util.find(depts, i -> i.getId().equals(deptId));
+                if (matched != null) {
+                    userVo.setDeptName(matched.getFullname());
                 }
             }
         });
@@ -162,6 +179,7 @@ public class SysUserService {
         return rows > 0 ? Result.success() : Result.fail("重置失败，未匹配到用户");
     }
 
+    //用户名重复时返回true
     private boolean isNameExist(String name, Integer id) {
         Integer num = userMapper.selectCount(
                 Wrappers.lambdaQuery(SysUser.class)

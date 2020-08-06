@@ -106,7 +106,7 @@ public class StatisticTask {
 
             mapper.insertProfitTotal(statProfitTotal);
 
-            if (purchaseProfitGoods.size() > 0) {
+            if (!purchaseProfitGoods.isEmpty()) {
                 mapper.insertProfitGoodsBatch(purchaseProfitGoods);
             }
         }

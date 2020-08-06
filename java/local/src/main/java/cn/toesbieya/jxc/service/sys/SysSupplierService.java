@@ -74,7 +74,7 @@ public class SysSupplierService {
         });
 
         //获取关联的行政区域的名称
-        List<SysRegion> regions = regionIds.size() > 0 ? regionMapper.selectBatchIds(regionIds) : Collections.emptyList();
+        List<SysRegion> regions = regionIds.isEmpty() ? Collections.emptyList() : regionMapper.selectBatchIds(regionIds);
         list.forEach(supplierVo -> {
             SysRegion matched = Util.find(regions, item -> supplierVo.getRegion().equals(item.getId()));
             if (matched != null) {
@@ -88,7 +88,7 @@ public class SysSupplierService {
     @UserAction("'添加供应商：'+ #supplier.name")
     public Result add(SysSupplier supplier) {
         if (isNameExist(supplier.getName(), null)) {
-            return Result.fail(String.format("添加失败，供应商【%s】已存在",supplier.getName()));
+            return Result.fail(String.format("添加失败，供应商【%s】已存在", supplier.getName()));
         }
         int rows = supplierMapper.insert(supplier);
         return rows > 0 ? Result.success("添加成功") : Result.fail("添加失败");
@@ -100,7 +100,7 @@ public class SysSupplierService {
         String name = supplier.getName();
 
         if (isNameExist(name, id)) {
-            return Result.fail(String.format("修改失败，供应商【%s】已存在",name));
+            return Result.fail(String.format("修改失败，供应商【%s】已存在", name));
         }
 
         supplierMapper.update(
