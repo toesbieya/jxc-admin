@@ -32,7 +32,8 @@ const router = {
                     }
                 },
                 activeMenu: '/doc/sell/order',
-                isDetailPage: true
+                usePathKey: true,
+                commonModule:'@/view/sell/order/detail'
             }
         },
         {
@@ -59,7 +60,8 @@ const router = {
                     }
                 },
                 activeMenu: '/doc/sell/outbound',
-                isDetailPage: true
+                usePathKey: true,
+                commonModule: '@/view/sell/outbound/detail'
             }
         }
     ]

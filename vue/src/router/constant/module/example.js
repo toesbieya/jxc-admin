@@ -96,13 +96,23 @@ const router = {
             path: 'detailPage1',
             name: 'detailPage1',
             component: lazyLoadView(import('@/view/example/detailPage')),
-            meta: {title: '详情页缓存1', noCache: false, isDetailPage: true}
+            meta: {
+                title: '详情页缓存1',
+                noCache: false,
+                usePathKey: true,
+                commonModule: '@/view/example/detailPage'
+            }
         },
         {
             path: 'detailPage2',
             name: 'detailPage2',
             component: lazyLoadView(import('@/view/example/detailPage')),
-            meta: {title: '详情页缓存2', noCache: false, isDetailPage: true}
+            meta: {
+                title: '详情页缓存2',
+                noCache: false,
+                usePathKey: true,
+                commonModule: '@/view/example/detailPage'
+            }
         }
     ]
 }

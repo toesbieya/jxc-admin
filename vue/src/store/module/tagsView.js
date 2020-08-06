@@ -22,9 +22,9 @@ const mutations = {
         state.visitedViews.push({...view, title})
     },
     addCachedView(state, view) {
-        const {noCache, iframe, isDetailPage} = view.meta || {}
+        const {noCache, iframe, usePathKey, useFullPathKey} = view.meta || {}
 
-        if (noCache || iframe || !view.name && !isDetailPage) return
+        if (noCache || iframe || !view.name && !usePathKey && !useFullPathKey) return
 
         const key = getCachedViewKey(view)
 
@@ -69,8 +69,8 @@ const actions = {
 }
 
 function getCachedViewKey(view) {
-    const isDetailPage = view.meta && view.meta.isDetailPage
-    return isDetailPage ? view.path : view.name
+    const {usePathKey, useFullPathKey} = view.meta || {}
+    return usePathKey ? view.path : useFullPathKey ? view.fullPath : view.name
 }
 
 export default {

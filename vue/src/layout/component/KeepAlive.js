@@ -27,8 +27,8 @@ function pruneCacheEntry(cache, key, current) {
 function getCacheKey(route, componentOptions) {
     if (KEY in componentOptions) return componentOptions[KEY]
 
-    const {path, meta} = route
-    const key = meta && meta.isDetailPage ? path : getComponentName(componentOptions)
+    const {path, fullPath, meta} = route
+    const key = meta.usePathKey ? path : meta.useFullPathKey ? fullPath : getComponentName(componentOptions)
 
     componentOptions[KEY] = key
 

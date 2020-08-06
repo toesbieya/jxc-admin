@@ -9,7 +9,7 @@
 * 搜索选项显示：name && meta.title
 * tab栏显示：name && (meta.title || meta.dynamicTitle)
 * tab栏固定显示：meta.affix
-* 页面不缓存：!name && !meta.isDetailPage || meta.noCache
+* 页面不缓存：!name && !meta.usePathKey && !meta.useFullPathKey || meta.noCache
 * 打开iframe：meta.iframe，不会重复打开相同src的iframe
 * */
 import Vue from 'vue'
