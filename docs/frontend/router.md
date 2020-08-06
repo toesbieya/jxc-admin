@@ -14,17 +14,19 @@
 
 ### Route.meta Attributes：
 
-| 参数         | 说明                                             | 类型       | 默认                    |
-| :----------: | :----------------------------------------------: | :--------: | :---------------------: |
-| title        | 路由在侧边栏、面包屑、页签、搜索结果中的显示名称 | `string`   | -                       |
-| dynamicTitle | 路由在面包屑、页签中的动态名称，参数为(to,from)  | `function` | -                       |
-| icon         | 图标名，支持svg-icon、el-icon                    | `string`   | -                       |
-| affix        | 是否在多页签中固定显示                           | `boolean`  | -                       |
-| noCache      | true时缓存页面                                   | `boolean`  | -                       |
-| activeMenu   | 侧边栏当前激活菜单的index                        | `string`   | -                       |
-| noAuth       | true时路由不需要鉴权                             | `boolean`  | router/constant下为true |
-| iframe       | 需要打开的iframe的地址                           | `string`   | -                       |
-| isDetailPage | 是否是详情页                                     | `boolean`  | -                       |
+| 参数           | 说明                                             | 类型       | 默认                    |
+| :------------: | :----------------------------------------------: | :--------: | :---------------------: |
+| title          | 路由在侧边栏、面包屑、页签、搜索结果中的显示名称 | `string`   | -                       |
+| dynamicTitle   | 路由在面包屑、页签中的动态名称，参数为(to,from)  | `function` | -                       |
+| icon           | 图标名，支持svg-icon、el-icon                    | `string`   | -                       |
+| affix          | 是否在多页签中固定显示                           | `boolean`  | -                       |
+| noCache        | true时缓存页面                                   | `boolean`  | -                       |
+| activeMenu     | 侧边栏当前激活菜单的index                        | `string`   | -                       |
+| noAuth         | true时路由不需要鉴权                             | `boolean`  | router/constant下为true |
+| iframe         | 需要打开的iframe的地址                           | `string`   | -                       |
+| usePathKey     | 是否使用$route.path作为组件缓存的key             | `boolean`  | -                       |
+| useFullPathKey | 是否使用$route.fullPath作为组件缓存的key         | `boolean`  | -                       |
+| commonModule   | 共用组件的唯一标识                               | `any`      | -                       |
 
 ::: tip 注意
 路由meta上的affix、noAuth、noCache会被子路由继承，优先使用子路由的值
@@ -34,7 +36,7 @@
 
 先总结一下路由页面被缓存的条件：
 - 启用了多页签
-- `(route.name || route.meta.isDetailPage) && route.meta.noCache && !route.meta.iframe`
+- `(route.name || route.meta.usePathKey || route.meta.useFullPathKey) && !route.meta.noCache && !route.meta.iframe`
 
 通常情况路由想做缓存都是通过 `<keep-alive>`，但是如果是像 `/edit/1`、`/edit/2` 这样的共用路由页面的详情页的话，
 `<keep-alive>` 就满足不了需求，因为它是通过组件的 `name` 来区分组件的。
@@ -50,10 +52,10 @@ const routes = [
 ]
 ```
 先访问 `/foo`，然后将输入框的值改为100，再访问 `/bar` ，会发现输入框的值还是100。
-所以在 `router.beforeEach` 中做了判断，如果跳转前后的路由的 `meta.isDetailPage` 均为 `true` 的话，那么借助 `/redirect` 跳转一次，从而避免组件复用的问题
+所以在 `router.beforeEach` 中做了判断，如果跳转前后的路由的 `meta.commonModule` 相同的话，那么借助 `/redirect` 跳转一次，从而避免组件复用的问题
 
 ::: warning 注意
-如果不使用meta.isDetailPage的话，需要缓存的页面的 `name` 必须和路由的 `name` 一致
+如果使用 `name`，需要缓存的页面的 `name` 必须和路由的 `name` 一致
 :::
 
 ## 路由白名单
