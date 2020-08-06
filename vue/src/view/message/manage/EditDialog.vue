@@ -216,7 +216,7 @@ export default {
             elConfirm('确认撤回？')
                 .then(() => {
                     this.loading = true
-                    return withdraw({id: this.form.id})
+                    return withdraw({id: this.form.id, title: this.form.title})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
