@@ -111,12 +111,12 @@ public class ManageService {
         int rows = mapper.update(
                 null,
                 Wrappers.lambdaUpdate(Msg.class)
-                        .set(Msg::getStatus, msg.getStatus())
+                        .set(Msg::getStatus, MsgConstant.STATUS_WITHDREW)
                         .set(Msg::getWid, msg.getWid())
                         .set(Msg::getWname, msg.getWname())
                         .set(Msg::getWtime, msg.getWtime())
                         .eq(Msg::getId, msg.getId())
-                        .eq(Msg::getStatus, msg.getStatus())
+                        .eq(Msg::getStatus, MsgConstant.STATUS_PUBLISHED)
         );
         return rows > 0 ? Result.success("撤回成功", msg) : Result.fail("撤回失败，请刷新重试");
     }

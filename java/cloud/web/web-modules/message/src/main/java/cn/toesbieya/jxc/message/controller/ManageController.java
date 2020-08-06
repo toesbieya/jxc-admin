@@ -3,6 +3,7 @@ package cn.toesbieya.jxc.message.controller;
 import cn.toesbieya.jxc.common.model.entity.Msg;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
 import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.UserVo;
 import cn.toesbieya.jxc.message.constant.MsgConstant;
 import cn.toesbieya.jxc.message.model.vo.MsgSearch;
 import cn.toesbieya.jxc.message.service.ManageService;
@@ -69,11 +70,11 @@ public class ManageController {
     public Result withdraw(@RequestBody Msg msg) {
         if (msg.getId() == null) return Result.fail("参数错误");
 
-        SysUser user = SessionUtil.get();
+        UserVo user = SessionUtil.get();
+
         msg.setWid(user.getId());
         msg.setWname(user.getName());
         msg.setWtime(System.currentTimeMillis());
-        msg.setStatus(MsgConstant.STATUS_WITHDREW);
 
         return service.withdraw(msg);
     }

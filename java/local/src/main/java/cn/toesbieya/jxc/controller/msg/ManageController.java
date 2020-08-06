@@ -73,7 +73,6 @@ public class ManageController {
         msg.setWid(user.getId());
         msg.setWname(user.getName());
         msg.setWtime(System.currentTimeMillis());
-        msg.setStatus(MsgConstant.STATUS_WITHDREW);
 
         return service.withdraw(msg);
     }
