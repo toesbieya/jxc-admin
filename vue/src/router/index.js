@@ -6,9 +6,8 @@
 * 左侧菜单排序：能在左侧菜单中显示 && meta.sort，升序排列
 * 左侧菜单不折叠只有一个children的路由：meta.alwaysShow
 * 面包屑显示：meta.title || meta.dynamicTitle
-* 搜索选项显示：name && meta.title
-* tab栏显示：name && (meta.title || meta.dynamicTitle)
-* tab栏固定显示：meta.affix
+* tab栏显示：meta.title || meta.dynamicTitle
+* tab栏固定显示：meta.title && meta.affix
 * 页面不缓存：!name && !meta.usePathKey && !meta.useFullPathKey || meta.noCache
 * 打开iframe：meta.iframe，不会重复打开相同src的iframe
 * */

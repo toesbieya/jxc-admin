@@ -81,19 +81,19 @@ export default {
 
         filterAffixTags(routes) {
             const tags = []
-            routes.forEach(route => {
-                if (route.name && route.meta && route.meta.affix) {
+            routes.forEach(({name, fullPath, children, meta}) => {
+                if (meta && meta.title && meta.affix) {
                     tags.push({
                         //注意，此处的fullPath并不是$route.fullPath，而是路由树拼接后的全路径
-                        fullPath: route.fullPath,
-                        path: route.fullPath,
-                        name: route.name,
-                        meta: {...route.meta}
+                        fullPath,
+                        path: fullPath,
+                        name,
+                        meta: {...meta}
                     })
                 }
-                if (route.children) {
-                    const tempTags = this.filterAffixTags(route.children)
-                    tempTags.length > 0 && tags.push(...tempTags)
+                if (children) {
+                    const tempTags = this.filterAffixTags(children)
+                    tempTags.length && tags.push(...tempTags)
                 }
             })
             return tags
@@ -105,9 +105,9 @@ export default {
             }
         },
 
-        //将当前具有name属性的路由添加为tab页
+        //将当前具有title的路由添加为tab页
         addTags(to = this.$route) {
-            return to.name ? this.$store.dispatch('tagsView/addView', to) : Promise.resolve()
+            return to.meta.title ? this.$store.dispatch('tagsView/addView', to) : Promise.resolve()
         },
 
         //横向滚动条移动至当前tab
