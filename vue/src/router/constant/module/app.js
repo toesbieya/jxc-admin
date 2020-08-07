@@ -19,6 +19,12 @@ const router = [
                 meta: {title: '首页', affix: true, icon: 'home', sort: 0}
             },
             {
+                path: 'user',
+                name: 'userCenter',
+                component: lazyLoadView(import('@/view/userCenter')),
+                meta: {title: '个人中心', noCache: true, icon: 'user', hidden: true},
+            },
+            {
                 path: 'redirect/:path(.*)',
                 component: Redirect
             }
@@ -27,19 +33,6 @@ const router = [
     {
         path: 'https://doc.toesbieya.cn',
         meta: {title: '文档', icon: 'documentation', sort: 1}
-    },
-    {
-        path: '/user',
-        component: Layout,
-        redirect: '/user/index',
-        children: [
-            {
-                path: 'index',
-                name: 'userCenter',
-                component: lazyLoadView(import('@/view/userCenter')),
-                meta: {title: '个人中心', noCache: true, icon: 'user', hidden: true},
-            }
-        ]
     },
     {
         path: '/login',

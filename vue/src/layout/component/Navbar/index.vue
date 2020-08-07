@@ -27,7 +27,7 @@
                     <span class="hidden-xs">{{ name }}</span>
                 </div>
                 <el-dropdown-menu class="user-dropdown" slot="dropdown">
-                    <router-link to="/user/index">
+                    <router-link to="/user">
                         <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
                     </router-link>
                     <el-dropdown-item class="hidden-xs" icon="el-icon-guide" @click.native="()=>$guide(0,guideSteps)">
