@@ -4,10 +4,6 @@
 
 const steps = [
     {
-        element: '#header-search',
-        content: '这是搜索栏，可以根据关键字搜索菜单',
-    },
-    {
         element: '.setting-btn.navbar-item',
         content: '这是个性设置按钮，可以根据自己喜好进行一些设置',
     },

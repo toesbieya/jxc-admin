@@ -48,13 +48,12 @@
 </template>
 
 <script>
-import Hamburger from './component/Hamburger'
-import Breadcrumb from './component/Breadcrumb'
-import Search from './component/HeaderSearch'
-import Bell from "./component/Bell"
-import SettingDrawer from './component/SettingDrawer'
 import {mapState} from 'vuex'
 import GuideMixin from '@/mixin/guide'
+import Bell from "./component/Bell"
+import Breadcrumb from './component/Breadcrumb'
+import Hamburger from './component/Hamburger'
+import SettingDrawer from './component/SettingDrawer'
 import {auth} from "@/util/auth"
 import {elConfirm} from "@/util/message"
 
@@ -63,7 +62,7 @@ export default {
 
     mixins: [GuideMixin.navbar],
 
-    components: {Hamburger, Breadcrumb, Search, Bell, SettingDrawer},
+    components: {Hamburger, Breadcrumb, Bell, SettingDrawer},
 
     data() {
         return {
