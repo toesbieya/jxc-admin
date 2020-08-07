@@ -1,6 +1,6 @@
 import {PopupManager} from 'element-ui/lib/utils/popup'
 
-import PopperJS from 'popper.js'
+//import PopperJS from 'popper.js'
 //import * as PopperJS from '@popperjs/core'
 
 const POPPER_VERSION = 'v1'
