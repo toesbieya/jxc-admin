@@ -2,11 +2,11 @@
 import SidebarItemContent from './SidebarItemContent'
 
 function getOnlyChild(item) {
-    const children = item.children || []
+    const {children = [], meta: {alwaysShow} = {}} = item
 
-    if (children.length === 1) return item.alwaysShow ? null : children[0]
+    if (children.length === 1) return alwaysShow ? null : children[0]
 
-    if (children.length < 1) return {...item, path: undefined, children: undefined}
+    if (!children.length) return {...item, path: undefined, children: undefined}
 
     return null
 }

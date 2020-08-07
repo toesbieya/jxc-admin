@@ -5,8 +5,7 @@ import {lazyLoadView} from "@/router/util"
 const router = {
     path: '/system',
     component: Layout,
-    alwaysShow: true,
-    meta: {title: '系统管理', icon: 'system'},
+    meta: {title: '系统管理', icon: 'system', alwaysShow: true},
     children: [
         {
             path: 'department',
@@ -48,8 +47,7 @@ const router = {
             path: 'resource',
             name: 'resourceManagement',
             component: lazyLoadView(import('@/view/system/resource')),
-            hidden: true,
-            meta: {title: '接口设置'}
+            meta: {title: '接口设置', hidden: true}
         }
     ]
 }

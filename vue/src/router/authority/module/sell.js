@@ -5,8 +5,7 @@ import {lazyLoadView} from "@/router/util"
 const router = {
     path: '/doc/sell',
     component: Layout,
-    alwaysShow: true,
-    meta: {title: '销售管理', icon: 'sell'},
+    meta: {title: '销售管理', icon: 'sell', alwaysShow: true},
     children: [
         {
             path: 'order',
@@ -33,7 +32,7 @@ const router = {
                 },
                 activeMenu: '/doc/sell/order',
                 usePathKey: true,
-                commonModule:'@/view/sell/order/detail'
+                commonModule: '@/view/sell/order/detail'
             }
         },
         {

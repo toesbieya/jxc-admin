@@ -2,31 +2,26 @@
 
 ## 路由配置项
 
-路由配置项不光参与路由的生成，也参与侧边栏、搜索结果的生成。
-
-### Route Attributes：
-
-| 参数       | 说明                                                 | 类型                | 默认  |
-| :--------: | :--------------------------------------------------: | :-----------------: | :---: |
-| hidden     | 是否在侧边栏中显示                                   | `boolean`           | -     |
-| alwaysShow | 是否总是把只有一个子级的菜单以嵌套模式在侧边栏中展示 | `boolean`           | -     | 
-| sort       | 侧边栏的排序值，值越小越靠前                         | `number`            | 10000 | 
+路由配置项不光参与路由的生成，也参与侧边栏的生成。
 
 ### Route.meta Attributes：
 
-| 参数           | 说明                                             | 类型       | 默认                    |
-| :------------: | :----------------------------------------------: | :--------: | :---------------------: |
-| title          | 路由在侧边栏、面包屑、页签、搜索结果中的显示名称 | `string`   | -                       |
-| dynamicTitle   | 路由在面包屑、页签中的动态名称，参数为(to,from)  | `function` | -                       |
-| icon           | 图标名，支持svg-icon、el-icon                    | `string`   | -                       |
-| affix          | 是否在多页签中固定显示                           | `boolean`  | -                       |
-| noCache        | true时缓存页面                                   | `boolean`  | -                       |
-| activeMenu     | 侧边栏当前激活菜单的index                        | `string`   | -                       |
-| noAuth         | true时路由不需要鉴权                             | `boolean`  | router/constant下为true |
-| iframe         | 需要打开的iframe的地址                           | `string`   | -                       |
-| usePathKey     | 是否使用$route.path作为组件缓存的key             | `boolean`  | -                       |
-| useFullPathKey | 是否使用$route.fullPath作为组件缓存的key         | `boolean`  | -                       |
-| commonModule   | 共用组件的唯一标识                               | `any`      | -                       |
+| 参数           | 说明                                                 | 类型       | 默认                    |
+| :------------: | :--------------------------------------------------: | :--------: | :---------------------: |
+| title          | 路由在侧边栏、面包屑、页签、搜索结果中的显示名称     | `string`   | -                       |
+| dynamicTitle   | 路由在面包屑、页签中的动态名称，参数为(to,from)      | `function` | -                       |
+| hidden         | 是否在侧边栏中显示                                   | `boolean`  | -                       |
+| alwaysShow     | 是否总是把只有一个子级的菜单以嵌套模式在侧边栏中展示 | `boolean`  | -                       | 
+| sort           | 侧边栏的排序值，值越小越靠前                         | `number`   | 10000                   | 
+| icon           | 图标名，支持svg-icon、el-icon                        | `string`   | -                       |
+| affix          | 是否在多页签中固定显示                               | `boolean`  | -                       |
+| noCache        | true时缓存页面                                       | `boolean`  | -                       |
+| activeMenu     | 侧边栏当前激活菜单的index                            | `string`   | -                       |
+| noAuth         | true时路由不需要鉴权                                 | `boolean`  | router/constant下为true |
+| iframe         | 需要打开的iframe的地址                               | `string`   | -                       |
+| usePathKey     | 是否使用$route.path作为组件缓存的key                 | `boolean`  | -                       |
+| useFullPathKey | 是否使用$route.fullPath作为组件缓存的key             | `boolean`  | -                       |
+| commonModule   | 共用组件的唯一标识                                   | `any`      | -                       |
 
 ::: tip 注意
 路由meta上的affix、noAuth、noCache会被子路由继承，优先使用子路由的值

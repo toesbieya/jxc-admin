@@ -83,20 +83,22 @@ function transformOriginRoutes(routes) {
     return res
 }
 
-//删除不显示的路由(没有children且没有meta.title，左侧菜单需清除hidden=true)
+//删除不显示的路由(没有children且没有meta.title，左侧菜单需清除meta.hidden=true)
 function clean(routes, cleanHidden = true) {
     for (let i = routes.length - 1; i >= 0; i--) {
-        if (cleanHidden && routes[i].hidden) {
+        const {children, meta: {title, alwaysShow, hidden} = {}} = routes[i]
+
+        if (cleanHidden && hidden) {
             routes.splice(i, 1)
             continue
         }
-        if (!routes[i].children && (!routes[i].meta || !routes[i].meta.title)) {
+        if (!children && !title) {
             routes.splice(i, 1)
             continue
         }
-        if (routes[i].children) {
-            clean(routes[i].children, cleanHidden)
-            if (routes[i].children.length < 1 && routes[i].alwaysShow !== true) {
+        if (children) {
+            clean(children, cleanHidden)
+            if (children.length < 1 && !alwaysShow) {
                 routes.splice(i, 1)
             }
         }
@@ -158,17 +160,18 @@ function sort(routes, getSortValue = defaultGetSortValue) {
 }
 
 const defaultGetSortValue = item => {
-    item = deepTap(item)
-    return !item || isEmpty(item.sort) ? 10000 : item.sort
+    const {meta: {sort} = {}} = deepTap(item) || {}
+    return isEmpty(sort) ? 10000 : sort
 }
 
 const deepTap = item => {
-    if (item.hidden) return null
-    if (!isEmpty(item.sort)) return item
-    if (isEmpty(item.name, item.meta.title)) {
+    const {name, children, meta: {title, hidden, sort} = {}} = item
+    if (hidden) return null
+    if (!isEmpty(sort)) return item
+    if (isEmpty(name, title)) {
         //如果是类似首页那样的路由层级
-        if (item.children && item.children.length === 1) {
-            return deepTap(item.children[0])
+        if (children && children.length === 1) {
+            return deepTap(children[0])
         }
     }
     return null

@@ -5,8 +5,7 @@ import {lazyLoadView} from "@/router/util"
 const router = {
     path: '/stock',
     component: Layout,
-    alwaysShow: true,
-    meta: {title: '库存管理', icon: 'stock'},
+    meta: {title: '库存管理', icon: 'stock', alwaysShow: true},
     children: [
         {
             path: 'current',

@@ -2,9 +2,9 @@
 * 路由配置
 *
 * 需要鉴权的路由：!meta.noAuth
-* 左侧菜单显示：name && !hidden && meta.title
-* 左侧菜单排序：能在左侧菜单中显示 && sort，升序排列
-* 左侧菜单不折叠只有一个children的路由：alwaysShow
+* 左侧菜单显示：name && !meta.hidden && meta.title
+* 左侧菜单排序：能在左侧菜单中显示 && meta.sort，升序排列
+* 左侧菜单不折叠只有一个children的路由：meta.alwaysShow
 * 面包屑显示：meta.title || meta.dynamicTitle
 * 搜索选项显示：name && meta.title
 * tab栏显示：name && (meta.title || meta.dynamicTitle)
@@ -37,7 +37,7 @@ NProgress.configure({showSpinner: false})
 metaExtend(constantRoutes)
 metaExtend(authorityRoutes)
 
-const endRoute = [{path: '*', redirect: '/404', hidden: true}]
+const endRoute = [{path: '*', redirect: '/404', meta: {hidden: true}}]
 
 const whiteList = transformWhiteList(['/login', '/register', '/404', '/403'])
 
