@@ -46,7 +46,7 @@ const actions = {
             commit('prepareLogout', 'yes')
             logout(state.token)
                 .then(() => {
-                    commit('resource/hasInitRoutes', false, {root: true})
+                    commit('resource/setInit', false, {root: true})
                     return Promise.all([
                         dispatch('socket/close', null, {root: true}),
                         dispatch('removeUser'),

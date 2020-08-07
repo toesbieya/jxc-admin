@@ -5,21 +5,20 @@
                 ref="tag"
                 v-for="tag in visitedViews"
                 :key="tag.path"
-                :class="{active:isActive(tag)}"
-                class="tags-view-item"
+                :class="{'tags-view-item': true, active: isActive(tag)}"
                 :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
                 tag="div"
-                @contextmenu.prevent.native="e=>openMenu(tag,e)"
-                @dblclick.prevent.native="()=>closeSelectedTag(tag)"
+                @contextmenu.prevent.native="e => openMenu(tag, e)"
+                @dblclick.prevent.native="() => closeSelectedTag(tag)"
             >
                 {{ tag.title }}
-                <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="()=>closeSelectedTag(tag)"/>
+                <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="() => closeSelectedTag(tag)"/>
             </router-link>
         </scroll-pane>
 
         <context-menu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
-            <context-menu-item @click="refreshSelectedTag(selectedTag)">刷新</context-menu-item>
-            <context-menu-item v-show="!isAffix(selectedTag)" @click="()=>closeSelectedTag(selectedTag)">
+            <context-menu-item @click="() => refreshSelectedTag(selectedTag)">刷新</context-menu-item>
+            <context-menu-item v-show="!isAffix(selectedTag)" @click="() => closeSelectedTag(selectedTag)">
                 关闭
             </context-menu-item>
             <context-menu-item @click="closeOthersTags">关闭其他</context-menu-item>
@@ -57,7 +56,6 @@ export default {
         visitedViews() {
             return this.$store.state.tagsView.visitedViews
         },
-
         routes() {
             return this.$store.state.resource.routes
         }
@@ -68,7 +66,6 @@ export default {
             this.decideRouteTransition && this.decideRouteTransition(to, from)
             this.addTags(to).then(() => this.moveToCurrentTag())
         },
-
         'contextmenu.show'(v) {
             this.$emit('menu-show', v)
         }
@@ -87,7 +84,7 @@ export default {
             routes.forEach(route => {
                 if (route.name && route.meta && route.meta.affix) {
                     tags.push({
-                        //注意，此处的fullPath并不是$route.fullPath
+                        //注意，此处的fullPath并不是$route.fullPath，而是路由树拼接后的全路径
                         fullPath: route.fullPath,
                         path: route.fullPath,
                         name: route.name,
@@ -103,7 +100,7 @@ export default {
         },
         initTags() {
             this.affixTags = this.filterAffixTags(this.routes)
-            for (let tag of this.affixTags) {
+            for (const tag of this.affixTags) {
                 this.$store.commit('tagsView/addVisitedView', tag)
             }
         },
@@ -117,8 +114,7 @@ export default {
         moveToCurrentTag() {
             this.$nextTick(() => {
                 const tag = this.$refs.tag.find(i => i.to.path === this.$route.path)
-                if (!tag) return
-                this.$refs.scrollPane.moveToTarget(tag)
+                tag && this.$refs.scrollPane.moveToTarget(tag)
             })
         },
 
@@ -165,9 +161,9 @@ export default {
             const left = e.clientX - offsetLeft + 15 // 15: margin right
 
             this.contextmenu.left = left > maxLeft ? maxLeft : left
-
             this.contextmenu.top = e.clientY
             this.contextmenu.show = true
+
             this.selectedTag = tag
         }
     },

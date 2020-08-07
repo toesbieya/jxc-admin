@@ -2,7 +2,7 @@ import store from '@/store'
 
 export function needAuth(route) {
     if (route.path.startsWith('/redirect')) return false
-    return !(route.meta && (!('noAuth' in route) || route.meta.noAuth))
+    return !route.meta || !route.meta.noAuth
 }
 
 export function auth(path) {

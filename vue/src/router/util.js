@@ -59,7 +59,7 @@ export function needExtraRedirect(to, from) {
 
 //初始化菜单和权限
 export function initMenuAndResource() {
-    if (!store.state.resource.hasInitRoutes) {
+    if (!store.state.resource.init) {
         return store.dispatch('resource/init', store.state.user)
     }
     return Promise.resolve()

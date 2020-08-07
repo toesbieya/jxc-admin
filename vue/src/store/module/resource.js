@@ -17,7 +17,7 @@ const state = {
     sidebarMenus: [],
     dataMap: {},
     tree: [],
-    hasInitRoutes: false
+    init: false
 }
 
 const mutations = {
@@ -42,8 +42,8 @@ const mutations = {
         }, {})
         state.tree = createTree(data.filter(resource => resource.admin === false))
     },
-    hasInitRoutes(state, sign) {
-        state.hasInitRoutes = sign
+    setInit(state, sign) {
+        state.init = sign
     }
 }
 
@@ -59,7 +59,7 @@ const actions = {
         return new Promise(resolve => {
             const accessedRoutes = getAuthorizedRoutes({resources, admin})
             commit('routes', accessedRoutes)
-            commit('hasInitRoutes', true)
+            commit('setInit', true)
             resolve()
         })
     },
@@ -77,9 +77,7 @@ const actions = {
 //在原始路由数组基础上添加全路径
 function transformOriginRoutes(routes) {
     const res = JSON.parse(JSON.stringify(routes))
-
     addFullPath(res)
-
     return res
 }
 
@@ -108,7 +106,7 @@ function clean(routes, cleanHidden = true) {
 //路由添加全路径
 function addFullPath(routes, basePath = '/') {
     routes.forEach(route => {
-        delete route.components
+        delete route.component
         route.fullPath = isExternal(route.path) ? route.path : path.resolve(basePath, route.path)
         route.children && addFullPath(route.children, route.fullPath)
     })
@@ -118,52 +116,47 @@ function addFullPath(routes, basePath = '/') {
 function getAuthorizedRoutes({resources, admin}) {
     if (admin === true) return finalAuthorityRoutes
     if (!resources) return []
-    const arr = JSON.parse(JSON.stringify(finalAuthorityRoutes))
-    filter(arr, i => !needAuth(i) || i.fullPath in resources)
-    return arr
+    filter(finalAuthorityRoutes, i => !needAuth(i) || i.fullPath in resources)
+    return finalAuthorityRoutes
 }
 
 //若没有children且未通过，则删除，若有，当children长度为0时删除
 function filter(arr, fun) {
-    for (let i = 0; i < arr.length; i++) {
-        if (!arr[i].children && !fun(arr[i])) {
-            arr.splice(i, 1)
-            i--
+    for (let i = arr.length - 1; i >= 0; i--) {
+        const {children} = arr[i]
+
+        if (!children) {
+            !fun(arr[i]) && arr.splice(i, 1)
             continue
         }
 
-        if (!arr[i].children) continue
+        filter(children, fun)
 
-        filter(arr[i].children, fun)
-
-        if (arr[i].children.length <= 0) {
-            arr.splice(i, 1)
-            i--
-        }
+        children.length <= 0 && arr.splice(i, 1)
     }
 }
 
 //菜单排序
-function sort(routes, getSortValue = defaultGetSortValue) {
+function sort(routes) {
     routes.sort((pre, next) => {
-        const preSort = getSortValue(pre),
-            nextSort = getSortValue(next)
-        if (preSort < nextSort) return -1
-        else if (preSort === nextSort) return 0
+        pre = getSortValue(pre)
+        next = getSortValue(next)
+        if (pre < next) return -1
+        else if (pre === next) return 0
         else return 1
     })
     routes.forEach(route => {
-        if (route.children && route.children.length > 1) {
-            sort(route.children, getSortValue)
+        const {children} = route
+        if (children && children.length) {
+            sort(children)
         }
     })
 }
 
-const defaultGetSortValue = item => {
+const getSortValue = item => {
     const {meta: {sort} = {}} = deepTap(item) || {}
     return isEmpty(sort) ? 10000 : sort
 }
-
 const deepTap = item => {
     const {name, children, meta: {title, hidden, sort} = {}} = item
     if (hidden) return null
