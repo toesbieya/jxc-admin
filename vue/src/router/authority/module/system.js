@@ -42,12 +42,6 @@ const router = {
             name: 'supplierManagement',
             component: lazyLoadView(import('@/view/system/supplier')),
             meta: {title: '供应商管理'}
-        },
-        {
-            path: 'resource',
-            name: 'resourceManagement',
-            component: lazyLoadView(import('@/view/system/resource')),
-            meta: {title: '接口设置', hidden: true}
         }
     ]
 }

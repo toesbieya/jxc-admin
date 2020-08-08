@@ -12,30 +12,35 @@ export function setPageTitle(route) {
 
 //确定路由的标题
 export function specifyRouteTitle(to, from) {
-    if (typeof to.meta.dynamicTitle === 'function') {
-        to.meta.title = to.meta.dynamicTitle(to, from)
+    const {meta} = to
+    if (typeof meta.dynamicTitle === 'function') {
+        meta.title = meta.dynamicTitle(to, from)
     }
 }
 
 //将给定的白名单url转换为正则
 export function transformWhiteList(list) {
-    return list.map(url => pathToRegexp(url))
+    return list.map(pathToRegexp)
 }
 
-//子路由继承父路由meta上的{affix,noAuth,noCache}，优先使用子路由的值
-export function metaExtend(routes, meta) {
+//子路由继承父路由meta上的{noAuth,noCache}，优先使用子路由的值
+export function metaExtend(routes, parentMeta) {
+    const keys = ['noAuth', 'noCache']
     routes.forEach(route => {
-        if (meta) {
-            const keys = ['affix', 'noAuth', 'noCache']
-            Object.keys(meta).forEach(key => {
-                if (keys.includes(key) && !isEmpty(meta[key]) && isEmpty(route.meta[key])) {
-                    route.meta[key] = meta[key]
+        if (parentMeta) {
+            Object.keys(parentMeta).forEach(key => {
+                const value = parentMeta[key]
+                if (keys.includes(key) && !isEmpty(value)) {
+                    if (!route.meta) {
+                        route.meta = {[key]: value}
+                    }
+                    else if (isEmpty(route.meta[key])) {
+                        route.meta[key] = value
+                    }
                 }
             })
         }
-        if (route.children) {
-            metaExtend(route.children, route.meta)
-        }
+        route.children && metaExtend(route.children, route.meta)
     })
 }
 

@@ -33,9 +33,6 @@
                     <el-dropdown-item class="hidden-xs" icon="el-icon-guide" @click.native="()=>$guide(0,guideSteps)">
                         新手指引
                     </el-dropdown-item>
-                    <router-link v-if="showSystemResource" to="/system/resource">
-                        <el-dropdown-item icon="el-icon-setting">接口设置</el-dropdown-item>
-                    </router-link>
                     <el-dropdown-item divided icon="el-icon-switch-button" @click.native="logout">
                         退出登录
                     </el-dropdown-item>
@@ -73,11 +70,7 @@ export default {
     computed: {
         ...mapState('user', ['avatar', 'name', 'prepareLogout']),
 
-        ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb']),
-
-        showSystemResource() {
-            return auth('/system/resource')
-        }
+        ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb'])
     },
 
     methods: {

@@ -23,16 +23,23 @@ const router = [
                 name: 'userCenter',
                 component: lazyLoadView(import('@/view/userCenter')),
                 meta: {title: '个人中心', noCache: true, icon: 'user', hidden: true},
-            },
-            {
-                path: 'redirect/:path(.*)',
-                component: Redirect
             }
         ]
     },
     {
         path: 'https://doc.toesbieya.cn',
         meta: {title: '文档', icon: 'documentation', sort: 1}
+    },
+    {
+        path: '/redirect',
+        component: Layout,
+        children: [
+            {
+                path: ':path(.*)',
+                props: true,
+                component: Redirect
+            }
+        ]
     },
     {
         path: '/login',

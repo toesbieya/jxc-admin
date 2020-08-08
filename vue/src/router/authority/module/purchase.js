@@ -15,7 +15,6 @@ const router = {
         },
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
-            name: 'purchaseOrderDetail',
             props: true,
             component: lazyLoadView(import('@/view/purchase/order/detail')),
             meta: {
@@ -43,7 +42,6 @@ const router = {
         },
         {
             path: 'inbound/detail/:type(see|add|edit)/:id?',
-            name: 'purchaseInboundDetail',
             props: true,
             component: lazyLoadView(import('@/view/purchase/inbound/detail')),
             meta: {

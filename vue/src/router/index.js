@@ -36,7 +36,7 @@ NProgress.configure({showSpinner: false})
 metaExtend(constantRoutes)
 metaExtend(authorityRoutes)
 
-const endRoute = [{path: '*', redirect: '/404', meta: {hidden: true}}]
+const endRoute = [{path: '*', redirect: '/404'}]
 
 const whiteList = transformWhiteList(['/login', '/register', '/404', '/403'])
 
