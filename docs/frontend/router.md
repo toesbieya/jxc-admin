@@ -24,7 +24,7 @@
 | commonModule   | 共用组件的唯一标识                                   | `any`      | -                       |
 
 ::: tip 注意
-路由meta上的affix、noAuth、noCache会被子路由继承，优先使用子路由的值
+路由meta上的noAuth、noCache会被子路由继承，优先使用子路由的值
 :::
 
 ## 页面缓存
