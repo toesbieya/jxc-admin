@@ -1,6 +1,5 @@
 package cn.toesbieya.jxc.config;
 
-import cn.toesbieya.jxc.interceptor.RateControlInterceptor;
 import cn.toesbieya.jxc.interceptor.SecurityInterceptor;
 import cn.toesbieya.jxc.interceptor.UserActionInterceptor;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
@@ -40,7 +39,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         String[] exclude = {"/test/**", "/account/login", "/account/logout", "/account/register", "/account/checkName", "/error"};
         addInterceptor(registry, new SecurityInterceptor(), exclude);
-        addInterceptor(registry, new RateControlInterceptor(), exclude);
         addInterceptor(registry, new UserActionInterceptor(), exclude);
     }
 

@@ -1,9 +1,10 @@
 package cn.toesbieya.jxc.controller.sys;
 
-import cn.toesbieya.jxc.model.entity.SysResource;
-import cn.toesbieya.jxc.service.sys.SysResourceService;
 import cn.toesbieya.jxc.model.vo.Result;
-import org.springframework.web.bind.annotation.*;
+import cn.toesbieya.jxc.service.sys.SysResourceService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -16,15 +17,5 @@ public class ResourceController {
     @GetMapping("getAll")
     public Result getAll() {
         return Result.success(service.getAll());
-    }
-
-    @PostMapping("update")
-    public Result update(@RequestBody SysResource resource) {
-        if (resource.getId() == null
-                || resource.getTotalRate() == null
-                || resource.getIpRate() == null) {
-            return Result.fail("参数错误");
-        }
-        return service.update(resource);
     }
 }

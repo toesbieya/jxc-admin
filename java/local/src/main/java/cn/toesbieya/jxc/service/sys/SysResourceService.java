@@ -4,8 +4,6 @@ import cn.toesbieya.jxc.mapper.SysResourceMapper;
 import cn.toesbieya.jxc.model.entity.SysResource;
 import cn.toesbieya.jxc.model.entity.SysRole;
 import cn.toesbieya.jxc.model.vo.ResourceVo;
-import cn.toesbieya.jxc.model.vo.Result;
-import cn.toesbieya.jxc.module.request.RequestModule;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,14 +42,6 @@ public class SysResourceService {
         );
 
         return completeNode(list);
-    }
-
-    public Result update(SysResource resource) {
-        int rows = mapper.updateById(resource);
-        if (rows > 0) {
-            RequestModule.updateRate(resource.getUrl(), resource.getTotalRate(), resource.getIpRate());
-        }
-        return Result.success("修改成功");
     }
 
     private List<ResourceVo> completeNode(List<SysResource> list) {
