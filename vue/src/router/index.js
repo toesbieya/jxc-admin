@@ -15,15 +15,13 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import NProgress from 'nprogress'
 import {contextPath, routerMode} from '@/config'
-import constantRoutes from '@/router/constant'
-import authorityRoutes from '@/router/authority'
+import defaultRoutes, {dynamicRoutes} from '@/router/define'
 import {auth, needAuth} from "@/util/auth"
 import {isUserExist} from "@/util/storage"
 import {
     setPageTitle,
     specifyRouteTitle,
     transformWhiteList,
-    metaExtend,
     needExtraRedirect,
     initMenuAndResource,
     iframeControl
@@ -33,9 +31,6 @@ Vue.use(Router)
 
 NProgress.configure({showSpinner: false})
 
-metaExtend(constantRoutes)
-metaExtend(authorityRoutes)
-
 const endRoute = [{path: '*', redirect: '/404'}]
 
 const whiteList = transformWhiteList(['/login', '/register', '/404', '/403'])
@@ -44,7 +39,7 @@ const router = new Router({
     base: contextPath,
     mode: routerMode,
     scrollBehavior: () => ({y: 0}),
-    routes: constantRoutes.concat(authorityRoutes, endRoute)
+    routes: defaultRoutes.concat(dynamicRoutes, endRoute)
 })
 
 router.beforeEach(async (to, from, next) => {

@@ -5,7 +5,7 @@ import {lazyLoadView} from "@/router/util"
 const router = {
     path: '/example',
     component: Layout,
-    meta: {title: '演示用例', icon: 'show', noCache: true},
+    meta: {title: '演示用例', icon: 'show', noAuth: true, noCache: true},
     children: [
         {
             path: 'stylePage',

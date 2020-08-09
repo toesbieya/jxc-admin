@@ -7,13 +7,13 @@
         </div>
         <el-tabs type="border-card">
             <el-tab-pane label="svg-icons">
-                <div :key="item" class="icon-item" v-for="item of svgIcons">
+                <div v-for="item of svgIcons" :key="item" class="icon-item">
                     <svg-icon :icon="item"/>
                     <span>{{ item }}</span>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="element-icons">
-                <div :key="item" class="icon-item" v-for="item of elementIcons">
+                <div v-for="item of elementIcons" :key="item" class="icon-item">
                     <i :class="item"/>
                     <span>{{ item.replace('el-icon-', '') }}</span>
                 </div>
@@ -28,20 +28,8 @@ import elementIcons from './element-icon'
 
 export default {
     name: "icons",
-    data() {
-        return {
-            svgIcons,
-            elementIcons
-        }
-    },
-    methods: {
-        generateIconCode(symbol) {
-            return `<svg-icon icon="${symbol}" />`
-        },
-        generateElementIconCode(symbol) {
-            return `<i class="${symbol}" />`
-        },
-    }
+
+    data: () => ({svgIcons, elementIcons})
 }
 </script>
 

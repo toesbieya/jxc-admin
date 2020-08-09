@@ -1,16 +1,13 @@
 import path from 'path'
-import constantRoutes from '@/router/constant'
-import authorityRoutes from '@/router/authority'
+import {dynamicRoutes} from '@/router/define'
 import {needAuth} from "@/util/auth"
 import {createTree} from "@/util/tree"
 import {getAllResources} from "@/api/system/resource"
 import {isEmpty} from "@/util"
 import {isExternal} from "@/util/validate"
 
-const finalConstantRoutes = transformOriginRoutes(constantRoutes)
-const finalAuthorityRoutes = transformOriginRoutes(authorityRoutes)
-clean(finalConstantRoutes, false)
-clean(finalAuthorityRoutes, false)
+const finalRoutes = transformOriginRoutes(dynamicRoutes)
+clean(finalRoutes, false)
 
 const state = {
     routes: [],
@@ -22,15 +19,10 @@ const state = {
 
 const mutations = {
     routes(state, routes) {
-        const tempConstantRoutes = JSON.parse(JSON.stringify(finalConstantRoutes))
-        const tempAuthorityRoutes = JSON.parse(JSON.stringify(routes))
+        clean(routes)
+        state.routes = routes
 
-        clean(tempConstantRoutes)
-        clean(tempAuthorityRoutes)
-
-        state.routes = finalConstantRoutes.concat(routes)
-
-        const sidebarMenus = tempConstantRoutes.concat(tempAuthorityRoutes)
+        const sidebarMenus = routes
         sort(sidebarMenus)
         state.sidebarMenus = sidebarMenus
     },
@@ -114,10 +106,10 @@ function addFullPath(routes, basePath = '/') {
 
 //获取经过权限控制后的路由
 function getAuthorizedRoutes({resources, admin}) {
-    if (admin === true) return finalAuthorityRoutes
+    if (admin === true) return finalRoutes
     if (!resources) return []
-    filter(finalAuthorityRoutes, i => !needAuth(i) || i.fullPath in resources)
-    return finalAuthorityRoutes
+    filter(finalRoutes, i => !needAuth(i) || i.fullPath in resources)
+    return finalRoutes
 }
 
 //若没有children且未通过，则删除，若有，当children长度为0时删除
