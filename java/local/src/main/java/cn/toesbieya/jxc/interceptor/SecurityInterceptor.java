@@ -32,6 +32,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         }
 
         ThreadUtil.setUser(user);
+        ThreadUtil.quicklySetAction(request);
 
         return true;
     }
