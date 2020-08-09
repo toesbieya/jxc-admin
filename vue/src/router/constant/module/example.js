@@ -9,12 +9,12 @@ const router = {
     children: [
         {
             path: 'stylePage',
-            component: lazyLoadView(import('@/view/example/stylePage')),
+            component: lazyLoadView('example/style'),
             meta: {title: '样 式'}
         },
         {
             path: 'icon',
-            component: lazyLoadView(import('@/view/example/icon/indexPage')),
+            component: lazyLoadView('example/icon/'),
             meta: {title: '图 标'}
         },
         {
@@ -28,12 +28,12 @@ const router = {
             children: [
                 {
                     path: 'fluid',
-                    component: lazyLoadView(import('@/view/example/cool/fluidPage')),
+                    component: lazyLoadView('example/cool/fluid'),
                     meta: {title: '流体动画'}
                 },
                 {
                     path: 'l2d',
-                    component: lazyLoadView(import('@/view/example/cool/l2dPage')),
+                    component: lazyLoadView('example/cool/l2d'),
                     meta: {title: '看板娘'}
                 },
             ]
@@ -45,44 +45,44 @@ const router = {
             children: [
                 {
                     path: 'uploadExample',
-                    component: lazyLoadView(import('@/view/example/component/uploadPage')),
+                    component: lazyLoadView('example/component/upload'),
                     meta: {title: '上传文件'}
                 },
                 {
                     path: 'skeletonExample',
-                    component: lazyLoadView(import('@/view/example/component/skeletonPage')),
+                    component: lazyLoadView('example/component/skeleton'),
                     meta: {title: '骨架屏'}
                 },
                 {
                     path: 'rippleExample',
-                    component: lazyLoadView(import('@/view/example/component/ripplePage')),
+                    component: lazyLoadView('example/component/ripple'),
                     meta: {title: '波纹'}
                 },
                 {
                     path: 'signatureExample',
-                    component: lazyLoadView(import('@/view/example/component/signaturePage')),
+                    component: lazyLoadView('example/component/signature'),
                     meta: {title: '手写签名'}
                 },
                 {
                     path: 'regionSelectorExample',
-                    component: lazyLoadView(import('@/view/example/component/regionSelectorPage')),
+                    component: lazyLoadView('example/component/regionSelector'),
                     meta: {title: '行政区划选择'}
                 },
                 {
                     path: 'treeSelectExample',
-                    component: lazyLoadView(import('@/view/example/component/treeSelectPage')),
+                    component: lazyLoadView('example/component/treeSelect'),
                     meta: {title: '树选择'}
                 }
             ]
         },
         {
             path: 'developingTest',
-            component: lazyLoadView(import('@/view/example/developingTest/indexPage')),
+            component: lazyLoadView('example/developingTest/'),
             meta: {title: '开发测试'}
         },
         {
             path: 'detailPage1',
-            component: lazyLoadView(import('@/view/example/detailPage')),
+            component: lazyLoadView('example/detail'),
             meta: {
                 title: '详情页缓存1',
                 usePathKey: true,
@@ -91,7 +91,7 @@ const router = {
         },
         {
             path: 'detailPage2',
-            component: lazyLoadView(import('@/view/example/detailPage')),
+            component: lazyLoadView('example/detail'),
             meta: {
                 title: '详情页缓存2',
                 usePathKey: true,

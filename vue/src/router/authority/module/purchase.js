@@ -10,13 +10,13 @@ const router = {
         {
             path: 'order',
             name: 'purchaseOrder',
-            component: lazyLoadView(import('@/view/purchase/order/indexPage')),
+            component: lazyLoadView('purchase/order/'),
             meta: {title: '采购订单'}
         },
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
             props: true,
-            component: lazyLoadView(import('@/view/purchase/order/detailPage')),
+            component: lazyLoadView('purchase/order/detail'),
             meta: {
                 dynamicTitle(to) {
                     const {type, id} = to.params
@@ -37,13 +37,13 @@ const router = {
         {
             path: 'inbound',
             name: 'purchaseInbound',
-            component: lazyLoadView(import('@/view/purchase/inbound/indexPage')),
+            component: lazyLoadView('purchase/inbound/'),
             meta: {title: '采购入库'}
         },
         {
             path: 'inbound/detail/:type(see|add|edit)/:id?',
             props: true,
-            component: lazyLoadView(import('@/view/purchase/inbound/detailPage')),
+            component: lazyLoadView('purchase/inbound/detail'),
             meta: {
                 dynamicTitle(to) {
                     const {type, id} = to.params

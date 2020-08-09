@@ -14,14 +14,14 @@ const router = [
         children: [
             {
                 path: 'index',
-                component: lazyLoadView(import('@/view/index/indexPage')),
+                component: lazyLoadView('index/'),
                 name: 'index',
                 meta: {title: '首页', affix: true, icon: 'home', sort: 0}
             },
             {
                 path: 'user',
                 name: 'userCenter',
-                component: lazyLoadView(import('@/view/userCenter/indexPage')),
+                component: lazyLoadView('userCenter/'),
                 meta: {title: '个人中心', noCache: true, icon: 'user', hidden: true},
             }
         ]

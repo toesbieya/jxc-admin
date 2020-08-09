@@ -10,13 +10,13 @@ const router = {
         {
             path: 'manage',
             name: 'messageManagement',
-            component: lazyLoadView(import('@/view/message/manage/indexPage')),
+            component: lazyLoadView('message/manage/'),
             meta: {title: '消息管理'}
         },
         {
             path: 'user',
             name: 'userMessage',
-            component: lazyLoadView(import('@/view/message/user/indexPage')),
+            component: lazyLoadView('message/user/'),
             meta: {title: '个人消息', noAuth: true, noCache: true}
         }
     ]

@@ -45,8 +45,11 @@ export function metaExtend(routes, parentMeta) {
 }
 
 //路由页面懒加载
-export function lazyLoadView(component) {
-    const AsyncHandler = () => ({component, loading: PageSkeleton})
+export function lazyLoadView(path) {
+    if (path.endsWith('/')) path += 'index'
+    else path = path.replace('Page.vue', '')
+
+    const AsyncHandler = () => ({component: import(`@/view/${path}Page.vue`), loading: PageSkeleton})
     return () => Promise.resolve({
         functional: true,
         render(h, {data, children}) {
