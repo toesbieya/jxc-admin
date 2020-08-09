@@ -154,18 +154,16 @@ function sort(routes) {
 }
 
 const getSortValue = item => {
-    const {meta: {sort} = {}} = deepTap(item) || {}
+    const sort = deepTap(item)
     return isEmpty(sort) ? 10000 : sort
 }
 const deepTap = item => {
-    const {name, children, meta: {title, hidden, sort} = {}} = item
+    const {name, children = [], meta: {title, hidden, sort} = {}} = item
     if (hidden) return null
-    if (!isEmpty(sort)) return item
-    if (isEmpty(name, title)) {
-        //如果是类似首页那样的路由层级
-        if (children && children.length === 1) {
-            return deepTap(children[0])
-        }
+    if (!isEmpty(sort)) return sort
+    //如果是类似首页那样的路由层级
+    if (isEmpty(name, title) && children.length === 1) {
+        return deepTap(children[0])
     }
     return null
 }

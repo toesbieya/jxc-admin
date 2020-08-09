@@ -10,13 +10,13 @@ const router = {
         {
             path: 'order',
             name: 'sellOrder',
-            component: lazyLoadView(import('@/view/sell/order')),
+            component: lazyLoadView(import('@/view/sell/order/indexPage')),
             meta: {title: '销售订单'}
         },
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
             props: true,
-            component: lazyLoadView(import('@/view/sell/order/detail')),
+            component: lazyLoadView(import('@/view/sell/order/detailPage')),
             meta: {
                 dynamicTitle(to) {
                     const {type, id} = to.params
@@ -37,13 +37,13 @@ const router = {
         {
             path: 'outbound',
             name: 'sellOutbound',
-            component: lazyLoadView(import('@/view/sell/outbound')),
+            component: lazyLoadView(import('@/view/sell/outbound/indexPage')),
             meta: {title: '销售出库'}
         },
         {
             path: 'outbound/detail/:type(see|add|edit)/:id?',
             props: true,
-            component: lazyLoadView(import('@/view/sell/outbound/detail')),
+            component: lazyLoadView(import('@/view/sell/outbound/detailPage')),
             meta: {
                 dynamicTitle(to) {
                     const {type, id} = to.params

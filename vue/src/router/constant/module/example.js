@@ -14,7 +14,7 @@ const router = {
         },
         {
             path: 'icon',
-            component: lazyLoadView(import('@/view/example/icon')),
+            component: lazyLoadView(import('@/view/example/icon/indexPage')),
             meta: {title: '图 标'}
         },
         {
@@ -28,12 +28,12 @@ const router = {
             children: [
                 {
                     path: 'fluid',
-                    component: lazyLoadView(import('@/view/example/cool/fluid')),
+                    component: lazyLoadView(import('@/view/example/cool/fluidPage')),
                     meta: {title: '流体动画'}
                 },
                 {
                     path: 'l2d',
-                    component: lazyLoadView(import('@/view/example/cool/l2d')),
+                    component: lazyLoadView(import('@/view/example/cool/l2dPage')),
                     meta: {title: '看板娘'}
                 },
             ]
@@ -45,39 +45,39 @@ const router = {
             children: [
                 {
                     path: 'uploadExample',
-                    component: lazyLoadView(import('@/view/example/component/uploadExample')),
+                    component: lazyLoadView(import('@/view/example/component/uploadPage')),
                     meta: {title: '上传文件'}
                 },
                 {
                     path: 'skeletonExample',
-                    component: lazyLoadView(import('@/view/example/component/skeletonExample')),
+                    component: lazyLoadView(import('@/view/example/component/skeletonPage')),
                     meta: {title: '骨架屏'}
                 },
                 {
                     path: 'rippleExample',
-                    component: lazyLoadView(import('@/view/example/component/rippleExample')),
+                    component: lazyLoadView(import('@/view/example/component/ripplePage')),
                     meta: {title: '波纹'}
                 },
                 {
                     path: 'signatureExample',
-                    component: lazyLoadView(import('@/view/example/component/signatureExample')),
+                    component: lazyLoadView(import('@/view/example/component/signaturePage')),
                     meta: {title: '手写签名'}
                 },
                 {
                     path: 'regionSelectorExample',
-                    component: lazyLoadView(import('@/view/example/component/regionSelectorExample')),
+                    component: lazyLoadView(import('@/view/example/component/regionSelectorPage')),
                     meta: {title: '行政区划选择'}
                 },
                 {
                     path: 'treeSelectExample',
-                    component: lazyLoadView(import('@/view/example/component/treeSelectExample')),
+                    component: lazyLoadView(import('@/view/example/component/treeSelectPage')),
                     meta: {title: '树选择'}
                 }
             ]
         },
         {
             path: 'developingTest',
-            component: lazyLoadView(import('@/view/example/developingTest')),
+            component: lazyLoadView(import('@/view/example/developingTest/indexPage')),
             meta: {title: '开发测试'}
         },
         {

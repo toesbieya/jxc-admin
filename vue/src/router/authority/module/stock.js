@@ -10,7 +10,7 @@ const router = {
         {
             path: 'current',
             name: 'currentStock',
-            component: lazyLoadView(import('@/view/stock/current')),
+            component: lazyLoadView(import('@/view/stock/current/indexPage')),
             meta: {title: '当前库存'}
         }
     ]
