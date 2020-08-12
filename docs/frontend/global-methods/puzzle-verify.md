@@ -5,7 +5,7 @@
 ### 使用：
 
 ```js
-this.$puzzleVerify().then(...).catch(...)
+this.$verify().then(...).catch(...)
 ```
 
 返回一个 `promise`，如果验证失败会 `reject`，否则 `resolve`

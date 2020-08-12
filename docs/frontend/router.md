@@ -1,19 +1,74 @@
 # 路由
 
+项目中默认使用了静态路由，要使用动态路由的话需要打开 `@/config` 中的 `useBackendRoute` 选项。
+
+本项目不支持二级以上的路由，虽然路由配置可以无限级，但是实际上是二级路由的效果，因为在处理路由
+数据时会将二级以上的路由缩减为其叶子节点，也就是说如果有如下路由：
+```js
+const routes = [
+    {
+        path: '/a',
+        component:A,
+        children: [
+            {
+                path: 'b',
+                component:B,
+                children: [
+                    {
+                        path: 'c',
+                        component:C
+                    },
+                    {
+                        path: 'd',
+                        component:D,
+                        children: [
+                            {
+                                path: 'e',
+                                component:E,
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]
+```
+缩减后是下面的形式：
+```js
+const routes = [
+    {
+      path: '/a',
+      component: A,
+      children: [
+        { path: 'b/c', component: C },
+        { path: 'b/d/e', component: E }
+      ]
+    }
+]
+```
+这样做的目的是为了避免多级路由缓存失效的问题，而且大部分情况下，三级路由（或更高）可以借助动态组件
+来实现同样的效果，
+
 ## 路由配置项
 
 路由配置项不光参与路由的生成，也参与侧边栏的生成。
+::: warning 注意 
+项目中，路由配置项中的component是字符串，比如组件路径是`@/views/test/indexPage.vue`，那么component可以是
+`test/` 或者 `test/index`，具体可以看`@/router/util.js` 中的 `generateRoutes` 方法。
+:::
+
 
 ### Route.meta Attributes：
 
 | 参数           | 说明                                                 | 类型       | 默认                    |
 | :------------: | :--------------------------------------------------: | :--------: | :---------------------: |
-| title          | 路由在侧边栏、面包屑、页签、搜索结果中的显示名称     | `string`   | -                       |
+| title          | 路由在侧边栏、面包屑、页签                           | `string`   | -                       |
 | dynamicTitle   | 路由在面包屑、页签中的动态名称，参数为(to,from)      | `function` | -                       |
 | hidden         | 是否在侧边栏中显示                                   | `boolean`  | -                       |
 | alwaysShow     | 是否总是把只有一个子级的菜单以嵌套模式在侧边栏中展示 | `boolean`  | -                       | 
 | sort           | 侧边栏的排序值，值越小越靠前                         | `number`   | 10000                   | 
-| icon           | 图标名，支持svg-icon、el-icon                        | `string`   | -                       |
+| icon           | 图标名，<v-icon>的icon属性                           | `string`   | -                       |
 | affix          | 是否在多页签中固定显示                               | `boolean`  | -                       |
 | noCache        | true时缓存页面                                       | `boolean`  | -                       |
 | activeMenu     | 侧边栏当前激活菜单的index                            | `string`   | -                       |
