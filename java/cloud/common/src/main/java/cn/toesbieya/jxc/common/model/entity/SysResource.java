@@ -9,9 +9,11 @@ public class SysResource implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
     private Integer pid;
+    private Integer type;
     private String name;
-    private String url;
+    private String path;
+    private String component;
+    private String meta;
     private boolean admin = false;
-    private Long totalRate;
-    private Long ipRate;
+    private boolean enable = true;
 }

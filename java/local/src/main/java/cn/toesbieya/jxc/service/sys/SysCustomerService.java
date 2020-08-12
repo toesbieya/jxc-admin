@@ -7,7 +7,7 @@ import cn.toesbieya.jxc.mapper.SysRegionMapper;
 import cn.toesbieya.jxc.model.entity.SysCustomer;
 import cn.toesbieya.jxc.model.entity.SysRegion;
 import cn.toesbieya.jxc.model.vo.CustomerVo;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.model.vo.result.PageResult;
 import cn.toesbieya.jxc.model.vo.result.RegionValueResult;
 import cn.toesbieya.jxc.model.vo.search.CustomerSearch;
@@ -87,21 +87,21 @@ public class SysCustomerService {
     }
 
     @UserAction("'添加客户：'+ #customer.name")
-    public Result add(SysCustomer customer) {
+    public R add(SysCustomer customer) {
         if (isNameExist(customer.getName(), null)) {
-            return Result.fail(String.format("添加失败，客户【%s】已存在", customer.getName()));
+            return R.fail(String.format("添加失败，客户【%s】已存在", customer.getName()));
         }
         int rows = customerMapper.insert(customer);
-        return rows > 0 ? Result.success("添加成功") : Result.fail("添加失败");
+        return rows > 0 ? R.success("添加成功") : R.fail("添加失败");
     }
 
     @UserAction("'修改客户：'+ #customer.name")
-    public Result update(SysCustomer customer) {
+    public R update(SysCustomer customer) {
         Integer id = customer.getId();
         String name = customer.getName();
 
         if (isNameExist(name, id)) {
-            return Result.fail(String.format("修改失败，客户【%s】已存在", name));
+            return R.fail(String.format("修改失败，客户【%s】已存在", name));
         }
 
         int rows = customerMapper.update(
@@ -116,17 +116,17 @@ public class SysCustomerService {
                         .set(SysCustomer::getRemark, customer.getRemark())
                         .eq(SysCustomer::getId, id)
         );
-        return rows > 0 ? Result.success("修改成功") : Result.fail("修改失败，请刷新重试");
+        return rows > 0 ? R.success("修改成功") : R.fail("修改失败，请刷新重试");
     }
 
     @UserAction("删除客户：'+ #customer.name")
-    public Result del(SysCustomer customer) {
+    public R del(SysCustomer customer) {
         int rows = customerMapper.delete(
                 Wrappers.lambdaQuery(SysCustomer.class)
                         .eq(SysCustomer::getId, customer.getId())
                         .eq(SysCustomer::getStatus, GeneralStatusEnum.DISABLED.getCode())
         );
-        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新重试");
+        return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }
 
     private boolean isNameExist(String name, Integer id) {

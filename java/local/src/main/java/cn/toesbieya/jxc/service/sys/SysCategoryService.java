@@ -4,7 +4,7 @@ import cn.toesbieya.jxc.annoation.Lock;
 import cn.toesbieya.jxc.annoation.UserAction;
 import cn.toesbieya.jxc.mapper.SysCategoryMapper;
 import cn.toesbieya.jxc.model.entity.SysCategory;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.model.vo.search.CategorySearch;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.springframework.stereotype.Service;
@@ -48,19 +48,19 @@ public class SysCategoryService {
 
     @UserAction("'添加分类：'+#category.name")
     @Lock("'category'+#category.pid")
-    public Result add(SysCategory category) {
+    public R add(SysCategory category) {
         String err = check(category);
-        if (err != null) return Result.fail("添加失败，" + err);
+        if (err != null) return R.fail("添加失败，" + err);
 
         int rows = mapper.insert(category);
-        return rows > 0 ? Result.success("添加成功") : Result.fail("添加失败");
+        return rows > 0 ? R.success("添加成功") : R.fail("添加失败");
     }
 
     @UserAction("'修改分类：'+#category.name")
     @Lock("'category'+#category.id")
-    public Result update(SysCategory category) {
+    public R update(SysCategory category) {
         String err = check(category);
-        if (err != null) return Result.fail("修改失败，" + err);
+        if (err != null) return R.fail("修改失败，" + err);
 
         int rows = mapper.update(
                 null,
@@ -70,21 +70,21 @@ public class SysCategoryService {
                         .set(SysCategory::getType, category.getType())
                         .eq(SysCategory::getId, category.getId())
         );
-        return rows > 0 ? Result.success("修改成功") : Result.fail("修改失败，请刷新后重试");
+        return rows > 0 ? R.success("修改成功") : R.fail("修改失败，请刷新后重试");
     }
 
     @UserAction("'删除分类：'+#category.name")
     @Lock("'category'+#category.id")
-    public Result del(SysCategory category) {
+    public R del(SysCategory category) {
         Integer cid = category.getId();
         if (hasChildren(cid)) {
-            return Result.fail("请先删除该分类下的子节点");
+            return R.fail("请先删除该分类下的子节点");
         }
         if (mapper.checkIsUse(cid)) {
-            return Result.fail("该分类已在业务中使用，不可删除");
+            return R.fail("该分类已在业务中使用，不可删除");
         }
         int rows = mapper.deleteById(cid);
-        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新后重试");
+        return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新后重试");
     }
 
     private String check(SysCategory category) {

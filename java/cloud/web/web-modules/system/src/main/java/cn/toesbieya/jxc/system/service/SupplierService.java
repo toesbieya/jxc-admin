@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.system.service;
 import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysRegion;
 import cn.toesbieya.jxc.common.model.entity.SysSupplier;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.util.Util;
 import cn.toesbieya.jxc.system.mapper.SysRegionMapper;
 import cn.toesbieya.jxc.system.mapper.SysSupplierMapper;
@@ -86,21 +86,21 @@ public class SupplierService {
     }
 
     @UserAction("'添加供应商：'+ #supplier.name")
-    public Result add(SysSupplier supplier) {
+    public R add(SysSupplier supplier) {
         if (isNameExist(supplier.getName(), null)) {
-            return Result.fail(String.format("添加失败，供应商【%s】已存在", supplier.getName()));
+            return R.fail(String.format("添加失败，供应商【%s】已存在", supplier.getName()));
         }
         int rows = supplierMapper.insert(supplier);
-        return rows > 0 ? Result.success("添加成功") : Result.fail("添加失败");
+        return rows > 0 ? R.success("添加成功") : R.fail("添加失败");
     }
 
     @UserAction("'修改供应商：'+ #supplier.name")
-    public Result update(SysSupplier supplier) {
+    public R update(SysSupplier supplier) {
         Integer id = supplier.getId();
         String name = supplier.getName();
 
         if (isNameExist(name, id)) {
-            return Result.fail(String.format("修改失败，供应商【%s】已存在", name));
+            return R.fail(String.format("修改失败，供应商【%s】已存在", name));
         }
 
         supplierMapper.update(
@@ -115,17 +115,17 @@ public class SupplierService {
                         .set(SysSupplier::getRemark, supplier.getRemark())
                         .eq(SysSupplier::getId, id)
         );
-        return Result.success("修改成功");
+        return R.success("修改成功");
     }
 
     @UserAction("删除供应商：'+ #supplier.name")
-    public Result del(SysSupplier supplier) {
+    public R del(SysSupplier supplier) {
         int rows = supplierMapper.delete(
                 Wrappers.lambdaQuery(SysSupplier.class)
                         .eq(SysSupplier::getId, supplier.getId())
                         .eq(SysSupplier::getStatus, GeneralStatusEnum.DISABLED.getCode())
         );
-        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新重试");
+        return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }
 
     private boolean isNameExist(String name, Integer id) {

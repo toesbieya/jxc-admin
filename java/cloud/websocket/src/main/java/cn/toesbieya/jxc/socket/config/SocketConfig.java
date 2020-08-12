@@ -1,7 +1,10 @@
 package cn.toesbieya.jxc.socket.config;
 
+import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
+import com.corundumstudio.socketio.listener.ExceptionListener;
+import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties(SocketProperty.class)
@@ -31,6 +35,28 @@ public class SocketConfig {
         config.setMaxFramePayloadLength(property.getMaxFramePayloadLength());
         config.setMaxHttpContentLength(property.getMaxHttpContentLength());
         config.setAddVersionHeader(false);
+        config.setExceptionListener(new ExceptionListener() {
+            @Override
+            public void onEventException(Exception e, List<Object> args, SocketIOClient client) {
+            }
+
+            @Override
+            public void onDisconnectException(Exception e, SocketIOClient client) {
+            }
+
+            @Override
+            public void onConnectException(Exception e, SocketIOClient client) {
+            }
+
+            @Override
+            public void onPingException(Exception e, SocketIOClient client) {
+            }
+
+            @Override
+            public boolean exceptionCaught(ChannelHandlerContext ctx, Throwable e) throws Exception {
+                return false;
+            }
+        });
 
         return new SocketIOServer(config);
     }

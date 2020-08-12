@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.system.controller;
 import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysDepartment;
 import cn.toesbieya.jxc.common.model.vo.DepartmentVo;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.system.service.DepartmentService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ public class DepartmentController {
     private DepartmentService service;
 
     @GetMapping("get")
-    public Result get(boolean all) {
+    public R get(boolean all) {
         List<DepartmentVo> list = service.getAll();
         if (!all) {
             list = list
@@ -27,15 +27,15 @@ public class DepartmentController {
                     .filter(i -> i.getStatus().equals(GeneralStatusEnum.ENABLED.getCode()))
                     .collect(Collectors.toList());
         }
-        return Result.success(list);
+        return R.success(list);
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody SysDepartment department) {
+    public R add(@RequestBody SysDepartment department) {
         if (null == department.getPid()
                 || StringUtils.isEmpty(department.getName())
                 || null == department.getStatus()) {
-            return Result.fail("添加失败，参数错误");
+            return R.fail("添加失败，参数错误");
         }
 
         department.setId(null);
@@ -44,21 +44,21 @@ public class DepartmentController {
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody SysDepartment department) {
+    public R update(@RequestBody SysDepartment department) {
         if (null == department.getId()
                 || null == department.getPid()
                 || StringUtils.isEmpty(department.getName())
                 || null == department.getStatus()) {
-            return Result.fail("修改失败，参数错误");
+            return R.fail("修改失败，参数错误");
         }
 
         return service.update(department);
     }
 
     @PostMapping("del")
-    public Result del(@RequestBody SysDepartment department) {
+    public R del(@RequestBody SysDepartment department) {
         if (null == department.getId() || StringUtils.isEmpty(department.getName())) {
-            return Result.fail("删除失败，参数错误");
+            return R.fail("删除失败，参数错误");
         }
 
         return service.del(department);

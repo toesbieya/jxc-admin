@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.web.common.aspect;
 
 import cn.toesbieya.jxc.api.RecordApi;
 import cn.toesbieya.jxc.common.model.entity.RecUserAction;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.util.SpringUtil;
 import cn.toesbieya.jxc.web.common.annoation.UserAction;
 import cn.toesbieya.jxc.web.common.enumeration.UserActionEnum;
@@ -28,7 +28,7 @@ public class UserActionAspect {
     @Reference
     private RecordApi recordApi;
 
-    @Pointcut("@annotation(cn.toesbieya.jxc.web.common.annoation.UserAction)&&execution(cn.toesbieya.jxc.common.model.vo.Result cn.toesbieya.jxc..*.*(..))")
+    @Pointcut("@annotation(cn.toesbieya.jxc.web.common.annoation.UserAction)&&execution(cn.toesbieya.jxc.common.model.vo.R cn.toesbieya.jxc..*.*(..))")
     public void pointCut() {
 
     }
@@ -57,7 +57,7 @@ public class UserActionAspect {
             }
         }
 
-        Result result = (Result) pjp.proceed();
+        R result = (R) pjp.proceed();
 
         if (result.isSuccess()) {
             action.setType(UserActionEnum.SUCCESS.getCode());

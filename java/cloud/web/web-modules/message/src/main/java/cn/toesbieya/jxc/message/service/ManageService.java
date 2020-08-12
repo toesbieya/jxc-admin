@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.message.service;
 
 import cn.toesbieya.jxc.common.constant.SocketConstant;
 import cn.toesbieya.jxc.common.model.entity.Msg;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.model.vo.SocketEventVo;
 import cn.toesbieya.jxc.common.util.WebSocketUtil;
 import cn.toesbieya.jxc.message.constant.MsgConstant;
@@ -43,13 +43,13 @@ public class ManageService {
     }
 
     @UserAction("'添加消息：'+#msg.title")
-    public Result add(Msg msg) {
+    public R add(Msg msg) {
         mapper.insert(msg);
-        return Result.success("添加成功", msg);
+        return R.success("添加成功", msg);
     }
 
     @UserAction("'修改消息：'+#msg.title")
-    public Result update(Msg msg) {
+    public R update(Msg msg) {
         int rows = mapper.update(
                 null,
                 Wrappers.lambdaUpdate(Msg.class)
@@ -67,13 +67,13 @@ public class ManageService {
                         .set(Msg::getRecipient, msg.getRecipient())
                         .eq(Msg::getId, msg.getId())
         );
-        return rows > 0 ? Result.success("修改成功") : Result.fail("修改失败，请刷新重试");
+        return rows > 0 ? R.success("修改成功") : R.fail("修改失败，请刷新重试");
     }
 
     @UserAction("'发布消息：'+#msg.title")
-    public Result publish(Msg msg) {
+    public R publish(Msg msg) {
         boolean isFirstCreate = msg.getId() == null;
-        Result result = isFirstCreate ? add(msg) : update(msg);
+        R result = isFirstCreate ? add(msg) : update(msg);
 
         if (result.isSuccess()) {
             result.setMsg("提交成功");
@@ -107,7 +107,7 @@ public class ManageService {
     }
 
     @UserAction("'撤回消息：'+#msg.title")
-    public Result withdraw(Msg msg) {
+    public R withdraw(Msg msg) {
         int rows = mapper.update(
                 null,
                 Wrappers.lambdaUpdate(Msg.class)
@@ -118,12 +118,12 @@ public class ManageService {
                         .eq(Msg::getId, msg.getId())
                         .eq(Msg::getStatus, MsgConstant.STATUS_PUBLISHED)
         );
-        return rows > 0 ? Result.success("撤回成功", msg) : Result.fail("撤回失败，请刷新重试");
+        return rows > 0 ? R.success("撤回成功", msg) : R.fail("撤回失败，请刷新重试");
     }
 
     @UserAction("'删除消息：'+#title")
-    public Result del(int id, String title) {
+    public R del(int id, String title) {
         int rows = mapper.deleteById(id);
-        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新重试");
+        return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }
 }

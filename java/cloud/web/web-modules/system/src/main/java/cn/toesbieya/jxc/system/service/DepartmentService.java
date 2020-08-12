@@ -6,7 +6,7 @@ import cn.toesbieya.jxc.common.model.entity.SysDepartment;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
 import cn.toesbieya.jxc.common.model.vo.DepartmentVo;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.util.Util;
 import cn.toesbieya.jxc.system.mapper.SysDepartmentMapper;
 import cn.toesbieya.jxc.web.common.annoation.UserAction;
@@ -87,27 +87,27 @@ public class DepartmentService implements DepartmentApi {
     }
 
     @UserAction("'添加部门：'+#department.name")
-    public Result add(SysDepartment department) {
+    public R add(SysDepartment department) {
         if (isNameExist(null, department.getPid(), department.getName())) {
-            return Result.fail("添加失败，存在名称相同的同级部门");
+            return R.fail("添加失败，存在名称相同的同级部门");
         }
         int rows = departmentMapper.insert(department);
-        return rows > 0 ? Result.success("添加成功") : Result.fail("添加失败");
+        return rows > 0 ? R.success("添加成功") : R.fail("添加失败");
     }
 
     @UserAction("'修改部门：'+#department.name")
-    public Result update(SysDepartment department) {
+    public R update(SysDepartment department) {
         if (isNameExist(department.getId(), department.getPid(), department.getName())) {
-            return Result.fail("修改失败，存在名称相同的同级部门");
+            return R.fail("修改失败，存在名称相同的同级部门");
         }
         departmentMapper.updateById(department);
-        return Result.success("修改成功");
+        return R.success("修改成功");
     }
 
     @UserAction("'删除部门：'+#department.name")
-    public Result del(SysDepartment department) {
+    public R del(SysDepartment department) {
         int rows = departmentMapper.deleteById(department.getId());
-        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新重试");
+        return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }
 
     //判断同级节点中是否有相同的部门名称

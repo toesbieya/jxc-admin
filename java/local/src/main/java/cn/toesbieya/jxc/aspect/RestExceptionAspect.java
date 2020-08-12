@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.aspect;
 import cn.toesbieya.jxc.enumeration.UserActionEnum;
 import cn.toesbieya.jxc.exception.JsonResultException;
 import cn.toesbieya.jxc.model.entity.RecUserAction;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.service.RecService;
 import cn.toesbieya.jxc.util.ThreadUtil;
 import cn.toesbieya.jxc.util.Util;
@@ -27,45 +27,45 @@ public class RestExceptionAspect {
 
     //抛出异常时希望返回给前台
     @ExceptionHandler(JsonResultException.class)
-    public Result handleJsonResultException(JsonResultException e) {
+    public R handleJsonResultException(JsonResultException e) {
         recordUserAction(e);
-        return Result.fail(e.getMessage());
+        return R.fail(e.getMessage());
     }
 
     //请求方法有误
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public Result handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        return Result.fail("请求方法有误");
+    public R handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        return R.fail("请求方法有误");
     }
 
     //@RequestParam没有匹配到值
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public Result handle(MissingServletRequestParameterException e) {
+    public R handle(MissingServletRequestParameterException e) {
         log.error(e.getMessage(), e);
-        return Result.fail("get参数有误");
+        return R.fail("get参数有误");
     }
 
     //@RequestBody没有匹配到值
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public Result handle(HttpMessageNotReadableException e) {
+    public R handle(HttpMessageNotReadableException e) {
         log.error(e.getMessage(), e);
-        return Result.fail("post参数有误");
+        return R.fail("post参数有误");
     }
 
     //上传文件过大
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public Result handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+    public R handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         log.error("上传的文件超出限定大小,{}", e.getMessage());
         recordUserAction(e);
-        return Result.fail("上传的文件过大");
+        return R.fail("上传的文件过大");
     }
 
     //最终捕获
     @ExceptionHandler(Exception.class)
-    public Result handleException(Exception e) {
+    public R handleException(Exception e) {
         log.error(String.format("服务运行异常,访问路径：%s", WebUtil.getRequest().getServletPath()), e);
         recordUserAction(e);
-        return Result.fail("服务运行异常");
+        return R.fail("服务运行异常");
     }
 
     private void recordUserAction(Exception e) {

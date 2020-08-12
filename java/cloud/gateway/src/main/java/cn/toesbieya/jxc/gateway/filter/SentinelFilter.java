@@ -36,7 +36,7 @@ public class SentinelFilter {
                         ServerResponse
                                 .status(HttpStatus.OK)
                                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                                .body(fromObject(Result.tooManyRequest()))
+                                .body(fromObject(R.tooManyRequest()))
         );
     }
 

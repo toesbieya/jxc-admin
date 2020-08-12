@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.system.service;
 import cn.toesbieya.jxc.api.system.RoleApi;
 import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.system.mapper.SysRoleMapper;
 import cn.toesbieya.jxc.system.model.vo.RoleSearch;
 import cn.toesbieya.jxc.web.common.annoation.UserAction;
@@ -60,22 +60,22 @@ public class RoleService implements RoleApi {
     }
 
     @UserAction("'添加角色：'+#role.name")
-    public Result add(SysRole role) {
+    public R add(SysRole role) {
         if (isNameExist(role.getName(), null)) {
-            return Result.fail("添加失败，角色名称重复");
+            return R.fail("添加失败，角色名称重复");
         }
 
         int rows = mapper.insert(role);
-        return rows > 0 ? Result.success("添加成功") : Result.fail("添加失败");
+        return rows > 0 ? R.success("添加成功") : R.fail("添加失败");
     }
 
     @UserAction("'修改角色：'+#role.name")
-    public Result update(SysRole role) {
+    public R update(SysRole role) {
         Integer id = role.getId();
         String name = role.getName();
 
         if (isNameExist(name, id)) {
-            return Result.fail("修改失败，角色名称重复");
+            return R.fail("修改失败，角色名称重复");
         }
 
         mapper.update(
@@ -88,17 +88,17 @@ public class RoleService implements RoleApi {
                         .set(SysRole::getResourceId, role.getResourceId())
                         .eq(SysRole::getId, id)
         );
-        return Result.success("修改成功");
+        return R.success("修改成功");
     }
 
     @UserAction("'删除角色：'+#role.name")
-    public Result del(SysRole role) {
+    public R del(SysRole role) {
         int rows = mapper.delete(
                 Wrappers.lambdaQuery(SysRole.class)
                         .eq(SysRole::getId, role.getId())
                         .eq(SysRole::getStatus, 0)
         );
-        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新重试");
+        return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }
 
     private boolean isNameExist(String name, Integer id) {

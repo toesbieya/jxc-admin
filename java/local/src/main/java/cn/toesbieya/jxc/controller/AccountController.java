@@ -7,7 +7,7 @@ import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.service.AccountService;
 import cn.toesbieya.jxc.util.SessionUtil;
 import cn.toesbieya.jxc.util.IpUtil;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,58 +24,58 @@ public class AccountController {
     private AccountService service;
 
     @PostMapping("login")
-    public Result login(HttpServletRequest request, @Valid @RequestBody LoginParam param) {
+    public R login(HttpServletRequest request, @Valid @RequestBody LoginParam param) {
         return service.login(param, IpUtil.getIp(request));
     }
 
     @GetMapping("logout")
-    public Result logout(HttpServletRequest request) {
+    public R logout(HttpServletRequest request) {
         UserVo user = SessionUtil.get();
         return service.logout(user, IpUtil.getIp(request));
     }
 
     @PostMapping("register")
-    public Result register(@Valid @RequestBody RegisterParam param) {
+    public R register(@Valid @RequestBody RegisterParam param) {
         return service.register(param);
     }
 
     @PostMapping("updatePwd")
-    public Result updatePwd(@RequestBody PasswordUpdateParam param) {
+    public R updatePwd(@RequestBody PasswordUpdateParam param) {
         UserVo user = SessionUtil.get();
         param.setId(user.getId());
 
         String errMsg = validateUpdatePwdParam(param);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         return service.updatePwd(param);
     }
 
     @GetMapping("updateAvatar")
-    public Result updateAvatar(@RequestParam String key) throws UnsupportedEncodingException {
-        if (StringUtils.isEmpty(key)) return Result.fail("参数错误");
+    public R updateAvatar(@RequestParam String key) throws UnsupportedEncodingException {
+        if (StringUtils.isEmpty(key)) return R.fail("参数错误");
 
         UserVo user = SessionUtil.get();
         return service.updateAvatar(user, URLDecoder.decode(key, "utf-8"));
     }
 
     @GetMapping("validate")
-    public Result validate(@RequestParam String pwd) {
+    public R validate(@RequestParam String pwd) {
         UserVo current = SessionUtil.get();
 
         if (!pwd.equals(current.getPwd())) {
-            return Result.fail("校验失败");
+            return R.fail("校验失败");
         }
 
-        return Result.success("校验通过");
+        return R.success("校验通过");
     }
 
     @GetMapping("checkName")
-    public Result checkName(@RequestParam(required = false) Integer id, @RequestParam String name) {
+    public R checkName(@RequestParam(required = false) Integer id, @RequestParam String name) {
         if (StringUtils.isEmpty(name)) {
-            return Result.success();
+            return R.success();
         }
 
-        return Result.success(service.checkName(name, id) ? "该用户名已存在" : null);
+        return R.success(service.checkName(name, id) ? "该用户名已存在" : null);
     }
 
     private String validateUpdatePwdParam(PasswordUpdateParam vo) {

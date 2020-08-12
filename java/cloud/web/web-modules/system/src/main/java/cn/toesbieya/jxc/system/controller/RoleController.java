@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.system.controller;
 
 import cn.toesbieya.jxc.common.model.entity.SysRole;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.system.model.vo.RoleSearch;
 import cn.toesbieya.jxc.system.service.RoleService;
 import cn.toesbieya.jxc.web.common.util.SessionUtil;
@@ -18,20 +18,20 @@ public class RoleController {
     private RoleService service;
 
     @GetMapping("get")
-    public Result get() {
-        return Result.success(service.get());
+    public R get() {
+        return R.success(service.get());
     }
 
     @PostMapping("search")
-    public Result search(@RequestBody RoleSearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody RoleSearch vo) {
+        return R.success(service.search(vo));
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody SysRole role) {
+    public R add(@RequestBody SysRole role) {
         if (StringUtils.isEmpty(role.getName())
                 || role.getStatus() == null) {
-            return Result.fail("添加失败，参数错误");
+            return R.fail("添加失败，参数错误");
         }
 
         SysUser user = SessionUtil.get();
@@ -45,20 +45,20 @@ public class RoleController {
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody SysRole role) {
+    public R update(@RequestBody SysRole role) {
         if (StringUtils.isEmpty(role.getName())
                 || role.getId() == null
                 || role.getStatus() == null) {
-            return Result.fail("修改失败，参数错误");
+            return R.fail("修改失败，参数错误");
         }
 
         return service.update(role);
     }
 
     @PostMapping("del")
-    public Result del(@RequestBody SysRole role) {
+    public R del(@RequestBody SysRole role) {
         if (role.getId() == null) {
-            return Result.fail("删除失败，参数错误");
+            return R.fail("删除失败，参数错误");
         }
 
         return service.del(role);

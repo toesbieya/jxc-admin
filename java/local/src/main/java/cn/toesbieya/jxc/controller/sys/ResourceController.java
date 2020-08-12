@@ -1,10 +1,9 @@
 package cn.toesbieya.jxc.controller.sys;
 
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.entity.SysResource;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.service.sys.SysResourceService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -15,7 +14,22 @@ public class ResourceController {
     private SysResourceService service;
 
     @GetMapping("getAll")
-    public Result getAll() {
-        return Result.success(service.getAll());
+    public R getAll() {
+        return R.success(service.getAll());
+    }
+
+    @PostMapping("add")
+    public R add(@RequestBody SysResource entity) {
+        return service.add(entity);
+    }
+
+    @PostMapping("update")
+    public R update(@RequestBody SysResource entity) {
+        return service.update(entity);
+    }
+
+    @GetMapping("del")
+    public R del(@RequestParam int id) {
+        return service.del(id);
     }
 }

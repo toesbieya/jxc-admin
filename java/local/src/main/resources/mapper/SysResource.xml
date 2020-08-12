@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.toesbieya.jxc.mapper.SysResourceMapper">
+    <select id="selectChildren" resultType="cn.toesbieya.jxc.model.entity.SysResource">
+        with recursive t as (
+                select id,
+                       pid,
+                       type,
+                       name,
+                       path,
+                       component,
+                       meta,
+                       admin,
+                       enable
+                from sys_resource
+                where pid = 0
+                union all
+                select c.id,
+                       c.pid,
+                       c.type,
+                       c.name,
+                       concat(t.path, '/', c.path) as        path,
+                       c.component,
+                       c.meta,
+                       c.admin,
+                       if(t.enable = false, false, c.enable) enable
+                from sys_resource c,
+                     t
+                where c.pid = t.id
+                )
+        select *
+        from t
+        <if test="ids != null and ids != ''">
+            where id in (${ids})
+        </if>
+    </select>
+</mapper>

@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.controller;
 
 import cn.toesbieya.jxc.service.StatisticService;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,22 +15,22 @@ public class StatisticController {
     private StatisticService service;
 
     @GetMapping("getFourBlock")
-    public Result getFourBlock() {
-        return Result.success(service.getFourBlock());
+    public R getFourBlock() {
+        return R.success(service.getFourBlock());
     }
 
     @GetMapping("getDailyProfitStat")
-    public Result getDailyProfitStat() {
-        return Result.success(service.getDailyProfitStat());
+    public R getDailyProfitStat() {
+        return R.success(service.getDailyProfitStat());
     }
 
     @GetMapping("getDailyFinishOrder")
-    public Result getDailyFinishOrder() {
-        return Result.success(service.getDailyFinishOrder());
+    public R getDailyFinishOrder() {
+        return R.success(service.getDailyFinishOrder());
     }
 
     @GetMapping("getTotalProfitGoods")
-    public Result getTotalProfitGoods() {
-        return Result.success(service.getTotalProfitGoods());
+    public R getTotalProfitGoods() {
+        return R.success(service.getTotalProfitGoods());
     }
 }

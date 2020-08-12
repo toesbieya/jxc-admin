@@ -1,17 +1,15 @@
 package cn.toesbieya.jxc.gateway.config;
 
+import cn.toesbieya.jxc.api.system.ResourceApi;
 import cn.toesbieya.jxc.common.model.entity.SysResource;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,79 +17,50 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @Slf4j
 public class ResourceConfig implements CommandLineRunner {
-    private final static ConcurrentHashMap<String, Integer> urlMap = new ConcurrentHashMap<>(256);
-    private final static ConcurrentHashMap<String, Integer> adminUrlMap = new ConcurrentHashMap<>(16);
-    private static JdbcTemplate jdbcTemplate;
+    private final static ConcurrentHashMap<String, SysResource> urlMap = new ConcurrentHashMap<>(256);
+    private final static ConcurrentHashMap<String, SysResource> adminUrlMap = new ConcurrentHashMap<>(16);
+    @Reference
+    private ResourceApi resourceApi;
 
     public static boolean authority(UserVo user, String url) {
-        //超级管理员放行
-        if (user.isAdmin()) {
-            return true;
+        boolean isAdmin = user.isAdmin();
+        SysResource r = adminUrlMap.get(url);
+
+        //访问admin权限的资源时，需要用户是admin并且该权限已启用
+        if (r != null) {
+            return r.isEnable() && isAdmin;
         }
-        //普通用户访问admin权限的资源时拦截
-        if (adminUrlMap.containsKey(url)) {
-            return false;
-        }
+
+        if (isAdmin) return true;
+
+        r = urlMap.get(url);
+
         //权限表中无记录的资源放行
-        if (!urlMap.containsKey(url)) {
-            return true;
-        }
+        if (r == null) return true;
 
+        //未启用时拦截
+        if (!r.isEnable()) return false;
+
+        //根据用户权限判断
         Set<Integer> ids = user.getResourceIds();
-
-        return ids != null && ids.contains(urlMap.get(url));
+        return ids != null && ids.contains(r.getId());
     }
 
     @Override
-    public void run(String... args) throws Exception {
-        init(false);
-    }
-
-    public static void init(boolean clear) {
+    public void run(String... args) {
         Instant start = Instant.now();
 
-        if (clear) {
-            urlMap.clear();
-            adminUrlMap.clear();
-        }
-
-        String sql = "select id,pid,url,admin from sys_resource";
-
-        List<SysResource> resources = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(SysResource.class));
-
-        completeNode(resources);
+        List<SysResource> resources = resourceApi.getEnableApi();
 
         for (SysResource p : resources) {
+            String path = p.getPath();
             if (p.isAdmin()) {
-                adminUrlMap.put(p.getUrl(), p.getId());
+                adminUrlMap.put(path, p);
             }
-            else urlMap.put(p.getUrl(), p.getId());
+            else urlMap.put(path, p);
         }
 
         Instant end = Instant.now();
         log.info("权限资源加载完成，耗时：{}毫秒", ChronoUnit.MILLIS.between(start, end));
-    }
-
-    @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        ResourceConfig.jdbcTemplate = jdbcTemplate;
-    }
-
-    private static void completeNode(List<SysResource> list) {
-        HashMap<Integer, String> url = new HashMap<>(128);
-
-        for (SysResource resource : list) {
-            //pid为0时跳过
-            if (resource.getPid() == 0) {
-                url.put(resource.getId(), resource.getUrl());
-                continue;
-            }
-
-            //获取父节点进行拼接
-            String parentUrl = url.get(resource.getPid());
-
-            resource.setUrl(parentUrl + resource.getUrl());
-            url.put(resource.getId(), resource.getUrl());
-        }
     }
 }

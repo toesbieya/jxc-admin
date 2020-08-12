@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.web.common.aspect;
 
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.util.RedisUtil;
 import cn.toesbieya.jxc.common.util.SpringUtil;
 import cn.toesbieya.jxc.web.common.annoation.Lock;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class LockAspect {
     private final ThreadLocal<ArrayList<RedisUtil.Locker>> lockHelperThreadLocal = new ThreadLocal<>();
 
-    @Pointcut("@annotation(cn.toesbieya.jxc.web.common.annoation.Lock)&&execution(cn.toesbieya.jxc.common.model.vo.Result cn.toesbieya.jxc..*.*(..))")
+    @Pointcut("@annotation(cn.toesbieya.jxc.web.common.annoation.Lock)&&execution(cn.toesbieya.jxc.common.model.vo.R cn.toesbieya.jxc..*.*(..))")
     public void pointCut() {
 
     }
@@ -52,7 +52,7 @@ public class LockAspect {
 
             if (!lockHelper.lock()) {
                 locks.forEach(RedisUtil.Locker::close);
-                return Result.fail("操作失败，请刷新后重试");
+                return R.fail("操作失败，请刷新后重试");
             }
 
             locks.add(lockHelper);

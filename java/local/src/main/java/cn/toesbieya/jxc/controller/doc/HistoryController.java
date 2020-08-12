@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.controller.doc;
 
 import cn.toesbieya.jxc.model.vo.search.DocHistorySearch;
 import cn.toesbieya.jxc.service.doc.BizDocHistoryService;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -14,7 +14,7 @@ public class HistoryController {
     private BizDocHistoryService service;
 
     @PostMapping("search")
-    public Result search(@RequestBody DocHistorySearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody DocHistorySearch vo) {
+        return R.success(service.search(vo));
     }
 }

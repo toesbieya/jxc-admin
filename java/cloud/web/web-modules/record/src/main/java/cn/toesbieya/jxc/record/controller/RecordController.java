@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.record.controller;
 
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.record.model.vo.LoginHistorySearch;
 import cn.toesbieya.jxc.record.model.vo.UserActionSearch;
 import cn.toesbieya.jxc.record.service.RecordService;
@@ -18,12 +18,12 @@ public class RecordController {
     private RecordService service;
 
     @PostMapping("searchLoginHistory")
-    public Result searchLoginHistory(@RequestBody LoginHistorySearch vo) {
-        return Result.success(service.searchLoginHistory(vo));
+    public R searchLoginHistory(@RequestBody LoginHistorySearch vo) {
+        return R.success(service.searchLoginHistory(vo));
     }
 
     @PostMapping("searchUserAction")
-    public Result searchUserAction(@RequestBody UserActionSearch vo) {
-        return Result.success(service.searchUserAction(vo));
+    public R searchUserAction(@RequestBody UserActionSearch vo) {
+        return R.success(service.searchUserAction(vo));
     }
 }

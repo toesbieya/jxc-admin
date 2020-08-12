@@ -1,11 +1,11 @@
 package cn.toesbieya.jxc.gateway.filter;
 
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
 import cn.toesbieya.jxc.gateway.config.GatewayConfig;
 import cn.toesbieya.jxc.gateway.config.ResourceConfig;
 import com.alibaba.fastjson.JSON;
 import cn.toesbieya.jxc.common.constant.SessionConstant;
-import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.common.util.SessionUtil;
 import cn.toesbieya.jxc.common.util.Util;
 import lombok.extern.slf4j.Slf4j;
@@ -62,19 +62,19 @@ public class SecurityFilter {
 
             //未登录
             if (user == null) {
-                return responseJSON(response, Result.requireLogin());
+                return responseJSON(response, R.requireLogin());
             }
 
             //没有权限
             if (!ResourceConfig.authority(user, requestUrl)) {
-                return responseJSON(response, Result.noPermission());
+                return responseJSON(response, R.noPermission());
             }
 
             return chain.filter(exchange);
         });
     }
 
-    private Mono<Void> responseJSON(ServerHttpResponse response, Result result) {
+    private Mono<Void> responseJSON(ServerHttpResponse response, R result) {
         byte[] bytes = JSON.toJSONString(result).getBytes(StandardCharsets.UTF_8);
 
         DataBuffer buffer = response.bufferFactory().wrap(bytes);

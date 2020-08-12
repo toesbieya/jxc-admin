@@ -5,8 +5,8 @@ import cn.toesbieya.jxc.account.vo.LoginParam;
 import cn.toesbieya.jxc.account.vo.PasswordUpdateParam;
 import cn.toesbieya.jxc.account.vo.RegisterParam;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
-import cn.toesbieya.jxc.common.model.vo.Result;
 import cn.toesbieya.jxc.web.common.util.IpUtil;
 import cn.toesbieya.jxc.web.common.util.SessionUtil;
 import org.springframework.util.StringUtils;
@@ -25,58 +25,58 @@ public class AccountController {
     private AccountService service;
 
     @PostMapping("login")
-    public Result login(HttpServletRequest request, @Valid @RequestBody LoginParam param) {
+    public R login(HttpServletRequest request, @Valid @RequestBody LoginParam param) {
         return service.login(param, IpUtil.getIp(request));
     }
 
     @GetMapping("logout")
-    public Result logout(HttpServletRequest request) {
+    public R logout(HttpServletRequest request) {
         UserVo user = SessionUtil.get();
         return service.logout(user, IpUtil.getIp(request));
     }
 
     @PostMapping("register")
-    public Result register(@Valid @RequestBody RegisterParam param) {
+    public R register(@Valid @RequestBody RegisterParam param) {
         return service.register(param);
     }
 
     @PostMapping("updatePwd")
-    public Result updatePwd(@RequestBody PasswordUpdateParam param) {
+    public R updatePwd(@RequestBody PasswordUpdateParam param) {
         SysUser user = SessionUtil.get();
         param.setId(user.getId());
 
         String errMsg = validateUpdatePwdParam(param);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         return service.updatePwd(param);
     }
 
     @GetMapping("updateAvatar")
-    public Result updateAvatar(@RequestParam String key) throws UnsupportedEncodingException {
-        if (StringUtils.isEmpty(key)) return Result.fail("参数错误");
+    public R updateAvatar(@RequestParam String key) throws UnsupportedEncodingException {
+        if (StringUtils.isEmpty(key)) return R.fail("参数错误");
 
         UserVo user = SessionUtil.get();
         return service.updateAvatar(user, URLDecoder.decode(key, "utf-8"));
     }
 
     @GetMapping("validate")
-    public Result validate(@RequestParam String pwd) {
+    public R validate(@RequestParam String pwd) {
         SysUser current = SessionUtil.get();
 
         if (!pwd.equals(current.getPwd())) {
-            return Result.fail("校验失败");
+            return R.fail("校验失败");
         }
 
-        return Result.success("校验通过");
+        return R.success("校验通过");
     }
 
     @GetMapping("checkName")
-    public Result checkName(@RequestParam(required = false) Integer id, @RequestParam String name) {
+    public R checkName(@RequestParam(required = false) Integer id, @RequestParam String name) {
         if (StringUtils.isEmpty(name)) {
-            return Result.success();
+            return R.success();
         }
 
-        return Result.success(service.checkName(name, id) ? "该用户名已存在" : null);
+        return R.success(service.checkName(name, id) ? "该用户名已存在" : null);
     }
 
     private String validateUpdatePwdParam(PasswordUpdateParam vo) {

@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.system.service;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
 import cn.toesbieya.jxc.common.model.vo.DepartmentVo;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
 import cn.toesbieya.jxc.common.util.Util;
 import cn.toesbieya.jxc.common.util.WebSocketUtil;
@@ -108,9 +108,9 @@ public class UserService {
     }
 
     @UserAction("'添加用户：'+#user.name")
-    public Result add(SysUser user) {
+    public R add(SysUser user) {
         if (isNameExist(user.getName(), null)) {
-            return Result.fail("该用户名称已存在");
+            return R.fail("该用户名称已存在");
         }
 
         user.setId(null);
@@ -118,16 +118,16 @@ public class UserService {
         user.setPwd(DEFAULT_PWD);
 
         userMapper.insert(user);
-        return Result.success("添加成功");
+        return R.success("添加成功");
     }
 
     @UserAction("'修改用户：'+#user.name")
-    public Result update(SysUser user) {
+    public R update(SysUser user) {
         Integer id = user.getId();
         String name = user.getName();
 
         if (isNameExist(name, id)) {
-            return Result.fail("该用户名称已存在");
+            return R.fail("该用户名称已存在");
         }
 
         userMapper.update(
@@ -140,23 +140,23 @@ public class UserService {
                         .eq(SysUser::getId, id)
         );
 
-        return Result.success("修改成功");
+        return R.success("修改成功");
     }
 
     @UserAction("'删除用户：'+#user.name")
     @Transactional(rollbackFor = Exception.class)
-    public Result del(SysUser user) {
+    public R del(SysUser user) {
         int rows = userMapper.delete(
                 Wrappers.lambdaQuery(SysUser.class)
                         .eq(SysUser::getId, user.getId())
                         .eq(SysUser::isAdmin, 0)
         );
         WebSocketUtil.sendLogoutEvent(Collections.singletonList(user.getId()), "该用户已删除");
-        return rows > 0 ? Result.success("删除成功") : Result.fail("删除失败，请刷新后重试");
+        return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新后重试");
     }
 
     @UserAction
-    public Result kick(List<SysUser> users) {
+    public R kick(List<SysUser> users) {
         WebSocketUtil.sendLogoutEvent(
                 users
                         .stream()
@@ -165,18 +165,18 @@ public class UserService {
                 "你已被强制下线，请重新登陆"
         );
 
-        return Result.success("踢出成功");
+        return R.success("踢出成功");
     }
 
     @UserAction("'重置用户密码：'+#user.name")
-    public Result resetPwd(SysUser user) {
+    public R resetPwd(SysUser user) {
         int rows = userMapper.update(
                 null,
                 Wrappers.lambdaUpdate(SysUser.class)
                         .set(SysUser::getPwd, DEFAULT_PWD)
                         .eq(SysUser::getId, user.getId())
         );
-        return rows > 0 ? Result.success() : Result.fail("重置失败，未匹配到用户");
+        return rows > 0 ? R.success() : R.fail("重置失败，未匹配到用户");
     }
 
     //用户名重复时返回true

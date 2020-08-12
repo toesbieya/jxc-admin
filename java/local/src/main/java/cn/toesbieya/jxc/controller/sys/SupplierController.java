@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.controller.sys;
 import cn.toesbieya.jxc.model.entity.SysSupplier;
 import cn.toesbieya.jxc.model.vo.search.SupplierSearch;
 import cn.toesbieya.jxc.service.sys.SysSupplierService;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,19 +16,19 @@ public class SupplierController {
     private SysSupplierService service;
 
     @GetMapping("getLimitRegion")
-    public Result getLimitRegion() {
-        return Result.success(service.getLimitRegion());
+    public R getLimitRegion() {
+        return R.success(service.getLimitRegion());
     }
 
     @PostMapping("search")
-    public Result search(@RequestBody SupplierSearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody SupplierSearch vo) {
+        return R.success(service.search(vo));
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody SysSupplier supplier) {
+    public R add(@RequestBody SysSupplier supplier) {
         String errMsg = validateCreateParam(supplier);
-        if (errMsg != null) return Result.fail("添加失败，" + errMsg);
+        if (errMsg != null) return R.fail("添加失败，" + errMsg);
 
         supplier.setId(null);
         supplier.setCtime(System.currentTimeMillis());
@@ -36,14 +36,14 @@ public class SupplierController {
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody SysSupplier supplier) {
+    public R update(@RequestBody SysSupplier supplier) {
         String errMsg = validateUpdateParam(supplier);
-        return errMsg == null ? service.update(supplier) : Result.fail("修改失败，" + errMsg);
+        return errMsg == null ? service.update(supplier) : R.fail("修改失败，" + errMsg);
     }
 
     @PostMapping("del")
-    public Result del(@RequestBody SysSupplier supplier) {
-        if (supplier.getId() == null) return Result.fail("删除失败，参数错误");
+    public R del(@RequestBody SysSupplier supplier) {
+        if (supplier.getId() == null) return R.fail("删除失败，参数错误");
         return service.del(supplier);
     }
 

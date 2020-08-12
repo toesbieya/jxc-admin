@@ -1,12 +1,12 @@
 package cn.toesbieya.jxc.module;
 
-import cn.toesbieya.jxc.model.vo.ResourceVo;
+import cn.toesbieya.jxc.model.entity.SysResource;
 import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.service.sys.SysResourceService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -16,47 +16,51 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
-public class PermissionModule {
-    private final static ConcurrentHashMap<String, Integer> urlMap = new ConcurrentHashMap<>(128);
-    private final static ConcurrentHashMap<String, Integer> adminUrlMap = new ConcurrentHashMap<>(128);
+public class PermissionModule implements CommandLineRunner {
+    private final static ConcurrentHashMap<String, SysResource> urlMap = new ConcurrentHashMap<>(256);
+    private final static ConcurrentHashMap<String, SysResource> adminUrlMap = new ConcurrentHashMap<>(16);
     @Resource
     private SysResourceService service;
 
     public static boolean authority(UserVo user, String url) {
-        if (user.isAdmin() || !needAuthority(url)) {
-            return true;
+        boolean isAdmin = user.isAdmin();
+        SysResource r = adminUrlMap.get(url);
+
+        //访问admin权限的资源时，需要用户是admin并且该权限已启用
+        if (r != null) {
+            return r.isEnable() && isAdmin;
         }
 
-        if (adminUrlMap.containsKey(url)) return false;
+        if (isAdmin) return true;
 
+        r = urlMap.get(url);
+
+        //权限表中无记录的资源放行
+        if (r == null) return true;
+
+        //未启用时拦截
+        if (!r.isEnable()) return false;
+
+        //根据用户权限判断
         Set<Integer> ids = user.getResourceIds();
-
-        if (ids == null) return false;
-
-        return ids.contains(urlMap.get(url));
+        return ids != null && ids.contains(r.getId());
     }
 
-    private static boolean needAuthority(String url) {
-        return urlMap.containsKey(url) || adminUrlMap.containsKey(url);
-    }
-
-    @PostConstruct
-    public void init() {
+    @Override
+    public void run(String... args) {
         Instant start = Instant.now();
 
-        List<ResourceVo> resources = service.getAll();
+        List<SysResource> resources = service.getEnableApi();
 
-        if (resources != null) {
-            for (ResourceVo p : resources) {
-                if (p.isAdmin()) {
-                    adminUrlMap.put(p.getUrl(), p.getId());
-                }
-                else urlMap.put(p.getUrl(), p.getId());
+        for (SysResource p : resources) {
+            String path = p.getPath();
+            if (p.isAdmin()) {
+                adminUrlMap.put(path, p);
             }
+            else urlMap.put(path, p);
         }
 
         Instant end = Instant.now();
-
-        log.info("权限模块启动成功，耗时：{}毫秒", ChronoUnit.MILLIS.between(start, end));
+        log.info("权限资源加载完成，耗时：{}毫秒", ChronoUnit.MILLIS.between(start, end));
     }
 }

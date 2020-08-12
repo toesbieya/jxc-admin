@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.message.controller;
 
 import cn.toesbieya.jxc.common.model.entity.Msg;
 import cn.toesbieya.jxc.common.model.entity.SysUser;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
 import cn.toesbieya.jxc.message.constant.MsgConstant;
 import cn.toesbieya.jxc.message.model.vo.MsgSearch;
@@ -20,14 +20,14 @@ public class ManageController {
     private ManageService service;
 
     @RequestMapping("search")
-    public Result search(@RequestBody MsgSearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody MsgSearch vo) {
+        return R.success(service.search(vo));
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody Msg msg) {
+    public R add(@RequestBody Msg msg) {
         String errMsg = validateAdd(msg);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         msg.setId(null);
         SysUser user = SessionUtil.get();
@@ -37,23 +37,23 @@ public class ManageController {
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody Msg msg) {
+    public R update(@RequestBody Msg msg) {
         String errMsg = validateAdd(msg);
         if (errMsg == null) errMsg = validateUpdate(msg);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         return service.update(msg);
     }
 
     @PostMapping("publish")
-    public Result publish(@RequestBody Msg msg) {
+    public R publish(@RequestBody Msg msg) {
         boolean isFirstCreate = msg.getId() == null;
 
         String errMsg = validateAdd(msg);
         if (errMsg == null && !isFirstCreate) {
             errMsg = validateUpdate(msg);
         }
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         SysUser user = SessionUtil.get();
         if (isFirstCreate) setAddInfo(user, msg);
@@ -67,8 +67,8 @@ public class ManageController {
     }
 
     @PostMapping("withdraw")
-    public Result withdraw(@RequestBody Msg msg) {
-        if (msg.getId() == null) return Result.fail("参数错误");
+    public R withdraw(@RequestBody Msg msg) {
+        if (msg.getId() == null) return R.fail("参数错误");
 
         UserVo user = SessionUtil.get();
 
@@ -80,7 +80,7 @@ public class ManageController {
     }
 
     @GetMapping("del")
-    public Result del(@RequestParam Integer id, @RequestParam String title) {
+    public R del(@RequestParam Integer id, @RequestParam String title) {
         return service.del(id, title);
     }
 

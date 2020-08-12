@@ -12,7 +12,7 @@ import cn.toesbieya.jxc.model.entity.BizPurchaseOrder;
 import cn.toesbieya.jxc.model.entity.BizPurchaseOrderSub;
 import cn.toesbieya.jxc.model.entity.RecAttachment;
 import cn.toesbieya.jxc.model.vo.PurchaseOrderVo;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.model.vo.export.PurchaseOrderExport;
 import cn.toesbieya.jxc.model.vo.result.PageResult;
@@ -79,23 +79,23 @@ public class BizPurchaseOrderService {
 
     @UserAction("'添加采购订单'")
     @Transactional(rollbackFor = Exception.class)
-    public Result add(PurchaseOrderVo doc) {
+    public R add(PurchaseOrderVo doc) {
         return addMain(doc);
     }
 
     @UserAction("'修改采购订单'+#doc.id")
     @Lock("#doc.id")
     @Transactional(rollbackFor = Exception.class)
-    public Result update(PurchaseOrderVo doc) {
+    public R update(PurchaseOrderVo doc) {
         return updateMain(doc);
     }
 
     @UserAction("'提交采购订单'+#doc.id")
     @Lock("#doc.id")
     @Transactional(rollbackFor = Exception.class)
-    public Result commit(PurchaseOrderVo doc) {
+    public R commit(PurchaseOrderVo doc) {
         boolean isFirstCreate = StringUtils.isEmpty(doc.getId());
-        Result result = isFirstCreate ? addMain(doc) : updateMain(doc);
+        R result = isFirstCreate ? addMain(doc) : updateMain(doc);
 
         historyMapper.insert(
                 BizDocHistory.builder()
@@ -116,12 +116,12 @@ public class BizPurchaseOrderService {
     @UserAction("'撤回采购订单'+#vo.id")
     @Lock("#vo.id")
     @Transactional(rollbackFor = Exception.class)
-    public Result withdraw(DocStatusUpdate vo, UserVo user) {
+    public R withdraw(DocStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
         if (rejectById(id) < 1) {
-            return Result.fail("撤回失败，请刷新重试");
+            return R.fail("撤回失败，请刷新重试");
         }
 
         historyMapper.insert(
@@ -137,13 +137,13 @@ public class BizPurchaseOrderService {
                         .build()
         );
 
-        return Result.success("撤回成功");
+        return R.success("撤回成功");
     }
 
     @UserAction("'通过采购订单'+#vo.id")
     @Lock("#vo.id")
     @Transactional(rollbackFor = Exception.class)
-    public Result pass(DocStatusUpdate vo, UserVo user) {
+    public R pass(DocStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
         long now = System.currentTimeMillis();
@@ -158,7 +158,7 @@ public class BizPurchaseOrderService {
                         .eq(BizPurchaseOrder::getId, id)
                         .eq(BizPurchaseOrder::getStatus, DocStatusEnum.WAIT_VERIFY.getCode())
         )) {
-            return Result.fail("通过失败，请刷新重试");
+            return R.fail("通过失败，请刷新重试");
         }
 
         historyMapper.insert(
@@ -174,18 +174,18 @@ public class BizPurchaseOrderService {
                         .build()
         );
 
-        return Result.success("通过成功");
+        return R.success("通过成功");
     }
 
     @UserAction("'驳回采购订单'+#vo.id")
     @Lock("#vo.id")
     @Transactional(rollbackFor = Exception.class)
-    public Result reject(DocStatusUpdate vo, UserVo user) {
+    public R reject(DocStatusUpdate vo, UserVo user) {
         String id = vo.getId();
         String info = vo.getInfo();
 
         if (rejectById(id) < 1) {
-            return Result.fail("驳回失败，请刷新重试");
+            return R.fail("驳回失败，请刷新重试");
         }
 
         historyMapper.insert(
@@ -201,29 +201,29 @@ public class BizPurchaseOrderService {
                         .build()
         );
 
-        return Result.success("驳回成功");
+        return R.success("驳回成功");
     }
 
     @UserAction("'删除采购订单'+#id")
     @Lock("#id")
     @Transactional(rollbackFor = Exception.class)
-    public Result del(String id) {
+    public R del(String id) {
         if (mainMapper.deleteById(id) < 1) {
-            return Result.fail("删除失败");
+            return R.fail("删除失败");
         }
 
         //同时删除子表和附件
         delSubByPid(id);
         recService.delAttachmentByPid(id);
 
-        return Result.success("删除成功");
+        return R.success("删除成功");
     }
 
-    private Result addMain(PurchaseOrderVo doc) {
+    private R addMain(PurchaseOrderVo doc) {
         String id = DocUtil.getDocId("CGDD");
 
         if (StringUtils.isEmpty(id)) {
-            return Result.fail("获取单号失败");
+            return R.fail("获取单号失败");
         }
 
         doc.setId(id);
@@ -249,14 +249,14 @@ public class BizPurchaseOrderService {
         }
         recService.handleAttachment(uploadImageList, null);
 
-        return Result.success("添加成功", id);
+        return R.success("添加成功", id);
     }
 
-    private Result updateMain(PurchaseOrderVo doc) {
+    private R updateMain(PurchaseOrderVo doc) {
         String docId = doc.getId();
 
         String err = checkUpdateStatus(docId);
-        if (err != null) return Result.fail(err);
+        if (err != null) return R.fail(err);
 
         //更新主表
         mainMapper.update(
@@ -287,7 +287,7 @@ public class BizPurchaseOrderService {
         }
         recService.handleAttachment(uploadImageList, doc.getDeleteImageList());
 
-        return Result.success("修改成功");
+        return R.success("修改成功");
     }
 
     //只有拟定状态的单据才能修改

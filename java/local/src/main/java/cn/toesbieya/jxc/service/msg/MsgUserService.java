@@ -6,7 +6,7 @@ import cn.toesbieya.jxc.mapper.MsgStateMapper;
 import cn.toesbieya.jxc.model.entity.Msg;
 import cn.toesbieya.jxc.model.entity.MsgState;
 import cn.toesbieya.jxc.model.entity.SysUser;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.model.vo.result.PageResult;
 import cn.toesbieya.jxc.model.vo.search.MsgPersonalSearch;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -29,7 +29,7 @@ public class MsgUserService {
         return new PageResult<>(list);
     }
 
-    public Result read(SysUser user, int id) {
+    public R read(SysUser user, int id) {
         //如果该消息已读，直接返回
         if (!msgStateMapper
                 .selectCount(
@@ -38,7 +38,7 @@ public class MsgUserService {
                                 .eq(MsgState::getMid, user.getId())
                 )
                 .equals(0)) {
-            return Result.success();
+            return R.success();
         }
 
         MsgState state = new MsgState();
@@ -46,11 +46,11 @@ public class MsgUserService {
         state.setUid(user.getId());
         state.setTime(System.currentTimeMillis());
 
-        return Result.success(msgStateMapper.insert(state));
+        return R.success(msgStateMapper.insert(state));
     }
 
     @UserAction("'清空所有未读消息'")
-    public Result readAll(SysUser user) {
+    public R readAll(SysUser user) {
         MsgPersonalSearch vo = new MsgPersonalSearch();
         vo.setUid(user.getId());
         vo.setCtime(user.getCtime());
@@ -66,6 +66,6 @@ public class MsgUserService {
             msgStateMapper.insert(state);
         }
 
-        return Result.success();
+        return R.success();
     }
 }

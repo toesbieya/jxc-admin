@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.controller.sys;
 import cn.toesbieya.jxc.model.entity.SysCustomer;
 import cn.toesbieya.jxc.model.vo.search.CustomerSearch;
 import cn.toesbieya.jxc.service.sys.SysCustomerService;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,35 +16,36 @@ public class CustomerController {
     private SysCustomerService service;
 
     @GetMapping("getLimitRegion")
-    public Result getLimitRegion() {
-        return Result.success(service.getLimitRegion());
+    public R getLimitRegion() {
+        return R.success(service.getLimitRegion());
     }
 
     @PostMapping("search")
-    public Result search(@RequestBody CustomerSearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody CustomerSearch vo) {
+        return R.success(service.search(vo));
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody SysCustomer customer) {
+    public R add(@RequestBody SysCustomer customer) {
         String errMsg = validateCreateParam(customer);
-        if (errMsg != null) return Result.fail("创建失败，" + errMsg);
+        if (errMsg != null) return R.fail("创建失败，" + errMsg);
 
+        customer.setId(null);
         customer.setCtime(System.currentTimeMillis());
         return service.add(customer);
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody SysCustomer customer) {
+    public R update(@RequestBody SysCustomer customer) {
         String errMsg = validateUpdateParam(customer);
-        if (errMsg != null) return Result.fail("修改失败，" + errMsg);
+        if (errMsg != null) return R.fail("修改失败，" + errMsg);
 
         return service.update(customer);
     }
 
     @PostMapping("del")
-    public Result del(@RequestBody SysCustomer customer) {
-        if (customer.getId() == null) return Result.fail("删除失败，参数错误");
+    public R del(@RequestBody SysCustomer customer) {
+        if (customer.getId() == null) return R.fail("删除失败，参数错误");
         return service.del(customer);
     }
 

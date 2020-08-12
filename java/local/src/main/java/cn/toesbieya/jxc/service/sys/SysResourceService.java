@@ -1,19 +1,20 @@
 package cn.toesbieya.jxc.service.sys;
 
+import cn.toesbieya.jxc.enumeration.ResourceTypeEnum;
 import cn.toesbieya.jxc.mapper.SysResourceMapper;
 import cn.toesbieya.jxc.model.entity.SysResource;
 import cn.toesbieya.jxc.model.entity.SysRole;
-import cn.toesbieya.jxc.model.vo.ResourceVo;
+import cn.toesbieya.jxc.model.vo.R;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -21,11 +22,15 @@ public class SysResourceService {
     @Resource
     private SysResourceMapper mapper;
 
-    public List<ResourceVo> getAll() {
-        return completeNode(mapper.selectList(null));
+    public List<SysResource> getAll() {
+        return mapper.selectList(null);
     }
 
-    public List<ResourceVo> getResourceByRole(SysRole role) {
+    public List<SysResource> getEnableApi() {
+        return getEnableResourceTree(null, i -> i.getType().equals(ResourceTypeEnum.API.getCode()));
+    }
+
+    public List<SysResource> getResourceByRole(SysRole role) {
         if (role == null) {
             return Collections.emptyList();
         }
@@ -36,54 +41,125 @@ public class SysResourceService {
             return Collections.emptyList();
         }
 
-        List<SysResource> list = mapper.selectList(
-                Wrappers.lambdaQuery(SysResource.class)
-                        .inSql(SysResource::getId, ids)
-        );
-
-        return completeNode(list);
+        return getEnableResourceTree(ids, i -> !i.getType().equals(ResourceTypeEnum.FOLDER.getCode()));
     }
 
-    private List<ResourceVo> completeNode(List<SysResource> list) {
-        List<ResourceVo> result = new ArrayList<>(list.size());
-        HashMap<Integer, String> urlMap = new HashMap<>(128);
-        HashMap<Integer, String> nameMap = new HashMap<>(128);
-
-        for (SysResource resource : list) {
-            ResourceVo vo = new ResourceVo(resource);
-
-            Integer id = resource.getId();
-            String url = resource.getUrl();
-            String name = resource.getName();
-
-            //跳过顶级节点
-            if (resource.getPid().equals(0)) {
-                vo.setFullname(name);
-
-                urlMap.put(id, url);
-                nameMap.put(id, name);
-            }
-            else {
-                Integer pid = resource.getPid();
-
-                //获取父节点进行拼接
-                String parentUrl = urlMap.get(pid);
-                String parentName = nameMap.get(pid);
-
-                assert !StringUtils.isEmpty(parentUrl) && !StringUtils.isEmpty(parentName);
-
-                String fullname = parentName + " - " + name;
-
-                vo.setUrl(parentUrl + url);
-                vo.setFullname(fullname);
-
-                urlMap.put(id, vo.getUrl());
-                nameMap.put(id, fullname);
-            }
-
-            result.add(vo);
+    public R add(SysResource entity) {
+        String error = check(entity);
+        if (!StringUtils.isEmpty(error)) {
+            return R.fail("添加失败，" + error);
         }
 
-        return result;
+        entity.setId(null);
+        transform(entity);
+
+        mapper.insert(entity);
+
+        return R.success("添加成功");
+    }
+
+    public R update(SysResource entity) {
+        String error = check(entity);
+        if (!StringUtils.isEmpty(error)) {
+            return R.fail("修改失败，" + error);
+        }
+
+        transform(entity);
+
+        mapper.updateById(entity);
+
+        return R.success("修改成功");
+    }
+
+    public R del(int id) {
+        Integer childrenNum = mapper.selectCount(
+                Wrappers.lambdaQuery(SysResource.class)
+                        .eq(SysResource::getPid, id)
+        );
+        if (childrenNum != null && childrenNum > 0) {
+            return R.fail("删除失败，该节点下已有其他子节点存在");
+        }
+        int row = mapper.deleteById(id);
+        return row > 0 ? R.success("删除成功") : R.fail("删除失败");
+    }
+
+    /**
+     * 获取路径经过叠加且以启用的resource列表
+     *
+     * @param ids       resource的id集合，逗号隔开，传入null则返回全部
+     * @param predicate 额外的过滤条件，传入null则不进行额外判断
+     */
+    private List<SysResource> getEnableResourceTree(String ids, Predicate<SysResource> predicate) {
+        return mapper
+                .selectChildren(ids)
+                .stream()
+                .filter(r -> {
+                    if (!r.isEnable() || predicate != null && !predicate.test(r)) {
+                        return false;
+                    }
+
+                    String path = r.getPath();
+                    int index = path.indexOf("//");
+                    if (index != -1 && !path.startsWith("http")) {
+                        //去掉'//'前拼接的父节点的path
+                        r.setPath(path.substring(index + 1));
+                    }
+
+                    return true;
+                })
+                .collect(Collectors.toList());
+    }
+
+    //判断节点是否合法，不合法则返回错误信息
+    private String check(SysResource entity) {
+        Integer pid = entity.getPid();
+        Integer type = entity.getType();
+
+        boolean isApi = type.equals(ResourceTypeEnum.API.getCode());
+
+        //根节点不能为数据接口
+        if (pid.equals(0)) {
+            return isApi ? "数据接口不能作为根节点" : null;
+        }
+
+        //校验父节点
+        SysResource parent = mapper.selectById(pid);
+        if (parent == null) {
+            return "父节点不存在，请刷新后重试";
+        }
+        Integer parentType = parent.getType();
+        //1.待添加的节点为数据接口且父节点必须为叶子菜单
+        if (isApi) {
+            if (!parentType.equals(ResourceTypeEnum.LEAF.getCode())) {
+                return "数据接口只能以页面菜单为父节点";
+            }
+        }
+        //2.非数据接口的节点，其父节点必须为聚合菜单
+        else if (!parentType.equals(ResourceTypeEnum.FOLDER.getCode())) {
+            return "菜单只能以聚合菜单为父节点";
+        }
+        return null;
+    }
+
+    //数据转换
+    private void transform(SysResource entity) {
+        Integer pid = entity.getPid();
+        Integer type = entity.getType();
+        boolean isFolder = type.equals(ResourceTypeEnum.FOLDER.getCode());
+
+        //能自定义component的只有叶子菜单
+        if (!type.equals(ResourceTypeEnum.LEAF.getCode())) {
+            //根节点的聚合菜单的组件只能为'Layout'
+            boolean isRootFolder = isFolder && pid.equals(0);
+            entity.setComponent(isRootFolder ? "Layout" : null);
+        }
+        //聚合菜单不能设置name
+        if (isFolder) {
+            entity.setName(null);
+        }
+        //数据接口不能设置meta
+        if (type.equals(ResourceTypeEnum.API.getCode())) {
+            entity.setMeta(null);
+        }
     }
 }

@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.doc.controller;
 
 import cn.toesbieya.jxc.common.model.entity.BizSellOutbound;
 import cn.toesbieya.jxc.common.model.entity.BizSellOutboundSub;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.model.vo.UserVo;
 import cn.toesbieya.jxc.doc.enumeration.DocStatusEnum;
 import cn.toesbieya.jxc.doc.model.vo.DocStatusUpdate;
@@ -26,21 +26,21 @@ public class SellOutboundController {
     private SellOutboundService service;
 
     @GetMapping("getById")
-    public Result getById(@RequestParam String id) {
-        if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
+    public R getById(@RequestParam String id) {
+        if (StringUtils.isEmpty(id)) return R.fail("参数错误");
         SellOutboundVo vo = service.getById(id);
-        return vo == null ? Result.fail("获取单据信息失败") : Result.success(vo);
+        return vo == null ? R.fail("获取单据信息失败") : R.success(vo);
     }
 
     @GetMapping("getSubById")
-    public Result getSubById(@RequestParam String id) {
-        if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
-        return Result.success(service.getSubById(id));
+    public R getSubById(@RequestParam String id) {
+        if (StringUtils.isEmpty(id)) return R.fail("参数错误");
+        return R.success(service.getSubById(id));
     }
 
     @PostMapping("search")
-    public Result search(@RequestBody SellOutboundSearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody SellOutboundSearch vo) {
+        return R.success(service.search(vo));
     }
 
     @PostMapping("export")
@@ -49,9 +49,9 @@ public class SellOutboundController {
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody SellOutboundVo vo) {
+    public R add(@RequestBody SellOutboundVo vo) {
         String errMsg = validateSub(vo.getData());
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         UserVo user = SessionUtil.get();
 
@@ -64,21 +64,21 @@ public class SellOutboundController {
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody SellOutboundVo vo) {
+    public R update(@RequestBody SellOutboundVo vo) {
         String errMsg = validateUpdate(vo);
         if (errMsg == null) errMsg = validateSub(vo.getData());
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         return service.update(vo);
     }
 
     @PostMapping("commit")
-    public Result commit(@RequestBody SellOutboundVo vo) {
+    public R commit(@RequestBody SellOutboundVo vo) {
         boolean isFirst = StringUtils.isEmpty(vo.getId());
 
         String errMsg = validateSub(vo.getData());
         if (!isFirst && errMsg == null) errMsg = validateUpdate(vo);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         vo.setStatus(DocStatusEnum.WAIT_VERIFY.getCode());
         if (isFirst) {
@@ -92,26 +92,26 @@ public class SellOutboundController {
     }
 
     @PostMapping("withdraw")
-    public Result withdraw(@RequestBody DocStatusUpdate vo) {
+    public R withdraw(@RequestBody DocStatusUpdate vo) {
         return service.withdraw(vo, SessionUtil.get());
     }
 
     @PostMapping("pass")
-    public Result pass(@RequestBody DocStatusUpdate vo) {
+    public R pass(@RequestBody DocStatusUpdate vo) {
         if (StringUtils.isEmpty(vo.getPid())) {
-            return Result.fail("参数错误");
+            return R.fail("参数错误");
         }
         return service.pass(vo, SessionUtil.get());
     }
 
     @PostMapping("reject")
-    public Result reject(@RequestBody DocStatusUpdate vo) {
+    public R reject(@RequestBody DocStatusUpdate vo) {
         return service.reject(vo, SessionUtil.get());
     }
 
     @GetMapping("del")
-    public Result del(@RequestParam String id) {
-        if (StringUtils.isEmpty(id)) return Result.fail("参数错误");
+    public R del(@RequestParam String id) {
+        if (StringUtils.isEmpty(id)) return R.fail("参数错误");
         return service.del(id);
     }
 

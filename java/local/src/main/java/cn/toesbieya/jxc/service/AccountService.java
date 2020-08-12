@@ -4,8 +4,10 @@ import cn.toesbieya.jxc.annoation.TimeCost;
 import cn.toesbieya.jxc.annoation.UserAction;
 import cn.toesbieya.jxc.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.enumeration.RecLoginHistoryEnum;
+import cn.toesbieya.jxc.enumeration.ResourceTypeEnum;
 import cn.toesbieya.jxc.mapper.SysUserMapper;
 import cn.toesbieya.jxc.model.entity.RecLoginHistory;
+import cn.toesbieya.jxc.model.entity.SysResource;
 import cn.toesbieya.jxc.model.entity.SysRole;
 import cn.toesbieya.jxc.model.entity.SysUser;
 import cn.toesbieya.jxc.model.vo.*;
@@ -36,7 +38,7 @@ public class AccountService {
     private FileService fileService;
 
     @TimeCost
-    public Result login(LoginParam param, String ip) {
+    public R login(LoginParam param, String ip) {
         long now = System.currentTimeMillis();
 
         SysUser user = userMapper.selectOne(
@@ -46,14 +48,14 @@ public class AccountService {
         );
 
         if (user == null) {
-            return Result.fail("用户名或密码错误");
+            return R.fail("用户名或密码错误");
         }
-        if (user.getStatus() == GeneralStatusEnum.DISABLED.getCode()) {
-            return Result.fail("该用户已被禁用，请联系管理员");
+        if (user.getStatus().equals(GeneralStatusEnum.DISABLED.getCode())) {
+            return R.fail("该用户已被禁用，请联系管理员");
         }
         Integer roleId = user.getRole();
         if (!user.isAdmin() && roleId == null) {
-            return Result.fail("该用户尚未被分配角色，请联系管理员");
+            return R.fail("该用户尚未被分配角色，请联系管理员");
         }
 
         //设置token
@@ -67,10 +69,11 @@ public class AccountService {
         LoginSuccessInfo info = new LoginSuccessInfo(user);
         info.setToken(token);
 
-        Map<String, Integer> userResourcesUrlMap = null;
+        Map<String, Integer> userResources = null;
         Set<Integer> userResourcesIdSet = null;
 
-        if (roleId != null) {
+        //为非admin的用户设置权限
+        if (!user.isAdmin()) {
             //获取用户的角色
             SysRole role = roleService.getRoleById(roleId);
 
@@ -81,15 +84,18 @@ public class AccountService {
                 info.setRoleName(roleName);
 
                 //获取用户的权限列表
-                List<ResourceVo> resources = resourceService.getResourceByRole(role);
+                List<SysResource> resources = resourceService.getResourceByRole(role);
 
-                userResourcesUrlMap = new HashMap<>(128);
-                userResourcesIdSet = new HashSet<>(128);
+                userResources = new HashMap<>(resources.size());
+                userResourcesIdSet = new HashSet<>(resources.size());
 
-                for (ResourceVo resource : resources) {
-                    Integer resourceId = resource.getId();
-                    userResourcesUrlMap.put(resource.getUrl(), resourceId);
-                    userResourcesIdSet.add(resourceId);
+                for (SysResource r : resources) {
+                    if (r.isAdmin()) continue;
+                    Integer resourceId = r.getId();
+                    userResources.put(r.getPath(), r.getId());
+                    if (r.getType().equals(ResourceTypeEnum.API.getCode())) {
+                        userResourcesIdSet.add(resourceId);
+                    }
                 }
             }
         }
@@ -113,7 +119,7 @@ public class AccountService {
         userVo.setResourceIds(userResourcesIdSet);
 
         //返回给前端的用户权限表
-        info.setResources(userResourcesUrlMap);
+        info.setResources(userResources);
 
         //用户信息插入redis
         SessionUtil.save(userVo);
@@ -130,10 +136,10 @@ public class AccountService {
                         .build()
         );
 
-        return Result.success(info);
+        return R.success(info);
     }
 
-    public Result logout(UserVo user, String ip) {
+    public R logout(UserVo user, String ip) {
         if (user != null) {
             recService.insertLoginHistory(
                     RecLoginHistory
@@ -148,14 +154,14 @@ public class AccountService {
             SessionUtil.remove(user.getToken());
         }
 
-        return Result.success("登出成功");
+        return R.success("登出成功");
     }
 
-    public Result register(RegisterParam param) {
+    public R register(RegisterParam param) {
         String name = param.getUsername();
 
         if (checkName(name, null)) {
-            return Result.fail("该用户名称已存在");
+            return R.fail("该用户名称已存在");
         }
 
         SysUser user = new SysUser();
@@ -168,11 +174,11 @@ public class AccountService {
 
         userMapper.insert(user);
 
-        return Result.success("注册成功");
+        return R.success("注册成功");
     }
 
     @UserAction("'修改密码'")
-    public Result updatePwd(PasswordUpdateParam param) {
+    public R updatePwd(PasswordUpdateParam param) {
         int rows = userMapper.update(
                 null,
                 Wrappers.lambdaUpdate(SysUser.class)
@@ -180,11 +186,11 @@ public class AccountService {
                         .eq(SysUser::getId, param.getId())
                         .eq(SysUser::getPwd, param.getOldPwd())
         );
-        return rows > 0 ? Result.success("修改成功") : Result.fail("修改失败，请检查原密码是否正确");
+        return rows > 0 ? R.success("修改成功") : R.fail("修改失败，请检查原密码是否正确");
     }
 
     @UserAction("'修改头像'")
-    public Result updateAvatar(UserVo user, String avatar) {
+    public R updateAvatar(UserVo user, String avatar) {
         int rows = userMapper.update(
                 null,
                 Wrappers.lambdaUpdate(SysUser.class)
@@ -200,13 +206,13 @@ public class AccountService {
             }
             user.setAvatar(avatar);
             SessionUtil.save(user);
-            return Result.success("上传头像成功");
+            return R.success("上传头像成功");
         }
 
         //否则删除此次上传至云的头像
         fileService.delete(avatar);
 
-        return Result.fail("上传头像失败");
+        return R.fail("上传头像失败");
     }
 
     //用户名重复时返回true

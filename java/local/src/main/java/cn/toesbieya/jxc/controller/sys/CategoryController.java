@@ -3,7 +3,7 @@ package cn.toesbieya.jxc.controller.sys;
 import cn.toesbieya.jxc.model.entity.SysCategory;
 import cn.toesbieya.jxc.model.vo.search.CategorySearch;
 import cn.toesbieya.jxc.service.sys.SysCategoryService;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,35 +16,35 @@ public class CategoryController {
     private SysCategoryService service;
 
     @GetMapping("getAll")
-    public Result getAll() {
-        return Result.success(service.getAll());
+    public R getAll() {
+        return R.success(service.getAll());
     }
 
     @PostMapping("search")
-    public Result search(@RequestBody CategorySearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody CategorySearch vo) {
+        return R.success(service.search(vo));
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody SysCategory category) {
+    public R add(@RequestBody SysCategory category) {
         String errMsg = validateCategoryCreateParam(category);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         category.setCtime(System.currentTimeMillis());
         return service.add(category);
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody SysCategory category) {
+    public R update(@RequestBody SysCategory category) {
         String errMsg = validateCategoryUpdateParam(category);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         return service.update(category);
     }
 
     @PostMapping("del")
-    public Result del(@RequestBody SysCategory category) {
-        if (category.getId() == null) return Result.fail("删除失败，参数错误");
+    public R del(@RequestBody SysCategory category) {
+        if (category.getId() == null) return R.fail("删除失败，参数错误");
         return service.del(category);
     }
 

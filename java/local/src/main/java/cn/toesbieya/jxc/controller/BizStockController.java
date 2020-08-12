@@ -2,7 +2,7 @@ package cn.toesbieya.jxc.controller;
 
 import cn.toesbieya.jxc.model.vo.search.StockSearch;
 import cn.toesbieya.jxc.service.BizStockService;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,20 +16,20 @@ public class BizStockController {
     private BizStockService service;
 
     @PostMapping("search")
-    public Result search(@RequestBody StockSearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody StockSearch vo) {
+        return R.success(service.search(vo));
     }
 
     @GetMapping("getDetail")
-    public Result getDetail(@RequestParam String cids) {
-        if (StringUtils.isEmpty(cids)) return Result.fail("参数错误");
-        return Result.success(service.getDetail(cids));
+    public R getDetail(@RequestParam String cids) {
+        if (StringUtils.isEmpty(cids)) return R.fail("参数错误");
+        return R.success(service.getDetail(cids));
     }
 
     @GetMapping("getDetailById")
-    public Result getDetailById(@RequestParam String ids) {
-        if (StringUtils.isEmpty(ids)) return Result.fail("参数错误");
-        return Result.success(service.getDetailById(ids));
+    public R getDetailById(@RequestParam String ids) {
+        if (StringUtils.isEmpty(ids)) return R.fail("参数错误");
+        return R.success(service.getDetailById(ids));
     }
 
     @PostMapping("export")

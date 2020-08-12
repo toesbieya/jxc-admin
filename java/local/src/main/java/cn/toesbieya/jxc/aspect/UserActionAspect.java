@@ -4,7 +4,7 @@ import cn.toesbieya.jxc.annoation.UserAction;
 import cn.toesbieya.jxc.enumeration.UserActionEnum;
 import cn.toesbieya.jxc.model.entity.RecUserAction;
 import cn.toesbieya.jxc.service.RecService;
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.util.SpringUtil;
 import cn.toesbieya.jxc.util.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class UserActionAspect {
     @Resource
     private RecService service;
 
-    @Pointcut("@annotation(cn.toesbieya.jxc.annoation.UserAction)&&execution(cn.toesbieya.jxc.model.vo.Result cn.toesbieya.jxc..*.*(..))")
+    @Pointcut("@annotation(cn.toesbieya.jxc.annoation.UserAction)&&execution(cn.toesbieya.jxc.model.vo.R cn.toesbieya.jxc..*.*(..))")
     public void pointCut() {
 
     }
@@ -57,7 +57,7 @@ public class UserActionAspect {
             }
         }
 
-        Result result = (Result) pjp.proceed();
+        R result = (R) pjp.proceed();
 
         if (result.isSuccess()) {
             action.setType(UserActionEnum.SUCCESS.getCode());

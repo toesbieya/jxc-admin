@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.system.controller;
 
 import cn.toesbieya.jxc.common.model.entity.SysCategory;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.system.model.vo.CategorySearch;
 import cn.toesbieya.jxc.system.service.CategoryService;
 import org.springframework.util.StringUtils;
@@ -16,19 +16,19 @@ public class CategoryController {
     private CategoryService service;
 
     @GetMapping("getAll")
-    public Result getAll() {
-        return Result.success(service.getAll());
+    public R getAll() {
+        return R.success(service.getAll());
     }
 
     @PostMapping("search")
-    public Result search(@RequestBody CategorySearch vo) {
-        return Result.success(service.search(vo));
+    public R search(@RequestBody CategorySearch vo) {
+        return R.success(service.search(vo));
     }
 
     @PostMapping("add")
-    public Result add(@RequestBody SysCategory category) {
+    public R add(@RequestBody SysCategory category) {
         String errMsg = validateCategoryCreateParam(category);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         category.setId(null);
         category.setCtime(System.currentTimeMillis());
@@ -37,17 +37,17 @@ public class CategoryController {
     }
 
     @PostMapping("update")
-    public Result update(@RequestBody SysCategory category) {
+    public R update(@RequestBody SysCategory category) {
         String errMsg = validateCategoryUpdateParam(category);
-        if (errMsg != null) return Result.fail(errMsg);
+        if (errMsg != null) return R.fail(errMsg);
 
         return service.update(category);
     }
 
     @PostMapping("del")
-    public Result del(@RequestBody SysCategory category) {
+    public R del(@RequestBody SysCategory category) {
         if (category.getId() == null) {
-            return Result.fail("删除失败，参数错误");
+            return R.fail("删除失败，参数错误");
         }
         return service.del(category);
     }

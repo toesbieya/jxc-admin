@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.web.common.util;
 
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.metadata.Head;
@@ -49,11 +49,11 @@ public class ExcelUtil {
 
         int size = list.size();
         if (size == 0) {
-            WebUtil.responseJson(response, Result.fail("当前没有能导出的数据"));
+            WebUtil.responseJson(response, R.fail("当前没有能导出的数据"));
             return;
         }
         else if (size < 10000) {
-            WebUtil.responseJson(response, Result.success(list));
+            WebUtil.responseJson(response, R.success(list));
             return;
         }
 

@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.message.controller;
 
 import cn.toesbieya.jxc.common.model.entity.SysUser;
-import cn.toesbieya.jxc.common.model.vo.Result;
+import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.message.model.vo.MsgPersonalSearch;
 import cn.toesbieya.jxc.message.service.UserService;
 import cn.toesbieya.jxc.web.common.util.SessionUtil;
@@ -16,20 +16,20 @@ public class UserController {
     private UserService service;
 
     @PostMapping("search")
-    public Result search(@RequestBody MsgPersonalSearch vo) {
+    public R search(@RequestBody MsgPersonalSearch vo) {
         SysUser user = SessionUtil.get();
         vo.setUid(user.getId());
         vo.setCtime(user.getCtime());
-        return Result.success(service.search(vo));
+        return R.success(service.search(vo));
     }
 
     @GetMapping("read")
-    public Result read(@RequestParam Integer id) {
+    public R read(@RequestParam Integer id) {
         return service.read(SessionUtil.get(), id);
     }
 
     @GetMapping("readAll")
-    public Result readAll() {
+    public R readAll() {
         return service.readAll(SessionUtil.get());
     }
 }

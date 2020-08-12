@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.interceptor;
 
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.model.vo.UserVo;
 import cn.toesbieya.jxc.module.PermissionModule;
 import cn.toesbieya.jxc.util.*;
@@ -19,13 +19,13 @@ public class SecurityInterceptor implements HandlerInterceptor {
         UserVo user = SessionUtil.get(request);
 
         if (user == null) {
-            WebUtil.responseJson(response, Result.requireLogin());
+            WebUtil.responseJson(response, R.requireLogin());
             ThreadUtil.clearAll();
             return false;
         }
 
         if (!PermissionModule.authority(user, url)) {
-            WebUtil.responseJson(response, Result.noPermission());
+            WebUtil.responseJson(response, R.noPermission());
             log.warn("权限拦截，访问路径：{}，用户：{}，IP:{}", url, user.getName(), ip);
             ThreadUtil.clearAll();
             return false;

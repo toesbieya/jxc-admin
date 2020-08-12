@@ -1,6 +1,6 @@
 package cn.toesbieya.jxc.controller;
 
-import cn.toesbieya.jxc.model.vo.Result;
+import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +20,13 @@ public class FileController {
     private FileService service;
 
     @GetMapping("delete")
-    public Result delete(@RequestParam String url) throws UnsupportedEncodingException {
+    public R delete(@RequestParam String url) throws UnsupportedEncodingException {
         service.delete(URLDecoder.decode(url, "utf-8"));
-        return Result.success("删除成功");
+        return R.success("删除成功");
     }
 
     @GetMapping("getToken")
-    public Result getToken() {
-        return Result.success(null, service.getToken());
+    public R getToken() {
+        return R.success(null, service.getToken());
     }
 }
