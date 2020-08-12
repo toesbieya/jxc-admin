@@ -1,5 +1,7 @@
 <template>
     <el-card>
+        <div class="tip-row">线上版本没有开放动态路由功能</div>
+
         <el-row class="button-group">
             <template v-if="canAdd">
                 <el-button icon="el-icon-plus" size="small" type="primary" @click="addRoot">添加根节点</el-button>
