@@ -18,7 +18,7 @@ export default {
         return (
             <el-row class="card-panel" type="flex" justify="space-between" {...context.data}>
                 <div class="card-panel-icon-wrapper" style={'color:' + color}>
-                    <svg-icon icon={icon} class-name="card-panel-icon"/>
+                    <v-icon icon={icon} class="card-panel-icon"/>
                 </div>
                 <div class="card-panel-description">
                     <div class="card-panel-text">{text}</div>
@@ -87,7 +87,7 @@ export default {
         height: 100%;
         margin: 0 !important;
 
-        .svg-icon {
+        .icon {
             display: block;
             margin: 14px auto !important;
             float: none !important;

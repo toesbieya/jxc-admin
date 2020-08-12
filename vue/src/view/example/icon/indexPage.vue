@@ -8,7 +8,7 @@
         <el-tabs type="border-card">
             <el-tab-pane label="svg-icons">
                 <div v-for="item of svgIcons" :key="item" class="icon-item">
-                    <svg-icon :icon="item"/>
+                    <v-icon :icon="`svg-${item}`"/>
                     <span>{{ item }}</span>
                 </div>
             </el-tab-pane>

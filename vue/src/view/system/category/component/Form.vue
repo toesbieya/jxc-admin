@@ -1,23 +1,14 @@
 <template>
     <el-card v-show="show" v-loading="loading" :header="title" class="card-container" style="min-width: 520px;">
-        <el-form
-            ref="form"
-            :model="form"
-            :rules="rules"
-            class="edit-form"
-            label-position="right"
-            label-width="100px"
-            label-suffix="："
-            status-icon
-        >
+        <abstract-form :model="form" :rules="rules" class="edit-form">
             <el-form-item label="上级分类">
-                <el-input :value="parentObj?parentObj.name:''" readonly/>
+                <el-input :value="parentObj ? parentObj.name : ''" readonly/>
             </el-form-item>
             <el-form-item label="分类名称" prop="name">
-                <el-input v-model="form.name" :readonly="type==='see'" maxlength="50"/>
+                <el-input v-model="form.name" :readonly="type === 'see'" maxlength="50"/>
             </el-form-item>
             <el-form-item label="类 型" prop="type">
-                <el-select v-model="form.type" :disabled="type==='see'">
+                <el-select v-model="form.type" :disabled="type === 'see'">
                     <el-option :value="0" label="分类"/>
                     <el-option :value="1" label="实体"/>
                 </el-select>
@@ -33,16 +24,19 @@
                     确 定
                 </el-button>
             </el-form-item>
-        </el-form>
+        </abstract-form>
     </el-card>
 </template>
 
 <script>
+import AbstractForm from "@/component/AbstractForm"
+import {add, update} from "@/api/system/category"
 import {isEmpty, mergeObj, waitUntilSuccess} from '@/util'
 import {elConfirm} from "@/util/message"
-import {add, update} from "@/api/system/category"
 
 export default {
+    components: {AbstractForm},
+
     props: ['list'],
 
     data() {

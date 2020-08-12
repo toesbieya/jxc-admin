@@ -26,18 +26,14 @@ const mutations = createMutations(state, true)
 const actions = {
     login({commit, dispatch}, userInfo) {
         const {username, password} = userInfo
-        return new Promise((resolve, reject) => {
-            login({username: username.trim(), password})
-                .then(user => {
-                    user.admin === true && (user.roleName = '超级管理员')
-                    user.avatar = autoCompleteUrl(user.avatar)
-                    commit('$all', user)
-                    setUser(user)
-                    return dispatch('socket/init', user, {root: true})
-                })
-                .then(() => resolve())
-                .catch(error => reject(error))
-        })
+        return login({username: username.trim(), password})
+            .then(user => {
+                if (user.admin === true) user.roleName = '超级管理员'
+                user.avatar = autoCompleteUrl(user.avatar)
+                commit('$all', user)
+                setUser(user)
+                return dispatch('socket/init', user, {root: true})
+            })
     },
 
     logout({commit, state, dispatch}) {
@@ -46,7 +42,7 @@ const actions = {
             commit('prepareLogout', 'yes')
             logout(state.token)
                 .then(() => {
-                    commit('resource/setInit', false, {root: true})
+                    commit('resource/init', false, {root: true})
                     return Promise.all([
                         dispatch('socket/close', null, {root: true}),
                         dispatch('removeUser'),

@@ -1,115 +1,106 @@
 import path from 'path'
-import {dynamicRoutes} from '@/router/define'
+import {useBackendRoute} from '@/config'
+import {addDynamicRoutes} from '@/router'
+import {getDynamicRoutes} from '@/router/define'
+import {stringifyRoutes, parseRoutes, metaExtend} from "@/router/util"
 import {needAuth} from "@/util/auth"
 import {createTree} from "@/util/tree"
-import {getAllResources} from "@/api/system/resource"
+import {getAll} from "@/api/system/resource"
 import {isEmpty} from "@/util"
 import {isExternal} from "@/util/validate"
 
-const finalRoutes = transformOriginRoutes(dynamicRoutes)
-clean(finalRoutes, false)
-
 const state = {
-    routes: [],
-    sidebarMenus: [],
-    dataMap: {},
-    tree: [],
+    menus: [],
+    resourceMap: {},
+    resourceTree: [],
     init: false
 }
 
 const mutations = {
-    routes(state, routes) {
-        clean(routes)
-        state.routes = routes
+    menus(state, menus) {
+        sort(menus)
+        state.menus = menus
+    },
+    resource(state, {data, admin}) {
+        state.resourceMap = generateResourceMap(data)
 
-        const sidebarMenus = routes
-        sort(sidebarMenus)
-        state.sidebarMenus = sidebarMenus
+        //如果不是admin用户，那么过滤admin类型的权限
+        if (!admin) data = data.filter(i => !i.admin)
+
+        //解析meta，这里不处理meta.dynamicTitle
+        data.forEach(i => {
+            if (typeof i.meta === 'string' && !isEmpty(i.meta)) {
+                i.meta = JSON.parse(i.meta)
+            }
+        })
+
+        //为path为'/'的根节点设置默认名称
+        const root = data.find(i => i.pid === 0 && i.path === '/')
+        if (root) {
+            root.meta = {title: '初始节点'}
+        }
+
+        state.resourceTree = createTree(data)
     },
-    data(state, data) {
-        data = data || []
-        state.dataMap = data.reduce((map, item) => {
-            map[item.url] = item.id
-            return map
-        }, {})
-        state.tree = createTree(data.filter(resource => resource.admin === false))
-    },
-    setInit(state, sign) {
+    init(state, sign) {
         state.init = sign
     }
 }
 
 const actions = {
-    init({dispatch}, user) {
-        return Promise.all([
-            dispatch('initRoutes', user),
-            dispatch('initResource')
-        ])
-    },
-    initRoutes({commit}, user) {
-        const {resources, admin} = user
-        return new Promise(resolve => {
-            const accessedRoutes = getAuthorizedRoutes({resources, admin})
-            commit('routes', accessedRoutes)
-            commit('setInit', true)
-            resolve()
-        })
-    },
-    initResource({commit}) {
-        return new Promise(resolve => {
-            getAllResources()
-                .then(data => {
-                    commit('data', data)
-                    resolve()
-                })
-        })
+    init({commit}, {resources, admin, addRoutes = false}) {
+        return getAll()
+            .then(data => {
+                const routes = transformOriginRouteData(data)
+                metaExtend(routes)
+                addRoutes && addDynamicRoutes(routes)
+                const menus = getAuthorizedMenus({resources, admin}, routes)
+                commit('menus', menus)
+                commit('resource', {data: data || [], admin})
+                commit('init', true)
+            })
     }
 }
 
-//在原始路由数组基础上添加全路径
-function transformOriginRoutes(routes) {
-    const res = JSON.parse(JSON.stringify(routes))
-    addFullPath(res)
-    return res
-}
-
-//删除不显示的路由(没有children且没有meta.title，左侧菜单需清除meta.hidden=true)
-function clean(routes, cleanHidden = true) {
-    for (let i = routes.length - 1; i >= 0; i--) {
-        const {children, meta: {title, alwaysShow, hidden} = {}} = routes[i]
-
-        if (cleanHidden && hidden) {
-            routes.splice(i, 1)
-            continue
+//将后台返回的数据转换为合法的route数组
+function transformOriginRouteData(data) {
+    if (!Array.isArray(data)) return []
+    if (!useBackendRoute) return getDynamicRoutes()
+    data = JSON.parse(JSON.stringify(data))
+    data = data.filter(i => {
+        if (i.type === 3 || !i.enable) {
+            return false
         }
-        if (!children && !title) {
-            routes.splice(i, 1)
-            continue
-        }
-        if (children) {
-            clean(children, cleanHidden)
-            if (children.length < 1 && !alwaysShow) {
-                routes.splice(i, 1)
+        ['name', 'component', 'meta'].forEach(key => {
+            if (key in i && isEmpty(i[key])) {
+                delete i[key]
             }
+        })
+        if (typeof i.meta === 'string') {
+            i.meta = parseRoutes(i.meta)
         }
-    }
+        return true
+    })
+    return createTree(data)
 }
 
-//路由添加全路径
+//获取经过权限控制后的菜单
+function getAuthorizedMenus({resources, admin}, menus) {
+    menus = JSON.parse(JSON.stringify(menus))
+    clean(menus)
+    addFullPath(menus)
+    if (admin === true) return menus
+    if (!resources) return []
+    filter(menus, i => !needAuth(i) || i.fullPath in resources)
+    return menus
+}
+
+//菜单添加全路径
 function addFullPath(routes, basePath = '/') {
     routes.forEach(route => {
-        delete route.component
         route.fullPath = isExternal(route.path) ? route.path : path.resolve(basePath, route.path)
         route.children && addFullPath(route.children, route.fullPath)
     })
-}
-
-//获取经过权限控制后的路由
-function getAuthorizedRoutes({resources, admin}) {
-    if (admin === true) return finalRoutes
-    if (!resources) return []
-    filter(finalRoutes, i => !needAuth(i) || i.fullPath in resources)
-    return finalRoutes
 }
 
 //若没有children且未通过，则删除，若有，当children长度为0时删除
@@ -117,7 +108,7 @@ function filter(arr, fun) {
     for (let i = arr.length - 1; i >= 0; i--) {
         const {children} = arr[i]
 
-        if (!children) {
+        if (!children || children.length <= 0) {
             !fun(arr[i]) && arr.splice(i, 1)
             continue
         }
@@ -128,8 +119,53 @@ function filter(arr, fun) {
     }
 }
 
+//删除不显示的菜单(没有children且没有meta.title，左侧菜单需清除meta.hidden=true)
+function clean(menus, cleanHidden = true) {
+    for (let i = menus.length - 1; i >= 0; i--) {
+        const {children = [], meta: {title, alwaysShow, hidden} = {}} = menus[i]
+
+        if (cleanHidden && hidden) {
+            menus.splice(i, 1)
+            continue
+        }
+
+        if (children.length === 0) {
+            if (isEmpty(title)) {
+                menus.splice(i, 1)
+            }
+            continue
+        }
+
+        clean(children, cleanHidden)
+
+        if (children.length === 0 && !alwaysShow) {
+            menus.splice(i, 1)
+        }
+
+        //移除类似首页那样的无标题父级节点
+        if (isEmpty(title)) {
+            menus.splice(i, 1, ...children)
+        }
+    }
+}
+
 //菜单排序
 function sort(routes) {
+    const getSortValue = item => {
+        const sort = deepTap(item)
+        return isEmpty(sort) ? 10000 : sort
+    }
+    const deepTap = item => {
+        const {name, children = [], meta: {title, hidden, sort} = {}} = item
+        if (hidden) return null
+        if (!isEmpty(sort)) return sort
+        //如果是类似首页那样的路由层级
+        if (isEmpty(name, title) && children.length === 1) {
+            return deepTap(children[0])
+        }
+        return null
+    }
+
     routes.sort((pre, next) => {
         pre = getSortValue(pre)
         next = getSortValue(next)
@@ -145,19 +181,53 @@ function sort(routes) {
     })
 }
 
-const getSortValue = item => {
-    const sort = deepTap(item)
-    return isEmpty(sort) ? 10000 : sort
-}
-const deepTap = item => {
-    const {name, children = [], meta: {title, hidden, sort} = {}} = item
-    if (hidden) return null
-    if (!isEmpty(sort)) return sort
-    //如果是类似首页那样的路由层级
-    if (isEmpty(name, title) && children.length === 1) {
-        return deepTap(children[0])
+//根据权限列表生成哈希表：<权限路径，权限id>
+function generateResourceMap(resources) {
+    if (!Array.isArray(resources) || resources.length <= 0) {
+        return {}
     }
-    return null
+
+    resources = JSON.parse(JSON.stringify(resources))
+
+    const result = {}
+
+    //临时表：<id,resource>
+    const map = resources.reduce((map, i) => {
+        //如果是接口类型的节点，直接放入结果表
+        if (i.type === 3) result[i.path] = i.id
+        else {
+            i.children = []
+            map[i.id] = i
+        }
+        return map
+    }, {})
+
+    //获取所有的菜单叶子节点
+    const menuLeaves = resources.filter(node => {
+        const parent = map[node.pid]
+        if (parent) {
+            parent.children.push(node)
+            node.parent = parent
+        }
+        return node.type === 2
+    })
+    //获取叶子菜单的全路径
+    const getMenuFullPath = menu => {
+        const parents = [menu.path]
+        let {parent} = menu
+        while (parent) {
+            parents.push(parent.path)
+            parent = parent.parent
+        }
+        return path.resolve(...parents.reverse())
+    }
+
+    //填充结果表
+    for (const menu of menuLeaves) {
+        result[getMenuFullPath(menu)] = menu.id
+    }
+
+    return result
 }
 
 export default {

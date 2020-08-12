@@ -17,7 +17,7 @@ import {isEmpty, waitUntilSuccess} from '@/util'
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {del, getAll} from "@/api/system/category"
 import ContextMenu from "@/component/ContextMenu"
-import ContextMenuItem from "@/component/ContextMenu/ContextMenuItem"
+import ContextMenuItem from "@/component/ContextMenu/item"
 import CategoryTree from '@/component/biz/CategoryTree'
 
 export default {

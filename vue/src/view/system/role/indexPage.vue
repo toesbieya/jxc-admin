@@ -32,10 +32,7 @@
         </el-row>
 
         <el-row v-loading="config.loading" class="table-container">
-            <abstract-table
-                :data="tableData"
-                @row-click="rowClick"
-            >
+            <abstract-table :data="tableData" @row-click="rowClick">
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="角色名" prop="name" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建人" prop="cname" show-overflow-tooltip/>
@@ -61,8 +58,8 @@
 import tableMixin from '@/mixin/tablePageMixin'
 import EditDialog from './EditDialog'
 import SearchForm from "@/component/SearchForm"
-import SearchFormItem from "@/component/SearchForm/SearchFormItem"
-import {baseUrl, delRole, searchRoles} from "@/api/system/role"
+import SearchFormItem from "@/component/SearchForm/item"
+import {baseUrl, del, search} from "@/api/system/role"
 import {isEmpty} from '@/util'
 import {auth} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
@@ -119,7 +116,7 @@ export default {
             this.config.loading = true
             this.row = null
             this.type = 'see'
-            searchRoles(this.mergeSearchForm())
+            search(this.mergeSearchForm())
                 .then(({list, total}) => {
                     list.forEach(i => {
                         i.departmentId = this.str2intArray(i.departmentId)
@@ -151,7 +148,7 @@ export default {
             elConfirm(`确定删除角色【${name}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return delRole({id, name})
+                    return del({id, name})
                 })
                 .then(() => {
                     elSuccess('删除成功')

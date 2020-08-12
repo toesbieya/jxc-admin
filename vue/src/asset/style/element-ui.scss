@@ -1,4 +1,16 @@
 // cover some element-ui styles
+.el-alert {
+    &--info.is-light {
+        color: #515a6e;
+        background-color: #f0faff;
+        border: 1px solid #abdcff;
+
+        .el-icon-info {
+            color: $--color-primary;
+        }
+    }
+}
+
 .el-button {
     [class*="el-icon-"] + span {
         margin-left: 7px;

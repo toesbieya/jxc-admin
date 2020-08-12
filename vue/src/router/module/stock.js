@@ -1,16 +1,14 @@
 /*路由表：库存管理*/
-import Layout from '@/layout'
-import {lazyLoadView} from "@/router/util"
 
 const router = {
     path: '/stock',
-    component: Layout,
-    meta: {title: '库存管理', icon: 'stock', alwaysShow: true},
+    component: 'Layout',
+    meta: {title: '库存管理', icon: 'svg-stock', alwaysShow: true},
     children: [
         {
             path: 'current',
             name: 'currentStock',
-            component: lazyLoadView('stock/current/'),
+            component: 'stock/current/',
             meta: {title: '当前库存'}
         }
     ]

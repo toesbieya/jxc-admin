@@ -53,12 +53,11 @@
  * https://admin.iviewui.com/component/org_tree_page
  */
 import ContextMenu from "@/component/ContextMenu"
-import ContextMenuItem from "@/component/ContextMenu/ContextMenuItem"
+import ContextMenuItem from "@/component/ContextMenu/item"
 import EditDialog from "./component/EditDialog"
 import OrgTreeView from "./component/OrgTreeView"
-import ZoomControl from '@/component/ZoomControl'
+import ZoomControl from './component/ZoomControl'
 import {baseUrl, delDepartment, getDepartments} from "@/api/system/department"
-import {isEmpty} from '@/util'
 import {auth} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {createTreeByWorker} from "@/util/tree"

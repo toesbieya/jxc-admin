@@ -30,11 +30,16 @@
             <el-form-item label="权 限">
                 <el-tree
                     ref="perm"
-                    :data="resource"
-                    :props="{label:'name'}"
+                    :data="resourceTree"
                     node-key="id"
                     show-checkbox
-                />
+                    accordion
+                >
+                    <span slot-scope="{node}" class="el-tree-node__label">
+                        <v-icon :icon="getNodeInfo(node).icon"/>
+                        {{ getNodeTitle(node) }}
+                    </span>
+                </el-tree>
             </el-form-item>
         </abstract-form>
 
@@ -61,9 +66,10 @@ import dialogMixin from "@/mixin/dialogMixin"
 import AbstractForm from "@/component/AbstractForm"
 import FormDialog from '@/component/FormDialog'
 import {getDepartments} from "@/api/system/department"
-import {addRole, updateRole} from "@/api/system/role"
+import {add, update} from "@/api/system/role"
 import {isEmpty, mergeObj} from '@/util'
 import {createTreeByWorker, elTreeControl} from '@/util/tree'
+import {getNodeTitle, getNodeInfo} from "@/view/system/menu/common"
 
 export default {
     name: "EditDialog",
@@ -120,16 +126,17 @@ export default {
             }
         },
 
-        resource() {
-            return this.$store.state.resource.tree
+        resourceTree() {
+            return this.$store.state.resource.resourceTree
         }
     },
 
     methods: {
+        getNodeInfo,
+        getNodeTitle,
         treeCommand({action, level}) {
             elTreeControl(this.$refs.perm, action, level)
         },
-
         open() {
             if (this.type !== 'edit') return
             this.$nextTick(() => {
@@ -149,27 +156,33 @@ export default {
             this.$refs.dept && this.$refs.dept.setCheckedKeys([])
             this.$nextTick(() => this.$refs.form.clearValidate())
         },
-
         cancel() {
             this.closeDialog()
             this.clearForm()
         },
-
         confirm() {
             if (this.loading) return
             this.$refs.form.validate(v => {
                 if (!v) return
                 this.loading = true
-                const obj = {
+                const data = {
                     ...this.form,
-                    departmentId: this.$refs.dept ? this.$refs.dept.getCheckedKeys().join(',') : [],
-                    resourceId: this.$refs.perm.getCheckedKeys().join(',')
+                    departmentId: this.getCheckedDept(),
+                    resourceId: this.getCheckedRes()
                 }
-                const promise = this.type === 'add' ? addRole(obj) : updateRole(obj)
+                const promise = this.type === 'add' ? add(data) : update(data)
                 promise
                     .then(({msg}) => this.$emit('success', msg))
                     .finally(() => this.loading = false)
             })
+        },
+        getCheckedDept() {
+            const ref = this.$refs.dept
+            return ref ? ref.getCheckedKeys().join(',') : null
+        },
+        getCheckedRes() {
+            const ref = this.$refs.perm
+            return ref ? ref.getCheckedKeys().join(',') : null
         }
     },
 

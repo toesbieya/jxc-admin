@@ -3,7 +3,7 @@ import Redirect from "@/view/app/redirect"
 import Login from "@/view/app/login/index"
 import Page404 from "@/view/app/404"
 import Page403 from "@/view/app/403"
-import {metaExtend} from "@/router/util"
+import {parseRoutes, stringifyRoutes, metaExtend} from "./util"
 
 const modulesFiles = require.context('./module', false, /\.js$/)
 const dynamicRoutes = modulesFiles.keys().reduce((modules, modulePath) => {
@@ -14,7 +14,9 @@ const dynamicRoutes = modulesFiles.keys().reduce((modules, modulePath) => {
 
 metaExtend(dynamicRoutes)
 
-export {dynamicRoutes}
+export function getDynamicRoutes() {
+    return parseRoutes(stringifyRoutes(dynamicRoutes))
+}
 
 //系统自有路由
 export default [

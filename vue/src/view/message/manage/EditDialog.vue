@@ -38,7 +38,7 @@
                 <el-date-picker :value="form.wtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
             </abstract-form-item>
             <abstract-form-item label="内 容" full>
-                <tinymce-editor v-model="form.content" :readonly="!canSave"/>
+                <rich-text-editor v-model="form.content" :readonly="!canSave"/>
             </abstract-form-item>
         </abstract-form>
 
@@ -54,10 +54,10 @@
 <script>
 import dialogMixin from "@/mixin/dialogMixin"
 import AbstractForm from "@/component/AbstractForm"
-import AbstractFormItem from "@/component/AbstractForm/AbstractFormItem"
+import AbstractFormItem from "@/component/AbstractForm/item"
 import FormDialog from '@/component/FormDialog'
-import TinymceEditor from "@/component/TinymceEditor"
-import {SimpleMultipleUserSelector as UserSelector} from '@/component/biz/UserSelector'
+import RichTextEditor from "@/component/editor/RichTextEditor"
+import UserSelector from '@/component/biz/UserSelector/SimpleMultipleUserSelector'
 import {baseUrl, add, update, publish, withdraw} from "@/api/message/manage"
 import {isEmpty, mergeObj, resetObj} from '@/util'
 import {auth} from "@/util/auth"
@@ -68,7 +68,7 @@ export default {
 
     mixins: [dialogMixin],
 
-    components: {AbstractForm, AbstractFormItem, FormDialog, TinymceEditor, UserSelector},
+    components: {AbstractForm, AbstractFormItem, FormDialog, RichTextEditor, UserSelector},
 
     props: {
         value: {type: Boolean, default: false},
@@ -139,9 +139,8 @@ export default {
     methods: {
         open() {
             if (this.type === 'add') return
-            mergeObj(this.form, this.data)
-            const recipient = this.data.recipient || ''
-            this.form.recipient = recipient.split(',').map(i => parseInt(i))
+            const recipient = (this.data.recipient || '').split(',').filter(Boolean).map(i => parseInt(i))
+            mergeObj(this.form, {...this.data, recipient})
         },
 
         clearForm() {
@@ -166,7 +165,7 @@ export default {
                 if (!v) return
                 this.loading = true
                 const data = this.transformForm()
-                let promise = this.type === 'add' ? add(data) : update(data)
+                const promise = this.type === 'add' ? add(data) : update(data)
                 promise
                     .then(({data, msg}) => {
                         this.needSearch = true

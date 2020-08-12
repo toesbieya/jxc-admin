@@ -78,7 +78,7 @@ import tableMixin from '@/mixin/tablePageMixin'
 import EditDialog from './EditDialog'
 import RegionSelector from "@/component/RegionSelector"
 import SearchForm from "@/component/SearchForm"
-import SearchFormItem from "@/component/SearchForm/SearchFormItem"
+import SearchFormItem from "@/component/SearchForm/item"
 import {baseUrl, delSupplier, getLimitRegion, getSuppliers} from "@/api/system/supplier"
 import {isEmpty} from '@/util'
 import {auth} from "@/util/auth"

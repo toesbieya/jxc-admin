@@ -22,17 +22,37 @@ export default {
         return {
             loading: false,
             list: [
-                {id: 'online', path: '/system/user', icon: 'user', color: variables.info, value: 0, text: '在线用户'},
+                {
+                    id: 'online',
+                    path: '/system/user',
+                    icon: 'svg-user',
+                    color: variables.info,
+                    value: 0,
+                    text: '在线用户'
+                },
                 {
                     id: 'purchase',
-                    path: '/purchase/order',
-                    icon: 'shopping',
+                    path: '/doc/purchase/order',
+                    icon: 'svg-shopping',
                     color: variables.primary,
                     value: 0,
                     text: '今日采购额'
                 },
-                {id: 'sell', path: '/sell/order', icon: 'sell', color: variables.warning, value: 0, text: '今日销售额'},
-                {id: 'profit', icon: 'money', color: variables.success, value: 0, text: '今日毛利润'},
+                {
+                    id: 'sell',
+                    path: '/doc/sell/order',
+                    icon: 'svg-sell',
+                    color: variables.warning,
+                    value: 0,
+                    text: '今日销售额'
+                },
+                {
+                    id: 'profit',
+                    icon: 'svg-money',
+                    color: variables.success,
+                    value: 0,
+                    text: '今日毛利润'
+                },
             ]
         }
     },

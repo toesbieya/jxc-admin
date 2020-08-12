@@ -1,5 +1,5 @@
 import AbstractForm from '@/component/AbstractForm'
-import AbstractFormItem from "@/component/AbstractForm/AbstractFormItem"
+import AbstractFormItem from "@/component/AbstractForm/item"
 import AbstractTable from "@/component/AbstractTable"
 import DocDetailHeader from "@/component/biz/doc/DocDetailHeader"
 import DocDetailFooter from "@/component/biz/doc/DocDetailFooter"

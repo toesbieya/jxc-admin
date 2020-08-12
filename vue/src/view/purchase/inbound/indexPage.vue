@@ -51,11 +51,7 @@
         </el-row>
 
         <el-row v-loading="config.loading" class="table-container">
-            <abstract-table
-                :data="tableData"
-                @row-click="rowClick"
-                @expand-change="getSubList"
-            >
+            <abstract-table :data="tableData" @row-click="rowClick" @expand-change="getSubList">
                 <el-table-column align="center" type="expand">
                     <template v-slot="{row}">
                         <liner-progress :show="row._loading"/>
@@ -92,7 +88,7 @@
 <script>
 import docTableMixin from '@/mixin/docTableMixin'
 import SearchForm from '@/component/SearchForm'
-import SearchFormItem from "@/component/SearchForm/SearchFormItem"
+import SearchFormItem from "@/component/SearchForm/item"
 import {baseUrl, del, getSubById, search} from "@/api/doc/purchase/inbound"
 
 export default {

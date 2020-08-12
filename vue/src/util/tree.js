@@ -1,27 +1,39 @@
 import {createWorker} from '@/util/worker'
 
+const DEFAULT_PROPS = {id: 'id', pid: 'pid', children: 'children', leafHasChildren: true}
+
 /**
  * 列表转树形结构
  * @param {Array} list
- * @param {Number|String} rootSign 根节点的pid值
- * @param {String} idKey
- * @param {String} pidKey
- * @param {String} childrenKey
+ * @param {Number|String|Function} rootSign 根节点的判定方法
+ * @param {Object} props 树的配置项
  * @returns {Array}
  */
-export function createTree(list, rootSign = 0, idKey = 'id', pidKey = 'pid', childrenKey = 'children') {
+export function createTree(list, rootSign = 0, props = {}) {
     if (!list || list.length <= 0) return []
+
+    const {
+        id = DEFAULT_PROPS.id,
+        pid = DEFAULT_PROPS.pid,
+        children = DEFAULT_PROPS.children,
+        leafHasChildren = DEFAULT_PROPS.leafHasChildren
+    } = props
 
     const info = {}
 
     list.forEach(i => {
-        i[childrenKey] = []
-        info[i[idKey]] = i
+        info[i[id]] = i
+        if (leafHasChildren) i[children] = []
     })
 
     return list.filter(node => {
-        info[node[pidKey]] && info[node[pidKey]][childrenKey].push(node)
-        return node[pidKey] === rootSign
+        const key = node[pid]
+        const parent = info[key]
+        if (parent) {
+            if (!parent[children]) parent[children] = []
+            parent[children].push(node)
+        }
+        return typeof rootSign === 'function' ? rootSign(node) : key === rootSign
     })
 }
 
@@ -212,8 +224,9 @@ function workerTree() {
             info[i[idKey]] = i
         })
         return list.filter(node => {
-            info[node[pidKey]] && info[node[pidKey]][childrenKey].push(node)
-            return node[pidKey] === rootSign
+            const key = node[pidKey]
+            info[key] && info[key][childrenKey].push(node)
+            return key === rootSign
         })
     }
 

@@ -1,24 +1,24 @@
-import request from "@/config/request"
+import request from "@/api/request"
 import BASE from './baseUrl'
 
 export const baseUrl = `${BASE}/role`
 
-export function searchRoles(data) {
+export function search(data) {
     return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
 }
 
-export function getRoles() {
+export function get() {
     return request.get(`${baseUrl}/get`).then(({data}) => data.data)
 }
 
-export function addRole(data) {
+export function add(data) {
     return request.post(`${baseUrl}/add`, data).then(({data}) => data)
 }
 
-export function updateRole(data) {
+export function update(data) {
     return request.post(`${baseUrl}/update`, data).then(({data}) => data)
 }
 
-export function delRole(data) {
+export function del(data) {
     return request.post(`${baseUrl}/del`, data).then(({data}) => data)
 }

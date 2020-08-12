@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import SvgIcon from '@/component/SvgIcon'
+import VIcon from '@/component/VIcon'
 
-Vue.component('svg-icon', SvgIcon)
+Vue.component('v-icon', VIcon)
 
 const req = require.context('./svg', false, /\.svg$/)
 const keys = req.keys()

@@ -1,23 +1,23 @@
 /*路由表：销售管理*/
-import Layout from '@/layout'
-import {lazyLoadView} from "@/router/util"
 
 const router = {
     path: '/doc/sell',
-    component: Layout,
-    meta: {title: '销售管理', icon: 'sell', alwaysShow: true},
+    component: 'Layout',
+    meta: {title: '销售管理', icon: 'svg-sell', alwaysShow: true},
     children: [
         {
             path: 'order',
             name: 'sellOrder',
-            component: lazyLoadView('sell/order/'),
+            component: 'sell/order/',
             meta: {title: '销售订单'}
         },
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
             props: true,
-            component: lazyLoadView('sell/order/detail'),
+            component: 'sell/order/detail',
             meta: {
+                title: '销售订单详情页',
+                hidden: true,
                 dynamicTitle(to) {
                     const {type, id} = to.params
                     switch (type) {
@@ -37,14 +37,16 @@ const router = {
         {
             path: 'outbound',
             name: 'sellOutbound',
-            component: lazyLoadView('sell/outbound/'),
+            component: 'sell/outbound/',
             meta: {title: '销售出库'}
         },
         {
             path: 'outbound/detail/:type(see|add|edit)/:id?',
             props: true,
-            component: lazyLoadView('sell/outbound/detail'),
+            component: 'sell/outbound/detail',
             meta: {
+                title: '销售出库详情页',
+                hidden: true,
                 dynamicTitle(to) {
                     const {type, id} = to.params
                     switch (type) {

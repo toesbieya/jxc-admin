@@ -18,7 +18,7 @@ export default {
     computed: {
         ...mapState('app', ['device']),
 
-        ...mapState('resource', ['sidebarMenus']),
+        ...mapState('resource', ['menus']),
 
         ...mapState('setting', ['showLogo', 'sidebarCollapse', 'sidebarUniqueOpen', 'sidebarShowParent', 'sidebarAutoHidden']),
 
@@ -121,12 +121,12 @@ export default {
                 mode="vertical"
                 on-select={this.select}
             >
-                {this.sidebarMenus.map(route => (
+                {this.menus.map(menu => (
                     <sidebar-item
-                        key={route.path}
+                        key={menu.path}
                         show-parent={this.sidebarShowParent}
                         collapse={this.sidebarCollapse}
-                        item={route}
+                        item={menu}
                     />
                 ))}
             </el-menu>

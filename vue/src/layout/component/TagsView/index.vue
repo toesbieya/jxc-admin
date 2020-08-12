@@ -30,7 +30,7 @@
 <script>
 import ScrollPane from './ScrollPane'
 import ContextMenu from "@/component/ContextMenu"
-import ContextMenuItem from "@/component/ContextMenu/ContextMenuItem"
+import ContextMenuItem from "@/component/ContextMenu/item"
 import shortcuts from './mixin/shortcuts'
 import decideRouterTransition from './mixin/decideRouterTransition'
 
@@ -56,8 +56,8 @@ export default {
         visitedViews() {
             return this.$store.state.tagsView.visitedViews
         },
-        routes() {
-            return this.$store.state.resource.routes
+        menus() {
+            return this.$store.state.resource.menus
         }
     },
 
@@ -79,9 +79,9 @@ export default {
             return tag.meta && tag.meta.affix
         },
 
-        filterAffixTags(routes) {
+        filterAffixTags(menus) {
             const tags = []
-            routes.forEach(({name, fullPath, children, meta}) => {
+            menus.forEach(({name, fullPath, children, meta}) => {
                 if (meta && meta.title && meta.affix) {
                     tags.push({
                         //注意，此处的fullPath并不是$route.fullPath，而是路由树拼接后的全路径
@@ -99,7 +99,7 @@ export default {
             return tags
         },
         initTags() {
-            this.affixTags = this.filterAffixTags(this.routes)
+            this.affixTags = this.filterAffixTags(this.menus)
             for (const tag of this.affixTags) {
                 this.$store.commit('tagsView/addVisitedView', tag)
             }

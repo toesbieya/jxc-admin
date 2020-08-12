@@ -5,16 +5,20 @@ const contextPath = '/'
 module.exports = {
     isDev,
 
-    title: 'BiuBiuBiu~',
-
     //项目的部署路径，始终以'/'开头，以'/'结束
     contextPath,
+
+    //页面标题、登陆注册页的标题
+    title: 'BiuBiuBiu~',
 
     //全局axios的baseUrl、devServer的路由前缀
     apiPrefix: '/api',
 
     //路由模式，['hash','history']
     routerMode: 'history',
+
+    //是否使用由后端返回的数据作为路由
+    useBackendRoute: false,
 
     //是否在开发时使用mock，为true时不会启动websocket和代理
     useMock: false,
@@ -25,6 +29,7 @@ module.exports = {
     //侧边栏顶上的logo地址
     sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
 
+    //是否使用错误日志捕捉，暂时没啥用
     errorLog: true,
 
     //storage的相关键名

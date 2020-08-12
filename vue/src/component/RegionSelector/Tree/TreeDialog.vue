@@ -72,9 +72,9 @@ export default {
                     v-on:node-click={this.nodeClick}
                 >
                     {({data}) => (
-                        <span className="el-tree-node__label">
-                                {this.limit ? data.name + `(${data.value})` : data.name}
-                            </span>
+                        <span class="el-tree-node__label">
+                            {this.limit ? data.name + `(${data.value})` : data.name}
+                        </span>
                     )}
                 </el-tree>
             </form-dialog>

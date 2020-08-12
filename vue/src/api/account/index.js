@@ -1,4 +1,4 @@
-import request from "@/config/request"
+import request from "@/api/request"
 import {isEmpty} from "@/util"
 
 export const baseUrl = '/account'

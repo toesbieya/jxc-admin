@@ -2,7 +2,7 @@
     <el-form ref="form" :model="form" :rules="rules" label-position="left">
         <el-form-item prop="username">
             <span class="svg-container">
-                <svg-icon icon="user"/>
+                <v-icon icon="svg-user"/>
             </span>
 
             <el-input
@@ -18,7 +18,7 @@
         <el-form-item prop="password">
             <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">
                 <span class="svg-container">
-                    <svg-icon icon="password"/>
+                    <v-icon icon="svg-password"/>
                 </span>
             </el-tooltip>
 
@@ -34,7 +34,7 @@
             />
 
             <span @click="showPwd" class="show-pwd">
-                <svg-icon :icon="passwordType === 'password' ? 'eye' : 'eye-open'"/>
+                <v-icon :icon="passwordType === 'password' ? 'svg-eye' : 'svg-eye-open'"/>
             </span>
         </el-form-item>
 
@@ -45,7 +45,7 @@
         <div class="flex" style="margin-top: 20px">
             <p class="other-ways">
                 其他方式登录
-                <svg-icon v-for="i in otherWays" :key="i" :icon="i" @click="() => thirdPartyLogin(i)"/>
+                <v-icon v-for="i in otherWays" :key="i" :icon="`svg-${i}`" @click="() => thirdPartyLogin(i)"/>
             </p>
 
             <el-button type="text" @click="register">注册账户</el-button>
@@ -89,7 +89,7 @@ export default {
             this.$refs.form.validate(valid => {
                 if (!valid) return
                 this.loading = true
-                this.$puzzleVerify()
+                this.$verify()
                     .then(() => this.$store.dispatch('user/login', {
                         ...this.form,
                         password: md5(this.form.password)
@@ -107,7 +107,7 @@ export default {
             elSuccess('登陆成功')
             const redirect = this.$route.query.redirect || '/'
             //由于清除消息时会造成卡顿，所以延迟0.2s跳转
-            setTimeout(() => this.$router.push(redirect), 200)
+            setTimeout(() => this.$router.replace(redirect), 200)
         },
 
         thirdPartyLogin(channel) {

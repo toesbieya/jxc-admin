@@ -1,5 +1,5 @@
 <script type="text/jsx">
-import LoadingMask from '@/component/LoadingMask'
+import LoadingMask from './LoadingMask'
 
 export default {
     name: "FormDialog",

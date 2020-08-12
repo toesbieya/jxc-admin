@@ -184,8 +184,14 @@ a:hover {
     }
 }
 
-.el-form-item__content > .el-tree {
-    margin-top: 8px;
+.el-form-item__content {
+    > .el-tree {
+        margin-top: 8px;
+    }
+
+    > .el-switch {
+        vertical-align: baseline;
+    }
 }
 
 

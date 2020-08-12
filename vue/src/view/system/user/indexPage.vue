@@ -83,7 +83,7 @@ import tableMixin from '@/mixin/tablePageMixin'
 import EditDialog from './component/EditDialog'
 import RoleSelector from './component/RoleSelector'
 import SearchForm from "@/component/SearchForm"
-import SearchFormItem from "@/component/SearchForm/SearchFormItem"
+import SearchFormItem from "@/component/SearchForm/item"
 import {baseUrl, delUser, getUsers, kick, resetUserPwd} from "@/api/system/user"
 import {isEmpty} from '@/util'
 import {auth} from "@/util/auth"

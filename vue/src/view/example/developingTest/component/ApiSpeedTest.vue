@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import request from "@/config/request"
+import request from "@/api/request"
 
 export default {
     name: "ApiSpeedTest",

@@ -16,6 +16,12 @@ export function resetObj(obj) {
         else if (typeof obj[key] === 'number') {
             obj[key] = 0
         }
+        else if (typeof obj[key] === 'boolean') {
+            obj[key] = false
+        }
+        else if (obj[key] !== null && typeof obj[key] === 'object') {
+            resetObj(obj[key])
+        }
         else obj[key] = null
     })
 }
@@ -23,14 +29,22 @@ export function resetObj(obj) {
 //简单合并对象
 export function mergeObj(target, source) {
     Object.keys(target).forEach(key => {
-        if (key in source) {
+        if (!isEmpty(source) && key in source) {
             if (Array.isArray(target[key])) {
                 target[key] = source[key] || []
             }
             else if (typeof target[key] === 'number') {
                 target[key] = source[key] || 0
             }
-            else target[key] = source[key]
+            else if (target[key] !== null && typeof target[key] === 'object') {
+                mergeObj(target[key], source[key])
+            }
+            else {
+                if (typeof source[key] === 'function') {
+                    target[key] = source[key].toString()
+                }
+                else target[key] = source[key]
+            }
         }
     })
 }

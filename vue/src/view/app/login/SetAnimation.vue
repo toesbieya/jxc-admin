@@ -27,7 +27,7 @@ export default {
         return (
             <el-dropdown class={customClass} size="medium" trigger="click" onCommand={context.listeners.select}>
                 <el-button type="text" title="选择背景动画">
-                    <svg-icon icon="show"/>
+                    <v-icon icon="svg-show"/>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
                     {

@@ -1,4 +1,4 @@
-import request from "@/config/request"
+import request from "@/api/request"
 import BASE from './baseUrl'
 
 export const baseUrl = `${BASE}/user`

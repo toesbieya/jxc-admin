@@ -1,23 +1,23 @@
 /*路由表：采购管理*/
-import Layout from '@/layout'
-import {lazyLoadView} from "@/router/util"
 
 const router = {
     path: '/doc/purchase',
-    component: Layout,
-    meta: {title: '采购管理', icon: 'shopping', alwaysShow: true},
+    component: 'Layout',
+    meta: {title: '采购管理', icon: 'svg-shopping', alwaysShow: true},
     children: [
         {
             path: 'order',
             name: 'purchaseOrder',
-            component: lazyLoadView('purchase/order/'),
+            component: 'purchase/order/',
             meta: {title: '采购订单'}
         },
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
             props: true,
-            component: lazyLoadView('purchase/order/detail'),
+            component: 'purchase/order/detail',
             meta: {
+                title: '采购订单详情页',
+                hidden: true,
                 dynamicTitle(to) {
                     const {type, id} = to.params
                     switch (type) {
@@ -37,14 +37,16 @@ const router = {
         {
             path: 'inbound',
             name: 'purchaseInbound',
-            component: lazyLoadView('purchase/inbound/'),
+            component: 'purchase/inbound/',
             meta: {title: '采购入库'}
         },
         {
             path: 'inbound/detail/:type(see|add|edit)/:id?',
             props: true,
-            component: lazyLoadView('purchase/inbound/detail'),
+            component: 'purchase/inbound/detail',
             meta: {
+                title: '采购入库详情页',
+                hidden: true,
                 dynamicTitle(to) {
                     const {type, id} = to.params
                     switch (type) {

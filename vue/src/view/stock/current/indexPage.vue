@@ -65,7 +65,7 @@ import CategoryTree from '@/component/biz/CategoryTree'
 import DetailDialog from "./DetailDialog"
 import ExtraArea from '@/component/ExtraArea'
 import SearchForm from "@/component/SearchForm"
-import SearchFormItem from "@/component/SearchForm/SearchFormItem"
+import SearchFormItem from "@/component/SearchForm/item"
 import {baseUrl, search} from "@/api/stock/current"
 import {isEmpty, debounce} from "@/util"
 import {exportExcel} from "@/util/excel"

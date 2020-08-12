@@ -13,13 +13,7 @@ export default {
         const {icon, title} = context.props
         const vnodes = []
 
-        let iconComponent
-
-        if (icon) {
-            const isElIcon = icon.startsWith('el-icon-')
-            iconComponent = isElIcon ? <i class={`svg-icon ${icon}`}/> : <svg-icon icon={icon}/>
-        }
-        else iconComponent = <span class="svg-icon"/>
+        const iconComponent = icon ? <v-icon icon={icon}/> : <span class="icon"/>
 
         vnodes.push(iconComponent)
 

@@ -1,4 +1,4 @@
-import request from "@/config/request"
+import request from "@/api/request"
 import {attachmentUploadUrl, attachmentPrefix, filePreviewPrefix} from '@/config'
 import {isEmpty, timeFormat} from "@/util"
 import {isTxt} from "@/util/validate"

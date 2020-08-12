@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS = {
 }
 
 export default {
-    name: "TinymceEditor",
+    name: "RichTextEditor",
 
     props: {
         value: String,

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {getRoles} from "@/api/system/role"
+import {get} from "@/api/system/role"
 
 export default {
     name: "RoleSelector",
@@ -25,7 +25,7 @@ export default {
 
     methods: {
         init() {
-            getRoles().then(data => this.roles = data)
+            get().then(data => this.roles = data)
         },
 
         emit(v) {
