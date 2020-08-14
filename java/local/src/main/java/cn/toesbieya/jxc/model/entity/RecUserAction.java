@@ -18,5 +18,5 @@ public class RecUserAction {
     private Long time;
     private String action;
     private String error;
-    private Integer type;
+    private boolean success = false;
 }

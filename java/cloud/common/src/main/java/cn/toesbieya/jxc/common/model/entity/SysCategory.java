@@ -10,6 +10,6 @@ public class SysCategory implements Serializable {
     private Integer id;
     private Integer pid;
     private String name;
-    private Integer type;
+    private boolean leaf = false;
     private Long ctime;
 }

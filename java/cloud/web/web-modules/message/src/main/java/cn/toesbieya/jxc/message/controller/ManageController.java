@@ -94,8 +94,7 @@ public class ManageController {
     private String validateAdd(Msg msg) {
         if (StringUtils.isEmpty(msg.getTitle())
                 || msg.getType() == null
-                || msg.getBroadcast() == null
-                || msg.getBroadcast().equals(MsgConstant.TO_RANGE) && StringUtils.isEmpty(msg.getRecipient())
+                || !msg.isBroadcast() && StringUtils.isEmpty(msg.getRecipient())
         ) return "参数错误";
         return null;
     }

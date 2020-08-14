@@ -45,7 +45,7 @@ export default {
             return arr
         },
         selectableCategories() {
-            return this.$store.state.dataCache.categories.filter(i => i.type === 1)
+            return this.$store.state.dataCache.categories.filter(i => i.leaf)
         },
     },
 
@@ -58,7 +58,7 @@ export default {
 
         addDisabledAttr(arr) {
             arr.forEach(i => {
-                i._disabled = i.type !== 1
+                i._disabled = !i.leaf
                 i.children && this.addDisabledAttr(i.children)
             })
         },

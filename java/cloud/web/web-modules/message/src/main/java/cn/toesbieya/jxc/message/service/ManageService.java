@@ -63,7 +63,7 @@ public class ManageService {
                         .set(Msg::getWname, msg.getWname())
                         .set(Msg::getWtime, msg.getWtime())
                         .set(Msg::getStatus, msg.getStatus())
-                        .set(Msg::getBroadcast, msg.getBroadcast())
+                        .set(Msg::isBroadcast, msg.isBroadcast())
                         .set(Msg::getRecipient, msg.getRecipient())
                         .eq(Msg::getId, msg.getId())
         );
@@ -83,7 +83,7 @@ public class ManageService {
             eventVo.setEvent(SocketConstant.EVENT_NEW_MESSAGE);
 
             //发送websocket消息
-            if (msg.getBroadcast().equals(MsgConstant.TO_ALL)) {
+            if (msg.isBroadcast()) {
                 eventVo.setType(SocketConstant.REDIS_EVENT_BROADCAST);
                 WebSocketUtil.sendEvent(eventVo);
             }

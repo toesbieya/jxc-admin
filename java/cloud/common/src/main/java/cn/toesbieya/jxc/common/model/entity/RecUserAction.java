@@ -21,5 +21,5 @@ public class RecUserAction implements Serializable {
     private Long time;
     private String action;
     private String error;
-    private Integer type;
+    private boolean success = false;
 }

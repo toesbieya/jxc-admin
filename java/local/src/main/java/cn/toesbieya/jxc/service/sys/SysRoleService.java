@@ -1,7 +1,6 @@
 package cn.toesbieya.jxc.service.sys;
 
 import cn.toesbieya.jxc.annoation.UserAction;
-import cn.toesbieya.jxc.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.mapper.SysRoleMapper;
 import cn.toesbieya.jxc.model.entity.SysRole;
 import cn.toesbieya.jxc.model.vo.R;
@@ -24,7 +23,7 @@ public class SysRoleService {
     public List<SysRole> get() {
         return mapper.selectList(
                 Wrappers.lambdaQuery(SysRole.class)
-                        .eq(SysRole::getStatus, GeneralStatusEnum.ENABLED.getCode())
+                        .eq(SysRole::isEnable, true)
         );
     }
 
@@ -37,7 +36,7 @@ public class SysRoleService {
         String name = vo.getName();
         Integer cid = vo.getCid();
         String cname = vo.getCname();
-        Integer status = vo.getStatus();
+        Boolean enable = vo.getEnable();
         Long startTime = vo.getStartTime();
         Long endTime = vo.getEndTime();
 
@@ -47,7 +46,7 @@ public class SysRoleService {
                         .like(!StringUtils.isEmpty(name), SysRole::getName, name)
                         .eq(cid != null, SysRole::getCid, cid)
                         .like(!StringUtils.isEmpty(cname), SysRole::getName, cname)
-                        .eq(status != null, SysRole::getStatus, status)
+                        .eq(enable != null, SysRole::isEnable, enable)
                         .ge(startTime != null, SysRole::getCtime, startTime)
                         .le(endTime != null, SysRole::getCtime, endTime)
                         .orderByDesc(SysRole::getCtime);
@@ -78,7 +77,7 @@ public class SysRoleService {
                 null,
                 Wrappers.lambdaUpdate(SysRole.class)
                         .set(SysRole::getName, name)
-                        .set(SysRole::getStatus, role.getStatus())
+                        .set(SysRole::isEnable, role.isEnable())
                         .set(SysRole::getScope, role.getScope())
                         .set(SysRole::getDepartmentId, role.getDepartmentId())
                         .set(SysRole::getResourceId, role.getResourceId())
@@ -92,7 +91,7 @@ public class SysRoleService {
         int rows = mapper.delete(
                 Wrappers.lambdaQuery(SysRole.class)
                         .eq(SysRole::getId, role.getId())
-                        .eq(SysRole::getStatus, GeneralStatusEnum.DISABLED.getCode())
+                        .eq(SysRole::isEnable, false)
         );
         return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }

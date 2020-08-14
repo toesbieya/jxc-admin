@@ -10,7 +10,7 @@ import lombok.ToString;
 public class LoginHistorySearch extends BaseSearch {
     private Integer uid;
     private String uname;
-    private Integer type;
+    private Boolean login;
     private String ip;
     private String address;
     private Long endTime;

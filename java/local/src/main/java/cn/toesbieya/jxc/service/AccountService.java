@@ -2,8 +2,6 @@ package cn.toesbieya.jxc.service;
 
 import cn.toesbieya.jxc.annoation.TimeCost;
 import cn.toesbieya.jxc.annoation.UserAction;
-import cn.toesbieya.jxc.enumeration.GeneralStatusEnum;
-import cn.toesbieya.jxc.enumeration.RecLoginHistoryEnum;
 import cn.toesbieya.jxc.enumeration.ResourceTypeEnum;
 import cn.toesbieya.jxc.mapper.SysUserMapper;
 import cn.toesbieya.jxc.model.entity.RecLoginHistory;
@@ -50,7 +48,7 @@ public class AccountService {
         if (user == null) {
             return R.fail("用户名或密码错误");
         }
-        if (user.getStatus().equals(GeneralStatusEnum.DISABLED.getCode())) {
+        if (!user.isEnable()) {
             return R.fail("该用户已被禁用，请联系管理员");
         }
         Integer roleId = user.getRole();
@@ -131,7 +129,7 @@ public class AccountService {
                         .uid(user.getId())
                         .uname(user.getName())
                         .ip(ip)
-                        .type(RecLoginHistoryEnum.LOGIN.getCode())
+                        .login(true)
                         .time(now)
                         .build()
         );
@@ -147,7 +145,7 @@ public class AccountService {
                             .uid(user.getId())
                             .uname(user.getName())
                             .ip(ip)
-                            .type(RecLoginHistoryEnum.LOGOUT.getCode())
+                            .login(false)
                             .time(System.currentTimeMillis())
                             .build()
             );
@@ -169,7 +167,7 @@ public class AccountService {
         user.setPwd(param.getPassword());
         user.setRole(1);
         user.setDept(1);
-        user.setStatus(GeneralStatusEnum.ENABLED.getCode());
+        user.setEnable(true);
         user.setCtime(System.currentTimeMillis());
 
         userMapper.insert(user);

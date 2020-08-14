@@ -14,5 +14,5 @@ public class UserActionSearch extends BaseSearch {
     private String url;
     private Long startTime;
     private Long endTime;
-    private String type;
+    private Boolean success;
 }

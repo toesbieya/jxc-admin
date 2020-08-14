@@ -1,7 +1,6 @@
 package cn.toesbieya.jxc.service.sys;
 
 import cn.toesbieya.jxc.annoation.UserAction;
-import cn.toesbieya.jxc.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.mapper.SysCustomerMapper;
 import cn.toesbieya.jxc.mapper.SysRegionMapper;
 import cn.toesbieya.jxc.model.entity.SysCustomer;
@@ -39,7 +38,7 @@ public class SysCustomerService {
         String linkman = vo.getLinkman();
         String linkphone = vo.getLinkphone();
         String region = vo.getRegion();
-        Integer status = vo.getStatus();
+        Boolean enable = vo.getEnable();
         Long startTime = vo.getStartTime();
         Long endTime = vo.getEndTime();
 
@@ -51,7 +50,7 @@ public class SysCustomerService {
                         .like(!StringUtils.isEmpty(linkman), SysCustomer::getLinkman, linkman)
                         .eq(!StringUtils.isEmpty(linkphone), SysCustomer::getLinkphone, linkphone)
                         .inSql(!StringUtils.isEmpty(region), SysCustomer::getRegion, region)
-                        .eq(status != null, SysCustomer::getStatus, status)
+                        .eq(enable != null, SysCustomer::isEnable, enable)
                         .ge(startTime != null, SysCustomer::getCtime, startTime)
                         .le(endTime != null, SysCustomer::getCtime, endTime)
                         .orderByDesc(SysCustomer::getCtime);
@@ -112,7 +111,7 @@ public class SysCustomerService {
                         .set(SysCustomer::getLinkman, customer.getLinkman())
                         .set(SysCustomer::getLinkphone, customer.getLinkphone())
                         .set(SysCustomer::getRegion, customer.getRegion())
-                        .set(SysCustomer::getStatus, customer.getStatus())
+                        .set(SysCustomer::isEnable, customer.isEnable())
                         .set(SysCustomer::getRemark, customer.getRemark())
                         .eq(SysCustomer::getId, id)
         );
@@ -124,7 +123,7 @@ public class SysCustomerService {
         int rows = customerMapper.delete(
                 Wrappers.lambdaQuery(SysCustomer.class)
                         .eq(SysCustomer::getId, customer.getId())
-                        .eq(SysCustomer::getStatus, GeneralStatusEnum.DISABLED.getCode())
+                        .eq(SysCustomer::isEnable, false)
         );
         return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }

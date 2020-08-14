@@ -1,10 +1,9 @@
 package cn.toesbieya.jxc.aspect;
 
 import cn.toesbieya.jxc.annoation.UserAction;
-import cn.toesbieya.jxc.enumeration.UserActionEnum;
 import cn.toesbieya.jxc.model.entity.RecUserAction;
-import cn.toesbieya.jxc.service.RecService;
 import cn.toesbieya.jxc.model.vo.R;
+import cn.toesbieya.jxc.service.RecService;
 import cn.toesbieya.jxc.util.SpringUtil;
 import cn.toesbieya.jxc.util.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -59,14 +58,10 @@ public class UserActionAspect {
 
         R result = (R) pjp.proceed();
 
-        if (result.isSuccess()) {
-            action.setType(UserActionEnum.SUCCESS.getCode());
-        }
-        else {
-            action.setType(UserActionEnum.FAIL.getCode());
+        action.setSuccess(result.isSuccess());
+        if (!result.isSuccess()) {
             action.setError(result.getMsg());
         }
-        service.insertUserAction(action);
 
         return result;
     }

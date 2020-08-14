@@ -51,7 +51,6 @@ public class CategoryController {
     private String validateCategoryCreateParam(SysCategory category) {
         if (category.getPid() == null) return "创建失败，参数错误";
         if (StringUtils.isEmpty(category.getName())) return "创建失败，分类名称不能为空";
-        if (category.getType() == null) return "创建失败，分类类型不能为空";
         return null;
     }
 
@@ -59,7 +58,6 @@ public class CategoryController {
         if (category.getId() == null) return "修改失败，参数错误";
         if (category.getPid() == null) return "创建失败，参数错误";
         if (StringUtils.isEmpty(category.getName())) return "创建失败，分类名称不能为空";
-        if (category.getType() == null) return "创建失败，分类类型不能为空";
         return null;
     }
 }

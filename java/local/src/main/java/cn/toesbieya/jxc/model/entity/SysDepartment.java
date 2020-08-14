@@ -7,5 +7,5 @@ public class SysDepartment {
     private Integer id;
     private Integer pid;
     private String name;
-    private Integer status;
+    private boolean enable = false;
 }

@@ -35,7 +35,7 @@
                     <template v-slot="{row}">{{ row.type === 0 ? '通知提醒' : '系统公告' }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="通知对象" show-overflow-tooltip>
-                    <template v-slot="{row}">{{ row.broadcast === 1 ? '全体用户' : '指定用户' }}</template>
+                    <template v-slot="{row}">{{ row.broadcast ? '全体用户' : '指定用户' }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="状 态" show-overflow-tooltip>
                     <template v-slot="{row}">{{ transformStatus(row.status) }}</template>

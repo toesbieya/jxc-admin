@@ -6,7 +6,6 @@
 import TreeSelect from '@/component/TreeSelect'
 import {getDepartments} from "@/api/system/department"
 import {createTreeByWorker} from "@/util/tree"
-import {isEmpty} from "@/util"
 
 export default {
     name: "DepartmentSelector",

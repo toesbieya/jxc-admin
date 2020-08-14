@@ -47,8 +47,8 @@
                     </el-table-column>
                     <el-table-column align="center" label="状 态" width="120">
                         <template v-slot="{row}">
-                            <span :class="row.status===1?'success':'error'" class="dot"/>
-                            <span>{{ row.status === 1 ? '启用' : '禁用' }}</span>
+                            <span :class="row.enable ? 'success' : 'error'" class="dot"/>
+                            <span>{{ row.enable ? '启用' : '禁用' }}</span>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -79,7 +79,7 @@ export default {
     data() {
         return {
             searchForm: {
-                status: 1
+                enable: true
             }
         }
     },

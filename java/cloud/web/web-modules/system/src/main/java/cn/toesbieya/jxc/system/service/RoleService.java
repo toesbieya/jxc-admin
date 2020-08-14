@@ -1,7 +1,6 @@
 package cn.toesbieya.jxc.system.service;
 
 import cn.toesbieya.jxc.api.system.RoleApi;
-import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysRole;
 import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.system.mapper.SysRoleMapper;
@@ -26,7 +25,7 @@ public class RoleService implements RoleApi {
     public List<SysRole> get() {
         return mapper.selectList(
                 Wrappers.lambdaQuery(SysRole.class)
-                        .eq(SysRole::getStatus, GeneralStatusEnum.ENABLED.getCode())
+                        .eq(SysRole::isEnable, true)
         );
     }
 
@@ -40,7 +39,7 @@ public class RoleService implements RoleApi {
         String name = vo.getName();
         Integer cid = vo.getCid();
         String cname = vo.getCname();
-        Integer status = vo.getStatus();
+        Boolean enable = vo.getEnable();
         Long startTime = vo.getStartTime();
         Long endTime = vo.getEndTime();
 
@@ -50,7 +49,7 @@ public class RoleService implements RoleApi {
                         .like(!StringUtils.isEmpty(name), SysRole::getName, name)
                         .eq(cid != null, SysRole::getCid, cid)
                         .like(!StringUtils.isEmpty(cname), SysRole::getName, cname)
-                        .eq(status != null, SysRole::getStatus, status)
+                        .eq(enable != null, SysRole::isEnable, enable)
                         .ge(startTime != null, SysRole::getCtime, startTime)
                         .le(endTime != null, SysRole::getCtime, endTime)
                         .orderByDesc(SysRole::getCtime);
@@ -82,7 +81,7 @@ public class RoleService implements RoleApi {
                 null,
                 Wrappers.lambdaUpdate(SysRole.class)
                         .set(SysRole::getName, name)
-                        .set(SysRole::getStatus, role.getStatus())
+                        .set(SysRole::isEnable, role.isEnable())
                         .set(SysRole::getScope, role.getScope())
                         .set(SysRole::getDepartmentId, role.getDepartmentId())
                         .set(SysRole::getResourceId, role.getResourceId())
@@ -96,7 +95,7 @@ public class RoleService implements RoleApi {
         int rows = mapper.delete(
                 Wrappers.lambdaQuery(SysRole.class)
                         .eq(SysRole::getId, role.getId())
-                        .eq(SysRole::getStatus, 0)
+                        .eq(SysRole::isEnable, false)
         );
         return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }

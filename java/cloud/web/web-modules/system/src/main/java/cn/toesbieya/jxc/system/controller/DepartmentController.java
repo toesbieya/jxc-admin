@@ -1,6 +1,5 @@
 package cn.toesbieya.jxc.system.controller;
 
-import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysDepartment;
 import cn.toesbieya.jxc.common.model.vo.DepartmentVo;
 import cn.toesbieya.jxc.common.model.vo.R;
@@ -24,7 +23,7 @@ public class DepartmentController {
         if (!all) {
             list = list
                     .stream()
-                    .filter(i -> i.getStatus().equals(GeneralStatusEnum.ENABLED.getCode()))
+                    .filter(SysDepartment::isEnable)
                     .collect(Collectors.toList());
         }
         return R.success(list);
@@ -32,9 +31,7 @@ public class DepartmentController {
 
     @PostMapping("add")
     public R add(@RequestBody SysDepartment department) {
-        if (null == department.getPid()
-                || StringUtils.isEmpty(department.getName())
-                || null == department.getStatus()) {
+        if (null == department.getPid() || StringUtils.isEmpty(department.getName())) {
             return R.fail("添加失败，参数错误");
         }
 
@@ -47,8 +44,7 @@ public class DepartmentController {
     public R update(@RequestBody SysDepartment department) {
         if (null == department.getId()
                 || null == department.getPid()
-                || StringUtils.isEmpty(department.getName())
-                || null == department.getStatus()) {
+                || StringUtils.isEmpty(department.getName())) {
             return R.fail("修改失败，参数错误");
         }
 

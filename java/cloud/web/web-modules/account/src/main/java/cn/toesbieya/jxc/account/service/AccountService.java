@@ -1,6 +1,5 @@
 package cn.toesbieya.jxc.account.service;
 
-import cn.toesbieya.jxc.account.enumeration.RecLoginHistoryEnum;
 import cn.toesbieya.jxc.account.mapper.SysUserMapper;
 import cn.toesbieya.jxc.account.vo.LoginParam;
 import cn.toesbieya.jxc.account.vo.LoginSuccessInfo;
@@ -11,7 +10,6 @@ import cn.toesbieya.jxc.api.RecordApi;
 import cn.toesbieya.jxc.api.system.DepartmentApi;
 import cn.toesbieya.jxc.api.system.ResourceApi;
 import cn.toesbieya.jxc.api.system.RoleApi;
-import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.enumeration.ResourceTypeEnum;
 import cn.toesbieya.jxc.common.model.entity.RecLoginHistory;
 import cn.toesbieya.jxc.common.model.entity.SysResource;
@@ -61,7 +59,7 @@ public class AccountService {
         if (user == null) {
             return R.fail("用户名或密码错误");
         }
-        if (user.getStatus().equals(GeneralStatusEnum.DISABLED.getCode())) {
+        if (!user.isEnable()) {
             return R.fail("该用户已被禁用，请联系管理员");
         }
         Integer roleId = user.getRole();
@@ -142,7 +140,7 @@ public class AccountService {
                         .uid(user.getId())
                         .uname(user.getName())
                         .ip(ip)
-                        .type(RecLoginHistoryEnum.LOGIN.getCode())
+                        .login(true)
                         .time(now)
                         .build()
         );
@@ -158,7 +156,7 @@ public class AccountService {
                             .uid(user.getId())
                             .uname(user.getName())
                             .ip(ip)
-                            .type(RecLoginHistoryEnum.LOGOUT.getCode())
+                            .login(false)
                             .time(System.currentTimeMillis())
                             .build()
             );
@@ -180,7 +178,7 @@ public class AccountService {
         user.setPwd(param.getPassword());
         user.setRole(1);
         user.setDept(1);
-        user.setStatus(GeneralStatusEnum.ENABLED.getCode());
+        user.setEnable(true);
         user.setCtime(System.currentTimeMillis());
 
         userMapper.insert(user);

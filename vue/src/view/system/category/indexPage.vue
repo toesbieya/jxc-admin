@@ -2,10 +2,10 @@
     <div>
         <el-row :gutter="20">
             <el-col :span="8">
-                <category-list :form="()=>$refs.form||null" ref="list"/>
+                <category-list ref="list" :form="() => $refs.form || null"/>
             </el-col>
             <el-col :span="16">
-                <edit-form :list="()=>$refs.list||null" ref="form"/>
+                <edit-form ref="form" :list="() => $refs.list || null"/>
             </el-col>
         </el-row>
     </div>

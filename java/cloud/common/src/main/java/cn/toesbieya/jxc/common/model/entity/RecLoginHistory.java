@@ -18,6 +18,6 @@ public class RecLoginHistory implements Serializable {
     private String uname;
     private String ip;
     private String address;
-    private Integer type;
+    private boolean login = false;
     private Long time;
 }

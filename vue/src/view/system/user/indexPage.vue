@@ -8,9 +8,9 @@
                 <role-selector v-model="searchForm.role"/>
             </search-form-item>
             <search-form-item label="状 态">
-                <el-select v-model="searchForm.status" clearable @clear="searchForm.status = null">
-                    <el-option :value="1" label="启用"/>
-                    <el-option :value="0" label="禁用"/>
+                <el-select v-model="searchForm.enable" clearable @clear="searchForm.enable = null">
+                    <el-option :value="true" label="启用"/>
+                    <el-option :value="false" label="禁用"/>
                 </el-select>
             </search-form-item>
             <search-form-item label="创建时间">
@@ -65,8 +65,8 @@
                 </el-table-column>
                 <el-table-column align="center" label="状 态" width="120">
                     <template v-slot="{row}">
-                        <span :class="row.status === 1 ? 'success' : 'error'" class="dot"/>
-                        <span>{{ row.status === 1 ? '启用' : '禁用' }}</span>
+                        <span :class="row.enable ? 'success' : 'error'" class="dot"/>
+                        <span>{{ row.enable ? '启用' : '禁用' }}</span>
                     </template>
                 </el-table-column>
             </abstract-table>
@@ -102,7 +102,7 @@ export default {
             searchForm: {
                 name: '',
                 role: null,
-                status: null
+                enable: null
             },
             temp: {ctime: []},
             editDialog: false

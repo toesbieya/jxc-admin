@@ -4,10 +4,10 @@
             <el-form-item label="名 称" prop="name">
                 <el-input v-model="form.name" maxlength="20"/>
             </el-form-item>
-            <el-form-item label="状 态" prop="status">
-                <el-radio-group v-model="form.status">
-                    <el-radio :label="1">启用</el-radio>
-                    <el-radio :label="0">禁用</el-radio>
+            <el-form-item label="状 态" prop="enable">
+                <el-radio-group v-model="form.enable">
+                    <el-radio :label="true">启用</el-radio>
+                    <el-radio :label="false">禁用</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="数据范围" prop="scope">
@@ -90,14 +90,13 @@ export default {
             form: {
                 id: null,
                 name: null,
-                status: 1,
+                enable: false,
                 scope: 1,
                 departmentId: [],
                 resourceId: []
             },
             rules: {
                 name: [{required: true, message: '角色名称不能为空', trigger: 'change'}],
-                status: [{required: true, message: '角色状态不能为空', trigger: 'change'}],
                 scope: [{required: true, message: '数据范围不能为空', trigger: 'change'}],
             },
             departments: []
@@ -148,7 +147,7 @@ export default {
         clearForm() {
             this.form.id = null
             this.form.name = null
-            this.form.status = 1
+            this.form.enable = false
             this.form.scope = 1
             this.form.departmentId = []
             this.form.resourceId = []

@@ -28,7 +28,7 @@ public class SysCategoryService {
         Integer pid = vo.getPid();
         String pids = vo.getPids();
         String name = vo.getName();
-        Integer type = vo.getType();
+        Boolean leaf = vo.getLeaf();
         Long startTime = vo.getStartTime();
         Long endTime = vo.getEndTime();
 
@@ -39,7 +39,7 @@ public class SysCategoryService {
                         .eq(pid != null, SysCategory::getPid, pid)
                         .inSql(!StringUtils.isEmpty(pids), SysCategory::getPid, pids)
                         .like(!StringUtils.isEmpty(name), SysCategory::getName, name)
-                        .eq(type != null, SysCategory::getType, type)
+                        .eq(leaf != null, SysCategory::isLeaf, leaf)
                         .ge(startTime != null, SysCategory::getCtime, startTime)
                         .le(endTime != null, SysCategory::getCtime, endTime)
                         .orderByDesc(SysCategory::getCtime)
@@ -67,7 +67,7 @@ public class SysCategoryService {
                 Wrappers.lambdaUpdate(SysCategory.class)
                         .set(SysCategory::getPid, category.getPid())
                         .set(SysCategory::getName, category.getName())
-                        .set(SysCategory::getType, category.getType())
+                        .set(SysCategory::isLeaf, category.isLeaf())
                         .eq(SysCategory::getId, category.getId())
         );
         return rows > 0 ? R.success("修改成功") : R.fail("修改失败，请刷新后重试");
@@ -91,7 +91,7 @@ public class SysCategoryService {
         //当该分类不是顶级节点时，判断其父节点是否允许有下级
         if (!category.getPid().equals(0)) {
             SysCategory parent = mapper.selectById(category.getPid());
-            if (parent == null || parent.getType().equals(1)) {
+            if (parent == null || parent.isLeaf()) {
                 return "父节点状态变更，请刷新后重试";
             }
         }
@@ -104,7 +104,7 @@ public class SysCategoryService {
         if (exist != null && exist > 0) {
             return String.format("分类【%s】已存在", category.getName());
         }
-        if (id != null && category.getType().equals(1) && hasChildren(id)) {
+        if (id != null && category.isLeaf() && hasChildren(id)) {
             return "该分类下存在子节点，不能改为实体类型";
         }
         return null;

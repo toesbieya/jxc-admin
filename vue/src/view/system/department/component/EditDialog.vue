@@ -7,10 +7,10 @@
             <el-form-item label="部门名称" prop="name">
                 <el-input v-model="form.name" maxlength="20"/>
             </el-form-item>
-            <el-form-item label="部门状态" prop="status">
-                <el-radio-group v-model="form.status">
-                    <el-radio :label="1">启用</el-radio>
-                    <el-radio :label="0">禁用</el-radio>
+            <el-form-item label="部门状态" prop="enable">
+                <el-radio-group v-model="form.enable">
+                    <el-radio :label="true">启用</el-radio>
+                    <el-radio :label="false">禁用</el-radio>
                 </el-radio-group>
             </el-form-item>
         </abstract-form>
@@ -50,11 +50,10 @@ export default {
                 id: null,
                 pid: null,
                 name: null,
-                status: 1,
+                enable: false,
             },
             rules: {
-                name: [{required: true, message: '部门名称不能为空', trigger: 'change'}],
-                status: [{required: true, message: '部门状态不能为空', trigger: 'change'}]
+                name: [{required: true, message: '部门名称不能为空', trigger: 'change'}]
             }
         }
     },
@@ -105,7 +104,7 @@ export default {
             this.form.id = null
             this.form.pid = null
             this.form.name = null
-            this.form.status = 1
+            this.form.enable = false
             this.$nextTick(() => this.$refs.form.clearValidate())
         },
 

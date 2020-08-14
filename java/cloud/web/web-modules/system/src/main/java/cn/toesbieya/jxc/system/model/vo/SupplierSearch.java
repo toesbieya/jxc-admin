@@ -15,7 +15,7 @@ public class SupplierSearch extends BaseSearch {
     private String linkman;
     private String linkphone;
     private String region;
-    private Integer status;
+    private Boolean enable;
     private Long startTime;
     private Long endTime;
 }

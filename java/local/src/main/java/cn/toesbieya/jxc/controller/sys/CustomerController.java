@@ -55,7 +55,6 @@ public class CustomerController {
         if (StringUtils.isEmpty(customer.getAddress())) return "客户地址不能为空";
         if (StringUtils.isEmpty(customer.getLinkman())) return "客户联系人不能为空";
         if (StringUtils.isEmpty(customer.getLinkphone())) return "客户联系电话不能为空";
-        if (customer.getStatus() == null) return "客户状态不能为空";
         return null;
     }
 

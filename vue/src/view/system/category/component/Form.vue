@@ -7,10 +7,10 @@
             <el-form-item label="分类名称" prop="name">
                 <el-input v-model="form.name" :readonly="type === 'see'" maxlength="50"/>
             </el-form-item>
-            <el-form-item label="类 型" prop="type">
-                <el-select v-model="form.type" :disabled="type === 'see'">
-                    <el-option :value="0" label="分类"/>
-                    <el-option :value="1" label="实体"/>
+            <el-form-item label="类 型" prop="leaf">
+                <el-select v-model="form.leaf" :disabled="type === 'see'">
+                    <el-option :value="false" label="分类"/>
+                    <el-option :value="true" label="实体"/>
                 </el-select>
             </el-form-item>
             <el-form-item>
@@ -40,8 +40,8 @@ export default {
     props: ['list'],
 
     data() {
-        let typeValidate = (r, v, c) => {
-            if (v === 1 && this.hasChildren) c('该分类下已有子节点')
+        const typeValidate = (r, v, c) => {
+            if (v && this.hasChildren) c('该分类下已有子节点')
             c()
         }
         return {
@@ -52,13 +52,13 @@ export default {
                 id: null,
                 pid: 0,
                 name: '',
-                type: 0
+                leaf: false
             },
             parentObj: null,
             hasChildren: false,
             rules: {
                 name: [{required: true, message: '请输入分类名称', trigger: 'change'}],
-                type: [
+                leaf: [
                     {required: true, message: '请选择分类类型', trigger: 'change'},
                     {validator: typeValidate, trigger: 'change'}
                 ]
@@ -68,7 +68,9 @@ export default {
 
     computed: {
         show() {
-            return this.list() && (this.type === 'add' || ['see', 'edit'].includes(this.type) && this.list().currentCategory)
+            const ref = this.list()
+            if (!ref) return false
+            return this.type === 'add' || ['see', 'edit'].includes(this.type) && ref.currentCategory
         },
 
         confirmMessage() {
@@ -90,7 +92,7 @@ export default {
             this.type = 'add'
             this.form.pid = parent ? parent.id : 0
             this.form.name = ''
-            this.form.type = 0
+            this.form.leaf = false
             this.hasChildren = false
         },
 
@@ -131,7 +133,7 @@ export default {
             this.form.id = null
             this.form.pid = 0
             this.form.name = ''
-            this.form.type = 0
+            this.form.leaf = false
             this.parentObj = null
             this.hasChildren = false
         }

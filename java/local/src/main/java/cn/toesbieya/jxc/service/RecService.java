@@ -39,7 +39,7 @@ public class RecService {
     public PageResult<RecLoginHistory> searchLoginHistory(LoginHistorySearch vo) {
         Integer uid = vo.getUid();
         String uname = vo.getUname();
-        Integer type = vo.getType();
+        Boolean login = vo.getLogin();
         String ip = vo.getIp();
         String address = vo.getAddress();
         Long startTime = vo.getStartTime();
@@ -49,7 +49,7 @@ public class RecService {
                 Wrappers.lambdaQuery(RecLoginHistory.class)
                         .eq(uid != null, RecLoginHistory::getUid, uid)
                         .like(!StringUtils.isEmpty(uname), RecLoginHistory::getUname, vo.getUname())
-                        .eq(type != null, RecLoginHistory::getType, type)
+                        .eq(login != null, RecLoginHistory::isLogin, login)
                         .eq(!StringUtils.isEmpty(ip), RecLoginHistory::getIp, vo.getIp())
                         .like(!StringUtils.isEmpty(address), RecLoginHistory::getAddress, vo.getAddress())
                         .ge(startTime != null, RecLoginHistory::getTime, startTime)
@@ -63,7 +63,7 @@ public class RecService {
     public PageResult<RecUserAction> searchUserAction(UserActionSearch vo) {
         Integer uid = vo.getUid();
         String uname = vo.getUname();
-        String type = vo.getType();
+        Boolean success = vo.getSuccess();
         String ip = vo.getIp();
         String url = vo.getUrl();
         Long startTime = vo.getStartTime();
@@ -73,7 +73,7 @@ public class RecService {
                 Wrappers.lambdaQuery(RecUserAction.class)
                         .eq(uid != null, RecUserAction::getUid, uid)
                         .like(!StringUtils.isEmpty(uname), RecUserAction::getUname, uname)
-                        .inSql(!StringUtils.isEmpty(type), RecUserAction::getType, type)
+                        .eq(success != null, RecUserAction::isSuccess, success)
                         .eq(!StringUtils.isEmpty(ip), RecUserAction::getIp, ip)
                         .eq(!StringUtils.isEmpty(url), RecUserAction::getUrl, url)
                         .ge(startTime != null, RecUserAction::getTime, startTime)

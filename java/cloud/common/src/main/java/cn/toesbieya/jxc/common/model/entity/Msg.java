@@ -21,6 +21,6 @@ public class Msg implements Serializable {
     private String wname;
     private Long wtime;
     private Integer status;
-    private Integer broadcast;
+    private boolean broadcast = false;
     private String recipient;
 }

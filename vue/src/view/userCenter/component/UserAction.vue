@@ -11,14 +11,14 @@
             </el-table-column>
             <el-table-column align="center" label="状态" width="80">
                 <template v-slot="{row}">
-                    <el-tooltip :disabled="row.type!==0" placement="left">
+                    <el-tooltip :disabled="row.success" placement="left">
                         <div slot="content" style="max-width: 60vw">
                             <el-scrollbar wrap-class="el-select-dropdown__wrap">
                                 <p>{{ row.error }}</p>
                             </el-scrollbar>
                         </div>
-                        <el-tag :type="row.type===1?'success':'danger'" size="small" effect="dark">
-                            {{ getInfo(row.type) }}
+                        <el-tag :type="row.success ? 'success' : 'danger'" size="small" effect="dark">
+                            {{ row.success ? '成功' : '失败' }}
                         </el-tag>
                     </el-tooltip>
                 </template>
@@ -46,32 +46,16 @@ export default {
         }
     },
 
-    computed: {
-        uid() {
-            return this.$store.state.user.id
-        }
-    },
-
     methods: {
         search() {
             if (this.config.loading) return
             this.config.loading = true
-            searchUserAction({...this.searchForm, uid: this.uid})
+            searchUserAction({...this.searchForm, uid: this.$store.state.user.id})
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list
                 })
                 .finally(() => this.config.loading = false)
-        },
-
-        getInfo(type) {
-            switch (type) {
-                case 0:
-                    return '失败'
-                case 1:
-                    return '成功'
-            }
-            return null
         }
     }
 }

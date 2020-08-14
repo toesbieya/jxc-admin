@@ -38,17 +38,17 @@ public class UserService {
         Integer id = vo.getId();
         String name = vo.getName();
         String roleIds = vo.getRole();
-        Integer status = vo.getStatus();
+        Boolean enable = vo.getEnable();
         Long startTime = vo.getStartTime();
         Long endTime = vo.getEndTime();
 
         Wrapper<SysUser> wrapper =
                 Wrappers.lambdaQuery(SysUser.class)
-                        .eq(SysUser::isAdmin, 0)
+                        .eq(SysUser::isAdmin, false)
                         .eq(id != null, SysUser::getId, id)
                         .like(!StringUtils.isEmpty(name), SysUser::getName, name)
                         .inSql(!StringUtils.isEmpty(roleIds), SysUser::getRole, roleIds)
-                        .eq(status != null, SysUser::getStatus, status)
+                        .eq(enable != null, SysUser::isEnable, enable)
                         .ge(startTime != null, SysUser::getCtime, startTime)
                         .le(endTime != null, SysUser::getCtime, endTime)
                         .orderByDesc(SysUser::getCtime);
@@ -136,7 +136,7 @@ public class UserService {
                         .set(SysUser::getName, name)
                         .set(SysUser::getRole, user.getRole())
                         .set(SysUser::getDept, user.getDept())
-                        .set(SysUser::getStatus, user.getStatus())
+                        .set(SysUser::isEnable, user.isEnable())
                         .eq(SysUser::getId, id)
         );
 
@@ -149,7 +149,7 @@ public class UserService {
         int rows = userMapper.delete(
                 Wrappers.lambdaQuery(SysUser.class)
                         .eq(SysUser::getId, user.getId())
-                        .eq(SysUser::isAdmin, 0)
+                        .eq(SysUser::isAdmin, false)
         );
         WebSocketUtil.sendLogoutEvent(Collections.singletonList(user.getId()), "该用户已删除");
         return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新后重试");

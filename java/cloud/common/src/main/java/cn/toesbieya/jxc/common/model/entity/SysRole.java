@@ -13,7 +13,7 @@ public class SysRole implements Serializable {
     private Integer cid;
     private String cname;
     private Long ctime;
-    private Integer status;
+    private boolean enable = false;
     private int scope = DataScopeEnum.ALL.getCode();
     private String departmentId;
     private String resourceId;

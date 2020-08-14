@@ -20,10 +20,10 @@
                 />
                 <template v-else>{{ form.deptName }}</template>
             </el-form-item>
-            <el-form-item label="状 态" prop="status">
-                <el-radio-group v-model="form.status" :disabled="!canEdit">
-                    <el-radio :label="1">启用</el-radio>
-                    <el-radio :label="0">禁用</el-radio>
+            <el-form-item label="状 态" prop="enable">
+                <el-radio-group v-model="form.enable" :disabled="!canEdit">
+                    <el-radio :label="true">启用</el-radio>
+                    <el-radio :label="false">禁用</el-radio>
                 </el-radio-group>
             </el-form-item>
         </abstract-form>
@@ -74,7 +74,7 @@ export default {
                 roleName: null,
                 dept: null,
                 deptName: null,
-                status: 1,
+                enable: false
             },
             rules: {
                 name: [
@@ -82,8 +82,7 @@ export default {
                     {validator: validateName, trigger: 'change'}
                 ],
                 role: [{required: true, message: '用户角色不能为空', trigger: 'change'}],
-                dept: [{required: true, message: '用户部门不能为空', trigger: 'change'}],
-                status: [{required: true, message: '用户状态不能为空', trigger: 'change'}],
+                dept: [{required: true, message: '用户部门不能为空', trigger: 'change'}]
             }
         }
     },
@@ -135,7 +134,7 @@ export default {
             this.form.roleName = null
             this.form.dept = null
             this.form.deptName = null
-            this.form.status = 1
+            this.form.enable = false
             this.$nextTick(() => this.$refs.form.clearValidate())
         },
 

@@ -15,6 +15,6 @@ public class SysUser {
     private String avatar;
     private Long ctime;
     private boolean admin = false;
-    private Integer status;
+    private boolean enable = false;
     private Integer dept;
 }

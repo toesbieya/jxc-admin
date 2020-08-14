@@ -11,8 +11,8 @@
             </el-table-column>
             <el-table-column align="center" label="说明" width="80">
                 <template v-slot="{row}">
-                    <el-tag :type="row.type===1?'success':'danger'" size="small" effect="dark">
-                        {{ getInfo(row.type) }}
+                    <el-tag :type="row.login ? 'success' : 'danger'" size="small" effect="dark">
+                        {{ row.login ? '登录' : '登出' }}
                     </el-tag>
                 </template>
             </el-table-column>
@@ -55,16 +55,6 @@ export default {
                     this.tableData = list
                 })
                 .finally(() => this.config.loading = false)
-        },
-
-        getInfo(type) {
-            switch (type) {
-                case 0:
-                    return '登出'
-                case 1:
-                    return '登陆'
-            }
-            return null
         }
     }
 }

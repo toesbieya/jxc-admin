@@ -21,10 +21,10 @@
             <el-form-item label="联系电话" prop="linkphone">
                 <el-input v-model="form.linkphone" :readonly="!canEdit" maxlength="20"/>
             </el-form-item>
-            <el-form-item label="状 态" prop="status">
-                <el-radio-group v-model="form.status" :disabled="!canEdit">
-                    <el-radio :label="1">启用</el-radio>
-                    <el-radio :label="0">禁用</el-radio>
+            <el-form-item label="状 态" prop="enable">
+                <el-radio-group v-model="form.enable" :disabled="!canEdit">
+                    <el-radio :label="true">启用</el-radio>
+                    <el-radio :label="false">禁用</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="备 注" prop="remark">
@@ -82,7 +82,7 @@ export default {
                 linkphone: null,
                 region: null,
                 regionName: null,
-                status: 1,
+                enable: false,
                 remark: null
             },
             rules: {
@@ -90,7 +90,6 @@ export default {
                 address: [{required: true, message: '地址不能为空', trigger: 'change'}],
                 linkman: [{required: true, message: '联系人不能为空', trigger: 'change'}],
                 linkphone: [{required: true, message: '联系电话不能为空', trigger: 'change'}],
-                status: [{required: true, message: '状态不能为空', trigger: 'change'}],
                 regionName: [{required: true, message: '行政区域不能为空', trigger: 'change'}],
             }
         }
@@ -142,7 +141,6 @@ export default {
 
         clearForm() {
             resetObj(this.form)
-            this.form.status = 1
             this.$nextTick(() => this.$refs.form.clearValidate())
         },
 

@@ -13,7 +13,7 @@ public class SysSupplier implements Serializable {
     private String linkman;
     private String linkphone;
     private String region;
-    private Integer status;
+    private boolean enable = false;
     private Long ctime;
     private String remark;
 }

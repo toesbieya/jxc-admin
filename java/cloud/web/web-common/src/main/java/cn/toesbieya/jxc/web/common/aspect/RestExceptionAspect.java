@@ -5,7 +5,6 @@ import cn.toesbieya.jxc.common.exception.JsonResultException;
 import cn.toesbieya.jxc.common.model.entity.RecUserAction;
 import cn.toesbieya.jxc.common.model.vo.R;
 import cn.toesbieya.jxc.common.util.Util;
-import cn.toesbieya.jxc.web.common.enumeration.UserActionEnum;
 import cn.toesbieya.jxc.web.common.util.ThreadUtil;
 import cn.toesbieya.jxc.web.common.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +71,7 @@ public class RestExceptionAspect {
         if (action != null && !StringUtils.isEmpty(action.getAction())) {
             action.setTime(System.currentTimeMillis());
             action.setError(Util.exception2Str(e));
-            action.setType(UserActionEnum.FAIL.getCode());
+            action.setSuccess(false);
             recordApi.insertUserAction(action);
         }
         ThreadUtil.clearAll();

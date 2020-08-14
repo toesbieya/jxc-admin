@@ -1,6 +1,5 @@
 package cn.toesbieya.jxc.aspect;
 
-import cn.toesbieya.jxc.enumeration.UserActionEnum;
 import cn.toesbieya.jxc.exception.JsonResultException;
 import cn.toesbieya.jxc.model.entity.RecUserAction;
 import cn.toesbieya.jxc.model.vo.R;
@@ -73,7 +72,7 @@ public class RestExceptionAspect {
         if (action != null && !StringUtils.isEmpty(action.getAction())) {
             action.setTime(System.currentTimeMillis());
             action.setError(Util.exception2Str(e));
-            action.setType(UserActionEnum.FAIL.getCode());
+            action.setSuccess(false);
             service.insertUserAction(action);
         }
         ThreadUtil.clearAll();

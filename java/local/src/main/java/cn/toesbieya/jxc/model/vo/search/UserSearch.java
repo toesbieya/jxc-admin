@@ -13,5 +13,5 @@ public class UserSearch extends BaseSearch {
     private String role;
     private Long startTime;
     private Long endTime;
-    private Integer status;
+    private Boolean enable;
 }

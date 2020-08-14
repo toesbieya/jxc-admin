@@ -12,7 +12,7 @@ public class RoleSearch extends BaseSearch {
     private String name;
     private Integer cid;
     private String cname;
-    private Integer status;
+    private Boolean enable;
     private Long startTime;
     private Long endTime;
 }

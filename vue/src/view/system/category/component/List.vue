@@ -41,7 +41,7 @@ export default {
     computed: {
         canAdd() {
             return !this.currentCategory
-                || this.currentCategory.type === 0 && this.currentCategory.level < this.maxLevel
+                || !this.currentCategory.leaf && this.currentCategory.level < this.maxLevel
         }
     },
 

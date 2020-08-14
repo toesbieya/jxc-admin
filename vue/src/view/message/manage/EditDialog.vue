@@ -18,11 +18,11 @@
             </abstract-form-item>
             <abstract-form-item label="通知对象" prop="broadcast" dense>
                 <el-select v-model="form.broadcast" :disabled="!canSave">
-                    <el-option :value="0" label="指定用户"/>
-                    <el-option :value="1" label="全体用户"/>
+                    <el-option :value="false" label="指定用户"/>
+                    <el-option :value="true" label="全体用户"/>
                 </el-select>
             </abstract-form-item>
-            <abstract-form-item v-if="form.broadcast===0" label="选择用户" prop="recipient" dense>
+            <abstract-form-item v-if="!form.broadcast" label="选择用户" prop="recipient" dense>
                 <user-selector v-model="form.recipient" :disabled="!canSave"/>
             </abstract-form-item>
             <abstract-form-item v-if="form.pname" label="发布人" dense>
@@ -93,7 +93,7 @@ export default {
                 wname: null,
                 wtime: null,
                 status: 0,
-                broadcast: 1,
+                broadcast: false,
                 recipient: []
             },
             rules: {
@@ -145,7 +145,6 @@ export default {
 
         clearForm() {
             resetObj(this.form)
-            this.form.broadcast = 1
             this.needSearch = false
             this.loading = false
             this.$nextTick(() => this.$refs.form.clearValidate())
@@ -226,8 +225,11 @@ export default {
         },
 
         transformForm() {
-            if (this.form.broadcast === 1) return this.form
-            else return {...this.form, recipient: this.form.recipient.join(',')}
+            const recipient =
+                Array.isArray(this.form.recipient) && this.form.recipient.length > 0
+                    ? this.form.recipient.join(',')
+                    : null
+            return {...this.form, recipient}
         }
     }
 }

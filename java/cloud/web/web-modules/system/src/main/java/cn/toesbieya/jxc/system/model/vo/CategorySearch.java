@@ -9,7 +9,7 @@ public class CategorySearch {
     private Integer pid;
     private String pids;
     private String name;
-    private Integer type;
+    private Boolean leaf;
     private Long startTime;
     private Long endTime;
 }

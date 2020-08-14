@@ -53,7 +53,6 @@ public class SupplierController {
         if (StringUtils.isEmpty(supplier.getAddress())) return "供应商地址不能为空";
         if (StringUtils.isEmpty(supplier.getLinkman())) return "供应商联系人不能为空";
         if (StringUtils.isEmpty(supplier.getLinkphone())) return "供应商联系电话不能为空";
-        if (supplier.getStatus() == null) return "供应商状态不能为空";
         return null;
     }
 

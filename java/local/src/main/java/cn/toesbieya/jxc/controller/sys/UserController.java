@@ -84,7 +84,6 @@ public class UserController {
         if (user.getId() == null) return "修改失败，参数错误";
         if (StringUtils.isEmpty(user.getName())) return "修改失败，用户名称不能为空";
         if (user.getRole() == null) return "修改失败，用户角色不能为空";
-        if (user.getStatus() == null) return "修改失败，用户状态不能为空";
         return null;
     }
 }

@@ -29,8 +29,7 @@ public class RoleController {
 
     @PostMapping("add")
     public R add(@RequestBody SysRole role) {
-        if (StringUtils.isEmpty(role.getName())
-                || role.getStatus() == null) {
+        if (StringUtils.isEmpty(role.getName())) {
             return R.fail("添加失败，参数错误");
         }
 
@@ -46,9 +45,7 @@ public class RoleController {
 
     @PostMapping("update")
     public R update(@RequestBody SysRole role) {
-        if (StringUtils.isEmpty(role.getName())
-                || role.getId() == null
-                || role.getStatus() == null) {
+        if (StringUtils.isEmpty(role.getName()) || role.getId() == null) {
             return R.fail("修改失败，参数错误");
         }
 

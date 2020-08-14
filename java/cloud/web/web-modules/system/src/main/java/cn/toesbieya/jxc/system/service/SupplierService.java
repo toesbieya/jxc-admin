@@ -1,6 +1,5 @@
 package cn.toesbieya.jxc.system.service;
 
-import cn.toesbieya.jxc.common.enumeration.GeneralStatusEnum;
 import cn.toesbieya.jxc.common.model.entity.SysRegion;
 import cn.toesbieya.jxc.common.model.entity.SysSupplier;
 import cn.toesbieya.jxc.common.model.vo.R;
@@ -39,7 +38,7 @@ public class SupplierService {
         String linkman = vo.getLinkman();
         String linkphone = vo.getLinkphone();
         String region = vo.getRegion();
-        Integer status = vo.getStatus();
+        Boolean enable = vo.getEnable();
         Long startTime = vo.getStartTime();
         Long endTime = vo.getEndTime();
 
@@ -51,7 +50,7 @@ public class SupplierService {
                         .like(!StringUtils.isEmpty(linkman), SysSupplier::getLinkman, linkman)
                         .eq(!StringUtils.isEmpty(linkphone), SysSupplier::getLinkphone, linkphone)
                         .inSql(!StringUtils.isEmpty(region), SysSupplier::getRegion, region)
-                        .eq(status != null, SysSupplier::getStatus, status)
+                        .eq(enable != null, SysSupplier::isEnable, enable)
                         .ge(startTime != null, SysSupplier::getCtime, startTime)
                         .le(endTime != null, SysSupplier::getCtime, endTime)
                         .orderByDesc(SysSupplier::getCtime);
@@ -111,7 +110,7 @@ public class SupplierService {
                         .set(SysSupplier::getLinkman, supplier.getLinkman())
                         .set(SysSupplier::getLinkphone, supplier.getLinkphone())
                         .set(SysSupplier::getRegion, supplier.getRegion())
-                        .set(SysSupplier::getStatus, supplier.getStatus())
+                        .set(SysSupplier::isEnable, supplier.isEnable())
                         .set(SysSupplier::getRemark, supplier.getRemark())
                         .eq(SysSupplier::getId, id)
         );
@@ -123,7 +122,7 @@ public class SupplierService {
         int rows = supplierMapper.delete(
                 Wrappers.lambdaQuery(SysSupplier.class)
                         .eq(SysSupplier::getId, supplier.getId())
-                        .eq(SysSupplier::getStatus, GeneralStatusEnum.DISABLED.getCode())
+                        .eq(SysSupplier::isEnable, false)
         );
         return rows > 0 ? R.success("删除成功") : R.fail("删除失败，请刷新重试");
     }
