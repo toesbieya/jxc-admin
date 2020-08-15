@@ -83,6 +83,7 @@ public class ManageController {
     }
 
     private void setAddInfo(UserVo user, Msg msg) {
+        msg.setId(null);
         msg.setCid(user.getId());
         msg.setCname(user.getName());
         msg.setCtime(System.currentTimeMillis());

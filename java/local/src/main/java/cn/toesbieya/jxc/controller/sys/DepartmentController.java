@@ -34,6 +34,9 @@ public class DepartmentController {
         if (null == department.getPid() || StringUtils.isEmpty(department.getName())) {
             return R.fail("添加失败，参数错误");
         }
+
+        department.setId(null);
+
         return service.add(department);
     }
 

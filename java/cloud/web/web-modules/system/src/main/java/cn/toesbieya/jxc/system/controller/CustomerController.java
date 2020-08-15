@@ -32,6 +32,7 @@ public class CustomerController {
 
         customer.setId(null);
         customer.setCtime(System.currentTimeMillis());
+
         return service.add(customer);
     }
 

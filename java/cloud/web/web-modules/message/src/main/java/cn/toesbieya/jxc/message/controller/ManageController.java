@@ -29,7 +29,6 @@ public class ManageController {
         String errMsg = validateAdd(msg);
         if (errMsg != null) return R.fail(errMsg);
 
-        msg.setId(null);
         SysUser user = SessionUtil.get();
         setAddInfo(user, msg);
 
@@ -85,6 +84,7 @@ public class ManageController {
     }
 
     private void setAddInfo(SysUser user, Msg msg) {
+        msg.setId(null);
         msg.setCid(user.getId());
         msg.setCname(user.getName());
         msg.setCtime(System.currentTimeMillis());

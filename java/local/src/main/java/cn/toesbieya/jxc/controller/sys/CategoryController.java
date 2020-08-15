@@ -30,6 +30,7 @@ public class CategoryController {
         String errMsg = validateCategoryCreateParam(category);
         if (errMsg != null) return R.fail(errMsg);
 
+        category.setId(null);
         category.setCtime(System.currentTimeMillis());
         return service.add(category);
     }

@@ -35,6 +35,7 @@ public class RoleController {
 
         UserVo user = SessionUtil.get();
 
+        role.setId(null);
         role.setCid(user.getId());
         role.setCname(user.getName());
         role.setCtime(System.currentTimeMillis());

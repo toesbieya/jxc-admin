@@ -1,8 +1,8 @@
 package cn.toesbieya.jxc.system.controller;
 
 import cn.toesbieya.jxc.common.model.entity.SysRole;
-import cn.toesbieya.jxc.common.model.entity.SysUser;
 import cn.toesbieya.jxc.common.model.vo.R;
+import cn.toesbieya.jxc.common.model.vo.UserVo;
 import cn.toesbieya.jxc.system.model.vo.RoleSearch;
 import cn.toesbieya.jxc.system.service.RoleService;
 import cn.toesbieya.jxc.web.common.util.SessionUtil;
@@ -33,7 +33,7 @@ public class RoleController {
             return R.fail("添加失败，参数错误");
         }
 
-        SysUser user = SessionUtil.get();
+        UserVo user = SessionUtil.get();
 
         role.setId(null);
         role.setCid(user.getId());

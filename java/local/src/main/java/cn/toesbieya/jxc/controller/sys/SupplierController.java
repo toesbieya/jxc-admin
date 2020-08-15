@@ -32,6 +32,7 @@ public class SupplierController {
 
         supplier.setId(null);
         supplier.setCtime(System.currentTimeMillis());
+
         return service.add(supplier);
     }
 
