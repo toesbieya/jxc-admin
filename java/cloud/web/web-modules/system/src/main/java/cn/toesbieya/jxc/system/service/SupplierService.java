@@ -117,7 +117,7 @@ public class SupplierService {
         return R.success("修改成功");
     }
 
-    @UserAction("删除供应商：'+ #supplier.name")
+    @UserAction("'删除供应商：'+ #supplier.name")
     public R del(SysSupplier supplier) {
         int rows = supplierMapper.delete(
                 Wrappers.lambdaQuery(SysSupplier.class)

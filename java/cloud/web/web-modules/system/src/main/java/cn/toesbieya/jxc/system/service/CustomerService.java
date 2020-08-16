@@ -118,7 +118,7 @@ public class CustomerService {
         return rows > 0 ? R.success("修改成功") : R.fail("修改失败，请刷新重试");
     }
 
-    @UserAction("删除客户：'+ #customer.name")
+    @UserAction("'删除客户：'+ #customer.name")
     public R del(SysCustomer customer) {
         int rows = customerMapper.delete(
                 Wrappers.lambdaQuery(SysCustomer.class)
