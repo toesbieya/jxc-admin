@@ -4,13 +4,13 @@ import {MessageBox, Notification} from 'element-ui'
 import Message from '@ele/component/Message'
 import store from '@/store'
 
-const service = axios.create({
+const instance = axios.create({
     baseURL: apiPrefix,
     // withCredentials: true, // send cookies when cross-domain requests
     timeout: 60000 // request timeout
 })
 
-service.interceptors.request.use(
+instance.interceptors.request.use(
     config => {
         //登录状态下socket断连时，除登出外中断一切请求
         if (store.state.user.id && !store.state.socket.online && config.url !== '/account/logout') {
@@ -27,7 +27,7 @@ service.interceptors.request.use(
     error => Promise.reject(error)
 )
 
-service.interceptors.response.use(
+instance.interceptors.response.use(
     response => {
         const res = response.data
 
@@ -73,4 +73,45 @@ service.interceptors.response.use(
     }
 )
 
-export default service
+class Api {
+    /**
+     * 数据接口定义
+     * @param url    请求url，不带参数
+     * @param arg    对传入参数的处理方法，返回值将作为axios[get,post]的第二个参数
+     * @param chain  形参为请求返回的promise
+     * @param isGet  是否为get请求
+     */
+    constructor(url, arg, chain, isGet) {
+        this.url = url
+        this.arg = arg
+        this.chain = chain
+        this.isGet = isGet
+        if (this.chain === undefined) {
+            this.chain = p => p.then(({data}) => data.data)
+        }
+    }
+
+    request(...args) {
+        const params = this.arg ? this.arg(...args) : undefined
+        const method = this.isGet ? 'get' : 'post'
+        const promise = instance[method](this.url, params)
+        return this.chain ? this.chain(promise) : promise
+    }
+}
+
+export class PostApi extends Api {
+    constructor(url, arg, chain) {
+        if (!arg) {
+            arg = data => data
+        }
+        super(url, arg, chain, false)
+    }
+}
+
+export class GetApi extends Api {
+    constructor(url, arg, chain) {
+        super(url, arg, chain, true)
+    }
+}
+
+export default instance

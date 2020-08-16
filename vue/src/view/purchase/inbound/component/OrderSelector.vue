@@ -95,7 +95,8 @@ export default {
             if (!this.value || this.config.loading) return
             this.config.loading = true
             this.row = null
-            search(this.searchForm)
+            search
+                .request(this.searchForm)
                 .then(({list, total}) => {
                     list.forEach(i => {
                         i._loading = false //加载状态
@@ -111,7 +112,8 @@ export default {
         getSubList(row) {
             if (row._loaded || row._loading) return
             row._loading = true
-            getSubById(row.id)
+            getSubById
+                .request(row.id)
                 .then(data => {
                     row.data = data
                     row._loaded = true

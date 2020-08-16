@@ -49,7 +49,8 @@ export default {
         search() {
             if (this.config.loading) return
             this.config.loading = true
-            searchLoginHistory({...this.searchForm, uid: this.uid})
+            searchLoginHistory
+                .request({...this.searchForm, uid: this.uid})
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list

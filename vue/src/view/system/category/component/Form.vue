@@ -115,7 +115,7 @@ export default {
             this.$refs.form.validate(v => {
                 if (!v) return
                 elConfirm(this.confirmMessage)
-                    .then(() => this.type === 'add' ? add(this.form) : update(this.form))
+                    .then(() => this.type === 'add' ? add.request(this.form) : update.request(this.form))
                     .then(() => {
                         this.$emit('commit-success', this.type === 'add' ? '添加成功' : '修改成功')
                         this.cancel()

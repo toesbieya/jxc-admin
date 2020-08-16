@@ -1,5 +1,5 @@
 <template>
-    <el-select :value="value" clearable @clear="emit(null)" @input="emit">
+    <el-select :value="value" clearable @clear="() => emit(null)" @input="emit">
         <el-option
             v-for="item in roles"
             :key="item.id"
@@ -17,15 +17,11 @@ export default {
 
     props: {value: Number},
 
-    data() {
-        return {
-            roles: []
-        }
-    },
+    data: () => ({roles: []}),
 
     methods: {
         init() {
-            get().then(data => this.roles = data)
+            get.request().then(data => this.roles = data)
         },
 
         emit(v) {

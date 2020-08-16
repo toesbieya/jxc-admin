@@ -148,11 +148,11 @@
 import treePageMixin from '@/mixin/treePageMixin'
 import AbstractForm from "@/component/AbstractForm"
 import JsonEditor from "@/component/editor/JsonEditor"
-import {baseUrl, add, update, del} from '@/api/system/resource'
+import {add, update, del} from '@/api/system/resource'
 import {isEmpty, mergeObj, resetObj} from "@/util"
 import {elSuccess, elError, elConfirm} from "@/util/message"
 import {elTreeControl} from "@/util/tree"
-import {auth} from "@/util/auth"
+import {wic} from "@/util/auth"
 import {nodeType, getNodeInfo, getNodeTitle} from "./common"
 
 export default {
@@ -207,15 +207,7 @@ export default {
     },
 
     computed: {
-        canAdd() {
-            return auth(`${baseUrl}/add`)
-        },
-        canUpdate() {
-            return auth(`${baseUrl}/update`)
-        },
-        canDel() {
-            return auth(`${baseUrl}/del`)
-        },
+        ...wic({add, update, del}),
 
         menus() {
             return this.$store.state.resource.resourceTree
@@ -311,7 +303,7 @@ export default {
             elConfirm(`确定删除【${getNodeTitle(this.curNode)}】?`)
                 .then(() => {
                     this.loading = true
-                    return del(this.curNode.data.id)
+                    return del.request(this.curNode.data.id)
                 })
                 .then(() => {
                     elSuccess('删除成功')
@@ -343,7 +335,7 @@ export default {
                 if (!v) return
                 this.loading = true
                 const data = this.transformForm()
-                const promise = this.type === 'add' ? add(data) : update(data)
+                const promise = this.type === 'add' ? add.request(data) : update.request(data)
                 promise
                     .then(({data, msg}) => {
                         elSuccess(msg)

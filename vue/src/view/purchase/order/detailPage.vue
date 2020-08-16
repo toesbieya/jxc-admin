@@ -132,7 +132,7 @@
 import docDetailMixin from "@/mixin/docDetailMixin"
 import CategorySelector from './component/CategorySelector'
 import SupplierSelector from './component/SupplierSelector'
-import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/doc/purchase/order"
+import {getById, add, update, commit, withdraw, pass, reject} from "@/api/doc/purchase/order"
 import {isEmpty} from "@/util"
 import {mul, plus} from "@/util/math"
 import {isInteger} from "@/util/validate"
@@ -146,7 +146,6 @@ export default {
 
     data() {
         return {
-            baseUrl,
             docName: '采购订单',
             api: {
                 getById, add, update, commit, withdraw, pass, reject

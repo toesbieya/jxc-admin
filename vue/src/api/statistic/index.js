@@ -1,19 +1,9 @@
-import request from "@/api/request"
+import {GetApi} from "@/api/request"
 
-export const baseUrl = `/statistic`
+export const getFourBlock = new GetApi(`/statistic/getFourBlock`)
 
-export function getFourBlock() {
-    return request.get(`${baseUrl}/getFourBlock`).then(({data}) => data.data)
-}
+export const getDailyProfitStat = new GetApi(`/statistic/getDailyProfitStat`)
 
-export function getDailyProfitStat() {
-    return request.get(`${baseUrl}/getDailyProfitStat`).then(({data}) => data.data)
-}
+export const getDailyFinishOrder = new GetApi(`/statistic/getDailyFinishOrder`)
 
-export function getDailyFinishOrder() {
-    return request.get(`${baseUrl}/getDailyFinishOrder`).then(({data}) => data.data)
-}
-
-export function getTotalProfitGoods() {
-    return request.get(`${baseUrl}/getTotalProfitGoods`).then(({data}) => data.data)
-}
+export const getTotalProfitGoods = new GetApi(`/statistic/getTotalProfitGoods`)

@@ -1,20 +1,9 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/department`
+export const get = new GetApi(`/system/department/get`, (all = true) => ({params: {all}}))
 
-export function getDepartments(all = true) {
-    return request.get(`${baseUrl}/get?all=${all}`).then(({data}) => data.data)
-}
+export const add = new PostApi(`/system/department/add`, null, p => p.then(({data}) => data))
 
-export function addDepartment(data) {
-    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
-}
+export const update = new PostApi(`/system/department/update`, null, p => p.then(({data}) => data))
 
-export function updateDepartment(data) {
-    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
-}
-
-export function delDepartment(data) {
-    return request.post(`${baseUrl}/del`, data).then(({data}) => data)
-}
+export const del = new PostApi(`/system/department/del`, null, p => p.then(({data}) => data))

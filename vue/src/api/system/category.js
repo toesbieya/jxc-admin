@@ -1,24 +1,11 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/category`
+export const search = new PostApi(`/system/category/search`)
 
-export function search(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const getAll = new GetApi(`/system/category/getAll`)
 
-export function getAll() {
-    return request.get(`${baseUrl}/getAll`).then(({data}) => data.data)
-}
+export const add = new PostApi(`/system/category/add`)
 
-export function add(data) {
-    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
-}
+export const update = new PostApi(`/system/category/update`)
 
-export function update(data) {
-    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
-}
-
-export function del(data) {
-    return request.post(`${baseUrl}/del`, data).then(({data}) => data)
-}
+export const del = new PostApi(`/system/category/del`)

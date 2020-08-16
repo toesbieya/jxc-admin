@@ -82,28 +82,28 @@ export default {
         //权限判断以及根据状态控制是否可编辑
         canSave() {
             //add模式有添加权限、edit模式有编辑权限且status=0
-            return this.type === 'add' && auth(`${this.baseUrl}/add`)
-                || this.form.status === 0 && this.type === 'edit' && auth(`${this.baseUrl}/update`)
+            return this.type === 'add' && auth(this.api.add.url)
+                || this.form.status === 0 && this.type === 'edit' && auth(this.api.update.url)
         },
         canCommit() {
             //有提交权限、add模式或edit模式且status=0
-            return auth(`${this.baseUrl}/commit`)
+            return auth(this.api.commit.url)
                 && (this.type === 'add' || this.type === 'edit' && this.form.status === 0)
         },
         canWithdraw() {
             //有撤回权限、当前用户是创建人、edit模式且status=1
-            return auth(`${this.baseUrl}/withdraw`)
+            return auth(this.api.withdraw.url)
                 && this.type === 'edit'
                 && this.user.id === this.form.cid
                 && this.form.status === 1
         },
         canPass() {
             //有通过权限、edit模式且status=1
-            return auth(`${this.baseUrl}/pass`) && this.type === 'edit' && this.form.status === 1
+            return auth(this.api.pass.url) && this.type === 'edit' && this.form.status === 1
         },
         canReject() {
             //有驳回权限、edit模式且status=1
-            return auth(`${this.baseUrl}/reject`) && this.type === 'edit' && this.form.status === 1
+            return auth(this.api.reject.url) && this.type === 'edit' && this.form.status === 1
         }
     },
 
@@ -120,8 +120,9 @@ export default {
                     if (!isEmpty(valid)) return elAlert(valid)
                 }
                 this.loading = true
-                const promise = this.type === 'add' ? this.api.add(this.form) : this.api.update(this.form)
-                promise
+                const method = this.type === 'add' ? this.api.add : this.api.update
+                method
+                    .request(this.form)
                     .then(({data, msg}) => {
                         this.needSearch()
                         elSuccess(msg)
@@ -142,7 +143,7 @@ export default {
                 }
                 elConfirm('确认提交审核？')
                     .then(() => this.loading = true)
-                    .then(() => this.api.commit(this.form))
+                    .then(() => this.api.commit.request(this.form))
                     .then(({data, msg}) => {
                         elSuccess(msg)
                         this.needSearch()
@@ -158,7 +159,7 @@ export default {
             elConfirm('确认撤回？')
                 .then(() => {
                     this.loading = true
-                    return this.api.withdraw({id: this.form.id, pid: this.form.pid})
+                    return this.api.withdraw.request({id: this.form.id, pid: this.form.pid})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
@@ -174,7 +175,7 @@ export default {
             elConfirm('确认通过审核？')
                 .then(() => {
                     this.loading = true
-                    return this.api.pass({id: this.form.id, pid: this.form.pid})
+                    return this.api.pass.request({id: this.form.id, pid: this.form.pid})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
@@ -190,7 +191,7 @@ export default {
             elPrompt('请输入驳回理由')
                 .then(info => {
                     this.loading = true
-                    return this.api.reject({id: this.form.id, pid: this.form.pid, info})
+                    return this.api.reject.request({id: this.form.id, pid: this.form.pid, info})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
@@ -206,7 +207,8 @@ export default {
             if (isEmpty(id)) {
                 return elAlert(`获取${this.docName}数据失败，请传入id`, this.close)
             }
-            this.api.getById(id)
+            this.api.getById
+                .request(id)
                 .then(data => {
                     if (!data || id !== data.id) return Promise.reject()
                     this.modifyDataBeforeMerge && this.modifyDataBeforeMerge(data)
@@ -221,9 +223,9 @@ export default {
         },
 
         //保存、提交成功后需要判断后续动作
-        afterSaveOrCommit(data) {
+        afterSaveOrCommit(id) {
             if (this.type === 'add') {
-                const editUrl = `${this.baseUrl}/detail/edit/${data}`
+                const editUrl = this.$route.path.replace('/add', `/edit/${id}`)
                 return closeCurrentPage(editUrl)
             }
             else return this.init(this.form.id)
@@ -240,11 +242,18 @@ export default {
                 deleteUpload(deleteArr).catch(e => ({}))
             }
 
-            return closeCurrentPage(this.baseUrl)
+            return closeCurrentPage(this.getTablePageUrl())
         },
-
+        //获取列表页的地址
+        getTablePageUrl() {
+            const url = this.$route.path
+            const i = url.indexOf('/detail')
+            const tablePageUrl = url.substring(0, i)
+            return [...tablePageUrl].join('')
+        },
+        //列表页是否需要刷新数据
         needSearch() {
-            this.$store.commit('needSearch/emit', this.baseUrl)
+            this.$store.commit('needSearch/emit', this.getTablePageUrl())
         },
 
         //附件操作

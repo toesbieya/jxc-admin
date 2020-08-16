@@ -124,7 +124,7 @@
 import docTableMixin from '@/mixin/docTableMixin'
 import SearchForm from '@/component/SearchForm'
 import SearchFormItem from "@/component/SearchForm/item"
-import {baseUrl, del, getSubById, search} from "@/api/doc/sell/order"
+import {baseUrl, add, update, del, withdraw, pass, reject, getSubById, search} from "@/api/doc/sell/order"
 
 export default {
     name: "sellOrder",
@@ -135,7 +135,7 @@ export default {
 
     data() {
         return {
-            baseUrl,
+            exportUrl: `${baseUrl}/export`,
             searchForm: {
                 customerName: null
             },
@@ -143,9 +143,9 @@ export default {
                 finish: [],
                 ftime: []
             },
-            api: {search, del, getSubById},
+            api: {add, update, del, withdraw, pass, reject, getSubById, search},
             excel: {
-                column: [
+                columns: [
                     {header: '序号', prop: 'id'},
                     {header: '客户', prop: 'customerName', width: 30},
                     {header: '创建人', prop: 'cname'},

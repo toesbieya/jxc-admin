@@ -105,7 +105,7 @@ import OrderSelector from "./component/OrderSelector"
 import StockSelector from "./component/StockSelector"
 import {getDetailById as getStockDetail} from "@/api/stock/current"
 import {getSubById as getParentSubById} from "@/api/doc/sell/order"
-import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/doc/sell/outbound"
+import {getById, add, update, commit, withdraw, pass, reject} from "@/api/doc/sell/outbound"
 import {isEmpty} from "@/util"
 import {plus, sub} from "@/util/math"
 import {elAlert} from "@/util/message"
@@ -120,7 +120,6 @@ export default {
 
     data() {
         return {
-            baseUrl,
             docName: '销售出库单',
             api: {
                 getById, add, update, commit, withdraw, pass, reject
@@ -168,8 +167,8 @@ export default {
             if (this.type === 'add') return Promise.resolve()
             const ids = this.form.data.map(i => i.sid).join(',')
             return Promise.all([
-                getParentSubById(this.form.pid),
-                getStockDetail(ids)
+                getParentSubById.request(this.form.pid),
+                getStockDetail.request(ids)
             ])
                 .then(([r1, r2]) => this.buildDisplayTableData(r1, r2))
         },

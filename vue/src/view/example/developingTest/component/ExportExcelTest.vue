@@ -19,7 +19,7 @@ export default {
     data() {
         return {
             loading: false,
-            column: [
+            columns: [
                 {header: ['合并表头演示', '序号'], prop: 'no', merge: true},
                 {header: ['合并表头演示', '名称'], prop: 'name', merge: true},
                 {header: '日期', prop: 'date'},
@@ -41,7 +41,7 @@ export default {
             this.loading = true
             const arr = new Array(this.rows).fill(this.row)
 
-            const workbook = json2workbook(arr, this.column, this.merge ? {
+            const workbook = json2workbook(arr, this.columns, this.merge ? {
                 primaryKey: 'name',
                 orderKey: 'no'
             } : null)

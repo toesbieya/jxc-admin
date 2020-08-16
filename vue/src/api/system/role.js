@@ -1,24 +1,13 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/role`
+export const baseUrl = `/system/role`
 
-export function search(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const search = new PostApi(`/system/role/search`)
 
-export function get() {
-    return request.get(`${baseUrl}/get`).then(({data}) => data.data)
-}
+export const get = new GetApi(`/system/role/get`)
 
-export function add(data) {
-    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
-}
+export const add = new PostApi(`/system/role/add`, null, p => p.then(({data}) => data))
 
-export function update(data) {
-    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
-}
+export const update = new PostApi(`/system/role/update`, null, p => p.then(({data}) => data))
 
-export function del(data) {
-    return request.post(`${baseUrl}/del`, data).then(({data}) => data)
-}
+export const del = new PostApi(`/system/role/del`, null, p => p.then(({data}) => data))

@@ -26,7 +26,7 @@
 import dialogMixin from "@/mixin/dialogMixin"
 import AbstractForm from "@/component/AbstractForm"
 import FormDialog from '@/component/FormDialog'
-import {addDepartment, updateDepartment} from "@/api/system/department"
+import {add, update} from "@/api/system/department"
 import {isEmpty} from '@/util'
 import {elConfirm, elSuccess} from "@/util/message"
 
@@ -120,7 +120,7 @@ export default {
                 elConfirm(this.confirmMessage)
                     .then(() => {
                         this.loading = true
-                        return this.type === 'add' ? addDepartment(this.form) : updateDepartment(this.form)
+                        return this.type === 'add' ? add.request(this.form) : update.request(this.form)
                     })
                     .then(({msg}) => {
                         elSuccess(msg)

@@ -1,11 +1,5 @@
-import request from "@/api/request"
+import {PostApi} from "@/api/request"
 
-export const baseUrl = '/record'
+export const searchLoginHistory = new PostApi(`/record/searchLoginHistory`)
 
-export function searchLoginHistory(data) {
-    return request.post(`${baseUrl}/searchLoginHistory`, data).then(({data}) => data.data)
-}
-
-export function searchUserAction(data) {
-    return request.post(`${baseUrl}/searchUserAction`, data).then(({data}) => data.data)
-}
+export const searchUserAction = new PostApi(`/record/searchUserAction`)

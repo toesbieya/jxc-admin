@@ -1,15 +1,7 @@
-import request from "@/api/request"
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = '/stock/current'
+export const search = new PostApi(`/stock/current/search`)
 
-export function search(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const getDetail = new GetApi(`/stock/current/getDetail`, cids => ({params: {cids}}))
 
-export function getDetail(cids) {
-    return request.get(`${baseUrl}/getDetail?cids=${cids}`).then(({data}) => data.data)
-}
-
-export function getDetailById(ids) {
-    return request.get(`${baseUrl}/getDetailById?ids=${ids}`).then(({data}) => data.data)
-}
+export const getDetailById = new GetApi(`/stock/current/getDetailById`, ids => ({params: {ids}}))

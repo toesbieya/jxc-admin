@@ -1,44 +1,23 @@
-import request from "@/api/request"
-import BASE from '../baseUrl'
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/purchase/inbound`
+export const baseUrl = `/doc/purchase/inbound`
 
-export function getById(id) {
-    return request.get(`${baseUrl}/getById?id=${id}`).then(({data}) => data.data)
-}
+export const getById = new GetApi(`${baseUrl}/getById`, id => ({params: {id}}))
 
-export function getSubById(id) {
-    return request.get(`${baseUrl}/getSubById?id=${id}`).then(({data}) => data.data)
-}
+export const getSubById = new GetApi(`${baseUrl}/getSubById`, id => ({params: {id}}))
 
-export function search(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const search = new PostApi(`${baseUrl}/search`)
 
-export function add(data) {
-    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
-}
+export const add = new PostApi(`${baseUrl}/add`, null, p => p.then(({data}) => data))
 
-export function update(data) {
-    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
-}
+export const update = new PostApi(`${baseUrl}/update`, null, p => p.then(({data}) => data))
 
-export function commit(data) {
-    return request.post(`${baseUrl}/commit`, data).then(({data}) => data)
-}
+export const commit = new PostApi(`${baseUrl}/commit`, null, p => p.then(({data}) => data))
 
-export function withdraw(data) {
-    return request.post(`${baseUrl}/withdraw`, data).then(({data}) => data)
-}
+export const withdraw = new PostApi(`${baseUrl}/withdraw`, null, p => p.then(({data}) => data))
 
-export function pass(data) {
-    return request.post(`${baseUrl}/pass`, data).then(({data}) => data)
-}
+export const pass = new PostApi(`${baseUrl}/pass`, null, p => p.then(({data}) => data))
 
-export function reject(data) {
-    return request.post(`${baseUrl}/reject`, data).then(({data}) => data)
-}
+export const reject = new PostApi(`${baseUrl}/reject`, null, p => p.then(({data}) => data))
 
-export function del(id) {
-    return request.get(`${baseUrl}/del?id=${id}`).then(({data}) => data)
-}
+export const del = new GetApi(`${baseUrl}/del`, id => ({params: {id}}), p => p.then(({data}) => data))

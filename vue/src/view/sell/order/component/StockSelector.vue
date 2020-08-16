@@ -64,7 +64,7 @@ export default {
             if (!this.value || this.config.loading) return
             this.config.loading = true
             this.$refs.table && this.$refs.table.clearSelection()
-            search(this.searchForm)
+            search.request(this.searchForm)
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list

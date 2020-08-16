@@ -1,28 +1,13 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/manage`
+export const search = new PostApi(`/message/manage/search`)
 
-export function search(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const add = new PostApi(`/message/manage/add`, null, p => p.then(({data}) => data))
 
-export function add(data) {
-    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
-}
+export const update = new PostApi(`/message/manage/update`, null, p => p.then(({data}) => data))
 
-export function update(data) {
-    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
-}
+export const publish = new PostApi(`/message/manage/publish`, null, p => p.then(({data}) => data))
 
-export function publish(data) {
-    return request.post(`${baseUrl}/publish`, data).then(({data}) => data)
-}
+export const withdraw = new PostApi(`/message/manage/withdraw`, null, p => p.then(({data}) => data))
 
-export function withdraw(data) {
-    return request.post(`${baseUrl}/withdraw`, data).then(({data}) => data)
-}
-
-export function del(id, title) {
-    return request.get(`${baseUrl}/del?id=${id}&title=${title}`).then(({data}) => data)
-}
+export const del = new GetApi(`/message/manage/del`, (id, title) => ({params: {id, title}}))

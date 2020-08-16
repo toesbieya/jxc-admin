@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import request from "@/api/request"
+import request, {GetApi, PostApi} from "@/api/request"
 
 export default {
     name: "ApiSpeedTest",

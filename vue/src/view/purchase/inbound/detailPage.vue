@@ -85,7 +85,7 @@
 <script>
 import docDetailMixin from "@/mixin/docDetailMixin"
 import OrderSelector from './component/OrderSelector'
-import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/doc/purchase/inbound"
+import {getById, add, update, commit, withdraw, pass, reject} from "@/api/doc/purchase/inbound"
 import {getSubById as getParentSubById} from "@/api/doc/purchase/order"
 import {isEmpty} from "@/util"
 import {elAlert} from "@/util/message"
@@ -100,7 +100,6 @@ export default {
 
     data() {
         return {
-            baseUrl,
             docName: '采购入库单',
             api: {
                 getById, add, update, commit, withdraw, pass, reject
@@ -144,7 +143,7 @@ export default {
     methods: {
         afterInit() {
             if (this.type !== 'edit') return Promise.resolve()
-            return getParentSubById(this.form.pid).then(data => this.parentSubList = data)
+            return getParentSubById.request(this.form.pid).then(data => this.parentSubList = data)
         },
         selectParent(id, sub) {
             this.parentSubList = sub

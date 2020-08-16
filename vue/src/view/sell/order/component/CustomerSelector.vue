@@ -47,7 +47,7 @@
 import dialogMixin from "@/mixin/dialogMixin"
 import tableMixin from '@/mixin/tablePageMixin'
 import LinerProgress from '@/component/LinerProgress'
-import {getCustomers} from "@/api/system/customer"
+import {search} from "@/api/system/customer"
 import {elError} from "@/util/message"
 
 export default {
@@ -72,7 +72,8 @@ export default {
             if (!this.value || this.config.loading) return
             this.config.loading = true
             this.row = null
-            getCustomers(this.searchForm)
+            search
+                .request(this.searchForm)
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list

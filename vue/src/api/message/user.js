@@ -1,16 +1,9 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/user`
+export const baseUrl = `/message/user`
 
-export function search(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const search = new PostApi(`/message/user/search`)
 
-export function read(id) {
-    return request.get(`${baseUrl}/read?id=${id}`).then(({data}) => data)
-}
+export const read = new GetApi(`/message/user/read`, id => ({params: {id}}))
 
-export function readAll() {
-    return request.get(`${baseUrl}/readAll`).then(({data}) => data)
-}
+export const readAll = new GetApi(`/message/user/readAll`)

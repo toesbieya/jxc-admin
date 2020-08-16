@@ -1,8 +1,3 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/history`
-
-export function searchHistory(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const search = new PostApi(`/doc/history/search`)

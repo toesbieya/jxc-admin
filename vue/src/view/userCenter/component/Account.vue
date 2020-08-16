@@ -71,7 +71,7 @@ export default {
             this.$refs.form.validate(v => {
                 if (!v) return
                 this.loading = true
-                updateUserPwd({
+                updateUserPwd.request({
                     oldPwd: md5(this.form.oldPwd),
                     newPwd: md5(this.form.newPwd),
                 })

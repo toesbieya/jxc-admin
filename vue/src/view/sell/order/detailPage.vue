@@ -117,7 +117,7 @@
 import docDetailMixin from "@/mixin/docDetailMixin"
 import CustomerSelector from './component/CustomerSelector'
 import StockSelector from './component/StockSelector'
-import {baseUrl, add, commit, getById, pass, reject, update, withdraw} from "@/api/doc/sell/order"
+import {getById, add, update, commit, withdraw, pass, reject} from "@/api/doc/sell/order"
 import {isEmpty} from "@/util"
 import {mul, plus} from "@/util/math"
 import {isInteger} from "@/util/validate"
@@ -131,7 +131,6 @@ export default {
 
     data() {
         return {
-            baseUrl,
             docName: '销售订单',
             api: {
                 getById, add, update, commit, withdraw, pass, reject

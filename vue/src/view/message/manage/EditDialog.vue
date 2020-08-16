@@ -58,7 +58,7 @@ import AbstractFormItem from "@/component/AbstractForm/item"
 import FormDialog from '@/component/FormDialog'
 import RichTextEditor from "@/component/editor/RichTextEditor"
 import UserSelector from '@/component/biz/UserSelector/SimpleMultipleUserSelector'
-import {baseUrl, add, update, publish, withdraw} from "@/api/message/manage"
+import {add, update, publish, withdraw} from "@/api/message/manage"
 import {isEmpty, mergeObj, resetObj} from '@/util'
 import {auth} from "@/util/auth"
 import {elAlert, elConfirm, elSuccess} from "@/util/message"
@@ -119,18 +119,16 @@ export default {
 
         canSave() {
             //add模式有添加权限、edit模式有编辑权限且status=0
-            return this.type === 'add' && auth(`${baseUrl}/add`)
-                || this.form.status === 0 && this.type === 'edit' && auth(`${baseUrl}/update`)
+            return this.type === 'add' && auth(add.url)
+                || this.form.status === 0 && this.type === 'edit' && auth(update.url)
         },
-
         canPublish() {
             //有发布权限、add模式或edit模式且status=0
-            return auth(`${baseUrl}/publish`) && (this.type === 'add' || this.type === 'edit' && this.form.status === 0)
+            return auth(publish.url) && (this.type === 'add' || this.type === 'edit' && this.form.status === 0)
         },
-
         canWithdraw() {
             //有撤回权限、edit模式且status=1
-            return auth(`${baseUrl}/withdraw`)
+            return auth(withdraw.url)
                 && this.type === 'edit'
                 && this.form.status === 1
         },
@@ -164,7 +162,7 @@ export default {
                 if (!v) return
                 this.loading = true
                 const data = this.transformForm()
-                const promise = this.type === 'add' ? add(data) : update(data)
+                const promise = this.type === 'add' ? add.request(data) : update.request(data)
                 promise
                     .then(({data, msg}) => {
                         this.needSearch = true
@@ -190,7 +188,7 @@ export default {
                 }
                 elConfirm('确认发布？')
                     .then(() => this.loading = true)
-                    .then(() => publish(this.transformForm()))
+                    .then(() => publish.request(this.transformForm()))
                     .then(({data, msg}) => {
                         elSuccess(msg)
                         this.needSearch = true
@@ -214,7 +212,7 @@ export default {
             elConfirm('确认撤回？')
                 .then(() => {
                     this.loading = true
-                    return withdraw({id: this.form.id, title: this.form.title})
+                    return withdraw.request({id: this.form.id, title: this.form.title})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)

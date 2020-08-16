@@ -47,7 +47,8 @@ export default {
         init() {
             if (this.loading) return
             this.loading = true
-            getTotalProfitGoods()
+            getTotalProfitGoods
+                .request()
                 .then(data => {
                     const purchase = []
                     const sell = []

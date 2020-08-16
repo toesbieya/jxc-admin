@@ -4,7 +4,7 @@
 
 <script>
 import TreeSelect from '@/component/TreeSelect'
-import {getDepartments} from "@/api/system/department"
+import {get} from "@/api/system/department"
 import {createTreeByWorker} from "@/util/tree"
 
 export default {
@@ -28,7 +28,8 @@ export default {
     },
 
     mounted() {
-        getDepartments(false)
+        get
+            .request(false)
             .then(data => createTreeByWorker(data))
             .then(data => {
                 this.data = data

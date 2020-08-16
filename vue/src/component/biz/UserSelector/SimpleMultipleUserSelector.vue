@@ -10,21 +10,14 @@
 </template>
 
 <script>
-import {getUsers} from '@/api/system/user'
+import {search} from '@/api/system/user'
 
 export default {
     name: "SimpleMultipleUserSelector",
 
-    props: {
-        value: Array,
-        disabled: Boolean
-    },
+    props: {value: Array, disabled: Boolean},
 
-    data() {
-        return {
-            data: []
-        }
-    },
+    data:()=>({data:[]}),
 
     methods: {
         emit(v) {
@@ -33,7 +26,8 @@ export default {
     },
 
     mounted() {
-        getUsers({page: 1, pageSize: 9999})
+        search
+            .request({page: 1, pageSize: 9999})
             .then(({list}) => this.data = list)
     }
 }

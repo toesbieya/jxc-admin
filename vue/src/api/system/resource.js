@@ -1,20 +1,9 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/resource`
+export const getAll = new GetApi(`/system/resource/getAll`)
 
-export function getAll() {
-    return request.get(`${baseUrl}/getAll`).then(({data}) => data.data)
-}
+export const add = new PostApi(`/system/resource/add`, null, p => p.then(({data}) => data))
 
-export function add(data) {
-    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
-}
+export const update = new PostApi(`/system/resource/update`, null, p => p.then(({data}) => data))
 
-export function update(data) {
-    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
-}
-
-export function del(id) {
-    return request.get(`${baseUrl}/del?id=${id}`).then(({data}) => data)
-}
+export const del = new GetApi(`/system/resource/del`, id => ({params: {id}}), p => p.then(({data}) => data))

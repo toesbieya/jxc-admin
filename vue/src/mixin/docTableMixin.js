@@ -4,7 +4,6 @@ import {isEmpty} from "@/util"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {auth} from "@/util/auth"
 import {exportExcel} from "@/util/excel"
-
 export const commonMethods = {
     getStatus(status) {
         switch (status) {
@@ -52,19 +51,19 @@ export default {
 
     computed: {
         canAdd() {
-            return auth(`${this.baseUrl}/add`)
+            return auth(this.api.add.url)
         },
         canUpdate() {
-            return auth(`${this.baseUrl}/update`)
-                || auth(`${this.baseUrl}/withdraw`)
-                || auth(`${this.baseUrl}/pass`)
-                || auth(`${this.baseUrl}/reject`)
+            return auth(this.api.update.url)
+                || auth(this.api.withdraw.url)
+                || auth(this.api.pass.url)
+                || auth(this.api.reject.url)
         },
         canDel() {
-            return auth(`${this.baseUrl}/del`)
+            return auth(this.api.del.url)
         },
         canExport() {
-            return auth(`${this.baseUrl}/export`)
+            return auth(this.exportUrl)
         },
     },
 
@@ -76,7 +75,8 @@ export default {
             //折叠所有行
             this.tableData.forEach(row => this.$refs.table.toggleRowExpansion(row, false))
             this.row = null
-            this.api.search(this.mergeSearchForm())
+            this.api.search
+                .request(this.mergeSearchForm())
                 .then(({list, total}) => {
                     list.forEach(i => {
                         i._loading = false //加载状态
@@ -90,7 +90,8 @@ export default {
         getSubList(row) {
             if (row._loaded || row._loading) return
             row._loading = true
-            this.api.getSubById(row.id)
+            this.api.getSubById
+                .request(row.id)
                 .then(data => {
                     row.data = data
                     row._loaded = true
@@ -121,7 +122,7 @@ export default {
             elConfirm(`确定删除单据【${this.row.id}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return this.api.del(this.row.id)
+                    return this.api.del.request(this.row.id)
                 })
                 .then(() => {
                     elSuccess('删除成功')
@@ -130,7 +131,7 @@ export default {
                 .finally(() => this.config.operating = false)
         },
         downloadExcel() {
-            exportExcel(`${this.baseUrl}/export`, this.mergeSearchForm(), this.excel)
+            exportExcel(this.exportUrl, this.mergeSearchForm(), this.excel)
         }
     }
 }

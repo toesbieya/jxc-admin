@@ -1,5 +1,6 @@
 import store from '@/store'
-import {isEmpty} from "@/util/index"
+import {uppercaseFirst} from "@/filter"
+import {isEmpty} from "@/util"
 
 //判断路由是否需要鉴权，需要则返回true
 export function needAuth(route) {
@@ -17,4 +18,20 @@ export function auth(path) {
 
     const resources = store.state.user.resources
     return resources && path in resources
+}
+
+/**
+ * what i can
+ * 批量生成canXxx的计算属性
+ * @param apiMap  <key:接口名称，value:接口对象>
+ */
+export function wic(apiMap) {
+    const attrs = {}
+
+    Object.entries(apiMap).forEach(([key, value]) => {
+        const attrKey = `can${uppercaseFirst(key)}`
+        attrs[attrKey] = () => auth(value.url)
+    })
+
+    return attrs
 }

@@ -13,12 +13,13 @@
 </template>
 
 <script>
-import {isEmpty, waitUntilSuccess} from '@/util'
-import {elConfirm, elError, elSuccess} from "@/util/message"
-import {del, getAll} from "@/api/system/category"
 import ContextMenu from "@/component/ContextMenu"
 import ContextMenuItem from "@/component/ContextMenu/item"
 import CategoryTree from '@/component/biz/CategoryTree'
+import {add, del, getAll} from "@/api/system/category"
+import {isEmpty, waitUntilSuccess} from '@/util'
+import {auth} from "@/util/auth"
+import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
     components: {ContextMenuItem, ContextMenu, CategoryTree},
@@ -40,7 +41,7 @@ export default {
 
     computed: {
         canAdd() {
-            return !this.currentCategory
+            return auth(add.url) && !this.currentCategory
                 || !this.currentCategory.leaf && this.currentCategory.level < this.maxLevel
         }
     },
@@ -50,7 +51,8 @@ export default {
             this.loading = true
             this.currentCategory = null
             this.contextmenu.show = false
-            getAll()
+            getAll
+                .request()
                 .then(data => this.$store.commit('dataCache/categories', data))
                 .finally(() => this.loading = false)
         },
@@ -77,7 +79,7 @@ export default {
             elConfirm(`确认删除【${this.currentCategory.name}】分类？`)
                 .then(() => {
                     this.loading = true
-                    return del({id: this.currentCategory.id, name: this.currentCategory.name})
+                    return del.request({id: this.currentCategory.id, name: this.currentCategory.name})
                 })
                 .then(() => this.commitSuccess('删除成功'))
         },

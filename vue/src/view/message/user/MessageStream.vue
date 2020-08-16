@@ -53,9 +53,7 @@ export default {
 
     components: {AutoHidden, Empty},
 
-    props: {
-        mode: String,
-    },
+    props: {mode: String,},
 
     data() {
         return {
@@ -87,7 +85,8 @@ export default {
             const currentMode = this.mode
             this.tableData = []
             this.config.loading = true
-            search({...this.searchForm, unread})
+            search
+                .request({...this.searchForm, unread})
                 .then(({list, total}) => {
                     if (this.mode !== currentMode) return
                     unread && this.$store.commit('message/unreadCount', total)
@@ -129,11 +128,11 @@ export default {
             if (msg.read) return
             msg.read = true
             this.$store.commit('message/unreadCount', this.unreadCount - 1)
-            read(msg.id)
+            read.request(msg.id)
         },
 
         readAll() {
-            readAll().then(() => this.search())
+            readAll.request().then(() => this.search())
         },
 
         transformType(type) {

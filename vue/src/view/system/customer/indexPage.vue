@@ -41,10 +41,10 @@
         </search-form>
 
         <el-row class="button-group">
-            <el-button size="small" type="success" @click="search">查 询</el-button>
-            <el-button v-if="canAdd" size="small" type="primary" @click="add">添 加</el-button>
-            <el-button v-if="canUpdate" size="small" type="primary" @click="edit">编 辑</el-button>
-            <el-button v-if="canDel" size="small" type="danger" @click="del">删 除</el-button>
+            <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
+            <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
+            <el-button v-if="canUpdate" icon="el-icon-edit" size="small" type="primary" @click="edit">编 辑</el-button>
+            <el-button v-if="canDel" icon="el-icon-delete" size="small" type="danger" @click="del">删 除</el-button>
         </el-row>
 
         <el-row v-loading="config.loading" class="table-container">
@@ -79,9 +79,9 @@ import EditDialog from './EditDialog'
 import RegionSelector from "@/component/RegionSelector"
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/item"
-import {baseUrl, delCustomer, getCustomers, getLimitRegion} from "@/api/system/customer"
+import {add, update, del, search, getLimitRegion} from "@/api/system/customer"
 import {isEmpty} from '@/util'
-import {auth} from "@/util/auth"
+import {wic} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
@@ -109,21 +109,11 @@ export default {
         }
     },
 
-    computed: {
-        canAdd() {
-            return auth(`${baseUrl}/add`)
-        },
-        canUpdate() {
-            return auth(`${baseUrl}/update`)
-        },
-        canDel() {
-            return auth(`${baseUrl}/del`)
-        }
-    },
+    computed: wic({add, update, del}),
 
     methods: {
         getLimitRegion() {
-            return getLimitRegion()
+            return getLimitRegion.request()
         },
 
         clearSidSearch() {
@@ -149,7 +139,8 @@ export default {
             this.config.loading = true
             this.row = null
             this.type = 'see'
-            getCustomers(this.mergeSearchForm())
+            search
+                .request(this.mergeSearchForm())
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list
@@ -170,11 +161,12 @@ export default {
 
         del() {
             if (isEmpty(this.row)) return elError('请选择要删除的客户')
+            if (this.row.enable) return elError('已启用的客户不能删除')
             if (this.config.operating) return
             elConfirm(`确定删除客户【${this.row.name}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return delCustomer({id: this.row.id, name: this.row.name})
+                    return del.request({id: this.row.id, name: this.row.name})
                 })
                 .then(() => this.success('删除成功'))
                 .finally(() => this.config.operating = false)
@@ -184,7 +176,6 @@ export default {
             elSuccess(msg)
             this.editDialog = false
             this.search()
-            this.$refs.tree.init()
         }
     }
 }

@@ -14,7 +14,6 @@
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button
-                v-if="canGoToSysSupplierPage"
                 plain
                 size="small"
                 type="dashed"
@@ -63,8 +62,7 @@
 import dialogMixin from "@/mixin/dialogMixin"
 import tableMixin from '@/mixin/tablePageMixin'
 import LinerProgress from '@/component/LinerProgress'
-import {getSuppliers} from "@/api/system/supplier"
-import {auth} from "@/util/auth"
+import {search} from "@/api/system/supplier"
 import {elError} from "@/util/message"
 
 export default {
@@ -84,18 +82,13 @@ export default {
         }
     },
 
-    computed: {
-        canGoToSysSupplierPage() {
-            return auth('/system/supplier')
-        }
-    },
-
     methods: {
         search() {
             if (!this.value || this.config.loading) return
             this.config.loading = true
             this.row = null
-            getSuppliers(this.searchForm)
+            search
+                .request(this.searchForm)
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list

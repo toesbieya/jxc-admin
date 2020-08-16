@@ -1,34 +1,23 @@
-import request from "@/api/request"
-import {isEmpty} from "@/util"
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = '/account'
+export const login = new PostApi(`/account/login`)
 
-export function login(data) {
-    return request.post(`${baseUrl}/login`, data).then(({data}) => data.data)
-}
+export const logout = new GetApi(`/account/logout`)
 
-export function logout() {
-    return request.get(`${baseUrl}/logout`)
-}
+export const register = new PostApi(`/account/register`)
 
-export function register(data) {
-    return request.post(`${baseUrl}/register`, data)
-}
+export const updateUserPwd = new PostApi(`/account/updatePwd`)
 
-export function updateUserPwd(data) {
-    return request.post(`${baseUrl}/updatePwd`, data).then(({data}) => data)
-}
+export const updateAvatar = new GetApi(
+    `/account/updateAvatar`,
+    key => ({params: {key: encodeURIComponent(key)}}),
+    p => p.then(({data}) => data)
+)
 
-export function updateAvatar(key) {
-    return request.get(`${baseUrl}/updateAvatar?key=${encodeURIComponent(key)}`).then(({data}) => ({...data, key}))
-}
+export const validate = new GetApi(`/account/validate`, pwd => ({params: {pwd}}))
 
-export function validate(pwd) {
-    return request.get(`${baseUrl}/validate?pwd=${pwd}`).then(({data}) => data)
-}
-
-export function checkName(name, id) {
-    let param = `?name=${name}`
-    if (!isEmpty(id)) param += `&id=${id}`
-    return request.get(`${baseUrl}/checkName${param}`).then(({data}) => data)
-}
+export const checkName = new GetApi(
+    `/account/checkName`,
+    (name, id) => ({params: {name, id}}),
+    p => p.then(({data}) => data)
+)

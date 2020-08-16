@@ -1,24 +1,11 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/customer`
+export const getLimitRegion = new GetApi(`/system/customer/getLimitRegion`)
 
-export function getLimitRegion() {
-    return request.get(`${baseUrl}/getLimitRegion`).then(({data}) => data.data)
-}
+export const search = new PostApi(`/system/customer/search`)
 
-export function getCustomers(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const add = new PostApi(`/system/customer/add`, null, p => p.then(({data}) => data))
 
-export function addCustomer(data) {
-    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
-}
+export const update = new PostApi(`/system/customer/update`, null, p => p.then(({data}) => data))
 
-export function updateCustomer(data) {
-    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
-}
-
-export function delCustomer(data) {
-    return request.post(`${baseUrl}/del`, data).then(({data}) => data)
-}
+export const del = new PostApi(`/system/customer/del`, null, p => p.then(({data}) => data))

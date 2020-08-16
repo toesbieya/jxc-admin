@@ -84,9 +84,9 @@ import EditDialog from './component/EditDialog'
 import RoleSelector from './component/RoleSelector'
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/item"
-import {baseUrl, delUser, getUsers, kick, resetUserPwd} from "@/api/system/user"
+import {search, add, update, del, kick, resetPwd} from "@/api/system/user"
 import {isEmpty} from '@/util'
-import {auth} from "@/util/auth"
+import {wic} from "@/util/auth"
 import {autoCompleteUrl} from "@/util/file"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 
@@ -109,27 +109,7 @@ export default {
         }
     },
 
-    computed: {
-        canAdd() {
-            return auth(`${baseUrl}/add`)
-        },
-
-        canUpdate() {
-            return auth(`${baseUrl}/update`)
-        },
-
-        canDel() {
-            return auth(`${baseUrl}/del`)
-        },
-
-        canKick() {
-            return auth(`${baseUrl}/kick`)
-        },
-
-        canResetPwd() {
-            return auth(`${baseUrl}/resetPwd`)
-        },
-    },
+    computed: wic({add, update, del, kick, resetPwd}),
 
     methods: {
         mergeSearchForm() {
@@ -145,7 +125,8 @@ export default {
             this.config.loading = true
             this.row = null
             this.type = 'see'
-            getUsers(this.mergeSearchForm())
+            search
+                .request(this.mergeSearchForm())
                 .then(({list, total}) => {
                     list.forEach(u => u.avatar = autoCompleteUrl(u.avatar))
                     this.searchForm.total = total
@@ -171,7 +152,7 @@ export default {
             elConfirm(`确定重置用户【${this.row.name}】的密码？`)
                 .then(() => {
                     this.config.operating = true
-                    return resetUserPwd({id: this.row.id, name: this.row.name})
+                    return resetPwd.request({id: this.row.id, name: this.row.name})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
@@ -186,7 +167,7 @@ export default {
             elConfirm(`确定删除用户【${this.row.name}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return delUser({id: this.row.id, name: this.row.name})
+                    return del.request({id: this.row.id, name: this.row.name})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
@@ -202,7 +183,7 @@ export default {
             elConfirm(`确定踢出用户【${this.row.name}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return kick([{id: this.row.id, name: this.row.name}])
+                    return kick.request([{id: this.row.id, name: this.row.name}])
                 })
                 .then(() => {
                     elSuccess('踢出成功')

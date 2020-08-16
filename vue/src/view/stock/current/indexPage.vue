@@ -66,7 +66,7 @@ import DetailDialog from "./DetailDialog"
 import ExtraArea from '@/component/ExtraArea'
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/item"
-import {baseUrl, search} from "@/api/stock/current"
+import {search} from "@/api/stock/current"
 import {isEmpty, debounce} from "@/util"
 import {exportExcel} from "@/util/excel"
 import {plus} from "@/util/math"
@@ -150,7 +150,7 @@ export default {
         search() {
             if (this.config.loading) return
             this.config.loading = true
-            search(this.mergeSearchForm())
+            search.request(this.mergeSearchForm())
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list
@@ -159,7 +159,7 @@ export default {
         },
 
         downloadExcel() {
-            exportExcel(`${baseUrl}/export`, this.mergeSearchForm(), this.excel)
+            exportExcel(`/stock/current/export`, this.mergeSearchForm(), this.excel)
         },
 
         nodeClick(obj) {

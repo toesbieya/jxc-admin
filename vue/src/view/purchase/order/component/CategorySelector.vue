@@ -52,7 +52,9 @@ export default {
     methods: {
         init() {
             if (this.tree.length === 0) {
-                getAll().then(data => this.$store.commit('dataCache/categories', data))
+                getAll
+                    .request()
+                    .then(data => this.$store.commit('dataCache/categories', data))
             }
         },
 

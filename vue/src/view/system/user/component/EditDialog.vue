@@ -42,7 +42,7 @@ import DepartmentSelector from "./DepartmentSelector"
 import FormDialog from '@/component/FormDialog'
 import RoleSelector from './RoleSelector'
 import {checkName} from "@/api/account"
-import {addUser, updateUser} from "@/api/system/user"
+import {add, update} from "@/api/system/user"
 import {isEmpty, debounce} from '@/util'
 import {elConfirm} from "@/util/message"
 
@@ -61,7 +61,8 @@ export default {
 
     data() {
         const validateName = debounce((r, v, c) => {
-            checkName(this.form.name, this.form.id)
+            checkName
+                .request(this.form.name, this.form.id)
                 .then(({msg}) => msg ? c(msg) : c())
                 .catch(e => c(e))
         }, 300)
@@ -150,7 +151,7 @@ export default {
                 elConfirm(this.confirmMessage)
                     .then(() => {
                         this.loading = true
-                        return this.type === 'add' ? addUser(this.form) : updateUser(this.form)
+                        return this.type === 'add' ? add.request(this.form) : update.request(this.form)
                     })
                     .then(({msg}) => this.$emit('success', msg))
                     .finally(() => this.loading = false)

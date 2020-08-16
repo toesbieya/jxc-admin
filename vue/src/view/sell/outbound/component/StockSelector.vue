@@ -69,7 +69,7 @@ export default {
             if (!this.value || this.loading) return
             this.loading = true
             this.$refs.table && this.$refs.table.clearSelection()
-            getDetail(this.cid)
+            getDetail.request(this.cid)
                 .then(data => this.tableData = data)
                 .finally(() => this.loading = false)
         },

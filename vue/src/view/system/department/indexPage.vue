@@ -57,7 +57,7 @@ import ContextMenuItem from "@/component/ContextMenu/item"
 import EditDialog from "./component/EditDialog"
 import OrgTreeView from "./component/OrgTreeView"
 import ZoomControl from './component/ZoomControl'
-import {baseUrl, delDepartment, getDepartments} from "@/api/system/department"
+import {add, update, del, get} from "@/api/system/department"
 import {auth} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {createTreeByWorker} from "@/util/tree"
@@ -89,13 +89,13 @@ export default {
             return this.zoom / 100
         },
         canAdd() {
-            return auth(`${baseUrl}/add`)
+            return auth(add.url)
         },
         canUpdate() {
-            return auth(`${baseUrl}/update`)
+            return auth(update.url)
         },
         canDel() {
-            return auth(`${baseUrl}/del`)
+            return auth(del.url)
         },
     },
 
@@ -147,7 +147,7 @@ export default {
             elConfirm(`确定删除部门【${this.currentNode.name}】？`)
                 .then(() => {
                     this.loading = true
-                    return delDepartment(this.currentNode)
+                    return del.request(this.currentNode)
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
@@ -159,7 +159,8 @@ export default {
         search() {
             this.currentNode = null
             this.loading = true
-            getDepartments()
+            get
+                .request()
                 .then(data => createTreeByWorker(data))
                 .then(data => {
                     this.completeDepartment(data)

@@ -50,7 +50,8 @@ export default {
         search() {
             if (this.config.loading) return
             this.config.loading = true
-            searchUserAction({...this.searchForm, uid: this.$store.state.user.id})
+            searchUserAction
+                .request({...this.searchForm, uid: this.$store.state.user.id})
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list

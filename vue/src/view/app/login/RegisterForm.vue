@@ -56,7 +56,8 @@ export default {
 
     data() {
         const validateName = debounce((r, v, c) => {
-            checkName(this.form.username)
+            checkName
+                .request(this.form.username)
                 .then(({msg}) => msg ? c(msg) : c())
                 .catch(e => c(e))
         }, 300)
@@ -94,7 +95,7 @@ export default {
             this.$refs.form.validate(valid => {
                 if (!valid) return
                 this.loading = true
-                register({username: this.form.username, password: md5(this.form.pwd)})
+                register.request({username: this.form.username, password: md5(this.form.pwd)})
                     .then(() => {
                         elSuccess('注册成功')
                         this.$router.push('/login')

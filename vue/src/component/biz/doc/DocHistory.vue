@@ -15,7 +15,7 @@
 <script>
 import AbstractPagination from '@/component/AbstractPagination'
 import AbstractTable from "@/component/AbstractTable"
-import {searchHistory} from "@/api/doc/history"
+import {search} from "@/api/doc/history"
 import {isEmpty, timeFormat} from "@/util"
 
 export default {
@@ -49,7 +49,8 @@ export default {
     methods: {
         search() {
             if (isEmpty(this.id)) return
-            searchHistory({pid: this.id, ...this.searchForm})
+            search
+                .request({pid: this.id, ...this.searchForm})
                 .then(({total, list}) => {
                     this.transformData(list)
                     this.data = list

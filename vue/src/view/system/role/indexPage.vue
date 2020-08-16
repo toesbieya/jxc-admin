@@ -59,9 +59,9 @@ import tableMixin from '@/mixin/tablePageMixin'
 import EditDialog from './EditDialog'
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/item"
-import {baseUrl, del, search} from "@/api/system/role"
+import {add, update, del, search} from "@/api/system/role"
 import {isEmpty} from '@/util'
-import {auth} from "@/util/auth"
+import {wic} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
@@ -85,17 +85,7 @@ export default {
         }
     },
 
-    computed: {
-        canAdd() {
-            return auth(`${baseUrl}/add`)
-        },
-        canUpdate() {
-            return auth(`${baseUrl}/update`)
-        },
-        canDel() {
-            return auth(`${baseUrl}/del`)
-        }
-    },
+    computed: wic({add, update, del}),
 
     methods: {
         mergeSearchForm() {
@@ -116,7 +106,8 @@ export default {
             this.config.loading = true
             this.row = null
             this.type = 'see'
-            search(this.mergeSearchForm())
+            search
+                .request(this.mergeSearchForm())
                 .then(({list, total}) => {
                     list.forEach(i => {
                         i.departmentId = this.str2intArray(i.departmentId)
@@ -148,7 +139,7 @@ export default {
             elConfirm(`确定删除角色【${name}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return del({id, name})
+                    return del.request({id, name})
                 })
                 .then(() => {
                     elSuccess('删除成功')

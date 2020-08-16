@@ -58,7 +58,7 @@ import tableMixin from '@/mixin/tablePageMixin'
 import EditDialog from './EditDialog'
 import SearchForm from "@/component/SearchForm"
 import SearchFormItem from "@/component/SearchForm/item"
-import {baseUrl, search, del} from "@/api/message/manage"
+import {search, add, update, del} from "@/api/message/manage"
 import {isEmpty} from '@/util'
 import {auth} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
@@ -85,13 +85,13 @@ export default {
 
     computed: {
         canAdd() {
-            return auth(`${baseUrl}/add`)
+            return auth(add.url)
         },
         canUpdate() {
-            return auth(`${baseUrl}/update`)
+            return auth(update.url)
         },
         canDel() {
-            return auth(`${baseUrl}/del`)
+            return auth(del.url)
         }
     },
 
@@ -112,7 +112,8 @@ export default {
             this.config.loading = true
             this.row = null
             this.type = 'see'
-            search(this.searchForm)
+            search
+                .request(this.searchForm)
                 .then(({list, total}) => {
                     this.searchForm.total = total
                     this.tableData = list
@@ -144,7 +145,7 @@ export default {
             elConfirm(`确定删除消息【${this.row.title}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return del(this.row.id, this.row.title)
+                    return del.request(this.row.id, this.row.title)
                 })
                 .then(() => {
                     elSuccess('删除成功')

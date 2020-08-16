@@ -51,7 +51,7 @@ import dialogMixin from "@/mixin/dialogMixin"
 import AbstractForm from "@/component/AbstractForm"
 import FormDialog from '@/component/FormDialog'
 import RegionSelector from '@/component/RegionSelector'
-import {addCustomer, updateCustomer} from "@/api/system/customer"
+import {add, update} from "@/api/system/customer"
 import {isEmpty, mergeObj, resetObj} from '@/util'
 import {elConfirm} from "@/util/message"
 
@@ -156,7 +156,7 @@ export default {
                 elConfirm(this.confirmMessage)
                     .then(() => {
                         this.loading = true
-                        return this.type === 'add' ? addCustomer(this.form) : updateCustomer(this.form)
+                        return this.type === 'add' ? add.request(this.form) : update.request(this.form)
                     })
                     .then(({msg}) => this.$emit('success', msg))
                     .finally(() => this.loading = false)

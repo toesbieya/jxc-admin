@@ -16,7 +16,8 @@ export default {
         init() {
             if (this.loading) return
             this.loading = true
-            getDailyFinishOrder()
+            getDailyFinishOrder
+                .request()
                 .then(data => {
                     const time = []
                     const purchase = []

@@ -5,8 +5,6 @@
 </template>
 
 <script>
-import {baseUrl} from '@/api/message/user'
-
 export default {
     name: "Bell",
 
@@ -18,7 +16,7 @@ export default {
 
     methods: {
         jump() {
-            let target = baseUrl
+            let target = '/message/user'
             if (this.$route.path === target) target = `/redirect${target}`
             this.$router.replace(target)
         }

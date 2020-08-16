@@ -89,7 +89,7 @@
 import docTableMixin from '@/mixin/docTableMixin'
 import SearchForm from '@/component/SearchForm'
 import SearchFormItem from "@/component/SearchForm/item"
-import {baseUrl, del, getSubById, search} from "@/api/doc/purchase/inbound"
+import {baseUrl, add, update, del, withdraw, pass, reject, getSubById, search} from "@/api/doc/purchase/inbound"
 
 export default {
     name: "purchaseInbound",
@@ -100,13 +100,13 @@ export default {
 
     data() {
         return {
-            baseUrl,
-            api: {search, del, getSubById},
+            exportUrl: `${baseUrl}/export`,
+            api: {add, update, del, withdraw, pass, reject, getSubById, search},
             searchForm: {
                 pidFuzzy: null
             },
             excel: {
-                column: [
+                columns: [
                     {header: '序号', prop: 'id'},
                     {header: '采购订单单号', prop: 'pid', width: 30},
                     {header: '创建人', prop: 'cname'},

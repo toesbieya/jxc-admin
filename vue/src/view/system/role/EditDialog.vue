@@ -65,7 +65,7 @@
 import dialogMixin from "@/mixin/dialogMixin"
 import AbstractForm from "@/component/AbstractForm"
 import FormDialog from '@/component/FormDialog'
-import {getDepartments} from "@/api/system/department"
+import {get as getDepartments} from "@/api/system/department"
 import {add, update} from "@/api/system/role"
 import {isEmpty, mergeObj} from '@/util'
 import {createTreeByWorker, elTreeControl} from '@/util/tree'
@@ -169,7 +169,7 @@ export default {
                     departmentId: this.getCheckedDept(),
                     resourceId: this.getCheckedRes()
                 }
-                const promise = this.type === 'add' ? add(data) : update(data)
+                const promise = this.type === 'add' ? add.request(data) : update.request(data)
                 promise
                     .then(({msg}) => this.$emit('success', msg))
                     .finally(() => this.loading = false)
@@ -186,7 +186,8 @@ export default {
     },
 
     mounted() {
-        getDepartments(false)
+        getDepartments
+            .request(false)
             .then(data => createTreeByWorker(data))
             .then(data => {
                 this.departments = data

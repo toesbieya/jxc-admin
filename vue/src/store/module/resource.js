@@ -2,7 +2,7 @@ import path from 'path'
 import {useBackendRoute} from '@/config'
 import {addDynamicRoutes} from '@/router'
 import {getDynamicRoutes} from '@/router/define'
-import {stringifyRoutes, parseRoutes, metaExtend} from "@/router/util"
+import {parseRoutes, metaExtend} from "@/router/util"
 import {needAuth} from "@/util/auth"
 import {createTree} from "@/util/tree"
 import {getAll} from "@/api/system/resource"
@@ -49,7 +49,8 @@ const mutations = {
 
 const actions = {
     init({commit}, {resources, admin, addRoutes = false}) {
-        return getAll()
+        return getAll
+            .request()
             .then(data => {
                 const routes = transformOriginRouteData(data)
                 metaExtend(routes)

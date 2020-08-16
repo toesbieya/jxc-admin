@@ -1,28 +1,13 @@
-import request from "@/api/request"
-import BASE from './baseUrl'
+import {PostApi} from "@/api/request"
 
-export const baseUrl = `${BASE}/user`
+export const search = new PostApi(`/system/user/search`)
 
-export function getUsers(data) {
-    return request.post(`${baseUrl}/search`, data).then(({data}) => data.data)
-}
+export const kick = new PostApi(`/system/user/kick`, null, p => p.then(({data}) => data))
 
-export function kick(data) {
-    return request.post(`${baseUrl}/kick`, data).then(({data}) => data)
-}
+export const add = new PostApi(`/system/user/add`, null, p => p.then(({data}) => data))
 
-export function addUser(data) {
-    return request.post(`${baseUrl}/add`, data).then(({data}) => data)
-}
+export const update = new PostApi(`/system/user/update`, null, p => p.then(({data}) => data))
 
-export function updateUser(data) {
-    return request.post(`${baseUrl}/update`, data).then(({data}) => data)
-}
+export const del = new PostApi(`/system/user/del`, null, p => p.then(({data}) => data))
 
-export function delUser(data) {
-    return request.post(`${baseUrl}/del`, data).then(({data}) => data)
-}
-
-export function resetUserPwd(data) {
-    return request.post(`${baseUrl}/resetPwd`, data).then(({data}) => data)
-}
+export const resetPwd = new PostApi(`/system/user/resetPwd`, null, p => p.then(({data}) => data))
