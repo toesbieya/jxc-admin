@@ -204,7 +204,7 @@ public class AccountService {
             }
             user.setAvatar(avatar);
             SessionUtil.save(user);
-            return R.success("上传头像成功");
+            return R.success("上传头像成功", avatar);
         }
 
         //否则删除此次上传至云的头像

@@ -54,8 +54,7 @@ public class AccountController {
     public R updateAvatar(@RequestParam String key) throws UnsupportedEncodingException {
         if (StringUtils.isEmpty(key)) return R.fail("参数错误");
 
-        UserVo user = SessionUtil.get();
-        return service.updateAvatar(user, URLDecoder.decode(key, "utf-8"));
+        return service.updateAvatar(SessionUtil.get(), URLDecoder.decode(key, "utf-8"));
     }
 
     @GetMapping("validate")
