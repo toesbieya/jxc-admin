@@ -3,6 +3,7 @@ package cn.toesbieya.jxc.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,7 +21,6 @@ public class IpUtil {
         handlerList.add(new PconlineApi());
         handlerList.add(new IphelpApi());
         handlerList.add(new IpipApi());
-        handlerList.add(new TaobaoApi());
     }
 
     private static final String REDIS_IP_CACHE_KEY = "ipCache";
@@ -53,7 +53,8 @@ public class IpUtil {
         for (Function<String, String> handler : handlerList) {
             try {
                 cache = handler.apply(ip);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 continue;
             }
             if (!StringUtils.isEmpty(cache)) {
@@ -65,22 +66,7 @@ public class IpUtil {
     }
 
     private static boolean invalidIp(String ip) {
-        return ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip);
-    }
-
-    //淘宝 部分ip无法查询
-    private static class TaobaoApi implements Function<String, String> {
-        @Override
-        public String apply(String ip) {
-            String url = "http://ip.taobao.com/service/getIpInfo.php?ip=" + ip;
-            String response = restTemplate.getForObject(url, String.class);
-            JSONObject result = JSON.parseObject(response);
-            if (!result.getInteger("code").equals(0) || result.get("data") == null) {
-                return null;
-            }
-            result = result.getJSONObject("data");
-            return handleAddress(result.getString("region"), result.getString("city"));
-        }
+        return StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip);
     }
 
     private static class IphelpApi implements Function<String, String> {
@@ -93,7 +79,7 @@ public class IpUtil {
                 return null;
             }
             JSONArray array = result.getJSONArray("data");
-            if (array.size() == 0) return null;
+            if (CollectionUtils.isEmpty(array)) return null;
             result = array.getJSONObject(0);
             return handleAddress(result.getString("province"), result.getString("city"));
         }
@@ -106,7 +92,7 @@ public class IpUtil {
             String url = "https://freeapi.ipip.net/" + ip;
             String response = restTemplate.getForObject(url, String.class);
             JSONArray result = JSON.parseArray(response);
-            if (result.size() != 5) return null;
+            if (result == null || result.size() != 5) return null;
             return handleAddress(result.getString(1), result.getString(2));
         }
     }
