@@ -8,7 +8,7 @@ const user = getUser()
 
 const state = {
     //是否在退出的过程中，避免重复弹框
-    prepareLogout: '',
+    prepareLogout: false,
 
     /*用户基本信息*/
     id: emptyOrDefault(user.id, null),
@@ -39,7 +39,7 @@ const actions = {
     logout({commit, state, dispatch}) {
         return new Promise((resolve, reject) => {
             if (state.prepareLogout) return Promise.reject()
-            commit('prepareLogout', 'yes')
+            commit('prepareLogout', true)
             logout(state.token)
                 .then(() => {
                     commit('resource/init', false, {root: true})
@@ -54,7 +54,7 @@ const actions = {
                     window.location.reload()
                 })
                 .catch(error => reject(error))
-                .finally(() => commit('prepareLogout', ''))
+                .finally(() => commit('prepareLogout', false))
         })
     },
 

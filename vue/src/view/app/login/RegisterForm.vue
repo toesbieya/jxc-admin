@@ -48,17 +48,18 @@
 <script>
 import md5 from "js-md5"
 import {register, checkName} from "@/api/account"
+import {debounce} from "@/util"
 import {elSuccess} from "@/util/message"
 
 export default {
     name: "RegisterForm",
 
     data() {
-        const validateName = (r, v, c) => {
+        const validateName = debounce((r, v, c) => {
             checkName(this.form.username)
                 .then(({msg}) => msg ? c(msg) : c())
                 .catch(e => c(e))
-        }
+        }, 300)
         const validateRepwd = (r, v, c) => {
             return v !== this.form.pwd ? c('两次密码输入不一致') : c()
         }

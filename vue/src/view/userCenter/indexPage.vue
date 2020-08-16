@@ -1,10 +1,10 @@
 <template>
     <el-row :gutter="20">
-        <el-col :xs="24" :sm="24" :md="8" :lg="6" :xl="5" style="margin-bottom: 10px">
+        <el-col :md="24" :lg="8" :xl="6" style="margin-bottom: 10px">
             <user-card/>
         </el-col>
 
-        <el-col :xs="24" :sm="24" :md="16" :lg="18" :xl="19">
+        <el-col :md="24" :lg="16" :xl="18">
             <el-card>
                 <el-tabs v-model="activeTab" stretch>
                     <el-tab-pane v-for="i in tabs" v-once :key="i.label" :name="i.name">

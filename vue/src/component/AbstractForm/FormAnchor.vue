@@ -35,23 +35,24 @@ export default {
         getCur(offsetTop, bounds) {
             const sections = []
             const container = this.getContainer()
-            this.data.forEach(({ref}) => {
+            for (const {ref} of this.data) {
                 const target = this.getDomFromRef(ref)
+                if (!target) continue
                 const top = getOffsetTop(target, container)
                 if (top <= offsetTop + bounds) {
                     sections.push({ref, top})
                 }
-            })
-
+            }
             if (sections.length) {
                 const max = sections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev))
                 return max.ref
             }
-            return ''
+            return null
         },
 
         getDomFromRef(ref) {
             const refs = this.reference()
+            if (!refs) return null
             return refs[ref]['$el'] || refs[ref][0]['$el']
         },
 

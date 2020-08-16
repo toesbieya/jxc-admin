@@ -28,7 +28,7 @@
 export default {
     name: "FormValidateInfo",
 
-    props: {form: Function},
+    props: {form: [Function, Object]},
 
     data() {
         return {
@@ -57,13 +57,25 @@ export default {
             this.$refs.popover.doClose()
         },
 
+        getFormRef() {
+            let ref = this.form
+            if (!ref) return
+            if (typeof ref === 'function') {
+                ref = ref()
+            }
+            return ref
+        },
+
         findFormItem(prop) {
-            return this.form().fields.find(i => i.prop === prop)
+            const form = this.getFormRef()
+            if (!form) return
+            return form.fields.find(i => i.prop === prop)
         }
     },
 
     mounted() {
-        const form = this.form()
+        const form = this.getFormRef()
+        if (!form) return
         form.$on('validate', this.onValidate)
         this.$once('hook:beforeDestroy', () => {
             form.$off('validate', this.onValidate)

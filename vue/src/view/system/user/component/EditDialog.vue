@@ -43,7 +43,7 @@ import FormDialog from '@/component/FormDialog'
 import RoleSelector from './RoleSelector'
 import {checkName} from "@/api/account"
 import {addUser, updateUser} from "@/api/system/user"
-import {isEmpty} from '@/util'
+import {isEmpty, debounce} from '@/util'
 import {elConfirm} from "@/util/message"
 
 export default {
@@ -60,11 +60,11 @@ export default {
     },
 
     data() {
-        const validateName = (r, v, c) => {
+        const validateName = debounce((r, v, c) => {
             checkName(this.form.name, this.form.id)
                 .then(({msg}) => msg ? c(msg) : c())
                 .catch(e => c(e))
-        }
+        }, 300)
         return {
             loading: false,
             form: {

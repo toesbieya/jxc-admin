@@ -1,3 +1,4 @@
+import {commonMethods} from "@/mixin/docTableMixin"
 import AbstractForm from '@/component/AbstractForm'
 import AbstractFormItem from "@/component/AbstractForm/item"
 import AbstractTable from "@/component/AbstractTable"
@@ -9,11 +10,10 @@ import FormAnchor from "@/component/AbstractForm/FormAnchor"
 import FormCard from '@/component/AbstractForm/FormCard'
 import FormValidateInfo from "@/component/AbstractForm/FormValidateInfo"
 import UploadFile from '@/component/UploadFile'
-import {commonMethods} from "@/mixin/docTableMixin"
 import {isEmpty, mergeObj} from '@/util'
-import {elAlert, elConfirm, elPrompt, elSuccess} from "@/util/message"
-import {deleteUpload} from "@/util/file"
 import {auth} from "@/util/auth"
+import {deleteUpload} from "@/util/file"
+import {elAlert, elConfirm, elPrompt, elSuccess} from "@/util/message"
 import {closeCurrentPage} from "@/util/route"
 
 export default {

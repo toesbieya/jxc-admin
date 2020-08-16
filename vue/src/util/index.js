@@ -1,9 +1,20 @@
+import {timePass} from "@/filter"
+
 export function isEmpty(...str) {
     return str.some(i => i === undefined || i === null || i === '')
 }
 
 export function emptyOrDefault(v, defaultValue = '') {
     return isEmpty(v) ? defaultValue : v
+}
+
+export function getInitialValue(v) {
+    if (v === undefined || v === null) v = null
+    else if (typeof v === 'string') v = ''
+    else if (typeof v === 'boolean') v = false
+    else if (typeof v === 'number') v = 0
+    else if (typeof v === 'object') v = {}
+    else if (Array.isArray(v)) v = []
 }
 
 //简单重置对象属性
@@ -170,12 +181,18 @@ export function waitUntilSuccess(success, callback, interval = 1000, maxTryTime 
 
 //store中根据state批量生成对应的mutation
 export function createMutations(state, all = false) {
-    const arr = Object.keys(state)
+    const keys = Object.keys(state)
     const obj = {}
-    arr.forEach(key => {
+    keys.forEach(key => {
         obj[key] = (s, v) => s[key] = v
     })
-    if (all) obj['$all'] = (s, v) => arr.forEach(key => s[key] = v ? v[key] || '' : '')
+    if (all) {
+        obj['$all'] = (s, v) => {
+            keys.forEach(key => {
+                s[key] = v && v[key] || getInitialValue(s[key])
+            })
+        }
+    }
     return obj
 }
 

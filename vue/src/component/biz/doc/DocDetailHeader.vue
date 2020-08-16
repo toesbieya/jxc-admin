@@ -27,14 +27,8 @@ export default {
 
     props: {
         title: String,
-        description: {
-            type: Array,
-            default: () => []
-        },
-        extra: {
-            type: Array,
-            default: () => []
-        }
+        description: {type: Array, default: () => []},
+        extra: {type: Array, default: () => []}
     }
 }
 </script>
