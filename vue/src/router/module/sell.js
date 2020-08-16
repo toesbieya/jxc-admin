@@ -1,7 +1,7 @@
 /*路由表：销售管理*/
 
 const router = {
-    path: '/doc/sell',
+    path: '/sell',
     component: 'Layout',
     meta: {title: '销售管理', icon: 'svg-sell', alwaysShow: true},
     children: [
@@ -29,7 +29,7 @@ const router = {
                             return `查看销售订单${id}`
                     }
                 },
-                activeMenu: '/doc/sell/order',
+                activeMenu: '/sell/order',
                 usePathKey: true,
                 commonModule: '@/view/sell/order/detail'
             }
@@ -58,7 +58,7 @@ const router = {
                             return `查看销售出库单${id}`
                     }
                 },
-                activeMenu: '/doc/sell/outbound',
+                activeMenu: '/sell/outbound',
                 usePathKey: true,
                 commonModule: '@/view/sell/outbound/detail'
             }

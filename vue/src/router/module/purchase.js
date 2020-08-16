@@ -1,7 +1,7 @@
 /*路由表：采购管理*/
 
 const router = {
-    path: '/doc/purchase',
+    path: '/purchase',
     component: 'Layout',
     meta: {title: '采购管理', icon: 'svg-shopping', alwaysShow: true},
     children: [
@@ -29,7 +29,7 @@ const router = {
                             return `查看采购订单${id}`
                     }
                 },
-                activeMenu: '/doc/purchase/order',
+                activeMenu: '/purchase/order',
                 usePathKey: true,
                 commonModule: '@/view/purchase/order/detail'
             }
@@ -58,7 +58,7 @@ const router = {
                             return `查看采购入库单${id}`
                     }
                 },
-                activeMenu: '/doc/purchase/inbound',
+                activeMenu: '/purchase/inbound',
                 usePathKey: true,
                 commonModule: '@/view/purchase/inbound/detail'
             }

@@ -32,7 +32,7 @@ export default {
                 },
                 {
                     id: 'purchase',
-                    path: '/doc/purchase/order',
+                    path: '/purchase/order',
                     icon: 'svg-shopping',
                     color: variables.primary,
                     value: 0,
@@ -40,7 +40,7 @@ export default {
                 },
                 {
                     id: 'sell',
-                    path: '/doc/sell/order',
+                    path: '/sell/order',
                     icon: 'svg-sell',
                     color: variables.warning,
                     value: 0,
