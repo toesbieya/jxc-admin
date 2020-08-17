@@ -77,7 +77,7 @@ public class SupplierService {
         list.forEach(supplierVo -> {
             SysRegion matched = Util.find(regions, item -> supplierVo.getRegion().equals(item.getId()));
             if (matched != null) {
-                supplierVo.setRegionName(matched.getName());
+                supplierVo.setRegionName(matched.getFullname());
             }
         });
 
