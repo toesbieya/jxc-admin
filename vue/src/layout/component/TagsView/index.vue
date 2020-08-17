@@ -1,6 +1,6 @@
 <template>
     <nav class="tags-view-container">
-        <scroll-pane class="tags-view-wrapper" ref="scrollPane">
+        <scroll-pane ref="scrollPane" class="tags-view-wrapper">
             <router-link
                 ref="tag"
                 v-for="tag in visitedViews"
@@ -18,7 +18,7 @@
 
         <context-menu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
             <context-menu-item @click="() => refreshSelectedTag(selectedTag)">刷新</context-menu-item>
-            <context-menu-item v-show="!isAffix(selectedTag)" @click="() => closeSelectedTag(selectedTag)">
+            <context-menu-item v-if="!isAffix(selectedTag)" @click="() => closeSelectedTag(selectedTag)">
                 关闭
             </context-menu-item>
             <context-menu-item @click="closeOthersTags">关闭其他</context-menu-item>

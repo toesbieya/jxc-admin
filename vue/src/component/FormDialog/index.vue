@@ -15,11 +15,10 @@ export default {
     },
 
     render(h, context) {
-        const {value, title, loading, top, width} = context.props
-        const l = context.listeners
+        const {data, children, listeners, props: {value, title, loading, top, width}} = context
 
         function onClose() {
-            l.input && l.input(false)
+            listeners.input && listeners.input(false)
         }
 
         return (
@@ -30,7 +29,7 @@ export default {
                 top={top}
                 width={width}
                 on-close={onClose}
-                {...context.data}
+                {...data}
             >
                 <slot slot="title" name="title">{title}</slot>
 
@@ -38,7 +37,7 @@ export default {
                     <LoadingMask show={loading}/>
                     <el-scrollbar>
                         <div class="form-dialog-body">
-                            {context.children}
+                            {children}
                         </div>
                         <div style="margin-bottom: 17px"/>
                     </el-scrollbar>

@@ -3,11 +3,12 @@
         <div
             v-for="i in data"
             :key="i.ref"
-            :class="{'active':i.ref === cur}"
+            :class="{'form-anchor-item': true,'active': i.ref === cur}"
             @click="() => click(i.ref)"
         >
             {{ i.label }}
         </div>
+        <div class="form-anchor-item" @click="close">关闭导航</div>
     </div>
 </template>
 
@@ -32,6 +33,11 @@ export default {
     data: () => ({cur: null}),
 
     methods: {
+        close() {
+            this.$el.remove()
+            this.$destroy()
+        },
+
         getCur(offsetTop, bounds) {
             const sections = []
             const container = this.getContainer()
@@ -98,13 +104,12 @@ export default {
     right: 0;
     top: 200px;
     min-width: 72px;
-    overflow: hidden;
     border-radius: 4px 0 0 4px;
     background: #fff;
     box-shadow: 0 2px 12px 0 rgba(166, 167, 173, 0.5);
     z-index: 100;
 
-    > div {
+    &-item {
         width: inherit;
         height: 28px;
         line-height: 28px;

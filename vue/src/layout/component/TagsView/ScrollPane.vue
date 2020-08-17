@@ -1,5 +1,5 @@
 <template>
-    <el-scrollbar :vertical="false" @wheel.native.prevent="handleScroll" ref="scrollContainer">
+    <el-scrollbar ref="scrollContainer" native @wheel.native.prevent="handleScroll">
         <slot/>
     </el-scrollbar>
 </template>
@@ -12,24 +12,24 @@ export default {
 
     data: () => ({rAF: null}),
 
-    computed: {
-        scrollWrapper() {
+    methods: {
+        getWrapper() {
             return this.$refs.scrollContainer.$refs.wrap
         },
-    },
 
-    methods: {
         handleScroll(e) {
             const eventDelta = e.wheelDelta || -(e.detail || 0) * 40
-            if (eventDelta > 0 && this.scrollWrapper.scrollLeft === 0) return
-            if (eventDelta < 0 && this.scrollWrapper.scrollWidth <= this.scrollWrapper.scrollLeft + this.scrollWrapper.clientWidth) return
+            const {scrollLeft, scrollWidth, clientWidth} = this.getWrapper()
+            if (eventDelta > 0 && scrollLeft === 0
+                || eventDelta < 0 && scrollWidth <= scrollLeft + clientWidth) {
+                return
+            }
             this.smoothScroll(-eventDelta * 2)
         },
 
         moveToTarget(currentTag) {
-            const $container = this.$refs.scrollContainer.$el
-            const $containerWidth = $container.offsetWidth
-            const $scrollWrapper = this.scrollWrapper
+            const $containerWidth = this.$refs.scrollContainer.$el.offsetWidth
+            const {scrollWidth, scrollLeft} = this.getWrapper()
             const tagList = this.$parent.$refs.tag
 
             let firstTag = null
@@ -45,7 +45,7 @@ export default {
                 this.scrollLeft(0)
             }
             else if (lastTag === currentTag) {
-                this.scrollLeft($scrollWrapper.scrollWidth - $containerWidth)
+                this.scrollLeft(scrollWidth - $containerWidth)
             }
             else {
                 // find preTag and nextTag
@@ -59,17 +59,17 @@ export default {
                 // the tag's offsetLeft before of prevTag
                 const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
 
-                if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
+                if (afterNextTagOffsetLeft > scrollLeft + $containerWidth) {
                     this.scrollLeft(afterNextTagOffsetLeft - $containerWidth)
                 }
-                else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
+                else if (beforePrevTagOffsetLeft < scrollLeft) {
                     this.scrollLeft(beforePrevTagOffsetLeft)
                 }
             }
         },
 
         scrollLeft(val) {
-            this.scrollWrapper.scrollTo({
+            this.getWrapper().scrollTo({
                 left: val,
                 behavior: 'smooth'
             })
@@ -80,7 +80,7 @@ export default {
             let cost = 300, times = cost / 16, gap = val / times + 1
             const frameFunc = () => {
                 if (times > 0) {
-                    this.scrollWrapper.scrollLeft += gap
+                    this.getWrapper().scrollLeft += gap
                     this.rAF = window.requestAnimationFrame(frameFunc)
                     times--
                 }
