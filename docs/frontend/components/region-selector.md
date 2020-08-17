@@ -4,8 +4,6 @@
 
 <img :src="$withBase('/region-selector_tab.png')">
 
-由于行政区划数据在本项目中是公共数据，所以使用了`vuex`来存放，如果不想用`vuex`但又想拿到别的项目里用，可以自己改造一下。
-
 ### 引入：
 
 `@/components/RegionSelector`
