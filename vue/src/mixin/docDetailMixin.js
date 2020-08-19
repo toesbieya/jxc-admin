@@ -2,13 +2,10 @@ import {commonMethods} from "@/mixin/docTableMixin"
 import AbstractForm from '@/component/AbstractForm'
 import AbstractFormItem from "@/component/AbstractForm/item"
 import AbstractTable from "@/component/AbstractTable"
-import DocDetailHeader from "@/component/biz/doc/DocDetailHeader"
-import DocDetailFooter from "@/component/biz/doc/DocDetailFooter"
+import DetailForm from "@/component/AbstractForm/DetailForm"
 import DocHistory from '@/component/biz/doc/DocHistory'
 import DocSteps from '@/component/biz/doc/DocSteps'
-import FormAnchor from "@/component/AbstractForm/FormAnchor"
 import FormCard from '@/component/AbstractForm/FormCard'
-import FormValidateInfo from "@/component/AbstractForm/FormValidateInfo"
 import UploadFile from '@/component/UploadFile'
 import {isEmpty, mergeObj} from '@/util'
 import {auth} from "@/util/auth"
@@ -21,13 +18,10 @@ export default {
         AbstractForm,
         AbstractFormItem,
         AbstractTable,
-        DocDetailHeader,
-        DocDetailFooter,
+        DetailForm,
         DocHistory,
         DocSteps,
-        FormAnchor,
         FormCard,
-        FormValidateInfo,
         UploadFile
     },
 
@@ -104,6 +98,18 @@ export default {
         canReject() {
             //有驳回权限、edit模式且status=1
             return auth(this.api.reject.url) && this.type === 'edit' && this.form.status === 1
+        },
+
+        //底部按钮
+        buttons() {
+            return [
+                {_if: 'canSave', type: 'primary', content: '保 存', e: this.save},
+                {_if: 'canCommit', type: 'primary', content: '提 交', e: this.commit},
+                {_if: 'canWithdraw', type: 'danger', content: '撤 回', e: this.withdraw},
+                {_if: 'canPass', type: 'success', content: '通 过', e: this.pass},
+                {_if: 'canReject', type: 'danger', content: '驳 回', e: this.reject},
+            ]
+                .filter(i => this[i._if])
         }
     },
 

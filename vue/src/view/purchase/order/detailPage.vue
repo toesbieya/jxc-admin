@@ -1,14 +1,14 @@
 <template>
-    <div v-loading="loading" class="detail-page">
-        <form-anchor :reference="() => $refs" :data="anchors"/>
-
-        <doc-detail-header
-            :title="this.title"
-            :description="headerDescription"
-            :extra="headerExtra"
-            @close="close"
-        />
-
+    <detail-form
+        :loading="loading"
+        :reference="() => $refs"
+        :anchors="anchors"
+        :title="title"
+        :description="headerDescription"
+        :extra="headerExtra"
+        :buttons="buttons"
+        @close="close"
+    >
         <abstract-form :model="form" :rules="rules">
             <form-card ref="progress" header="流程进度">
                 <doc-steps :status="form.status" :finish="form.finish" :type="type"/>
@@ -114,18 +114,8 @@
             </form-card>
         </abstract-form>
 
-        <doc-detail-footer>
-            <form-validate-info :form="() => $refs.form"/>
-            <el-button plain size="small" @click="close">关 闭</el-button>
-            <el-button v-if="canSave" size="small" type="primary" @click="save">保 存</el-button>
-            <el-button v-if="canCommit" size="small" type="primary" @click="commit">提 交</el-button>
-            <el-button v-if="canWithdraw" size="small" type="danger" @click="withdraw">撤 回</el-button>
-            <el-button v-if="canPass" size="small" type="success" @click="pass">通 过</el-button>
-            <el-button v-if="canReject" size="small" type="danger" @click="reject">驳 回</el-button>
-        </doc-detail-footer>
-
         <supplier-selector v-model="supplierDialog" @select="selectSupplier"/>
-    </div>
+    </detail-form>
 </template>
 
 <script>
