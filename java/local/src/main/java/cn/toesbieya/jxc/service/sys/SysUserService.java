@@ -36,7 +36,8 @@ public class SysUserService {
 
     public PageResult<UserVo> search(UserSearch vo) {
         Integer id = vo.getId();
-        String name = vo.getName();
+        String loginName = vo.getLoginName();
+        String nickName = vo.getNickName();
         String roleIds = vo.getRole();
         Boolean enable = vo.getEnable();
         Long startTime = vo.getStartTime();
@@ -46,7 +47,8 @@ public class SysUserService {
                 Wrappers.lambdaQuery(SysUser.class)
                         .eq(SysUser::isAdmin, false)
                         .eq(id != null, SysUser::getId, id)
-                        .like(!StringUtils.isEmpty(name), SysUser::getName, name)
+                        .like(!StringUtils.isEmpty(loginName), SysUser::getLoginName, loginName)
+                        .like(!StringUtils.isEmpty(nickName), SysUser::getNickName, nickName)
                         .inSql(!StringUtils.isEmpty(roleIds), SysUser::getRole, roleIds)
                         .eq(enable != null, SysUser::isEnable, enable)
                         .ge(startTime != null, SysUser::getCtime, startTime)
@@ -107,10 +109,13 @@ public class SysUserService {
         return new PageResult<>(pageResult.getTotal(), result);
     }
 
-    @UserAction("'添加用户：'+#user.name")
+    @UserAction("'添加用户：'+#user.loginName")
     public R add(SysUser user) {
-        if (isNameExist(user.getName(), null)) {
-            return R.fail("该用户名称已存在");
+        if (isLoginNameExist(user.getLoginName(), null)) {
+            return R.fail("该登录名已存在");
+        }
+        if (isNickNameExist(user.getNickName(), null)) {
+            return R.fail("该用户昵称已存在");
         }
 
         user.setId(null);
@@ -121,19 +126,19 @@ public class SysUserService {
         return R.success("添加成功");
     }
 
-    @UserAction("'修改用户：'+#user.name")
+    @UserAction("'修改用户：'+#user.loginName")
     public R update(SysUser user) {
         Integer id = user.getId();
-        String name = user.getName();
+        String name = user.getNickName();
 
-        if (isNameExist(name, id)) {
-            return R.fail("该用户名称已存在");
+        if (isNickNameExist(name, id)) {
+            return R.fail("该用户昵称已存在");
         }
 
         userMapper.update(
                 null,
                 Wrappers.lambdaUpdate(SysUser.class)
-                        .set(SysUser::getName, name)
+                        .set(SysUser::getNickName, name)
                         .set(SysUser::getRole, user.getRole())
                         .set(SysUser::getDept, user.getDept())
                         .set(SysUser::isEnable, user.isEnable())
@@ -143,7 +148,7 @@ public class SysUserService {
         return R.success("修改成功");
     }
 
-    @UserAction("'删除用户：'+#user.name")
+    @UserAction("'删除用户：'+#user.loginName")
     @Transactional(rollbackFor = Exception.class)
     public R del(SysUser user) {
         int rows = userMapper.delete(
@@ -168,7 +173,7 @@ public class SysUserService {
         return R.success("踢出成功");
     }
 
-    @UserAction("'重置用户密码：'+#user.name")
+    @UserAction("'重置用户密码：'+#user.loginName")
     public R resetPwd(SysUser user) {
         int rows = userMapper.update(
                 null,
@@ -179,11 +184,21 @@ public class SysUserService {
         return rows > 0 ? R.success() : R.fail("重置失败，未匹配到用户");
     }
 
-    //用户名重复时返回true
-    private boolean isNameExist(String name, Integer id) {
+    //登录名重复时返回true
+    private boolean isLoginNameExist(String name, Integer id) {
         Integer num = userMapper.selectCount(
                 Wrappers.lambdaQuery(SysUser.class)
-                        .eq(SysUser::getName, name)
+                        .eq(SysUser::getLoginName, name)
+                        .ne(id != null, SysUser::getId, id)
+        );
+        return num != null && num > 0;
+    }
+
+    //用户昵称重复时返回true
+    private boolean isNickNameExist(String name, Integer id) {
+        Integer num = userMapper.selectCount(
+                Wrappers.lambdaQuery(SysUser.class)
+                        .eq(SysUser::getNickName, name)
                         .ne(id != null, SysUser::getId, id)
         );
         return num != null && num > 0;

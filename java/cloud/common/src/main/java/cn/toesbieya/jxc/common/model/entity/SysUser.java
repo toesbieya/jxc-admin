@@ -8,7 +8,8 @@ import java.io.Serializable;
 public class SysUser implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
-    private String name;
+    private String loginName;
+    private String nickName;
     private String pwd;
     private Integer role;
     private String avatar;

@@ -20,7 +20,7 @@ public class LoginSuccessInfo {
 
     public LoginSuccessInfo(SysUser user) {
         this.id = user.getId();
-        this.name = user.getName();
+        this.name = user.getNickName();
         this.avatar = user.getAvatar();
         this.admin = user.isAdmin();
     }

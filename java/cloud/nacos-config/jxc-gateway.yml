@@ -62,4 +62,5 @@ spring:
         - /account/login
         - /account/logout
         - /account/register
-        - /account/checkName
+        - /account/checkLoginName
+        - /account/checkNickName

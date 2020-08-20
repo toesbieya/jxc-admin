@@ -59,7 +59,7 @@ public class UserController {
             return R.fail("参数错误");
         }
         RecUserAction action = ThreadUtil.getAction();
-        List<String> names = users.stream().map(SysUser::getName).collect(Collectors.toList());
+        List<String> names = users.stream().map(SysUser::getLoginName).collect(Collectors.toList());
         action.setAction("踢出用户：【" + String.join(",", names) + "】");
 
         return service.kick(users);
@@ -67,7 +67,7 @@ public class UserController {
 
     @PostMapping("resetPwd")
     public R resetPwd(@RequestBody SysUser user) {
-        if (user.getId() == null || StringUtils.isEmpty(user.getName())) {
+        if (user.getId() == null || StringUtils.isEmpty(user.getLoginName())) {
             return R.fail("参数错误");
         }
         return service.resetPwd(user);
@@ -75,14 +75,20 @@ public class UserController {
 
     private String validateUserCreateParam(SysUser user) {
         if (user.getId() != null) return "创建失败，参数错误";
-        if (StringUtils.isEmpty(user.getName())) return "创建失败，用户名称不能为空";
+        if (StringUtils.isEmpty(user.getLoginName())
+                ||StringUtils.isEmpty(user.getNickName())) {
+            return "创建失败，用户名称不能为空";
+        }
         if (user.getRole() == null) return "创建失败，用户角色不能为空";
         return null;
     }
 
     private String validateUserUpdateParam(SysUser user) {
         if (user.getId() == null) return "修改失败，参数错误";
-        if (StringUtils.isEmpty(user.getName())) return "修改失败，用户名称不能为空";
+        if (StringUtils.isEmpty(user.getLoginName())
+                ||StringUtils.isEmpty(user.getNickName())) {
+            return "创建失败，用户名称不能为空";
+        }
         if (user.getRole() == null) return "修改失败，用户角色不能为空";
         return null;
     }

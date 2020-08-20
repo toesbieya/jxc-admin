@@ -24,7 +24,7 @@ module.exports = {
     useMock: false,
 
     //socket连接地址
-    socketUrl: isDev ? 'http://localhost:12580' : 'https://toesbieya.cn:12580',
+    socketUrl: isDev ? 'http://localhost:12580' : 'https://toesbieya.cn',
 
     //侧边栏顶上的logo地址
     sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',

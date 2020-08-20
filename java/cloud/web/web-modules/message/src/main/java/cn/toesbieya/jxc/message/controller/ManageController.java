@@ -58,7 +58,7 @@ public class ManageController {
         if (isFirstCreate) setAddInfo(user, msg);
 
         msg.setPid(user.getId());
-        msg.setPname(user.getName());
+        msg.setPname(user.getNickName());
         msg.setPtime(System.currentTimeMillis());
         msg.setStatus(MsgConstant.STATUS_PUBLISHED);
 
@@ -72,7 +72,7 @@ public class ManageController {
         UserVo user = SessionUtil.get();
 
         msg.setWid(user.getId());
-        msg.setWname(user.getName());
+        msg.setWname(user.getNickName());
         msg.setWtime(System.currentTimeMillis());
 
         return service.withdraw(msg);
@@ -86,7 +86,7 @@ public class ManageController {
     private void setAddInfo(SysUser user, Msg msg) {
         msg.setId(null);
         msg.setCid(user.getId());
-        msg.setCname(user.getName());
+        msg.setCname(user.getNickName());
         msg.setCtime(System.currentTimeMillis());
         msg.setStatus(MsgConstant.STATUS_DRAFT);
     }

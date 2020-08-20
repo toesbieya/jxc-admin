@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SysUser {
     private Integer id;
-    private String name;
+    private String loginName;
+    private String nickName;
     private String pwd;
     private Integer role;
     private String avatar;

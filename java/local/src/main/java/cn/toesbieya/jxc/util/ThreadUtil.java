@@ -16,7 +16,7 @@ public class ThreadUtil {
 
         RecUserAction userAction = RecUserAction.builder()
                 .uid(user.getId())
-                .uname(user.getName())
+                .uname(user.getNickName())
                 .ip(IpUtil.getIp(request))
                 .url(request.getServletPath())
                 .build();

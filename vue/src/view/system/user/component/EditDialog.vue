@@ -1,8 +1,11 @@
 <template>
     <form-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
-        <abstract-form :model="form" :rules="rules" label-width="75px" size="">
-            <el-form-item label="名 称" prop="name">
-                <el-input v-model="form.name" :readonly="!canEdit" maxlength="20"/>
+        <abstract-form :model="form" :rules="rules" label-width="90px" size="">
+            <el-form-item label="登录名" prop="loginName">
+                <el-input v-model="form.loginName" :readonly="!!form.id || !canEdit" maxlength="20"/>
+            </el-form-item>
+            <el-form-item label="昵 称" prop="nickName">
+                <el-input v-model="form.nickName" :readonly="!canEdit" maxlength="100"/>
             </el-form-item>
             <el-form-item label="角 色" prop="role">
                 <role-selector
@@ -41,7 +44,7 @@ import AbstractForm from "@/component/AbstractForm"
 import DepartmentSelector from "./DepartmentSelector"
 import FormDialog from '@/component/FormDialog'
 import RoleSelector from './RoleSelector'
-import {checkName} from "@/api/account"
+import {checkLoginName, checkNickName} from "@/api/account"
 import {add, update} from "@/api/system/user"
 import {isEmpty, debounce} from '@/util'
 import {elConfirm} from "@/util/message"
@@ -60,9 +63,15 @@ export default {
     },
 
     data() {
-        const validateName = debounce((r, v, c) => {
-            checkName
-                .request(this.form.name, this.form.id)
+        const validateLoginName = debounce((r, v, c) => {
+            checkLoginName
+                .request(this.form.loginName, this.form.id)
+                .then(({msg}) => msg ? c(msg) : c())
+                .catch(e => c(e))
+        }, 300)
+        const validateNickName = debounce((r, v, c) => {
+            checkNickName
+                .request(this.form.nickName, this.form.id)
                 .then(({msg}) => msg ? c(msg) : c())
                 .catch(e => c(e))
         }, 300)
@@ -70,7 +79,8 @@ export default {
             loading: false,
             form: {
                 id: null,
-                name: null,
+                loginName: null,
+                nickName: null,
                 role: null,
                 roleName: null,
                 dept: null,
@@ -78,9 +88,13 @@ export default {
                 enable: false
             },
             rules: {
-                name: [
-                    {required: true, message: '用户名称不能为空', trigger: 'change'},
-                    {validator: validateName, trigger: 'change'}
+                loginName: [
+                    {required: true, message: '登录名不能为空', trigger: 'change'},
+                    {validator: validateLoginName, trigger: 'change'}
+                ],
+                nickName: [
+                    {required: true, message: '昵称不能为空', trigger: 'change'},
+                    {validator: validateNickName, trigger: 'change'}
                 ],
                 role: [{required: true, message: '用户角色不能为空', trigger: 'change'}],
                 dept: [{required: true, message: '用户部门不能为空', trigger: 'change'}]
@@ -104,9 +118,9 @@ export default {
         confirmMessage() {
             switch (this.type) {
                 case 'add':
-                    return `确认添加新的用户【${this.form.name}】?`
+                    return `确认添加新的用户【${this.form.loginName}】?`
                 case 'edit':
-                    return `确认提交对【${this.data.name}】作出的修改？`
+                    return `确认提交对【${this.data.loginName}】作出的修改？`
                 default:
                     return ''
             }
@@ -130,7 +144,8 @@ export default {
 
         clearForm() {
             this.form.id = null
-            this.form.name = null
+            this.form.loginName = null
+            this.form.nickName = null
             this.form.role = null
             this.form.roleName = null
             this.form.dept = null
@@ -148,11 +163,9 @@ export default {
             if (this.loading) return
             this.$refs.form.validate(v => {
                 if (!v) return
-                elConfirm(this.confirmMessage)
-                    .then(() => {
-                        this.loading = true
-                        return this.type === 'add' ? add.request(this.form) : update.request(this.form)
-                    })
+                this.loading = true
+                const promise = this.type === 'add' ? add.request(this.form) : update.request(this.form)
+                promise
                     .then(({msg}) => this.$emit('success', msg))
                     .finally(() => this.loading = false)
             })

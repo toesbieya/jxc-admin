@@ -15,7 +15,6 @@ public class SecurityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String url = request.getServletPath();
-        String ip = IpUtil.getIp(request);
         UserVo user = SessionUtil.get(request);
 
         if (user == null) {
@@ -26,7 +25,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
 
         if (!PermissionModule.authority(user, url)) {
             WebUtil.responseJson(response, R.noPermission());
-            log.warn("权限拦截，访问路径：{}，用户：{}，IP:{}", url, user.getName(), ip);
+            log.warn("权限拦截，访问路径：{}，用户：{}", url, user.getNickName());
             ThreadUtil.clearAll();
             return false;
         }

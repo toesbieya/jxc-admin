@@ -16,8 +16,14 @@ export const updateAvatar = new GetApi(
 
 export const validate = new GetApi(`/account/validate`, pwd => ({params: {pwd}}))
 
-export const checkName = new GetApi(
-    `/account/checkName`,
+export const checkLoginName = new GetApi(
+    `/account/checkLoginName`,
+    (name, id) => ({params: {name, id}}),
+    p => p.then(({data}) => data)
+)
+
+export const checkNickName = new GetApi(
+    `/account/checkNickName`,
     (name, id) => ({params: {name, id}}),
     p => p.then(({data}) => data)
 )

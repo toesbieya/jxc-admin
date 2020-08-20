@@ -10,7 +10,8 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class UserSearch extends BaseSearch {
     private Integer id;
-    private String name;
+    private String loginName;
+    private String nickName;
     private String role;
     private Long startTime;
     private Long endTime;

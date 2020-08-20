@@ -55,7 +55,7 @@ public class PurchaseInboundController {
 
         UserVo user = SessionUtil.get();
         vo.setCid(user.getId());
-        vo.setCname(user.getName());
+        vo.setCname(user.getNickName());
         vo.setCtime(System.currentTimeMillis());
         vo.setStatus(DocStatusEnum.DRAFT.getCode());
 
@@ -83,7 +83,7 @@ public class PurchaseInboundController {
         if (isFirst) {
             UserVo user = SessionUtil.get();
             vo.setCid(user.getId());
-            vo.setCname(user.getName());
+            vo.setCname(user.getNickName());
             vo.setCtime(System.currentTimeMillis());
         }
         return service.commit(vo);

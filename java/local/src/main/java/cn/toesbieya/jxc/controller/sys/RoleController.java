@@ -37,7 +37,7 @@ public class RoleController {
 
         role.setId(null);
         role.setCid(user.getId());
-        role.setCname(user.getName());
+        role.setCname(user.getNickName());
         role.setCtime(System.currentTimeMillis());
 
         return service.add(role);

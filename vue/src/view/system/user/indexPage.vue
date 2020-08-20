@@ -2,7 +2,10 @@
     <el-card v-loading="config.operating">
         <search-form>
             <search-form-item label="用户名">
-                <el-input v-model="searchForm.name" clearable maxlength="100"/>
+                <el-input v-model="searchForm.loginName" clearable maxlength="20"/>
+            </search-form-item>
+            <search-form-item label="昵 称">
+                <el-input v-model="searchForm.nickName" clearable maxlength="100"/>
             </search-form-item>
             <search-form-item label="角 色">
                 <role-selector v-model="searchForm.role"/>
@@ -47,7 +50,8 @@
                         @click.stop="() => previewAvatar(row.avatar)"
                     >
                 </el-table-column>
-                <el-table-column align="center" label="用户名" prop="name" show-overflow-tooltip/>
+                <el-table-column align="center" label="登陆名" prop="loginName" show-overflow-tooltip/>
+                <el-table-column align="center" label="昵称" prop="nickName" show-overflow-tooltip/>
                 <el-table-column align="center" label="角 色" show-overflow-tooltip>
                     <template v-slot="{row}">
                         {{ row.admin === true ? '超级管理员' : row.roleName }}
@@ -100,7 +104,8 @@ export default {
     data() {
         return {
             searchForm: {
-                name: '',
+                loginName: '',
+                nickName: '',
                 role: null,
                 enable: null
             },
@@ -149,10 +154,10 @@ export default {
         resetPwd() {
             if (isEmpty(this.row)) return elError('请选择要重置密码的用户')
             if (this.config.operating) return
-            elConfirm(`确定重置用户【${this.row.name}】的密码？`)
+            elConfirm(`确定重置用户【${this.row.loginName}】的密码？`)
                 .then(() => {
                     this.config.operating = true
-                    return resetPwd.request({id: this.row.id, name: this.row.name})
+                    return resetPwd.request({id: this.row.id, loginName: this.row.loginName})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
@@ -164,10 +169,10 @@ export default {
         del() {
             if (isEmpty(this.row)) return elError('请选择要删除的用户')
             if (this.config.operating) return
-            elConfirm(`确定删除用户【${this.row.name}】？`)
+            elConfirm(`确定删除用户【${this.row.loginName}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return del.request({id: this.row.id, name: this.row.name})
+                    return del.request({id: this.row.id, LoginName: this.row.loginName})
                 })
                 .then(({msg}) => {
                     elSuccess(msg)
@@ -180,10 +185,10 @@ export default {
             if (isEmpty(this.row)) return elError('请选择要踢出的用户')
             if (!this.row.online) return elError('只有在线用户才可以踢出')
             if (this.config.operating) return
-            elConfirm(`确定踢出用户【${this.row.name}】？`)
+            elConfirm(`确定踢出用户【${this.row.loginName}】？`)
                 .then(() => {
                     this.config.operating = true
-                    return kick.request([{id: this.row.id, name: this.row.name}])
+                    return kick.request([{id: this.row.id, LoginName: this.row.loginName}])
                 })
                 .then(() => {
                     elSuccess('踢出成功')

@@ -69,13 +69,22 @@ public class AccountController {
         return R.success("校验通过");
     }
 
-    @GetMapping("checkName")
-    public R checkName(@RequestParam(required = false) Integer id, @RequestParam String name) {
+    @GetMapping("checkLoginName")
+    public R checkLoginName(@RequestParam(required = false) Integer id, @RequestParam String name) {
         if (StringUtils.isEmpty(name)) {
             return R.success();
         }
 
-        return R.success(service.checkName(name, id) ? "该用户名已存在" : null);
+        return R.success(service.isLoginNameExist(name, id) ? "该登录名已存在" : null);
+    }
+
+    @GetMapping("checkNickName")
+    public R checkNickName(@RequestParam(required = false) Integer id, @RequestParam String name) {
+        if (StringUtils.isEmpty(name)) {
+            return R.success();
+        }
+
+        return R.success(service.isNickNameExist(name, id) ? "该昵称已存在" : null);
     }
 
     private String validateUpdatePwdParam(PasswordUpdateParam vo) {

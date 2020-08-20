@@ -41,7 +41,7 @@ public class AccountService {
 
         SysUser user = userMapper.selectOne(
                 Wrappers.lambdaQuery(SysUser.class)
-                        .eq(SysUser::getName, param.getUsername())
+                        .eq(SysUser::getLoginName, param.getUsername())
                         .eq(SysUser::getPwd, param.getPassword())
         );
 
@@ -127,7 +127,7 @@ public class AccountService {
                 RecLoginHistory
                         .builder()
                         .uid(user.getId())
-                        .uname(user.getName())
+                        .uname(user.getNickName())
                         .ip(ip)
                         .login(true)
                         .time(now)
@@ -143,7 +143,7 @@ public class AccountService {
                     RecLoginHistory
                             .builder()
                             .uid(user.getId())
-                            .uname(user.getName())
+                            .uname(user.getNickName())
                             .ip(ip)
                             .login(false)
                             .time(System.currentTimeMillis())
@@ -157,13 +157,18 @@ public class AccountService {
 
     public R register(RegisterParam param) {
         String name = param.getUsername();
+        String nick = param.getNick();
 
-        if (checkName(name, null)) {
-            return R.fail("该用户名称已存在");
+        if (isLoginNameExist(name, null)) {
+            return R.fail("该登录名已存在");
+        }
+        if (isNickNameExist(nick, null)) {
+            return R.fail("该昵称已存在");
         }
 
         SysUser user = new SysUser();
-        user.setName(name);
+        user.setLoginName(name);
+        user.setNickName(param.getNick());
         user.setPwd(param.getPassword());
         user.setRole(1);
         user.setDept(1);
@@ -213,11 +218,21 @@ public class AccountService {
         return R.fail("上传头像失败");
     }
 
-    //用户名重复时返回true
-    public boolean checkName(String name, Integer id) {
+    //登录名重复时返回true
+    public boolean isLoginNameExist(String name, Integer id) {
         Integer num = userMapper.selectCount(
                 Wrappers.lambdaQuery(SysUser.class)
-                        .eq(SysUser::getName, name)
+                        .eq(SysUser::getLoginName, name)
+                        .ne(id != null, SysUser::getId, id)
+        );
+        return num != null && num > 0;
+    }
+
+    //用户昵称重复时返回true
+    public boolean isNickNameExist(String name, Integer id) {
+        Integer num = userMapper.selectCount(
+                Wrappers.lambdaQuery(SysUser.class)
+                        .eq(SysUser::getNickName, name)
                         .ne(id != null, SysUser::getId, id)
         );
         return num != null && num > 0;

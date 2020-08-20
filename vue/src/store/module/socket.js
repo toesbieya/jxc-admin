@@ -32,7 +32,7 @@ const actions = {
 }
 
 function initSocket({id, token}) {
-    return new SocketIO(socketUrl, {query: {id, token}})
+    return new SocketIO(socketUrl, {query: {id, token}, transports: ['websocket']})
 }
 
 function defaultEventBind(socket, {state, commit, dispatch}) {

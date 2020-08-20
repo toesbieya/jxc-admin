@@ -60,7 +60,7 @@ public class PurchaseOrderController {
 
         UserVo user = SessionUtil.get();
         vo.setCid(user.getId());
-        vo.setCname(user.getName());
+        vo.setCname(user.getNickName());
         vo.setCtime(System.currentTimeMillis());
         vo.setStatus(DocStatusEnum.DRAFT.getCode());
 
@@ -89,7 +89,7 @@ public class PurchaseOrderController {
         if (isFirst) {
             UserVo user = SessionUtil.get();
             vo.setCid(user.getId());
-            vo.setCname(user.getName());
+            vo.setCname(user.getNickName());
             vo.setCtime(System.currentTimeMillis());
         }
 

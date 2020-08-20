@@ -67,6 +67,7 @@ public class SecurityFilter {
 
             //没有权限
             if (!ResourceConfig.authority(user, requestUrl)) {
+                log.warn("权限拦截，访问路径：{}，用户：{}", requestUrl, user.getNickName());
                 return responseJSON(response, R.noPermission());
             }
 

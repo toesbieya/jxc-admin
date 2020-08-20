@@ -3,16 +3,20 @@
         <el-avatar :size="200" :src="avatar" icon="el-icon-user-solid" @click.native="uploadAvatarDialog=true"/>
 
         <ul class="user-info">
-            <li>登录账号
+            <li>
+                用户昵称
                 <div class="user-right">{{ name }}</div>
             </li>
-            <li>所属部门
+            <li>
+                所属部门
                 <div class="user-right">{{ deptName }}</div>
             </li>
-            <li>用户角色
+            <li>
+                用户角色
                 <div class="user-right">{{ roleName }}</div>
             </li>
-            <li>安全设置
+            <li>
+                安全设置
                 <div class="user-right"><a @click="modifyPasswordDialog=true">修改密码</a></div>
             </li>
         </ul>
