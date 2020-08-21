@@ -1,6 +1,8 @@
 <template>
     <el-card class="user-card" header="个人信息">
-        <el-avatar :size="200" :src="avatar" icon="el-icon-user-solid" @click.native="uploadAvatarDialog=true"/>
+        <div class="avatar-container" title="点击上传头像" @click="uploadAvatarDialog=true">
+            <el-avatar :src="avatar" icon="el-icon-user-solid"/>
+        </div>
 
         <ul class="user-info">
             <li>
@@ -52,14 +54,23 @@ export default {
 
 <style lang="scss">
 .user-card {
-    .el-avatar {
+    .avatar-container {
+        position: relative;
         margin: 0 auto;
-        display: block;
+        width: 200px;
+        box-shadow: rgb(204, 204, 204) 0 0 4px;
+        border-radius: 50%;
         cursor: pointer;
 
-        i {
-            line-height: 180px;
-            font-size: 150px;
+        .el-avatar {
+            display: block;
+            width: 100%;
+            height: 200px;
+
+            i {
+                line-height: 180px;
+                font-size: 150px;
+            }
         }
     }
 
