@@ -6,11 +6,6 @@ const router = {
     meta: {title: '演示用例', icon: 'svg-show', noAuth: true, noCache: true},
     children: [
         {
-            path: 'stylePage',
-            component: 'example/style',
-            meta: {title: '样 式'}
-        },
-        {
             path: 'icon',
             component: 'example/icon/',
             meta: {title: '图 标'}
