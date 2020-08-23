@@ -1,5 +1,5 @@
 <template>
-    <detail-form
+    <detail-page
         :loading="loading"
         :reference="() => $refs"
         :anchors="anchors"
@@ -86,7 +86,7 @@
         <order-selector v-model="parentDialog" @select="selectParent"/>
 
         <stock-selector v-model="stockDialog" :cid="row ? row.cid : null" @select="selectStock"/>
-    </detail-form>
+    </detail-page>
 </template>
 
 <script>

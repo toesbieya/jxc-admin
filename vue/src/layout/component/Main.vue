@@ -22,7 +22,16 @@
             width="100%"
         />
 
-        <el-backtop v-if="showBackToTop" target=".app-main .el-scrollbar__wrap" :visibility-height="400" :bottom="66"/>
+        <el-backtop
+            v-if="showBackToTop"
+            target=".app-main .el-scrollbar__wrap"
+            :visibility-height="400"
+            :bottom="66"
+        >
+            <div class="back-to-top">
+                <v-icon icon="el-icon-top"/>
+            </div>
+        </el-backtop>
     </main>
 </template>
 
@@ -96,6 +105,16 @@ export default {
                 flex: 1;
             }
         }
+    }
+
+    .back-to-top {
+        height: 100%;
+        width: 100%;
+        background-color: #f2f5f6;
+        box-shadow: 0 0 6px rgba(0, 0, 0, .12);
+        text-align: center;
+        line-height: 40px;
+        color: #1989fa;
     }
 }
 </style>

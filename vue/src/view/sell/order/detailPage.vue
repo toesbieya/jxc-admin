@@ -1,5 +1,5 @@
 <template>
-    <detail-form
+    <detail-page
         :loading="loading"
         :reference="() => $refs"
         :anchors="anchors"
@@ -100,7 +100,7 @@
         <stock-selector v-model="stockDialog" @select="selectStock"/>
 
         <customer-selector v-model="customerDialog" @select="selectCustomer"/>
-    </detail-form>
+    </detail-page>
 </template>
 
 <script>

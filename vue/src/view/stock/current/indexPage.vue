@@ -36,7 +36,7 @@
             </search-form>
 
             <el-row class="button-group">
-                <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
+                <el-button icon="el-icon-search" size="small" type="primary" @click="search">查 询</el-button>
                 <el-button icon="el-icon-download" size="small" type="info" @click="downloadExcel">导 出</el-button>
             </el-row>
 

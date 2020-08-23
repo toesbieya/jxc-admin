@@ -28,7 +28,7 @@
         </search-form>
 
         <el-row class="button-group">
-            <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
+            <el-button icon="el-icon-search" size="small" type="primary" @click="search">查 询</el-button>
             <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
             <el-button v-if="canUpdate" icon="el-icon-edit" size="small" type="primary" @click="edit">编 辑</el-button>
             <el-button v-if="canResetPwd" icon="el-icon-edit" size="small" type="dashed" plain @click="resetPwd">重置密码

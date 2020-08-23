@@ -1,4 +1,4 @@
-<script type="text/jsx">
+<script type="jsx">
 import FormAnchor from "@/component/AbstractForm/FormAnchor"
 import FormValidateInfo from "@/component/AbstractForm/FormValidateInfo"
 
@@ -51,7 +51,7 @@ const renderButtons = (h, buttons, close) => {
 }
 
 export default {
-    name: "DetailForm",
+    name: "DetailPage",
 
     functional: true,
 
@@ -91,4 +91,4 @@ export default {
 }
 </script>
 
-<style lang="scss" src="./DetailForm.scss"></style>
+<style lang="scss" src="./index.scss"></style>

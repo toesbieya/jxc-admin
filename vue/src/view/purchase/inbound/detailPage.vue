@@ -1,5 +1,5 @@
 <template>
-    <detail-form
+    <detail-page
         :loading="loading"
         :reference="() => $refs"
         :anchors="anchors"
@@ -69,7 +69,7 @@
         </abstract-form>
 
         <order-selector v-model="parentDialog" @select="selectParent"/>
-    </detail-form>
+    </detail-page>
 </template>
 
 <script>

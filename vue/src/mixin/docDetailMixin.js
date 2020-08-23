@@ -2,7 +2,7 @@ import {commonMethods} from "@/mixin/docTableMixin"
 import AbstractForm from '@/component/AbstractForm'
 import AbstractFormItem from "@/component/AbstractForm/item"
 import AbstractTable from "@/component/AbstractTable"
-import DetailForm from "@/component/AbstractForm/DetailForm"
+import DetailPage from "@/view/app/common/DetailPage"
 import DocHistory from '@/component/biz/doc/DocHistory'
 import DocSteps from '@/component/biz/doc/DocSteps'
 import FormCard from '@/component/AbstractForm/FormCard'
@@ -18,7 +18,7 @@ export default {
         AbstractForm,
         AbstractFormItem,
         AbstractTable,
-        DetailForm,
+        DetailPage,
         DocHistory,
         DocSteps,
         FormCard,

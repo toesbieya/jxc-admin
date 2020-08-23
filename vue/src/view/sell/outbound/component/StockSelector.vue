@@ -11,7 +11,7 @@
     >
         <el-scrollbar>
             <el-row>
-                <el-button icon="el-icon-search" size="small" type="success" @click="search">查 询</el-button>
+                <el-button icon="el-icon-search" size="small" type="primary" @click="search">查 询</el-button>
                 <el-button size="small" type="primary" @click="confirm">确 定</el-button>
                 <el-button plain size="small" @click="closeDialog">取 消</el-button>
             </el-row>
