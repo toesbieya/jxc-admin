@@ -8,8 +8,8 @@
                 :class="{'tags-view-item': true, active: isActive(tag)}"
                 :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
                 tag="div"
-                @contextmenu.prevent.native="e => openMenu(tag, e)"
-                @dblclick.prevent.native="() => closeSelectedTag(tag)"
+                @contextmenu.prevent.stop.native="e => openMenu(tag, e)"
+                @dblclick.prevent.stop.native="() => closeSelectedTag(tag)"
             >
                 {{ tag.title }}
                 <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="() => closeSelectedTag(tag)"/>
@@ -27,15 +27,15 @@
     </nav>
 </template>
 
-<script>
-import ScrollPane from './ScrollPane'
+<script type="text/jsx">
+import shortcutMixin from './mixin/shortcut'
+import decideRouterTransitionMixin from './mixin/decideRouterTransition'
 import ContextMenu from "@/component/ContextMenu"
 import ContextMenuItem from "@/component/ContextMenu/item"
-import shortcuts from './mixin/shortcuts'
-import decideRouterTransition from './mixin/decideRouterTransition'
+import ScrollPane from './ScrollPane'
 
 export default {
-    mixins: [shortcuts, decideRouterTransition],
+    mixins: [shortcutMixin, decideRouterTransitionMixin],
 
     components: {ContextMenu, ContextMenuItem, ScrollPane},
 

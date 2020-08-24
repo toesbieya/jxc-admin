@@ -9,11 +9,7 @@ export default {
 
     components: {SidebarItem, Logo},
 
-    data() {
-        return {
-            mouseOutside: true
-        }
-    },
+    data: () => ({mouseOutside: true, activeMenu: ''}),
 
     computed: {
         ...mapState('app', ['device']),
@@ -22,20 +18,14 @@ export default {
 
         ...mapState('setting', ['showLogo', 'sidebarCollapse', 'sidebarUniqueOpen', 'sidebarShowParent', 'sidebarAutoHidden']),
 
-        activeMenu() {
-            const route = this.$route
-            const {meta, path} = route
-            if (path.startsWith('/redirect')) {
-                return path.replace('/redirect', '')
-            }
-            return meta.activeMenu || path
-        },
-
         //仅在pc端可折叠
         collapse() {
             return this.sidebarCollapse && this.device === 'pc'
         },
 
+        //是否隐藏侧边栏
+        //①设置了侧边栏自动隐藏且鼠标不再侧边栏内
+        //②侧边栏处于折叠状态且是移动设备
         hideSidebar() {
             return this.sidebarAutoHidden && this.mouseOutside
                 || this.sidebarCollapse && this.device === 'mobile'
@@ -53,19 +43,33 @@ export default {
 
     watch: {
         //由于elMenu的initOpenedMenu()不会触发select事件，所以手动实现菜单收起
-        '$route.path'(nv, ov) {
-            //如果是redirect刷新，则跳过
-            if (nv === `/redirect${ov}`) return
-            const menu = this.$refs.menu
-            if (!menu) return
-            const item = menu.items[this.activeMenu]
-            if (!item) menu.openedMenus = []
-            else this.select(item.index, item.indexPath, item, false)
+        '$route.path': {
+            immediate: true,
+            handler(v) {
+                //如果是redirect跳转，则跳过
+                if (v.startsWith('/redirect')) return
+
+                this.setActiveMenu()
+
+                const menu = this.$refs.menu
+                if (!menu) return
+                const item = menu.items[this.activeMenu]
+
+                //如果侧边栏中没有对应的激活菜单，则收起全部
+                if (!item) return menu.openedMenus = []
+
+                this.select(item.index, item.indexPath, item, false)
+            }
         },
 
-        hideSidebar(v) {
-            if (v) document.addEventListener('mousemove', this.moveEvent)
-            else document.removeEventListener('mousemove', this.moveEvent)
+        //设置了侧边栏自动隐藏后，根据状态添加或移除鼠标移动事件
+        hideSidebar: {
+            immediate: true,
+            handler(v) {
+                if (!this.sidebarAutoHidden) return
+                const key = `${v ? 'add' : 'remove'}EventListener`
+                document[key]('mousemove', this.moveEvent)
+            }
         }
     },
 
@@ -74,6 +78,13 @@ export default {
             if (e.clientX <= 15) this.mouseOutside = false
         },
 
+        //根据路由地址设置当前激活的菜单路径
+        setActiveMenu() {
+            const {meta, path} = this.$route
+            this.activeMenu = meta.activeMenu || path
+        },
+
+        //模拟选中菜单
         select(index, indexPath, item, jump = true) {
             //开启手风琴模式时，激活没有子级的菜单时收起其它展开项
             if (this.sidebarUniqueOpen && indexPath.length === 1) {
@@ -100,14 +111,8 @@ export default {
         }
     },
 
-    mounted() {
-        if (this.sidebarAutoHidden) {
-            document.addEventListener('mousemove', this.moveEvent)
-        }
-
-        this.$once('hook:beforeDestroy', () => {
-            document.removeEventListener('mousemove', this.moveEvent)
-        })
+    beforeDestroy() {
+        document.removeEventListener('mousemove', this.moveEvent)
     },
 
     render() {
@@ -126,7 +131,7 @@ export default {
                         key={menu.path}
                         show-parent={this.sidebarShowParent}
                         collapse={this.sidebarCollapse}
-                        item={menu}
+                        menu={menu}
                     />
                 ))}
             </el-menu>

@@ -8,9 +8,9 @@ export default {
 
     render(h, context) {
         const {active} = context.props
-        const className = {'navbar-icon': true, 'el-icon-s-unfold': true, 'hamburger': true, 'is-active': active}
+        const className = `navbar-icon el-icon-s-unfold hamburger ${active ? 'is-active' : ''}`
         return (
-            <div {...context.data}>
+            <div {...context.data} title={`${active ? '折叠' : '展开'}侧边栏`}>
                 <i class={className}/>
             </div>
         )

@@ -1,5 +1,5 @@
 <template>
-    <el-scrollbar ref="scrollContainer" native @wheel.native.prevent="handleScroll">
+    <el-scrollbar ref="scrollContainer" native noresize @wheel.native.prevent="handleScroll">
         <slot/>
     </el-scrollbar>
 </template>
@@ -9,8 +9,6 @@ const tagAndTagSpacing = 4
 
 export default {
     name: 'ScrollPane',
-
-    data: () => ({rAF: null}),
 
     methods: {
         getWrapper() {

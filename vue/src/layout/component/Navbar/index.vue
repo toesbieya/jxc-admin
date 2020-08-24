@@ -3,37 +3,38 @@
         <div>
             <hamburger class="navbar-item" :active="!sidebarCollapse" @click="sidebarCtrl"/>
 
-            <div class="navbar-item" @click="refresh">
-                <i class="el-icon-refresh-right navbar-icon" title="刷新"/>
-            </div>
-
             <breadcrumb v-if="showBreadcrumb"/>
         </div>
 
         <div>
             <bell class="navbar-item"/>
 
-            <div class="setting-btn navbar-item hidden-xs" @click="settingDrawer=true">
-                <i class="el-icon-s-operation navbar-icon" title="个性设置"/>
+            <div class="navbar-item" title="刷新" @click="refresh">
+                <i class="el-icon-refresh-right navbar-icon"/>
+            </div>
+
+            <div class="setting-btn navbar-item hidden-xs" title="个性设置" @click="settingDrawer = true">
+                <i class="el-icon-s-operation navbar-icon"/>
             </div>
 
             <el-dropdown
                 class="navbar-item"
                 trigger="click"
-                @visible-change="$emit('menu-show',$event)"
+                @command="command"
+                @visible-change="e => $emit('menu-show',e)"
             >
                 <div class="avatar-wrapper">
                     <el-avatar :size="30" :src="avatar" icon="el-icon-user-solid"/>
                     <span class="hidden-xs">{{ name }}</span>
                 </div>
                 <el-dropdown-menu class="user-dropdown" slot="dropdown">
-                    <router-link to="/user">
-                        <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
-                    </router-link>
-                    <el-dropdown-item class="hidden-xs" icon="el-icon-guide" @click.native="()=>$guide(0,guideSteps)">
+                    <el-dropdown-item icon="el-icon-user" command="user">
+                        个人中心
+                    </el-dropdown-item>
+                    <el-dropdown-item class="hidden-xs" icon="el-icon-guide" command="guide">
                         新手指引
                     </el-dropdown-item>
-                    <el-dropdown-item divided icon="el-icon-switch-button" @click.native="logout">
+                    <el-dropdown-item divided icon="el-icon-switch-button" command="logout">
                         退出登录
                     </el-dropdown-item>
                 </el-dropdown-menu>
@@ -61,11 +62,7 @@ export default {
 
     components: {Hamburger, Breadcrumb, Bell, SettingDrawer},
 
-    data() {
-        return {
-            settingDrawer: false
-        }
-    },
+    data: () => ({settingDrawer: false}),
 
     computed: {
         ...mapState('user', ['avatar', 'name', 'prepareLogout']),
@@ -77,15 +74,23 @@ export default {
         sidebarCtrl() {
             this.$store.commit('setting/sidebarCollapse', !this.sidebarCollapse)
         },
-
         refresh() {
             this.$router.replace({path: `/redirect${this.$route.fullPath}`})
         },
 
-        logout() {
-            if (this.prepareLogout) return
-            elConfirm('确认退出?')
-                .then(() => this.$store.dispatch('user/logout'))
+        command(command) {
+            switch (command) {
+                case 'user':
+                    this.$router.push('/user')
+                    break
+                case 'guide':
+                    this.$guide(0, this.guideSteps)
+                    break
+                case 'logout':
+                    if (this.prepareLogout) return
+                    elConfirm('确认退出?').then(() => this.$store.dispatch('user/logout'))
+                    break
+            }
         }
     }
 }

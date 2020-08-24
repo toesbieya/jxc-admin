@@ -1,72 +1,83 @@
 <script type="text/jsx">
 import SidebarItemContent from './SidebarItemContent'
 
-function getOnlyChild(item) {
-    const {children = [], meta: {alwaysShow} = {}} = item
+//获取不需要嵌套展示的菜单
+function getOnlyChild(menu) {
+    const {children = [], meta: {alwaysShow} = {}} = menu
 
-    if (children.length === 1) return alwaysShow ? null : children[0]
+    if (!children.length) return {...menu, children: undefined}
 
-    if (!children.length) return {...item, path: undefined, children: undefined}
+    if (children.length === 1) return alwaysShow ? null : getOnlyChild(children[0])
 
     return null
 }
 
-function renderNode(h, {item, showParent, collapse}) {
-    let onlyOneChild = getOnlyChild(item)
+function renderSingleMenu(h, {index, icon, title}) {
+    return (
+        <el-menu-item index={index}>
+            <SidebarItemContent icon={icon} title={title}/>
+        </el-menu-item>
+    )
+}
+
+function renderSubMenu(h, {index, icon, title, children}) {
+    return (
+        <el-submenu index={index} popper-append-to-body>
+            <SidebarItemContent slot="title" icon={icon} title={title}/>
+            {children}
+        </el-submenu>
+    )
+}
+
+function renderChildrenWithParentMenu(h, {icon, title, children}) {
+    return [
+        <div class="popover-menu__title el-menu-item">
+            <SidebarItemContent icon={icon} title={title}/>
+        </div>,
+        <div class="el-menu el-menu--inline">{children}</div>
+    ]
+}
+
+function renderMenu(h, {menu, showParent, collapse}) {
+    const onlyOneChild = getOnlyChild(menu)
 
     const showSingle = onlyOneChild && !onlyOneChild.children
 
     if (showSingle) {
         const {icon, title} = onlyOneChild.meta
-
-        return (
-            <el-menu-item index={onlyOneChild.fullPath}>
-                <SidebarItemContent icon={icon} title={title}/>
-            </el-menu-item>
-        )
+        return renderSingleMenu(h, {index: onlyOneChild.fullPath, icon, title})
     }
-    else {
-        const {icon, title} = item.meta
 
-        let children = item.children.map(child => renderNode(h, {
-            item: child,
-            showParent,
-            collapse
-        }))
+    const {icon, title} = menu.meta
 
-        //弹出菜单如果包裹滚动条，则在触发mouseleave时，不会触发父菜单的mouseleave事件
-        if (collapse) {
-            //弹出菜单显示父级信息
-            if (showParent) {
-                children = [
-                    <div class="popover-menu__title el-menu-item">
-                        <SidebarItemContent icon={icon} title={title}/>
-                    </div>,
-                    <div class="el-menu el-menu--inline">{children}</div>
-                ]
-            }
+    let children = menu.children.map(child => renderMenu(h, {
+        menu: child,
+        showParent,
+        collapse
+    }))
+
+    //这里弹出菜单如果包裹了<el-scrollbar>，则在触发mouseleave时，不会触发父菜单的mouseleave事件
+    if (collapse) {
+        //弹出菜单显示父级信息
+        if (showParent) {
+            children = renderChildrenWithParentMenu(h, {icon, title, children})
         }
-
-        return (
-            <el-submenu index={item.fullPath} popper-append-to-body>
-                <SidebarItemContent slot="title" icon={icon} title={title}/>
-                {children}
-            </el-submenu>
-        )
     }
+
+    return renderSubMenu(h, {index: menu.fullPath, icon, title, children})
 }
 
 export default {
     functional: true,
 
     props: {
-        item: Object,
+        menu: Object,
         showParent: Boolean,
         collapse: Boolean
     },
 
     render(h, context) {
-        return renderNode(h, context.props)
+        return renderMenu(h, context.props)
     }
 }
 </script>
