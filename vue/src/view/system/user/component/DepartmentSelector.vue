@@ -30,7 +30,7 @@ export default {
     mounted() {
         get
             .request(false)
-            .then(data => createTreeByWorker(data))
+            .then(({data}) => createTreeByWorker(data))
             .then(data => {
                 this.data = data
             })

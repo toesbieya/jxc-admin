@@ -161,7 +161,7 @@ export default {
             this.loading = true
             get
                 .request()
-                .then(data => createTreeByWorker(data))
+                .then(({data}) => createTreeByWorker(data))
                 .then(data => {
                     this.completeDepartment(data)
                     this.data = data[0]

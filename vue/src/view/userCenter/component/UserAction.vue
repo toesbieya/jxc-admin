@@ -52,7 +52,7 @@ export default {
             this.config.loading = true
             searchUserAction
                 .request({...this.searchForm, uid: this.$store.state.user.id})
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     this.searchForm.total = total
                     this.tableData = list
                 })

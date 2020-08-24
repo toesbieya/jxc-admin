@@ -83,8 +83,9 @@ export default {
             this.tableData = []
             if (!this.value || isEmpty(this.cid) || this.loading) return
             this.loading = true
-            getDetail.request(this.cid)
-                .then(data => {
+            getDetail
+                .request(this.cid)
+                .then(({data}) => {
                     this.prepareData(data)
                     this.tableData = data
                 })

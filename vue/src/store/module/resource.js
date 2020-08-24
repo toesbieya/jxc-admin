@@ -51,7 +51,7 @@ const actions = {
     init({commit}, {resources, admin, addRoutes = false}) {
         return getAll
             .request()
-            .then(data => {
+            .then(({data}) => {
                 const routes = transformOriginRouteData(data)
                 metaExtend(routes)
                 addRoutes && addDynamicRoutes(routes)

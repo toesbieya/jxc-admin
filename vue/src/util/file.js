@@ -20,7 +20,7 @@ export function preview(url) {
     const connectChar = url.includes('?') ? '&' : '?'
     url = url + connectChar + 'fullfilename=' + url.replace(attachmentPrefix, '')
     const anchor = document.createElement('a')
-    anchor.style.visibility = 'hidden'
+    anchor.style.opacity = '0'
     anchor.href = `${filePreviewPrefix}/onlinePreview?url=${encodeURIComponent(url)}`
     anchor.target = '_blank'
     document.body.appendChild(anchor)
@@ -38,7 +38,7 @@ export function download(url, name) {
     const href = typeof url === 'object' ? window.URL.createObjectURL(url) : url
     const anchor = document.createElement('a')
 
-    anchor.style.visibility = 'hidden'
+    anchor.style.opacity = '0'
     anchor.href = href
     anchor.download = name
     document.body.appendChild(anchor)

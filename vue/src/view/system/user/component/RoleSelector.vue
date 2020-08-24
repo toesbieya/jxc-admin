@@ -21,7 +21,7 @@ export default {
 
     methods: {
         init() {
-            get.request().then(data => this.roles = data)
+            get.request().then(({data}) => this.roles = data)
         },
 
         emit(v) {

@@ -89,7 +89,7 @@ export default {
             this.row = null
             search
                 .request(this.searchForm)
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     this.searchForm.total = total
                     this.tableData = list
                 })

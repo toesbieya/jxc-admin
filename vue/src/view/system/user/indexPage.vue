@@ -132,7 +132,7 @@ export default {
             this.type = 'see'
             search
                 .request(this.mergeSearchForm())
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     list.forEach(u => u.avatar = autoCompleteUrl(u.avatar))
                     this.searchForm.total = total
                     this.tableData = list

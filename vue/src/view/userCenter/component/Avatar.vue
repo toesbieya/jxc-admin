@@ -85,7 +85,7 @@ export default {
             this.loading = true
             this.$refs.cropper.getCropBlob(data => {
                 upload(new Blob([data]), this.name)
-                    .then(({key}) => updateAvatar.request(key))
+                    .then(({data}) => updateAvatar.request(data.data))
                     .then(({data, msg}) => {
                         this.$store.commit('user/avatar', autoCompleteUrl(data))
                         this.$store.dispatch('user/refresh')

@@ -77,7 +77,7 @@ export default {
             this.row = null
             this.api.search
                 .request(this.mergeSearchForm())
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     list.forEach(i => {
                         i._loading = false //加载状态
                         i._loaded = false //是否已经加载完成
@@ -92,7 +92,7 @@ export default {
             row._loading = true
             this.api.getSubById
                 .request(row.id)
-                .then(data => {
+                .then(({data}) => {
                     row.data = data
                     row._loaded = true
                 })

@@ -29,11 +29,12 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
     response => {
-        const res = response.data
+        const res = response.data, {responseType = 'json'} = response.config
 
         //当返回类型非{status,data,msg}的接口请求时，不使用status来判断请求是否成功
         if (!('status' in res) || res.status === 200) {
-            return response
+            //当返回类型为json时，返回response.data
+            return responseType === 'json' ? res : response
         }
 
         //服务器异常
@@ -86,9 +87,6 @@ class Api {
         this.arg = arg
         this.chain = chain
         this.isGet = isGet
-        if (this.chain === undefined) {
-            this.chain = p => p.then(({data}) => data.data)
-        }
     }
 
     request(...args) {

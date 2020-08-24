@@ -150,8 +150,9 @@ export default {
         search() {
             if (this.config.loading) return
             this.config.loading = true
-            search.request(this.mergeSearchForm())
-                .then(({list, total}) => {
+            search
+                .request(this.mergeSearchForm())
+                .then(({data: {list, total}}) => {
                     this.searchForm.total = total
                     this.tableData = list
                 })

@@ -87,7 +87,7 @@ export default {
             this.config.loading = true
             search
                 .request({...this.searchForm, unread})
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     if (this.mode !== currentMode) return
                     unread && this.$store.commit('message/unreadCount', total)
                     this.searchForm.total = total

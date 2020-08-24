@@ -19,7 +19,7 @@ export function getElementHeight(ele, style) {
     if (!ele) return 0
 
     let node = ele.cloneNode(true)
-    node.style.visibility = 'hidden'
+    node.style.opacity = '0'
 
     if (style) {
         Object.keys(style).forEach(item => {

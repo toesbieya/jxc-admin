@@ -51,7 +51,7 @@ export default {
             if (isEmpty(this.id)) return
             search
                 .request({pid: this.id, ...this.searchForm})
-                .then(({total, list}) => {
+                .then(({data: {list, total}}) => {
                     this.transformData(list)
                     this.data = list
                     this.total = total

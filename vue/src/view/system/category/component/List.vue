@@ -53,7 +53,7 @@ export default {
             this.contextmenu.show = false
             getAll
                 .request()
-                .then(data => this.$store.commit('dataCache/categories', data))
+                .then(({data}) => this.$store.commit('dataCache/categories', data))
                 .finally(() => this.loading = false)
         },
 

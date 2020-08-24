@@ -113,7 +113,7 @@ export default {
 
     methods: {
         getLimitRegion() {
-            return getLimitRegion.request()
+            return getLimitRegion.request().then(data => data.data)
         },
 
         clearSidSearch() {
@@ -141,7 +141,7 @@ export default {
             this.type = 'see'
             search
                 .request(this.mergeSearchForm())
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     this.searchForm.total = total
                     this.tableData = list
                 })

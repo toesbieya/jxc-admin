@@ -114,7 +114,7 @@ export default {
             this.type = 'see'
             search
                 .request(this.searchForm)
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     this.searchForm.total = total
                     this.tableData = list
                 })

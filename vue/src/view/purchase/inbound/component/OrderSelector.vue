@@ -97,7 +97,7 @@ export default {
             this.row = null
             search
                 .request(this.searchForm)
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     list.forEach(i => {
                         i._loading = false //加载状态
                         i._loaded = false //是否已经加载完成

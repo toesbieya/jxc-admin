@@ -188,7 +188,7 @@ export default {
     mounted() {
         getDepartments
             .request(false)
-            .then(data => createTreeByWorker(data))
+            .then(({data}) => createTreeByWorker(data))
             .then(data => {
                 this.departments = data
             })

@@ -160,7 +160,7 @@ export default {
                 getParentSubById.request(this.form.pid),
                 getStockDetail.request(ids)
             ])
-                .then(([r1, r2]) => this.buildDisplayTableData(r1, r2))
+                .then(([r1, r2]) => this.buildDisplayTableData(r1.data, r2.data))
         },
 
         //根据销售订单的子表、销售出库的子表、对应的库存来构造展示列表

@@ -1,4 +1,4 @@
-import request, {GetApi, PostApi} from "@/api/request"
+import {GetApi, PostApi} from "@/api/request"
 
 export const baseUrl = `/doc/sell/outbound`
 
@@ -8,16 +8,16 @@ export const getSubById = new GetApi(`${baseUrl}/getSubById`, id => ({params: {i
 
 export const search = new PostApi(`${baseUrl}/search`)
 
-export const add = new PostApi(`${baseUrl}/add`, null, p => p.then(({data}) => data))
+export const add = new PostApi(`${baseUrl}/add`)
 
-export const update = new PostApi(`${baseUrl}/update`, null, p => p.then(({data}) => data))
+export const update = new PostApi(`${baseUrl}/update`)
 
-export const commit = new PostApi(`${baseUrl}/commit`, null, p => p.then(({data}) => data))
+export const commit = new PostApi(`${baseUrl}/commit`)
 
-export const withdraw = new PostApi(`${baseUrl}/withdraw`, null, p => p.then(({data}) => data))
+export const withdraw = new PostApi(`${baseUrl}/withdraw`)
 
-export const pass = new PostApi(`${baseUrl}/pass`, null, p => p.then(({data}) => data))
+export const pass = new PostApi(`${baseUrl}/pass`)
 
-export const reject = new PostApi(`${baseUrl}/reject`, null, p => p.then(({data}) => data))
+export const reject = new PostApi(`${baseUrl}/reject`)
 
-export const del = new GetApi(`${baseUrl}/del`, id => ({params: {id}}), p => p.then(({data}) => data))
+export const del = new GetApi(`${baseUrl}/del`, id => ({params: {id}}))

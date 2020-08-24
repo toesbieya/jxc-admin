@@ -26,8 +26,9 @@ const mutations = createMutations(state, true)
 const actions = {
     login({commit, dispatch}, userInfo) {
         const {username, password} = userInfo
-        return login.request({username: username.trim(), password})
-            .then(user => {
+        return login
+            .request({username: username.trim(), password})
+            .then(({data: user}) => {
                 if (user.admin === true) user.roleName = '超级管理员'
                 user.avatar = autoCompleteUrl(user.avatar)
                 commit('$all', user)
@@ -40,7 +41,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             if (state.prepareLogout) return Promise.reject()
             commit('prepareLogout', true)
-            logout.request(state.token)
+            logout
+                .request(state.token)
                 .then(() => {
                     commit('resource/init', false, {root: true})
                     return Promise.all([

@@ -113,11 +113,12 @@ export default {
             this.$refs.form.validate(valid => {
                 if (!valid) return
                 this.loading = true
-                register.request({
-                    username: this.form.username,
-                    nick: this.form.nick,
-                    password: md5(this.form.pwd)
-                })
+                register
+                    .request({
+                        username: this.form.username,
+                        nick: this.form.nick,
+                        password: md5(this.form.pwd)
+                    })
                     .then(() => {
                         elSuccess('注册成功')
                         this.$router.push('/login')

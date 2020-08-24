@@ -215,7 +215,7 @@ export default {
             }
             this.api.getById
                 .request(id)
-                .then(data => {
+                .then(({data}) => {
                     if (!data || id !== data.id) return Promise.reject()
                     this.modifyDataBeforeMerge && this.modifyDataBeforeMerge(data)
                     return Promise.resolve(mergeObj(this.form, data))

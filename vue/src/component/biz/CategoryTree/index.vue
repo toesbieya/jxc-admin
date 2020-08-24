@@ -35,7 +35,7 @@ export default {
         if (this.data.length > 0) return
         getAll
             .request()
-            .then(data => this.$store.commit('dataCache/categories', data))
+            .then(({data}) => this.$store.commit('dataCache/categories', data))
             .finally(() => this.loading = false)
     }
 }

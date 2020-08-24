@@ -63,7 +63,7 @@ export default {
             this.loading = true
             getFourBlock
                 .request()
-                .then(data => {
+                .then(({data}) => {
                     this.list.forEach(i => {
                         if (i.id in data) i.value = data[i.id]
                     })

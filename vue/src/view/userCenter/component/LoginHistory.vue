@@ -51,7 +51,7 @@ export default {
             this.config.loading = true
             searchLoginHistory
                 .request({...this.searchForm, uid: this.uid})
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     this.searchForm.total = total
                     this.tableData = list
                 })

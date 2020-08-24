@@ -49,7 +49,7 @@ export default {
             this.loading = true
             getTotalProfitGoods
                 .request()
-                .then(data => {
+                .then(({data}) => {
                     const purchase = []
                     const sell = []
                     const profit = []

@@ -18,7 +18,7 @@ export default {
             this.loading = true
             getDailyFinishOrder
                 .request()
-                .then(data => {
+                .then(({data}) => {
                     const time = []
                     const purchase = []
                     const sell = []

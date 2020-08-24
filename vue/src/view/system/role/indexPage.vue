@@ -108,7 +108,7 @@ export default {
             this.type = 'see'
             search
                 .request(this.mergeSearchForm())
-                .then(({list, total}) => {
+                .then(({data: {list, total}}) => {
                     list.forEach(i => {
                         i.departmentId = this.str2intArray(i.departmentId)
                         i.resourceId = this.str2intArray(i.resourceId)

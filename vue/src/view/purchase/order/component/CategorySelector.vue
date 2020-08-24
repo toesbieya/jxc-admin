@@ -54,7 +54,7 @@ export default {
             if (this.tree.length === 0) {
                 getAll
                     .request()
-                    .then(data => this.$store.commit('dataCache/categories', data))
+                    .then(({data}) => this.$store.commit('dataCache/categories', data))
             }
         },
 

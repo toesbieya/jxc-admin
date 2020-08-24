@@ -71,10 +71,11 @@ export default {
             this.$refs.form.validate(v => {
                 if (!v) return
                 this.loading = true
-                updateUserPwd.request({
-                    oldPwd: md5(this.form.oldPwd),
-                    newPwd: md5(this.form.newPwd),
-                })
+                updateUserPwd
+                    .request({
+                        oldPwd: md5(this.form.oldPwd),
+                        newPwd: md5(this.form.newPwd),
+                    })
                     .then(() => elSuccess('修改成功'))
                     .finally(() => {
                         this.loading = false

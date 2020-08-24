@@ -95,8 +95,9 @@ export default {
             if (!this.value || this.config.loading) return
             this.config.loading = true
             this.row = null
-            search(this.searchForm)
-                .then(({list, total}) => {
+            search
+                .request(this.searchForm)
+                .then(({data: {list, total}}) => {
                     list.forEach(i => {
                         i._loading = false //加载状态
                         i._loaded = false //是否已经加载完成
