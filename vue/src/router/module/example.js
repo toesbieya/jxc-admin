@@ -72,22 +72,28 @@ const router = {
             meta: {title: '开发测试'}
         },
         {
-            path: 'detailPage1',
-            component: 'example/detail',
-            meta: {
-                title: '详情页缓存1',
-                usePathKey: true,
-                commonModule: '@/view/example/detailPage'
-            }
-        },
-        {
-            path: 'detailPage2',
-            component: 'example/detail',
-            meta: {
-                title: '详情页缓存2',
-                usePathKey: true,
-                commonModule: '@/view/example/detailPage'
-            }
+            path:'cacheTest',
+            meta: {title: '详情页缓存测试', noCache: false},
+            children:[
+                {
+                    path: 'detailPage1',
+                    component: 'example/cacheTest/detail',
+                    meta: {
+                        title: '详情页1',
+                        usePathKey: true,
+                        commonModule: '@/view/example/cacheTest/detailPage'
+                    }
+                },
+                {
+                    path: 'detailPage2',
+                    component: 'example/cacheTest/detail',
+                    meta: {
+                        title: '详情页2',
+                        usePathKey: true,
+                        commonModule: '@/view/example/cacheTest/detailPage'
+                    }
+                }
+            ]
         }
     ]
 }
