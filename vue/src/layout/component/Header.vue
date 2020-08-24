@@ -1,16 +1,4 @@
-<template>
-    <header
-        :class="{'header-container':true,'hide-header':hideHeader}"
-        @mouseenter="() => this.mouseOutside = false"
-        @mouseleave="() => this.mouseOutside = true"
-    >
-        <v-navbar @menu-show="e => this.navbarMenuShow = e"/>
-
-        <tags-view v-if="useTagsView" @menu-show="e => this.tagsViewMenuShow = e"/>
-    </header>
-</template>
-
-<script>
+<script type="text/jsx">
 import {mapState} from 'vuex'
 import VNavbar from './Navbar'
 import TagsView from './TagsView'
@@ -24,8 +12,7 @@ export default {
         return {
             mouseOutside: true,
             navbarMenuShow: false,
-            tagsViewMenuShow: false,
-            appMain: null
+            tagsViewMenuShow: false
         }
     },
 
@@ -56,11 +43,9 @@ export default {
         moveEvent(e) {
             if (e.clientY <= 15) this.mouseOutside = false
         },
-
         addEvent() {
             this.appMain.addEventListener('mousemove', this.moveEvent)
         },
-
         removeEvent() {
             this.appMain.removeEventListener('mousemove', this.moveEvent)
         }
@@ -71,29 +56,26 @@ export default {
         if (this.headerAutoHidden) this.addEvent()
 
         this.$once('hook:beforeDestroy', this.removeEvent)
+    },
+
+    render() {
+        const mouseCtrlFactory = (enter = true) => () => this.mouseOutside = !enter
+        const menuCtrlFactory = key => e => this[key] = e
+
+        return (
+            <el-collapse-transition>
+                <header
+                    v-show={!this.hideHeader}
+                    class="header-container"
+                    on-mouseenter={mouseCtrlFactory()}
+                    on-mouseleave={mouseCtrlFactory(false)}
+                >
+                    <v-navbar on-menu-show={menuCtrlFactory('navbarMenuShow')}/>
+
+                    {this.useTagsView && <tags-view on-menu-show={menuCtrlFactory('tagsViewMenuShow')}/>}
+                </header>
+            </el-collapse-transition>
+        )
     }
 }
 </script>
-
-<style lang="scss">
-@import "~@/asset/style/variables.scss";
-
-.has-tags-view .header-container {
-    height: calc(#{$nav-height} + #{$tags-view-height});
-}
-
-.header-container {
-    position: relative;
-    height: $nav-height;
-    transition: height .3s ease-in-out;
-    flex-shrink: 0;
-
-    &.hide-header {
-        height: 0;
-
-        > .navbar {
-            height: 0;
-        }
-    }
-}
-</style>
