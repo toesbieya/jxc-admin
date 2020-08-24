@@ -112,12 +112,20 @@ function getAuthorizedPath(route) {
 
 //判断是否需要打开iframe
 function iframeControl(to, from) {
-    let iframe = to.meta.iframe
-    const operate = iframe ? 'open' : 'close'
-    if (to.path === `/redirect${from.path}`) {
-        iframe = from.meta.iframe
+    //从iframe页面离开时，判断是否需要删除iframe
+    if (from.meta.iframe) {
+        let del = false
+        //如果设置了无缓存或是进行了刷新，那么移除iframe
+        if (from.meta.noCache || to.path === `/redirect${from.path}`) {
+            del = true
+        }
+        store.dispatch(`iframe/close`, {src: from.meta.iframe, del})
     }
-    return store.dispatch(`iframe/${operate}`, iframe)
+
+    //跳转至iframe页面时，打开iframe
+    if (to.meta.iframe) {
+        store.dispatch(`iframe/open`, {src: to.meta.iframe})
+    }
 }
 
 export default router

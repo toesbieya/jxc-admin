@@ -72,9 +72,9 @@ const router = {
             meta: {title: '开发测试'}
         },
         {
-            path:'cacheTest',
+            path: 'cacheTest',
             meta: {title: '详情页缓存测试', noCache: false},
-            children:[
+            children: [
                 {
                     path: 'detailPage1',
                     component: 'example/cacheTest/detail',

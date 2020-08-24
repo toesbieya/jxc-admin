@@ -18,15 +18,15 @@ const mutations = {
 }
 
 const actions = {
-    open({commit}, src) {
+    open({commit}, {src}) {
         commit('show', true)
         commit('current', src)
         commit('add', src)
     },
-    close({commit}, src) {
+    close({commit}, {src, del}) {
         commit('show', false)
         commit('current', '')
-        commit('del', src)
+        del && commit('del', src)
     }
 }
 

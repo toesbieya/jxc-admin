@@ -105,7 +105,7 @@ export default {
             }
         },
 
-        //将当前具有title的路由添加为tab页
+        //将当前具有meta.title的路由添加为tab页
         addTags(to = this.$route) {
             return to.meta.title ? this.$store.dispatch('tagsView/addView', to) : Promise.resolve()
         },
