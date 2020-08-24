@@ -26,7 +26,7 @@ export default {
         bounds: {type: Number, default: 0},
         getContainer: {
             type: Function,
-            default: () => document.querySelector('#app .app-main>.el-scrollbar>.el-scrollbar__wrap')
+            default: () => document.querySelector('#app .app-main>.scroll-container')
         },
     },
 

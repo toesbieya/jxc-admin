@@ -11,9 +11,6 @@ const state = {
     //登陆页背景动画
     loginBackgroundAnimation: 'sparkRain',
 
-    //路由页面滚动高度
-    scrollTop: 0,
-
     //右侧块是否含有头部
     hasHeader: !!!localSettings.headerAutoHidden
 }
