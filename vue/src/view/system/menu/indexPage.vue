@@ -26,7 +26,7 @@
                 <el-alert show-icon :closable="false">
                     <template v-slot:title>
                         当前选择编辑：
-                        <el-tag v-if="curNode" size="mini" closable @close="() => curNode = null">
+                        <el-tag v-if="curNode" size="mini" closable @close="curNode = null">
                             {{ getNodeTitle(curNode) }}
                         </el-tag>
                     </template>
@@ -175,7 +175,7 @@ export default {
             form: {
                 id: null,
                 pid: null,
-                type: 0,
+                type: null,
                 name: null,
                 path: null,
                 component: null,
@@ -213,24 +213,23 @@ export default {
             return this.$store.state.resource.resourceTree
         },
         showForm() {
-            return this.type === 'add' && this.form.pid === 0 || this.curNode
+            return this.type === 'add' && this.form.type === 0 || this.curNode
         },
         showTypeSelector() {
-            const isRoot = this.form.pid === 0
+            //0.根节点的类型不能被改变
+            const isRoot = this.form.type === 0
             //1.非数据接口
             const noApiNode = this.form.type !== 3
             //2.其下无子节点
             const noChild = this.type === 'add' && isRoot
                 || this.type === 'edit' && this.curNode.childNodes.length <= 0
-            //3.不是初始节点
-            const noInitialNode = this.form.path !== '/' || isRoot
-            //4.父节点只能为聚合菜单
+            //3.父节点只能为顶部或聚合菜单
             const parentIsFolderMenu =
                 isRoot
                     ? true
-                    : this.type === 'add' && this.curNode.data.type === 1
-                    || this.type === 'edit' && this.curNode.parent.data.type === 1
-            return noApiNode && noChild && noInitialNode && parentIsFolderMenu
+                    : this.type === 'add' && [0, 1].includes(this.curNode.data.type)
+                    || this.type === 'edit' && [0, 1].includes(this.curNode.parent.data.type)
+            return !isRoot && noApiNode && noChild && parentIsFolderMenu
         },
         showSaveBtn() {
             return this.type === 'add' && this.canAdd || this.type === 'edit' && this.canUpdate
@@ -271,8 +270,8 @@ export default {
         },
         //表单中菜单类型选择器改变时
         typeChange(v) {
-            //从聚合改为页面菜单时，清空component
-            if (v === 2 && this.form.type === 1) {
+            //从顶部或聚合改为页面菜单时，清空component
+            if (v === 2 && [0, 1].includes(this.form.type)) {
                 this.form.component = null
             }
             this.form.type = v
@@ -284,7 +283,7 @@ export default {
             this.type = 'add'
             this.clearForm()
             this.form.pid = 0
-            this.form.type = 1
+            this.form.type = 0
         },
         addChild() {
             if (this.loading) return
@@ -294,7 +293,7 @@ export default {
             this.type = 'add'
             this.clearForm()
             this.form.pid = id
-            //如果是叶子菜单，那么只能添加接口
+            //如果父节点是叶子菜单，那么只能添加接口
             this.form.type = type === 2 ? 3 : 1
         },
         del() {
@@ -325,6 +324,7 @@ export default {
             resetObj(this.form)
             this.form.id = null
             this.form.pid = null
+            this.form.type = null
             this.form.metaStr = JSON.stringify({title: ''}, null, 2)
             this.form.meta.sort = null
             this.form.enable = true
@@ -344,6 +344,7 @@ export default {
                     .finally(() => this.loading = false)
             })
         },
+        //将this.form转换为真正的提交数据（meta替换为metaStr）
         transformForm() {
             return {...this.form, meta: this.form.metaStr, metaStr: undefined}
         }

@@ -1,8 +1,7 @@
 /*路由表：演示用例*/
 
 const router = {
-    path: '/example',
-    component: 'Layout',
+    path: 'example',
     meta: {title: '演示用例', icon: 'svg-show', noAuth: true, noCache: true},
     children: [
         {
@@ -98,4 +97,4 @@ const router = {
     ]
 }
 
-export default router
+export default []

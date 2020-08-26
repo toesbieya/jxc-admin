@@ -1,6 +1,6 @@
 @import "~@/asset/style/variables.scss";
 
-$iconSize: 17px;
+$iconSize: 16px;
 
 .sidebar-container {
     display: flex;
@@ -84,8 +84,6 @@ $iconSize: 17px;
 
     .icon {
         margin-right: 16px;
-        width: $iconSize;
-        height: $iconSize;
     }
 
     //菜单hover

@@ -4,6 +4,8 @@
             <hamburger class="navbar-item" :active="!sidebarCollapse" @click="sidebarCtrl"/>
 
             <breadcrumb v-if="showBreadcrumb"/>
+
+            <root-menu :active-menu="activeRootMenu" :menu="menus" always-show/>
         </div>
 
         <div>
@@ -51,8 +53,8 @@ import GuideMixin from '@/mixin/guide'
 import Bell from "./component/Bell"
 import Breadcrumb from './component/Breadcrumb'
 import Hamburger from './component/Hamburger'
+import RootMenu from "./component/RootMenu"
 import SettingDrawer from './component/SettingDrawer'
-import {auth} from "@/util/auth"
 import {elConfirm} from "@/util/message"
 
 export default {
@@ -60,11 +62,13 @@ export default {
 
     mixins: [GuideMixin.navbar],
 
-    components: {Hamburger, Breadcrumb, Bell, SettingDrawer},
+    components: {Hamburger, Breadcrumb, Bell, RootMenu, SettingDrawer},
 
     data: () => ({settingDrawer: false}),
 
     computed: {
+        ...mapState('resource', ['activeRootMenu', 'menus']),
+
         ...mapState('user', ['avatar', 'name', 'prepareLogout']),
 
         ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb'])
@@ -74,6 +78,7 @@ export default {
         sidebarCtrl() {
             this.$store.commit('setting/sidebarCollapse', !this.sidebarCollapse)
         },
+
         refresh() {
             this.$router.replace({path: `/redirect${this.$route.fullPath}`})
         },

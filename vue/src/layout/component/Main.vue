@@ -70,7 +70,6 @@ export default {
     background-color: #f5f7f9;
 
     .scroll-container {
-        position: relative;
         height: 100%;
         display: flex;
         flex-direction: column;

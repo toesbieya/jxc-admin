@@ -41,7 +41,11 @@ public class SysResourceService {
             return Collections.emptyList();
         }
 
-        return getEnableResourceTree(ids, i -> !i.getType().equals(ResourceTypeEnum.FOLDER.getCode()));
+        return getEnableResourceTree(ids, i -> {
+            Integer type = i.getType();
+            return !type.equals(ResourceTypeEnum.ROOT.getCode())
+                    && !type.equals(ResourceTypeEnum.FOLDER.getCode());
+        });
     }
 
     public R add(SysResource entity) {
@@ -99,7 +103,7 @@ public class SysResourceService {
                     }
 
                     String path = r.getPath();
-                    int index = path.indexOf("//");
+                    int index = path.lastIndexOf("//");
                     if (index != -1 && !path.startsWith("http")) {
                         //去掉'//'前拼接的父节点的path
                         r.setPath(path.substring(index + 1));
@@ -115,11 +119,9 @@ public class SysResourceService {
         Integer pid = entity.getPid();
         Integer type = entity.getType();
 
-        boolean isApi = type.equals(ResourceTypeEnum.API.getCode());
-
-        //根节点不能为数据接口
-        if (pid.equals(0)) {
-            return isApi ? "数据接口不能作为根节点" : null;
+        //顶部菜单的pid必须为0
+        if (type.equals(ResourceTypeEnum.ROOT.getCode())) {
+            return pid.equals(0) ? null : "顶部菜单不能有父节点";
         }
 
         //校验父节点
@@ -129,6 +131,7 @@ public class SysResourceService {
         }
         Integer parentType = parent.getType();
         //1.待添加的节点为数据接口且父节点必须为叶子菜单
+        boolean isApi = type.equals(ResourceTypeEnum.API.getCode());
         if (isApi) {
             if (!parentType.equals(ResourceTypeEnum.LEAF.getCode())) {
                 return "数据接口只能以页面菜单为父节点";
@@ -143,22 +146,23 @@ public class SysResourceService {
 
     //数据转换
     private void transform(SysResource entity) {
-        Integer pid = entity.getPid();
         Integer type = entity.getType();
+        boolean isRoot = type.equals(ResourceTypeEnum.ROOT.getCode());
         boolean isFolder = type.equals(ResourceTypeEnum.FOLDER.getCode());
+        boolean isLeaf = type.equals(ResourceTypeEnum.LEAF.getCode());
+        boolean isApi = type.equals(ResourceTypeEnum.API.getCode());
 
         //能自定义component的只有叶子菜单
-        if (!type.equals(ResourceTypeEnum.LEAF.getCode())) {
-            //根节点的聚合菜单的组件只能为'Layout'
-            boolean isRootFolder = isFolder && pid.equals(0);
-            entity.setComponent(isRootFolder ? "Layout" : null);
+        if (!isLeaf) {
+            //顶部菜单的组件只能为'Layout'
+            entity.setComponent(isRoot ? "Layout" : null);
         }
-        //聚合菜单不能设置name
-        if (isFolder) {
+        //顶部或聚合菜单不能设置name（此处的name是路由名称）
+        if (isRoot || isFolder) {
             entity.setName(null);
         }
         //数据接口不能设置meta
-        if (type.equals(ResourceTypeEnum.API.getCode())) {
+        if (isApi) {
             entity.setMeta(null);
         }
     }

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VIcon from '@/component/VIcon'
+import VIcon from '@/component/Icon'
 
 Vue.component('v-icon', VIcon)
 

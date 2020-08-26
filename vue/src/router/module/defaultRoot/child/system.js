@@ -1,8 +1,7 @@
 /*路由表：系统管理*/
 
 const router = {
-    path: '/system',
-    component: 'Layout',
+    path: 'system',
     meta: {title: '系统管理', icon: 'svg-system', alwaysShow: true},
     children: [
         {

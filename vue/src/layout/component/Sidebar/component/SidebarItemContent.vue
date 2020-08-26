@@ -4,10 +4,7 @@ export default {
 
     functional: true,
 
-    props: {
-        icon: String,
-        title: String
-    },
+    props: {icon: String, title: String},
 
     render(h, context) {
         const {icon, title} = context.props

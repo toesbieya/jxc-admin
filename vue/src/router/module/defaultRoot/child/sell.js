@@ -1,8 +1,7 @@
 /*路由表：销售管理*/
 
 const router = {
-    path: '/sell',
-    component: 'Layout',
+    path: 'sell',
     meta: {title: '销售管理', icon: 'svg-sell', alwaysShow: true},
     children: [
         {

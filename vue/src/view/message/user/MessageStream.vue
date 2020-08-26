@@ -14,7 +14,7 @@
             <el-timeline>
                 <el-timeline-item
                     v-for="msg in tableData"
-                    :key="msg.index"
+                    :key="msg.id"
                     :timestamp="msg.time"
                     placement="top"
                 >
@@ -125,7 +125,7 @@ export default {
         },
 
         read(msg) {
-            if (msg.read) return
+            if (this.mode === 'read' || msg.read) return
             msg.read = true
             this.$store.commit('message/unreadCount', this.unreadCount - 1)
             read.request(msg.id)

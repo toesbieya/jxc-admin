@@ -14,7 +14,7 @@ function getOnlyChild(menu) {
 
 function renderSingleMenu(h, {index, icon, title}) {
     return (
-        <el-menu-item index={index}>
+        <el-menu-item key={index} index={index}>
             <SidebarItemContent icon={icon} title={title}/>
         </el-menu-item>
     )
@@ -22,7 +22,7 @@ function renderSingleMenu(h, {index, icon, title}) {
 
 function renderSubMenu(h, {index, icon, title, children}) {
     return (
-        <el-submenu index={index} popper-append-to-body>
+        <el-submenu key={index} index={index}>
             <SidebarItemContent slot="title" icon={icon} title={title}/>
             {children}
         </el-submenu>

@@ -1,7 +1,7 @@
 package cn.toesbieya.jxc.common.enumeration;
 
 public enum ResourceTypeEnum {
-    FOLDER(1), LEAF(2), API(3);
+    ROOT(0), FOLDER(1), LEAF(2), API(3);
 
     private final int code;
 

@@ -3,20 +3,33 @@ import {useBackendRoute} from '@/config'
 import {addDynamicRoutes} from '@/router'
 import {getDynamicRoutes} from '@/router/define'
 import {parseRoutes, metaExtend} from "@/router/util"
-import {needAuth} from "@/util/auth"
-import {createTree} from "@/util/tree"
 import {getAll} from "@/api/system/resource"
 import {isEmpty} from "@/util"
+import {needAuth} from "@/util/auth"
+import {createTree} from "@/util/tree"
 import {isExternal} from "@/util/validate"
 
 const state = {
+    //当前激活的顶部菜单的fullPath
+    activeRootMenu: '',
+
+    //所有的树形菜单，每个元素为顶部菜单，顶部菜单的子级（如果有）为侧边栏菜单
     menus: [],
+
+    //后端返回的原始权限数据
+    //权限表：<权限路径，权限id>，用于util.auth
     resourceMap: {},
+    //由原始权限数据生成的树（当用户非admin时过滤了admin专属权限）
     resourceTree: [],
+
+    //判断权限是否已经初始化
     init: false
 }
 
 const mutations = {
+    activeRootMenu(state, activeRootMenu) {
+        state.activeRootMenu = activeRootMenu
+    },
     menus(state, menus) {
         sort(menus)
         state.menus = menus
@@ -52,12 +65,18 @@ const actions = {
         return getAll
             .request()
             .then(({data}) => {
+                //动态添加路由，这里不需要进行权限过滤
                 const routes = transformOriginRouteData(data)
                 metaExtend(routes)
                 addRoutes && addDynamicRoutes(routes)
+
+                //获取经过权限过滤后的菜单
                 const menus = getAuthorizedMenus({resources, admin}, routes)
+
                 commit('menus', menus)
                 commit('resource', {data: data || [], admin})
+
+                //设置初始化完成的标志
                 commit('init', true)
             })
     }

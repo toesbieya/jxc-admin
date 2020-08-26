@@ -19,7 +19,7 @@ export default {
             )
         }
 
-        return <i class={icon} {...data}/>
+        return <i class={`icon ${icon}`} {...data}/>
     }
 }
 </script>
@@ -29,6 +29,5 @@ export default {
     width: 1em;
     height: 1em;
     fill: currentColor;
-    overflow: hidden;
 }
 </style>

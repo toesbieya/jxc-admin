@@ -1,8 +1,7 @@
 /*路由表：采购管理*/
 
 const router = {
-    path: '/purchase',
-    component: 'Layout',
+    path: 'purchase',
     meta: {title: '采购管理', icon: 'svg-shopping', alwaysShow: true},
     children: [
         {

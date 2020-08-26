@@ -1,8 +1,7 @@
 /*路由表：消息中心*/
 
 const router = {
-    path: '/message',
-    component: 'Layout',
+    path: 'message',
     meta: {title: '消息中心', icon: 'svg-message', alwaysShow: true},
     children: [
         {

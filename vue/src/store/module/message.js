@@ -11,7 +11,7 @@ const actions = {
     refresh({commit}) {
         search
             .request({page: 1, pageSize: 1, unread: true})
-            .then(({data}) => commit('unreadCount', data))
+            .then(({data}) => commit('unreadCount', data.total))
     }
 }
 

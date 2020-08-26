@@ -17,11 +17,11 @@ import {pathToRegexp} from 'path-to-regexp'
 import NProgress from 'nprogress'
 import {contextPath, routerMode, title} from '@/config'
 import defaultRoutes from '@/router/define'
+import store from "@/store"
+import {stringifyRoutes, parseRoutes, generateRoutes} from './util'
+import {isEmpty} from "@/util"
 import {auth, needAuth} from "@/util/auth"
 import {isUserExist} from "@/util/storage"
-import {stringifyRoutes, parseRoutes, generateRoutes} from './util'
-import store from "@/store"
-import {isEmpty} from "@/util"
 
 Vue.use(Router)
 
@@ -58,6 +58,8 @@ router.beforeEach(async (to, from, next) => {
     if (!isUserExist()) {
         return next({path: '/login', query: {redirect: to.fullPath}})
     }
+
+    setActiveRootMenu(to)
 
     //初始化路由和菜单权限
     if (!store.state.resource.init) {
@@ -101,6 +103,16 @@ function needExtraRedirect(to, from) {
     //若是共用组件的路由页面之间的跳转，借助redirect避免组件复用
     const a = to.meta.commonModule, b = from.meta.commonModule
     return !isEmpty(a) && a === b
+}
+
+//设置顶部菜单的激活状态
+function setActiveRootMenu(to) {
+    const {path, matched} = to
+    //使用/redirect跳转 或 无匹配路由 时跳过
+    if (path.startsWith('/redirect') || matched.length === 0) {
+        return
+    }
+    store.commit('resource/activeRootMenu', matched[0].path || '/')
 }
 
 //获取进行权限验证的路由地址，使用了动态路由的会用到

@@ -139,3 +139,12 @@ export function metaExtend(routes, parentMeta) {
         route.children && metaExtend(route.children, route.meta)
     })
 }
+
+//将require.context导出的对象处理为数组
+export function context2array(context) {
+    return context.keys().reduce((modules, modulePath) => {
+        const value = context(modulePath).default
+        Array.isArray(value) ? modules.push(...value) : modules.push(value)
+        return modules
+    }, [])
+}

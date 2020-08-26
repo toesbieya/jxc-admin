@@ -1,8 +1,7 @@
 /*路由表：库存管理*/
 
 const router = {
-    path: '/stock',
-    component: 'Layout',
+    path: 'stock',
     meta: {title: '库存管理', icon: 'svg-stock', alwaysShow: true},
     children: [
         {

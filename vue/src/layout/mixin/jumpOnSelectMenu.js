@@ -1,0 +1,20 @@
+import {isExternal} from "@/util/validate"
+
+export default {
+    methods: {
+        jumpOnSelectMenu(fullPath, refreshWhenSame = true) {
+            //外部链接时打开新窗口
+            if (isExternal(fullPath)) {
+                return window.open(fullPath)
+            }
+
+            //触发的菜单路径是当前路由时，根据参数判断是否进行刷新
+            if (this.$route.path === fullPath) {
+                if (!refreshWhenSame) return
+                this.$store.commit('tagsView/delCachedView', this.$route)
+                this.$nextTick(() => this.$router.replace({path: '/redirect' + this.$route.fullPath}))
+            }
+            else this.$router.push(fullPath)
+        }
+    }
+}

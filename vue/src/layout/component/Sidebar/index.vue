@@ -1,31 +1,42 @@
 <script type="text/jsx">
 import {mapState} from 'vuex'
+import jumpOnSelectMenuMixin from "@/layout/mixin/jumpOnSelectMenu"
 import Logo from './component/Logo'
 import SidebarItem from './component/SidebarItem'
-import {isExternal} from "@/util/validate"
 
 export default {
     name: 'sidebar',
 
+    mixins: [jumpOnSelectMenuMixin],
+
     components: {SidebarItem, Logo},
 
-    data: () => ({mouseOutside: true, activeMenu: ''}),
+    data() {
+        return {
+            //鼠标是否在侧边栏内
+            mouseOutside: true,
+            //当前激活的菜单的fullPath
+            activeMenu: '',
+            //侧边栏菜单数组，即当前激活的顶部菜单的children
+            sidebarMenus: []
+        }
+    },
 
     computed: {
         ...mapState('app', ['device']),
 
-        ...mapState('resource', ['menus']),
+        ...mapState('resource', ['activeRootMenu', 'menus']),
 
         ...mapState('setting', ['showLogo', 'sidebarCollapse', 'sidebarUniqueOpen', 'sidebarShowParent', 'sidebarAutoHidden']),
 
-        //仅在pc端可折叠
+        //侧边栏的折叠状态，true折叠false展开，仅在pc端可折叠
         collapse() {
             return this.sidebarCollapse && this.device === 'pc'
         },
 
         //是否隐藏侧边栏
         //①设置了侧边栏自动隐藏且鼠标不再侧边栏内
-        //②侧边栏处于折叠状态且是移动设备
+        //②侧边栏处于折叠状态且是移动端
         hideSidebar() {
             return this.sidebarAutoHidden && this.mouseOutside
                 || this.sidebarCollapse && this.device === 'mobile'
@@ -59,6 +70,21 @@ export default {
                 if (!item) return menu.openedMenus = []
 
                 this.select(item.index, item.indexPath, item, false)
+            }
+        },
+
+        activeRootMenu: {
+            immediate: true,
+            handler(v) {
+                const {menus} = this
+                if (menus.length <= 0 || !v) return
+                const root = menus.find(i => i.path === v)
+                this.sidebarMenus = root ? root.children || [] : []
+
+                //由于侧边栏菜单数组更新后，el-menu不一定会更新（当数组中不存在单级菜单时）
+                //所以手动更新el-menu的当前高亮菜单
+                const menu = this.$refs.menu
+                menu && menu.updateActiveIndex()
             }
         },
 
@@ -96,18 +122,7 @@ export default {
             //mobile时激活隐藏侧边栏
             this.device === 'mobile' && this.$store.commit('setting/sidebarCollapse', true)
 
-            if (!jump) return
-
-            //外部链接时打开新窗口
-            if (isExternal(index)) {
-                return window.open(index)
-            }
-
-            if (this.$route.path === index) {
-                this.$store.commit('tagsView/delCachedView', this.$route)
-                this.$nextTick(() => this.$router.replace({path: '/redirect' + this.$route.fullPath}))
-            }
-            else this.$router.push(index)
+            jump && this.jumpOnSelectMenu(index)
         }
     },
 
@@ -116,6 +131,9 @@ export default {
     },
 
     render() {
+        //如果没有菜单，则不渲染侧边栏
+        if (this.sidebarMenus.length <= 0) return
+
         const menu = (
             <el-menu
                 ref="menu"
@@ -126,12 +144,11 @@ export default {
                 mode="vertical"
                 on-select={this.select}
             >
-                {this.menus.map(menu => (
+                {this.sidebarMenus.map(m => (
                     <sidebar-item
-                        key={menu.path}
                         show-parent={this.sidebarShowParent}
                         collapse={this.sidebarCollapse}
-                        menu={menu}
+                        menu={m}
                     />
                 ))}
             </el-menu>
