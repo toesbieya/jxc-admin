@@ -8,7 +8,6 @@ export default class Sunlight {
         this.mouse = {down: 0}
         this.rAF = null
         this.stopSign = false
-        this.resize = this.resize.bind(this)
         this.loop = this.loop.bind(this)
         this.mousedown = this.mousedown.bind(this)
         this.mouseup = this.mouseup.bind(this)
@@ -16,7 +15,8 @@ export default class Sunlight {
     }
 
     start() {
-        window.addEventListener('resize', this.resize)
+        this.resizeObserver = new ResizeObserver(() => this.resize())
+        this.resizeObserver.observe(this.canvas)
         window.addEventListener('mouseup', this.mouseup)
         window.addEventListener('mousedown', this.mousedown)
         this.resize()
@@ -24,7 +24,10 @@ export default class Sunlight {
     }
 
     stop() {
-        window.removeEventListener('resize', this.resize)
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect()
+            this.resizeObserver = null
+        }
         window.removeEventListener('mouseup', this.mouseup)
         window.removeEventListener('mousedown', this.mousedown)
         this.stopSign = true

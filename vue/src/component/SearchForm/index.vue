@@ -51,11 +51,14 @@ export default {
 
     mounted() {
         this.resize()
-
-        window.addEventListener('resize', this.resize)
+        this.resizeObserver = new ResizeObserver(() => this.resize())
+        this.resizeObserver.observe(this.$el.parentNode)
 
         this.$once('hook:beforeDestroy', () => {
-            window.removeEventListener('resize', this.resize)
+            if (this.resizeObserver) {
+                this.resizeObserver.disconnect()
+                this.resizeObserver = null
+            }
         })
     },
 

@@ -14,18 +14,20 @@ export default {
         return {
             sign: true,
             width: 1200,
-            height: 800,
-            $_resizeHandler: null,
-            parentDom: null
+            height: 800
         }
     },
 
     methods: {
         $_initResizeEvent() {
-            window.addEventListener('resize', this.$_resizeHandler)
+            this.resizeObserver = new ResizeObserver(() => this.$_resizeHandler())
+            this.resizeObserver.observe(this.parentDom)
         },
         $_destroyResizeEvent() {
-            window.removeEventListener('resize', this.$_resizeHandler)
+            if (this.resizeObserver) {
+                this.resizeObserver.disconnect()
+                this.resizeObserver = null
+            }
         },
         start() {
             import('@/plugin/webgl/fluid').then(_ => _.default(this.$el.querySelector('#canvas-fluid')))

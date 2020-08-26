@@ -14,7 +14,6 @@ export default class ParticleNetwork {
         this.rAF = null
         this.timer = null
         this.stopSign = false
-        this.resize = this.resize.bind(this)
         this.loop = this.loop.bind(this)
         this.start()
     }
@@ -174,7 +173,8 @@ export default class ParticleNetwork {
             this.removeInteractionParticle()
         }.bind(this)
 
-        window.addEventListener('resize', this.resize)
+        this.resizeObserver = new ResizeObserver(() => this.resize())
+        this.resizeObserver.observe(this.canvas)
         window.addEventListener('mousemove', this.onMouseMove)
         window.addEventListener('touchmove', this.onTouchMove)
         window.addEventListener('mousedown', this.onMouseDown)
@@ -185,7 +185,10 @@ export default class ParticleNetwork {
     }
 
     unbindUiActions() {
-        window.removeEventListener('resize', this.resize)
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect()
+            this.resizeObserver = null
+        }
         window.removeEventListener('mousemove', this.onMouseMove)
         window.removeEventListener('touchmove', this.onTouchMove)
         window.removeEventListener('mousedown', this.onMouseDown)

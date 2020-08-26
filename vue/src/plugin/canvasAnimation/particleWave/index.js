@@ -20,7 +20,6 @@ export default class ParticleWave {
         this.particleWaveWalker = 0
         this.rAF = null
         this.stopSign = false
-        this.resize = this.resize.bind(this)
         this.loop = this.loop.bind(this)
         this.start()
     }
@@ -67,7 +66,8 @@ export default class ParticleWave {
     }
 
     start() {
-        window.addEventListener('resize', this.resize)
+        this.resizeObserver = new ResizeObserver(() => this.resize())
+        this.resizeObserver.observe(this.canvas)
         this.resize()
         this.initParticle()
         this.initParticleColor()
@@ -77,7 +77,10 @@ export default class ParticleWave {
     }
 
     stop() {
-        window.removeEventListener('resize', this.resize)
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect()
+            this.resizeObserver = null
+        }
         this.stopSign = true
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
     }

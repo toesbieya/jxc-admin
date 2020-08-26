@@ -24,14 +24,14 @@ export default class SparkRain {
         this.rAF = null
         this.timer = null
         this.stopSign = false
-        this.resize = this.resize.bind(this)
         this.loop = this.loop.bind(this)
         this.addSpark = this.addSpark.bind(this)
         this.start()
     }
 
     start() {
-        window.addEventListener('resize', this.resize)
+        this.resizeObserver = new ResizeObserver(() => this.resize())
+        this.resizeObserver.observe(this.canvas)
         this.resize()
         this.timer = window.setInterval(
             () => this.sparks.length < this.options.amount && this.addSpark(),
@@ -40,7 +40,10 @@ export default class SparkRain {
     }
 
     stop() {
-        window.removeEventListener('resize', this.resize)
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect()
+            this.resizeObserver = null
+        }
         this.stopSign = true
         this.sparks = []
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)

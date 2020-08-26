@@ -10,7 +10,6 @@ export default class MoveFollowMouse {
         this.num = num
         this.gravityDistance = gravityDistance
         this.mousePos = {x: 0, y: 0}
-        this.resize = this.resize.bind(this)
         this.loop = this.loop.bind(this)
         this.getMousePos = this.getMousePos.bind(this)
         this.start()
@@ -20,14 +19,18 @@ export default class MoveFollowMouse {
         for (let i = 0; i < this.num; i += 1) {
             this.particles.push(new Particle())
         }
-        window.addEventListener('resize', this.resize)
+        this.resizeObserver = new ResizeObserver(() => this.resize())
+        this.resizeObserver.observe(this.canvas)
         window.addEventListener('mousemove', this.getMousePos)
         this.resize()
         this.loop()
     }
 
     stop() {
-        window.removeEventListener('resize', this.resize)
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect()
+            this.resizeObserver = null
+        }
         window.removeEventListener('mousemove', this.getMousePos)
         this.stopSign = true
         this.particles = []
