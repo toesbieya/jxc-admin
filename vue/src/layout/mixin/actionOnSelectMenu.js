@@ -2,7 +2,7 @@ import {isExternal} from "@/util/validate"
 
 export default {
     methods: {
-        jumpOnSelectMenu(fullPath, refreshWhenSame = true) {
+        actionOnSelectMenu(fullPath, refreshWhenSame = true) {
             //外部链接时打开新窗口
             if (isExternal(fullPath)) {
                 return window.open(fullPath)

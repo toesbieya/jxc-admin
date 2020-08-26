@@ -36,7 +36,7 @@ export default {
 @import "~@/asset/style/variables.scss";
 
 .app-breadcrumb {
-    margin-left: 8px;
+    margin: 0 8px;
     line-height: $nav-height;
 
     .no-redirect {

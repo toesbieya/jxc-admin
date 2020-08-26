@@ -1,13 +1,13 @@
 <script type="text/jsx">
 import {mapState} from 'vuex'
-import jumpOnSelectMenuMixin from "@/layout/mixin/jumpOnSelectMenu"
+import actionOnSelectMenuMixin from "@/layout/mixin/actionOnSelectMenu"
 import Logo from './component/Logo'
 import SidebarItem from './component/SidebarItem'
 
 export default {
     name: 'sidebar',
 
-    mixins: [jumpOnSelectMenuMixin],
+    mixins: [actionOnSelectMenuMixin],
 
     components: {SidebarItem, Logo},
 
@@ -122,7 +122,7 @@ export default {
             //mobile时激活隐藏侧边栏
             this.device === 'mobile' && this.$store.commit('setting/sidebarCollapse', true)
 
-            jump && this.jumpOnSelectMenu(index)
+            jump && this.actionOnSelectMenu(index)
         }
     },
 

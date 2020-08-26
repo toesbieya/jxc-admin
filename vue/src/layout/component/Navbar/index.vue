@@ -1,6 +1,6 @@
 <template>
     <nav class="navbar">
-        <div>
+        <div style="width: 30%">
             <hamburger class="navbar-item" :active="!sidebarCollapse" @click="sidebarCtrl"/>
 
             <breadcrumb v-if="showBreadcrumb"/>
