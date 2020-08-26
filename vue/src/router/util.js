@@ -102,6 +102,7 @@ export function generateRoutes(jsonTree) {
     //路由页面懒加载
     function lazyLoadView(path) {
         if (path.endsWith('/')) path += 'index'
+        else if (path.endsWith('Page')) path = path.replace('Page', '')
         else path = path.replace('Page.vue', '')
 
         const AsyncHandler = () => ({component: import(`@/view/${path}Page.vue`), loading: PageSkeleton})
