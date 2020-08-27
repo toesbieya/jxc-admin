@@ -1,5 +1,6 @@
-import PageSkeleton from "@/component/Skeleton/PageSkeleton"
 import Layout from '@/layout'
+import SkeletonPage from '@/view/app/common/SkeletonPage'
+import Page500 from '@/view/app/500'
 import {isEmpty} from "@/util"
 import {isExternal} from "@/util/validate"
 
@@ -105,7 +106,15 @@ export function generateRoutes(jsonTree) {
         else if (path.endsWith('Page')) path = path.replace('Page', '')
         else path = path.replace('Page.vue', '')
 
-        const AsyncHandler = () => ({component: import(`@/view/${path}Page.vue`), loading: PageSkeleton})
+        //这里注意一点，如果设置了超时时间，那么超时后只能刷新整个页面才能重新加载该组件
+        const AsyncHandler = () => ({
+            component: import(`@/view/${path}Page.vue`),
+            loading: SkeletonPage,
+            error: Page500,
+            delay: 200,
+            timeout: 10000
+        })
+
         return () => Promise.resolve({
             functional: true,
             render(h, {data, children}) {

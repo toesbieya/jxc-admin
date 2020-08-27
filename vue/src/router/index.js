@@ -15,7 +15,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import {pathToRegexp} from 'path-to-regexp'
 import NProgress from 'nprogress'
-import {contextPath, route as routeConfig, title} from '@/config'
+import {route as routeConfig, title} from '@/config'
 import defaultRoutes from '@/router/define'
 import store from "@/store"
 import {stringifyRoutes, parseRoutes, generateRoutes} from './util'
@@ -27,10 +27,10 @@ Vue.use(Router)
 
 NProgress.configure({showSpinner: false})
 
-const whiteList = transformWhiteList(['/login', '/register', '/404', '/403'])
+const whiteList = transformWhiteList(['/login', '/register', '/403', '/404', '/500'])
 
 const router = new Router({
-    base: contextPath,
+    base: process.env.BASE_URL,
     mode: routeConfig.mode,
     scrollBehavior: () => ({y: 0}),
     routes: defaultRoutes
