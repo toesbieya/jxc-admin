@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar">
         <div style="width: 30%">
-            <hamburger class="navbar-item" :active="!sidebarCollapse" @click="sidebarCtrl"/>
+            <hamburger class="navbar-item" :render="renderHamburger" :active="!sidebarCollapse" @click="sidebarCtrl"/>
 
             <breadcrumb v-if="showBreadcrumb"/>
 
@@ -67,11 +67,17 @@ export default {
     data: () => ({settingDrawer: false}),
 
     computed: {
+        ...mapState('app', ['device']),
+
         ...mapState('resource', ['activeRootMenu', 'menus']),
 
         ...mapState('user', ['avatar', 'name', 'prepareLogout']),
 
-        ...mapState('setting', ['sidebarCollapse', 'showBreadcrumb'])
+        ...mapState('setting', ['sidebarAutoHidden', 'sidebarCollapse', 'showBreadcrumb']),
+
+        renderHamburger() {
+            return !(this.device === 'pc' && this.sidebarAutoHidden)
+        }
     },
 
     methods: {

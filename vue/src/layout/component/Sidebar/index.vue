@@ -35,10 +35,10 @@ export default {
         },
 
         //是否隐藏侧边栏
-        //①设置了侧边栏自动隐藏且鼠标不再侧边栏内
+        //①设置了侧边栏自动隐藏且鼠标不再侧边栏内且是pc端
         //②侧边栏处于折叠状态且是移动端
         hideSidebar() {
-            return this.sidebarAutoHidden && this.mouseOutside
+            return this.sidebarAutoHidden && this.mouseOutside && this.device === 'pc'
                 || this.sidebarCollapse && this.device === 'mobile'
         },
 
