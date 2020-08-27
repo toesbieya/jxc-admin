@@ -9,7 +9,7 @@ import FormCard from '@/component/AbstractForm/FormCard'
 import UploadFile from '@/component/UploadFile'
 import {isEmpty, mergeObj} from '@/util'
 import {auth} from "@/util/auth"
-import {deleteUpload} from "@/util/file"
+import {deleteUpload} from "@/api/file"
 import {elAlert, elConfirm, elPrompt, elSuccess} from "@/util/message"
 import {closeCurrentPage} from "@/util/route"
 
@@ -245,7 +245,7 @@ export default {
                 deleteArr.push(...this.form.uploadImageList.map(i => i.url))
             }
             if (deleteArr.length > 0) {
-                deleteUpload(deleteArr).catch(e => ({}))
+                deleteUpload.request(deleteArr).catch(e => ({}))
             }
 
             return closeCurrentPage(this.getTablePageUrl())

@@ -56,11 +56,12 @@
 * success、remove事件中的file.url均不带七牛云外链前缀
 * */
 import axios from 'axios'
-import {attachmentPrefix} from '@/config'
+import {deleteUpload} from '@/api/file'
+import {file as fileConfig} from '@/config'
 import {debounce, isEmpty} from '@/util'
 import {elError} from "@/util/message"
 import {isImage, isDoc, isPdf, isPpt, isRar, isXls, isTxt, isZip} from "@/util/validate"
-import {preview, deleteUpload, download, upload, autoCompleteUrl} from "@/util/file"
+import {preview, download, upload, autoCompleteUrl} from "@/util/file"
 
 const typeMapper = [
     {test: isImage}, {test: isDoc, type: 'doc'}, {test: isPdf, type: 'pdf'}, {test: isPpt, type: 'ppt'},
@@ -159,9 +160,9 @@ export default {
 
             //区分是否为本次新上传，以及是否上传成功
             //若不是新上传的
-            if (!file.raw) this.$emit('remove', {url: file.downloadUrl.replace(attachmentPrefix, '')})
+            if (!file.raw) this.$emit('remove', {url: file.downloadUrl.replace(fileConfig.storePrefix, '')})
             //判断是否上传成功（有可能是正在上传）
-            else if (file.response && !file.response.err) deleteUpload(file.raw.key)
+            else if (file.response && !file.response.err) deleteUpload.request(file.raw.key)
 
             this.$refs.upload.handleRemove(file)
             const index = this.data.findIndex(i => i.downloadUrl === file.downloadUrl)

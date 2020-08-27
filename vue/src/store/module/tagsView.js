@@ -1,3 +1,4 @@
+import {route as routeConfig} from '@/config'
 import {createMutations} from "@/util"
 
 const state = {
@@ -8,7 +9,7 @@ const state = {
     cachedViews: [],
 
     //路由过渡动画名称
-    transitionName: 'el-fade-in-linear'
+    transitionName: routeConfig.animate.default
 }
 
 const mutations = {

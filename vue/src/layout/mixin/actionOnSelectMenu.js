@@ -5,7 +5,13 @@ export default {
         actionOnSelectMenu(fullPath, refreshWhenSame = true) {
             //外部链接时打开新窗口
             if (isExternal(fullPath)) {
-                return window.open(fullPath)
+                window.open(fullPath)
+                //当是从侧边栏打开时，重置高亮菜单
+                const menu = this.$refs.menu
+                if (menu && menu.updateActiveIndex) {
+                    menu.updateActiveIndex(this.activeMenu)
+                }
+                return
             }
 
             //触发的菜单路径是当前路由时，根据参数判断是否进行刷新

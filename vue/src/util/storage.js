@@ -1,6 +1,8 @@
-import {sessionUserKey, localPersonalSettingsKey, localResourceKey} from '@/config'
 import {isEmpty} from "@/util"
 import {unzip, zip} from "@/util/secret"
+
+const sessionUserKey = 'GCC-SESS-USER'
+const localPersonalSettingsKey = 'GCC-LOCAL-PERSONAL-SETTINGS'
 
 export function isUserExist() {
     return !isEmpty(sessionStorage.getItem(sessionUserKey))
@@ -47,10 +49,6 @@ export function setLocalPersonalSettings(settings) {
 
 function removeUser() {
     sessionStorage.removeItem(sessionUserKey)
-}
-
-function removeLocalResource() {
-    localStorage.removeItem(localResourceKey)
 }
 
 function removeLocalPersonalSettings() {

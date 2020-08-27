@@ -17,9 +17,7 @@
                     </el-tab-pane>
 
                     <transition mode="out-in" name="el-fade-in-linear">
-                        <keep-alive exclude="user-account">
-                            <component :is="activeTab"/>
-                        </keep-alive>
+                        <component :is="activeTab"/>
                     </transition>
                 </el-tabs>
             </el-card>

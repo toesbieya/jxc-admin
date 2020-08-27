@@ -30,6 +30,7 @@
 <script type="text/jsx">
 import shortcutMixin from '@/layout/mixin/shortcut'
 import decideRouterTransitionMixin from '@/layout/mixin/decideRouterTransition'
+import {route as routeConfig} from '@/config'
 import ContextMenu from "@/component/ContextMenu"
 import ContextMenuItem from "@/component/ContextMenu/item"
 import ScrollPane from './ScrollPane'
@@ -170,7 +171,7 @@ export default {
 
     beforeDestroy() {
         //销毁前将路由动画改为fade
-        this.$store.commit('tagsView/transitionName', 'el-fade-in-linear')
+        this.$store.commit('tagsView/transitionName', routeConfig.animate.default)
     },
 
     mounted() {

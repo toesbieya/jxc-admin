@@ -1,5 +1,3 @@
-import {timePass} from "@/filter"
-
 export function isEmpty(...str) {
     return str.some(i => i === undefined || i === null || i === '')
 }

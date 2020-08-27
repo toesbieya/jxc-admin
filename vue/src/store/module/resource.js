@@ -1,5 +1,5 @@
 import path from 'path'
-import {useBackendRoute} from '@/config'
+import {route as routeConfig} from '@/config'
 import {addDynamicRoutes} from '@/router'
 import {getDynamicRoutes} from '@/router/define'
 import {parseRoutes, metaExtend} from "@/router/util"
@@ -85,7 +85,7 @@ const actions = {
 //将后台返回的数据转换为合法的route数组
 function transformOriginRouteData(data) {
     if (!Array.isArray(data)) return []
-    if (!useBackendRoute) return getDynamicRoutes()
+    if (!routeConfig.useBackendDataAsRoute) return getDynamicRoutes()
     data = JSON.parse(JSON.stringify(data))
     data = data.filter(i => {
         if (i.type === 3 || !i.enable) {
