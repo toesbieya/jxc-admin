@@ -26,7 +26,7 @@ npm run build
 
 ## 路由模式
 
-项目提供了动态修改路由模式的功能，只需要修改 `@/config/index.js` 中的 `routerMode` 即可。
+项目提供了动态修改路由模式的功能，只需要修改 `@/config/index.js` 中的 `route.mode` 即可。
 
 当路由模式为 `'history'` 时，需要服务器提供支持。以 `nginx` 为例，需要在配置中补上：
 ```shell script

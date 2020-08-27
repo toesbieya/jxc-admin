@@ -1,6 +1,7 @@
 # 路由
 
-项目中默认使用了静态路由，要使用动态路由的话需要打开 `@/config` 中的 `useBackendRoute` 选项。
+项目中默认使用了前端预设的静态路由，
+要使用后端返回的动态路由的话需要打开 `@/config/index.js` 中的 `route.useBackendDataAsRoute` 选项。
 
 本项目不支持二级以上的路由，虽然路由配置可以无限级，但是实际上是二级路由的效果，因为在处理路由
 数据时会将二级以上的路由缩减为其叶子节点，也就是说如果有如下路由：
@@ -53,30 +54,37 @@ const routes = [
 ## 路由配置项
 
 路由配置项不光参与路由的生成，也参与侧边栏的生成。
+
+这里约定，配置项中只有根节点（即顶部菜单）的path以'/'开头。
+并且，只有根节点和叶子节点可以自定义component。
+目前根节点的component固定为`Layout`
+
+此外，所有根节点（经过缩减）的redirect属性都将设为其第一个子节点的fullPath，目前不支持自定义。
+
 ::: warning 注意 
 项目中，路由配置项中的component是字符串，比如组件路径是`@/views/test/indexPage.vue`，那么component可以是
-`test/` 或者 `test/index`，具体可以看`@/router/util.js` 中的 `generateRoutes` 方法。
+`test/`、`test/index`、`test/indexPage`、`test/indexPage.vue`，具体可以看`@/router/util.js` 中的 `generateRoutes` 方法。
 :::
 
 
 ### Route.meta Attributes：
 
-| 参数           | 说明                                                 | 类型       | 默认                    |
-| :------------: | :--------------------------------------------------: | :--------: | :---------------------: |
-| title          | 路由在侧边栏、面包屑、页签                           | `string`   | -                       |
-| dynamicTitle   | 路由在面包屑、页签中的动态名称，参数为(to,from)      | `function` | -                       |
-| hidden         | 是否在侧边栏中显示                                   | `boolean`  | -                       |
-| alwaysShow     | 是否总是把只有一个子级的菜单以嵌套模式在侧边栏中展示 | `boolean`  | -                       | 
-| sort           | 侧边栏的排序值，值越小越靠前                         | `number`   | 10000                   | 
-| icon           | 图标名，<v-icon>的icon属性                           | `string`   | -                       |
-| affix          | 是否在多页签中固定显示                               | `boolean`  | -                       |
-| noCache        | true时缓存页面                                       | `boolean`  | -                       |
-| activeMenu     | 侧边栏当前激活菜单的index                            | `string`   | -                       |
-| noAuth         | true时路由不需要鉴权                                 | `boolean`  | router/constant下为true |
-| iframe         | 需要打开的iframe的地址                               | `string`   | -                       |
-| usePathKey     | 是否使用$route.path作为组件缓存的key                 | `boolean`  | -                       |
-| useFullPathKey | 是否使用$route.fullPath作为组件缓存的key             | `boolean`  | -                       |
-| commonModule   | 共用组件的唯一标识                                   | `any`      | -                       |
+| 参数           | 说明                                                 | 类型       | 默认  |
+| :------------: | :--------------------------------------------------: | :--------: | :---: |
+| title          | 路由在侧边栏、面包屑、页签                           | `string`   | -     |
+| dynamicTitle   | 路由在面包屑、页签中的动态名称，参数为(to,from)      | `function` | -     |
+| hidden         | 是否在侧边栏中显示                                   | `boolean`  | -     |
+| alwaysShow     | 是否总是把只有一个子级的菜单以嵌套模式在侧边栏中展示 | `boolean`  | -     | 
+| sort           | 侧边栏的排序值，值越小越靠前                         | `number`   | 10000 | 
+| icon           | 图标名，<v-icon>的icon属性                           | `string`   | -     |
+| affix          | 是否在多页签中固定显示                               | `boolean`  | -     |
+| noCache        | true时缓存页面                                       | `boolean`  | -     |
+| activeMenu     | 侧边栏当前激活菜单的index                            | `string`   | -     |
+| noAuth         | true时路由不需要鉴权                                 | `boolean`  | -     |
+| iframe         | 需要打开的iframe的地址                               | `string`   | -     |
+| usePathKey     | 是否使用$route.path作为组件缓存的key                 | `boolean`  | -     |
+| useFullPathKey | 是否使用$route.fullPath作为组件缓存的key             | `boolean`  | -     |
+| commonModule   | 共用组件的唯一标识                                   | `any`      | -     |
 
 ::: tip 注意
 路由meta上的noAuth、noCache会被子路由继承，优先使用子路由的值
@@ -150,6 +158,7 @@ function lazyLoadView(component) {
 //将路由配置中的component项改为以下形式
 component: lazyLoadView(import(...))
 ```
+项目中具体的使用方式可以查看 `@/router/util #generateRoutes`方法。
 
 关于 `AsyncHandler` 的更多选项，可以查看[官方文档](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%A4%84%E7%90%86%E5%8A%A0%E8%BD%BD%E7%8A%B6%E6%80%81)
 
@@ -178,7 +187,7 @@ component: lazyLoadView(import(...))
 项目中是根据页签的前后位置来决定路由动画的，比如从前面的页签跳转到后面的，那么动画是从左滑出，反之是从右滑出。
 
 ::: warning 注意
-只有在启用了多页签的时候才会有上面的效果，否则默认是 `el-fade-in-linear` 动画。
+只有在启用了多页签的时候才会有上面的效果，否则默认是 `@/config/index.js` 中的 `route.animate.default` 动画。
 :::
 
 ## iframe
@@ -196,6 +205,8 @@ component: lazyLoadView(import(...))
 当向上面的路由跳转时，会隐藏路由页面，展示 `<iframe>` 标签，反之则隐藏。
 另外，相同地址的iframe不会重复打开，想要刷新需使用 `/redirect` 跳转。
 
+iframe页面的缓存与普通页面相同，都是使用 `meta.noCache` 控制。
+
 ## 外链
 
 也可以在路由中配置一个外链，只要在 path 中填写了合法的 url 路径，当你点击该路由菜单时就会新开这个页面。
@@ -209,3 +220,8 @@ component: lazyLoadView(import(...))
   }
 }
 ```
+
+::: tip 注意
+由于在`<el-menu>`中，菜单（`<el-menu-item>`）只要被点击就会高亮，所以如果不希望外链菜单被高亮，
+那么需要在点击后通过调用`<el-menu>`的`updateActiveIndex`方法来设置高亮菜单。
+:::

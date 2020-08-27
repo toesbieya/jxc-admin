@@ -27,6 +27,7 @@ module.exports = {
                 collapsable: false,
                 children: [
                     '/frontend/',
+                    '/frontend/icon',
                     '/frontend/layout',
                     '/frontend/router',
                     '/frontend/permission',
@@ -43,6 +44,8 @@ module.exports = {
                             '/frontend/components/tree-select',
                         ]
                     },
+                    '/frontend/directives',
+                    '/frontend/filters',
                     {
                         title: '全局方法',
                         collapsable: false,

@@ -1,5 +1,7 @@
 # 插件
 
+这里放的是即使删掉也不会影响运行的东东，基本都通过`import().then()`的方式来引用。
+
 ## canvas动画
 
 所有动画位于 `@/plugin/canvasAnimation`下，使用 `new Animation(canvas)`的方式来创建一个动画。
