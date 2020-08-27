@@ -1,14 +1,8 @@
 <template>
     <main class="app-main">
         <div v-show="!showIframe" class="scroll-container">
-            <div class="page-view">
-                <keep-router-view-alive :include="cachedViews">
-                    <transition :name="transitionName" mode="out-in">
-                        <router-view/>
-                    </transition>
-                </keep-router-view-alive>
-            </div>
-            <v-footer/>
+            <page-view :include="cachedViews" :transition-name="transitionName"/>
+            <page-footer/>
         </div>
 
         <!--跨域iframe无法调整高度，只能使用原生滚动条-->
@@ -23,28 +17,20 @@
             width="100%"
         />
 
-        <el-backtop
-            v-if="showBackToTop"
-            target=".app-main .scroll-container"
-            :visibility-height="400"
-            :bottom="66"
-        >
-            <div class="back-to-top">
-                <v-icon icon="el-icon-top"/>
-            </div>
-        </el-backtop>
+        <back-to-top :render="showBackToTop"/>
     </main>
 </template>
 
 <script>
 import {mapState} from 'vuex'
-import KeepRouterViewAlive from "./KeepAlive"
-import VFooter from "./Footer"
+import BackToTop from "./component/BackToTop"
+import PageView from "./component/PageView"
+import PageFooter from "./component/PageFooter"
 
 export default {
     name: 'AppMain',
 
-    components: {KeepRouterViewAlive, VFooter},
+    components: {BackToTop, PageView, PageFooter},
 
     computed: {
         ...mapState('setting', ['showBackToTop']),

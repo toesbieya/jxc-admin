@@ -1,3 +1,4 @@
+<script>
 import {isEmpty} from "@/util"
 
 const KEY = '_routerViewKey'
@@ -37,6 +38,7 @@ function getCacheKey(route, componentOptions) {
 
 export default {
     name: 'keep-router-view-alive',
+
     abstract: true,
 
     props: {include: Array},
@@ -97,3 +99,4 @@ export default {
         return vnode || (slot && slot[0])
     }
 }
+</script>
