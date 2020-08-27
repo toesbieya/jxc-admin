@@ -46,36 +46,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "~@/asset/style/variables.scss";
-
-.app-main {
-    position: relative;
-    flex: 1;
-    overflow: hidden;
-    background-color: #f5f7f9;
-
-    .scroll-container {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        overflow-y: overlay;
-        overflow-x: inherit;
-
-        .page-view {
-            margin: $page-view-margin;
-            flex: 1;
-        }
-    }
-
-    .back-to-top {
-        height: 100%;
-        width: 100%;
-        background-color: #f2f5f6;
-        box-shadow: 0 0 6px rgba(0, 0, 0, .12);
-        text-align: center;
-        line-height: 40px;
-        color: #1989fa;
-    }
-}
-</style>
+<style lang="scss" src="./style.scss"></style>
