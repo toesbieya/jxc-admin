@@ -131,12 +131,12 @@ function iframeControl(to, from) {
         if (from.meta.noCache || to.path === `/redirect${from.path}`) {
             del = true
         }
-        store.dispatch(`iframe/close`, {src: from.meta.iframe, del})
+        store.dispatch('iframe/close', {src: from.meta.iframe, del})
     }
 
     //跳转至iframe页面时，打开iframe
     if (to.meta.iframe) {
-        store.dispatch(`iframe/open`, {src: to.meta.iframe})
+        store.dispatch('iframe/open', {src: to.meta.iframe})
     }
 }
 

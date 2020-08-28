@@ -30,7 +30,7 @@ export default {
     components: {VMain, VSidebar, VHeader},
 
     computed: {
-        ...mapState('app', ['device', 'hasHeader']),
+        ...mapState('app', ['device', 'hasNav']),
 
         ...mapState('setting', ['useTagsView', 'sidebarCollapse']),
 
@@ -38,7 +38,7 @@ export default {
             return {
                 'el-container': true,
                 'main-container': true,
-                'has-header': this.hasHeader,
+                'has-nav': this.hasNav,
                 'has-tags-view': this.useTagsView
             }
         },

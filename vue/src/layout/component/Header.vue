@@ -34,7 +34,7 @@ export default {
         },
 
         hideHeader(v) {
-            this.$store.commit('app/hasHeader', !v)
+            this.$store.commit('app/hasNav', !v)
             v ? this.addEvent() : this.removeEvent()
         }
     },

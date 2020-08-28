@@ -81,7 +81,7 @@ a:hover {
     height: calc(100vh - #{$page-view-margin * 2});
 }
 
-.has-header {
+.has-nav {
     .max-view-height {
         height: calc(100vh - #{$nav-height} - #{$page-view-margin * 2});
     }

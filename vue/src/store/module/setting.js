@@ -5,8 +5,6 @@
 import {isEmpty} from "@/util"
 import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/util/storage"
 
-const localSettings = getLocalPersonalSettings()
-
 const state = {
     //是否显示logo
     showLogo: true,
@@ -37,6 +35,7 @@ const state = {
 }
 
 //state填入初始值
+const localSettings = getLocalPersonalSettings()
 Object.keys(state).forEach(key => {
     if (!isEmpty(localSettings[key])) state[key] = localSettings[key]
 })
@@ -61,6 +60,13 @@ const mutations = {
     }
 }
 
+export default {
+    namespaced: true,
+    state,
+    mutations
+}
+
+//每次修改个人设置时，同步到localStorage
 function createMutations(state) {
     return Object.keys(state).reduce((mutations, key) => {
         mutations[key] = (ref, data) => {
@@ -69,10 +75,4 @@ function createMutations(state) {
         }
         return mutations
     }, {})
-}
-
-export default {
-    namespaced: true,
-    state,
-    mutations
 }
