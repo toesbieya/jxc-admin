@@ -13,7 +13,7 @@
             <el-table-column align="center" label="采购订单" show-overflow-tooltip>
                 <router-link
                     slot-scope="{row}"
-                    :to="{name:'purchaseOrderDetail',params:{type:'see',id:row.cgddid}}"
+                    :to="`/purchase/order/detail/see/${row.cgddid}`"
                     @click.native="cancel"
                 >
                     {{ row.cgddid }}
@@ -23,7 +23,7 @@
             <el-table-column align="center" label="采购入库单" show-overflow-tooltip>
                 <router-link
                     slot-scope="{row}"
-                    :to="{name:'purchaseInboundDetail',params:{type:'see',id:row.cgrkid}}"
+                    :to="`/purchase/inbound/detail/see/${row.cgrkid}`"
                     @click.native="cancel"
                 >
                     {{ row.cgrkid }}
@@ -98,7 +98,7 @@ export default {
                 if (a.cgddid < b.cgddid) return 1
                 return 0
             })
-            let count = {}
+            const count = {}
             data.forEach(i => {
                 i.total = mul(i.num, i.price)
                 i._span = {rowspan: 0, colspan: 0}

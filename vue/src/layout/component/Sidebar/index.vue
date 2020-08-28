@@ -93,15 +93,15 @@ export default {
             immediate: true,
             handler(v) {
                 if (!this.sidebarAutoHidden) return
-                const key = `${v ? 'add' : 'remove'}EventListener`
-                document[key]('mousemove', this.moveEvent)
+                const method = `${v ? 'add' : 'remove'}EventListener`
+                document[method]('mousemove', this.moveEvent)
             }
         }
     },
 
     methods: {
         moveEvent(e) {
-            if (e.clientX <= 15) this.mouseOutside = false
+            if (e.clientX <= 1) this.mouseOutside = false
         },
 
         //根据路由地址设置当前激活的菜单路径
