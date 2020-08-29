@@ -1,5 +1,6 @@
 import path from 'path'
 import {route as routeConfig} from '@/config'
+import {mutations as mainMutations} from "@/layout/store/main"
 import {addDynamicRoutes} from '@/router'
 import {getDynamicRoutes} from '@/router/define'
 import {parseRoutes, metaExtend} from "@/router/util"
@@ -10,12 +11,6 @@ import {createTree} from "@/util/tree"
 import {isExternal} from "@/util/validate"
 
 const state = {
-    //当前激活的顶部菜单的fullPath
-    activeRootMenu: '',
-
-    //所有的树形菜单，每个元素为顶部菜单，顶部菜单的子级（如果有）为侧边栏菜单
-    menus: [],
-
     //后端返回的原始权限数据
     //权限表：<权限路径，权限id>，用于util.auth
     resourceMap: {},
@@ -27,13 +22,6 @@ const state = {
 }
 
 const mutations = {
-    activeRootMenu(state, activeRootMenu) {
-        state.activeRootMenu = activeRootMenu
-    },
-    menus(state, menus) {
-        sort(menus)
-        state.menus = menus
-    },
     resource(state, {data, admin}) {
         state.resourceMap = generateResourceMap(data)
 
@@ -73,7 +61,7 @@ const actions = {
                 //获取经过权限过滤后的菜单
                 const menus = getAuthorizedMenus({resources, admin}, routes)
 
-                commit('menus', menus)
+                mainMutations.menus(menus)
                 commit('resource', {data: data || [], admin})
 
                 //设置初始化完成的标志
@@ -167,38 +155,6 @@ function clean(menus, cleanHidden = true) {
             menus.splice(i, 1, ...children)
         }
     }
-}
-
-//菜单排序
-function sort(routes) {
-    const getSortValue = item => {
-        const sort = deepTap(item)
-        return isEmpty(sort) ? 10000 : sort
-    }
-    const deepTap = item => {
-        const {name, children = [], meta: {title, hidden, sort} = {}} = item
-        if (hidden) return null
-        if (!isEmpty(sort)) return sort
-        //如果是类似首页那样的路由层级
-        if (isEmpty(name, title) && children.length === 1) {
-            return deepTap(children[0])
-        }
-        return null
-    }
-
-    routes.sort((pre, next) => {
-        pre = getSortValue(pre)
-        next = getSortValue(next)
-        if (pre < next) return -1
-        else if (pre === next) return 0
-        else return 1
-    })
-    routes.forEach(route => {
-        const {children} = route
-        if (children && children.length) {
-            sort(children)
-        }
-    })
 }
 
 //根据权限列表生成哈希表：<权限路径，权限id>

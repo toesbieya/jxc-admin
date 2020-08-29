@@ -1,8 +1,6 @@
-/*
-* 个性化设置
-* */
-
+import Vue from 'vue'
 import {isEmpty} from "@/util"
+import {createGetters} from "@/util/observable"
 import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/util/storage"
 
 const state = {
@@ -40,39 +38,35 @@ Object.keys(state).forEach(key => {
     if (!isEmpty(localSettings[key])) state[key] = localSettings[key]
 })
 
-const mutations = {
-    ...createMutations(state),
-
-    sidebarCollapse(state, v) {
-        if (v && state.sidebarAutoHidden) {
-            state.sidebarAutoHidden = false
-        }
-        state.sidebarCollapse = v
-        setLocalPersonalSettings(state)
-    },
-
-    sidebarAutoHidden(state, v) {
-        if (v && state.sidebarCollapse) {
-            state.sidebarCollapse = false
-        }
-        state.sidebarAutoHidden = v
-        setLocalPersonalSettings(state)
-    }
-}
-
-export default {
-    namespaced: true,
-    state,
-    mutations
-}
+const store = Vue.observable(state)
 
 //每次修改个人设置时，同步到localStorage
-function createMutations(state) {
-    return Object.keys(state).reduce((mutations, key) => {
-        mutations[key] = (ref, data) => {
-            ref[key] = data
-            setLocalPersonalSettings(ref)
+function createMutations(store) {
+    return Object.keys(store).reduce((mutations, key) => {
+        mutations[key] = data => {
+            store[key] = data
+            setLocalPersonalSettings(store)
         }
         return mutations
     }, {})
+}
+
+export const getters = createGetters(store)
+
+export const mutations = {
+    ...createMutations(store),
+
+    sidebarCollapse(v) {
+        //当启用侧边栏折叠时，停用自动隐藏侧边栏
+        if (v) store.sidebarAutoHidden = false
+        store.sidebarCollapse = v
+        setLocalPersonalSettings(store)
+    },
+
+    sidebarAutoHidden(v) {
+        //当启用自动隐藏侧边栏时，停用侧边栏折叠
+        if (v) store.sidebarCollapse = false
+        store.sidebarAutoHidden = v
+        setLocalPersonalSettings(store)
+    }
 }

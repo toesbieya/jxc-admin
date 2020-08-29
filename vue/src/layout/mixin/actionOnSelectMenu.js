@@ -1,3 +1,4 @@
+import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
 import {isExternal} from "@/util/validate"
 
 export default {
@@ -17,7 +18,7 @@ export default {
             //触发的菜单路径是当前路由时，根据参数判断是否进行刷新
             if (this.$route.path === fullPath) {
                 if (!refreshWhenSame) return
-                this.$store.commit('tagsView/delCachedView', this.$route)
+                tagsViewMutations.delCachedView(this.$route)
                 this.$nextTick(() => this.$router.replace({path: '/redirect' + this.$route.fullPath}))
             }
             else this.$router.push(fullPath)

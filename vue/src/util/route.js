@@ -1,9 +1,8 @@
 import {isEmpty} from "@/util"
 import router from '@/router'
-import store from '@/store'
+import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
 
 export function closeCurrentPage(next) {
-    return store
-        .dispatch('tagsView/delView', router.currentRoute)
-        .then(() => !isEmpty(next) && router.replace(next))
+    tagsViewMutations.delView(router.currentPage)
+    !isEmpty(next) && router.replace(next)
 }

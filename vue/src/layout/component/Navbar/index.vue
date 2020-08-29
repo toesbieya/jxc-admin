@@ -55,6 +55,8 @@ import Breadcrumb from './component/Breadcrumb'
 import Hamburger from './component/Hamburger'
 import RootMenu from "./component/RootMenu"
 import SettingDrawer from './component/SettingDrawer'
+import {getters as mainGetters} from "@/layout/store/main"
+import {getters as settingGetters, mutations as settingMutations} from "@/layout/store/setting"
 import {elConfirm} from "@/util/message"
 
 export default {
@@ -67,13 +69,15 @@ export default {
     data: () => ({settingDrawer: false}),
 
     computed: {
-        ...mapState('app', ['device']),
-
-        ...mapState('resource', ['activeRootMenu', 'menus']),
+        device: () => mainGetters.device,
+        activeRootMenu: () => mainGetters.activeRootMenu,
+        menus: () => mainGetters.menus,
 
         ...mapState('user', ['avatar', 'name', 'prepareLogout']),
 
-        ...mapState('setting', ['sidebarAutoHidden', 'sidebarCollapse', 'showBreadcrumb']),
+        sidebarAutoHidden: () => settingGetters.sidebarAutoHidden,
+        sidebarCollapse: () => settingGetters.sidebarCollapse,
+        showBreadcrumb: () => settingGetters.showBreadcrumb,
 
         renderHamburger() {
             return !(this.device === 'pc' && this.sidebarAutoHidden)
@@ -82,7 +86,7 @@ export default {
 
     methods: {
         sidebarCtrl() {
-            this.$store.commit('setting/sidebarCollapse', !this.sidebarCollapse)
+            settingMutations.sidebarCollapse(!this.sidebarCollapse)
         },
 
         refresh() {

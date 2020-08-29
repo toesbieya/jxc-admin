@@ -15,12 +15,13 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import offlineMixin from './mixin/offline'
+import resizeMixin from './mixin/resize'
 import VMain from './component/Main'
 import VHeader from './component/Header'
 import VSidebar from './component/Sidebar'
-import offlineMixin from "@/layout/mixin/offline"
-import resizeMixin from './mixin/resize'
+import {getters as mainGetters} from "@/layout/store/main"
+import {getters as settingGetters, mutations as settingMutations} from "@/layout/store/setting"
 
 export default {
     name: 'Layout',
@@ -30,9 +31,11 @@ export default {
     components: {VMain, VSidebar, VHeader},
 
     computed: {
-        ...mapState('app', ['device', 'hasNav']),
+        device: () => mainGetters.device,
+        hasNav: () => mainGetters.hasNav,
 
-        ...mapState('setting', ['useTagsView', 'sidebarCollapse']),
+        useTagsView: () => settingGetters.useTagsView,
+        sidebarCollapse: () => settingGetters.sidebarCollapse,
 
         containerClass() {
             return {
@@ -50,7 +53,7 @@ export default {
 
     methods: {
         collapseSidebar() {
-            this.$store.commit('setting/sidebarCollapse', true)
+            settingMutations.sidebarCollapse(true)
         }
     }
 }

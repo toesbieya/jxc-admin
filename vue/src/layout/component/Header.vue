@@ -1,7 +1,9 @@
 <script type="text/jsx">
-import {mapState} from 'vuex'
 import VNavbar from './Navbar'
 import TagsView from './TagsView'
+import {mutations as mainMutations} from "@/layout/store/main"
+import {getters as settingGetters} from "@/layout/store/setting"
+import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
 
 export default {
     name: "Header",
@@ -17,7 +19,8 @@ export default {
     },
 
     computed: {
-        ...mapState('setting', ['useTagsView', 'headerAutoHidden']),
+        useTagsView: () => settingGetters.useTagsView,
+        headerAutoHidden: () => settingGetters.headerAutoHidden,
 
         hideHeader() {
             return this.mouseOutside
@@ -30,11 +33,11 @@ export default {
     watch: {
         //多页签停用时清除所有页面缓存
         useTagsView(v) {
-            !v && this.$store.dispatch('tagsView/delAllViews')
+            !v && tagsViewMutations.delAllViews()
         },
 
         hideHeader(v) {
-            this.$store.commit('app/hasNav', !v)
+            mainMutations.hasNav(!v)
             v ? this.addEvent() : this.removeEvent()
         }
     },

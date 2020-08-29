@@ -1,6 +1,7 @@
 <script type="text/jsx">
-import {mapState} from 'vuex'
 import actionOnSelectMenuMixin from "@/layout/mixin/actionOnSelectMenu"
+import {getters as mainGetters} from "@/layout/store/main"
+import {getters as settingGetters,mutations as settingMutations} from "@/layout/store/setting"
 import Logo from './component/Logo'
 import SidebarItem from './component/SidebarItem'
 
@@ -23,11 +24,15 @@ export default {
     },
 
     computed: {
-        ...mapState('app', ['device']),
+        device: () => mainGetters.device,
+        activeRootMenu: () => mainGetters.activeRootMenu,
+        menus: () => mainGetters.menus,
 
-        ...mapState('resource', ['activeRootMenu', 'menus']),
-
-        ...mapState('setting', ['showLogo', 'sidebarCollapse', 'sidebarUniqueOpen', 'sidebarShowParent', 'sidebarAutoHidden']),
+        showLogo: () => settingGetters.showLogo,
+        sidebarCollapse: () => settingGetters.sidebarCollapse,
+        sidebarUniqueOpen: () => settingGetters.sidebarUniqueOpen,
+        sidebarShowParent: () => settingGetters.sidebarShowParent,
+        sidebarAutoHidden: () => settingGetters.sidebarAutoHidden,
 
         //侧边栏的折叠状态，true折叠false展开，仅在pc端可折叠
         collapse() {
@@ -120,7 +125,7 @@ export default {
             }
 
             //mobile时激活隐藏侧边栏
-            this.device === 'mobile' && this.$store.commit('setting/sidebarCollapse', true)
+            this.device === 'mobile' && settingMutations.sidebarCollapse(true)
 
             jump && this.actionOnSelectMenu(index)
         }

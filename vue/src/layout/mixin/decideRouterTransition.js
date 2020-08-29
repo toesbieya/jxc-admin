@@ -1,4 +1,5 @@
 import {route as routeConfig} from '@/config'
+import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
 
 const {animate} = routeConfig
 
@@ -14,7 +15,7 @@ export default {
             //新开tab也认为顺序高于上一个tab
             if (toIndex === -1 || fromIndex < toIndex) transitionName = animate.next
 
-            this.$store.commit('tagsView/transitionName', transitionName)
+            tagsViewMutations.transitionName(transitionName)
         },
     }
 }

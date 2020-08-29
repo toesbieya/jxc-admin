@@ -1,3 +1,4 @@
+import {mutations as mainMutations} from "@/layout/store/main"
 import {debounce} from '@/util'
 import {isMobile} from "@/util/browser"
 
@@ -6,8 +7,8 @@ export default {
         $_resizeHandler() {
             if (!document.hidden) {
                 const mobile = isMobile()
-                this.$store.commit('app/device', mobile ? 'mobile' : 'pc')
-                mobile && this.$store.commit('setting/sidebarCollapse', true)
+                mainMutations.device(mobile ? 'mobile' : 'pc')
+                mobile && this.collapseSidebar()
             }
         }
     },

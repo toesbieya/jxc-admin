@@ -22,7 +22,9 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {getters as iframeGetters} from "@/layout/store/iframe"
+import {getters as settingGetters} from "@/layout/store/setting"
+import {getters as tagsViewGetters} from "@/layout/store/tagsView"
 import BackToTop from "./component/BackToTop"
 import PageView from "./component/PageView"
 import PageFooter from "./component/PageFooter"
@@ -33,15 +35,14 @@ export default {
     components: {BackToTop, PageView, PageFooter},
 
     computed: {
-        ...mapState('setting', ['showBackToTop']),
+        showBackToTop:()=>settingGetters.showBackToTop,
 
-        ...mapState('tagsView', ['cachedViews', 'transitionName']),
+        cachedViews:()=>tagsViewGetters.cachedViews,
+        transitionName:()=>tagsViewGetters.transitionName,
 
-        ...mapState('iframe', {
-            showIframe: state => state.show,
-            currentIframe: state => state.current,
-            iframeList: state => state.list
-        })
+        showIframe: () => iframeGetters.show,
+        currentIframe: () => iframeGetters.current,
+        iframeList: () => iframeGetters.list,
     }
 }
 </script>

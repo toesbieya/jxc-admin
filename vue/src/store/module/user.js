@@ -1,6 +1,7 @@
 import {createMutations, emptyOrDefault} from "@/util"
 import {autoCompleteUrl} from "@/util/file"
 import {getUser, setUser} from "@/util/storage"
+import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
 import {login, logout} from '@/api/account'
 
 //刷新时从本地存储中获取用户信息
@@ -48,7 +49,7 @@ const actions = {
                     return Promise.all([
                         dispatch('socket/close', null, {root: true}),
                         dispatch('removeUser'),
-                        dispatch('tagsView/delAllViews', null, {root: true})
+                        tagsViewMutations.delAllViews()
                     ])
                 })
                 .then(() => {

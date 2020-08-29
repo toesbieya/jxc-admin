@@ -18,11 +18,12 @@
 </template>
 
 <script>
-import ColorCheckBox from "@/component/ColorCheckBox"
-import ColorCheckboxGroup from "@/component/ColorCheckBox/group"
-import {isDev} from '@/config'
 import client from 'webpack-theme-color-replacer/client'
 import forElementUI from 'webpack-theme-color-replacer/forElementUI'
+import {isDev} from '@/config'
+import ColorCheckBox from "@/component/ColorCheckBox"
+import ColorCheckboxGroup from "@/component/ColorCheckBox/group"
+import {getters, mutations} from "@/layout/store/setting"
 
 const settings = [
     {name: '显示logo', key: 'showLogo'},
@@ -58,10 +59,10 @@ export default {
             isDev && client.changer.changeColor({newColors: forElementUI.getElementUISeries(color)})
         },
         getValue(key) {
-            return this.$store.state.setting[key]
+            return getters[key]
         },
         setValue(value, key) {
-            this.$store.commit(`setting/${key}`, value)
+            mutations[key](value)
         }
     }
 }

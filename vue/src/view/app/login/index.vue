@@ -20,6 +20,7 @@ import SetAnimation from "./SetAnimation"
 import LoginForm from "./LoginForm"
 import RegisterForm from "./RegisterForm"
 import {isEmpty} from "@/util"
+import {isMobile} from "@/util/browser"
 
 export default {
     name: 'login',
@@ -29,7 +30,7 @@ export default {
     data: () => ({title}),
 
     computed: {
-        ...mapState('app', ['device', 'loginBackgroundAnimation']),
+        ...mapState('app', ['loginBackgroundAnimation']),
 
         component() {
             const formType = this.$route.path.substring(1)
@@ -57,7 +58,7 @@ export default {
     mounted() {
         this.animationInstance = null
         //移动端关闭动画，太卡
-        this.device !== 'mobile' && this.setAnimation(this.loginBackgroundAnimation)
+        !isMobile() && this.setAnimation(this.loginBackgroundAnimation)
     },
 
     beforeDestroy() {

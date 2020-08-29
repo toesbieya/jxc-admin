@@ -177,7 +177,7 @@ export function waitUntilSuccess(success, callback, interval = 1000, maxTryTime 
     })
 }
 
-//store中根据state批量生成对应的mutation
+//vuex中根据state批量生成对应的mutation
 export function createMutations(state, all = false) {
     const keys = Object.keys(state)
     const obj = {}

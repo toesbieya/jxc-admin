@@ -31,6 +31,8 @@
 import shortcutMixin from '@/layout/mixin/shortcut'
 import decideRouterTransitionMixin from '@/layout/mixin/decideRouterTransition'
 import {route as routeConfig} from '@/config'
+import {getters as mainGetters} from "@/layout/store/main"
+import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
 import ContextMenu from "@/component/ContextMenu"
 import ContextMenuItem from "@/component/ContextMenu/item"
 import ScrollPane from './ScrollPane'
@@ -54,18 +56,15 @@ export default {
     },
 
     computed: {
-        visitedViews() {
-            return this.$store.state.tagsView.visitedViews
-        },
-        menus() {
-            return this.$store.state.resource.menus
-        }
+        visitedViews: () => tagsViewGetters.visitedViews,
+        menus: () => mainGetters.menus
     },
 
     watch: {
         $route(to, from) {
             this.decideRouteTransition && this.decideRouteTransition(to, from)
-            this.addTags(to).then(() => this.moveToCurrentTag())
+            this.addTags(to)
+            this.moveToCurrentTag()
         },
         'contextmenu.show'(v) {
             this.$emit('menu-show', v)
@@ -102,13 +101,13 @@ export default {
         initTags() {
             this.affixTags = this.filterAffixTags(this.menus)
             for (const tag of this.affixTags) {
-                this.$store.commit('tagsView/addVisitedView', tag)
+                tagsViewMutations.addVisitedView(tag)
             }
         },
 
         //将当前具有meta.title的路由添加为tab页
         addTags(to = this.$route) {
-            return to.meta.title ? this.$store.dispatch('tagsView/addView', to) : Promise.resolve()
+            to.meta.title && tagsViewMutations.addView(to)
         },
 
         //横向滚动条移动至当前tab
@@ -124,34 +123,36 @@ export default {
         * 刷新所选、关闭所选、关闭其他、关闭所有
         * */
         refreshSelectedTag(view) {
-            this.$store.commit('tagsView/delCachedView', view)
+            tagsViewMutations.delCachedView(view)
             this.$nextTick(() => this.$router.replace({path: `/redirect${view.fullPath}`}))
         },
         closeSelectedTag(view) {
             if (this.isAffix(view)) return
-            this.$store
-                .dispatch('tagsView/delView', view)
-                .then(() => this.isActive(view) && this.gotoLastView())
+            tagsViewMutations.delView(view)
+            this.isActive(view) && this.gotoLastView()
         },
         closeOthersTags() {
-            this.$store
-                .dispatch('tagsView/delOthersViews', this.selectedTag)
-                .then(() => {
-                    if (this.selectedTag.path !== this.$route.path) {
-                        return this.$router.push(this.selectedTag)
-                    }
-                })
+            tagsViewMutations.delOthersViews(this.selectedTag)
+            //当前选中的页签不是当前路由时，跳转到选中页签的地址
+            if (this.selectedTag.path !== this.$route.path) {
+                return this.$router.push(this.selectedTag)
+            }
         },
         closeAllTags() {
-            this.$store
-                .dispatch('tagsView/delAllViews')
-                .then(() => this.gotoLastView())
+            tagsViewMutations.delAllViews()
+            this.gotoLastView()
         },
 
         gotoLastView() {
-            if (this.visitedViews.length === 0) return this.$router.push('/')
+            if (this.visitedViews.length === 0) {
+                return this.$router.push('/')
+            }
             const latest = this.visitedViews[this.visitedViews.length - 1]
-            if (this.$route.path !== latest.path) this.$router.push(latest.path)
+            //只有当页签路径与当前路由路径不同时才跳转，否则刷新
+            if (this.$route.path !== latest.path) {
+                this.$router.push(latest.path)
+            }
+            else this.$router.replace(`/redirect${this.$route.fullPath}`)
         },
 
         openMenu(tag, e) {
@@ -171,7 +172,7 @@ export default {
 
     beforeDestroy() {
         //销毁前将路由动画改为fade
-        this.$store.commit('tagsView/transitionName', routeConfig.animate.default)
+        tagsViewMutations.transitionName(routeConfig.animate.default)
     },
 
     mounted() {
