@@ -1,5 +1,5 @@
 <template>
-    <section class="el-container app-wrapper">
+    <section class="app-wrapper">
         <v-sidebar/>
 
         <section :class="containerClass">
@@ -39,7 +39,6 @@ export default {
 
         containerClass() {
             return {
-                'el-container': true,
                 'main-container': true,
                 'has-nav': this.hasNav,
                 'has-tags-view': this.useTagsView
@@ -61,10 +60,10 @@ export default {
 
 <style lang="scss">
 .app-wrapper {
+    display: flex;
     position: relative;
     height: 100%;
     width: 100%;
-    flex-direction: row;
 
     .drawer-bg {
         background: rgba(0, 0, 0, .5);
@@ -77,6 +76,8 @@ export default {
     }
 
     .main-container {
+        display: flex;
+        flex: 1;
         overflow: hidden;
         position: relative;
         flex-direction: column;

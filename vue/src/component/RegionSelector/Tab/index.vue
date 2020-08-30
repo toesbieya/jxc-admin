@@ -36,7 +36,7 @@
             <div class="rg-level-tabs">
                 <ul>
                     <li v-for="(tab,index) in selected" :key="tab.name" :class="{active:index+1 === currentLevel}">
-                        <a href="javascript:" @click="()=>clickTab(index,tab)">{{ tab.name }}</a>
+                        <a href="javascript:" @click="() => clickTab(index,tab)">{{ tab.name }}</a>
                     </li>
                 </ul>
             </div>
@@ -47,7 +47,7 @@
                         v-for="item in items"
                         :key="item.id"
                         :class="{'rg-item': true, 'active': isItemActive(item.id)}"
-                        @click="()=>clickItem(item)"
+                        @click="() => clickItem(item)"
                     >
                         {{ limit ? item.name + `(${item.value})` : item.name }}
                     </li>

@@ -70,9 +70,9 @@
                     </el-table-column>
                     <el-table-column v-if="canSave" align="center" label="操作" width="140">
                         <template v-if="canSave" v-slot="{row,$index}">
-                            <el-button v-if="!row._editable" type="text" @click="()=>row._editable=true">编辑</el-button>
-                            <el-button v-else type="text" @click="()=>row._editable=false">保存</el-button>
-                            <el-button type="text" @click="()=>delSub(row,$index)">删除</el-button>
+                            <el-button v-if="!row._editable" type="text" @click="row._editable=true">编辑</el-button>
+                            <el-button v-else type="text" @click="row._editable=false">保存</el-button>
+                            <el-button type="text" @click="() => delSub(row,$index)">删除</el-button>
                         </template>
                     </el-table-column>
                     <div v-if="canSave" slot="append" class="table-add-btn">
