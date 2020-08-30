@@ -1,8 +1,8 @@
 <template>
     <el-breadcrumb class="app-breadcrumb">
         <transition-group name="breadcrumb">
-            <el-breadcrumb-item v-for="item in data" :key="item.path">
-                <span class="no-redirect">{{ item.meta.title }}</span>
+            <el-breadcrumb-item v-for="(item,index) in data" :key="item.path">
+                <span :class="{'no-redirect': index !== data.length-1}">{{ item.meta.title }}</span>
             </el-breadcrumb-item>
         </transition-group>
     </el-breadcrumb>
@@ -33,14 +33,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/asset/style/variables.scss";
-
 .app-breadcrumb {
-    margin: 0 8px;
-    line-height: $nav-height;
+    width: 100%;
+    background: #fff;
+    padding: 16px 24px;
 
     .no-redirect {
-        color: $--color-gray;
+        color: #909399;
         cursor: text;
     }
 }

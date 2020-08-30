@@ -1,6 +1,7 @@
 <template>
     <main class="app-main">
         <div v-show="!showIframe" class="scroll-container">
+            <breadcrumb v-if="showBreadcrumb"/>
             <page-view :include="cachedViews" :transition-name="transitionName"/>
             <page-footer/>
         </div>
@@ -26,15 +27,17 @@ import {getters as iframeGetters} from "@/layout/store/iframe"
 import {getters as settingGetters} from "@/layout/store/setting"
 import {getters as tagsViewGetters} from "@/layout/store/tagsView"
 import BackToTop from "./component/BackToTop"
+import Breadcrumb from './component/Breadcrumb'
 import PageView from "./component/PageView"
 import PageFooter from "./component/PageFooter"
 
 export default {
     name: 'AppMain',
 
-    components: {BackToTop, PageView, PageFooter},
+    components: {BackToTop, Breadcrumb,PageView, PageFooter},
 
     computed: {
+        showBreadcrumb: () => settingGetters.showBreadcrumb,
         showBackToTop:()=>settingGetters.showBackToTop,
 
         cachedViews:()=>tagsViewGetters.cachedViews,

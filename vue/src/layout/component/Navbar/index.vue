@@ -3,8 +3,6 @@
         <div style="width: 30%">
             <hamburger class="navbar-item" :render="renderHamburger" :active="!sidebarCollapse" @click="sidebarCtrl"/>
 
-            <breadcrumb v-if="showBreadcrumb"/>
-
             <root-menu :active-menu="activeRootMenu" :menu="menus" always-show/>
         </div>
 
@@ -51,7 +49,6 @@
 import {mapState} from 'vuex'
 import GuideMixin from '@/mixin/guide'
 import Bell from "./component/Bell"
-import Breadcrumb from './component/Breadcrumb'
 import Hamburger from './component/Hamburger'
 import RootMenu from "./component/RootMenu"
 import SettingDrawer from './component/SettingDrawer'
@@ -64,7 +61,7 @@ export default {
 
     mixins: [GuideMixin.navbar],
 
-    components: {Hamburger, Breadcrumb, Bell, RootMenu, SettingDrawer},
+    components: {Hamburger, Bell, RootMenu, SettingDrawer},
 
     data: () => ({settingDrawer: false}),
 
@@ -77,7 +74,6 @@ export default {
 
         sidebarAutoHidden: () => settingGetters.sidebarAutoHidden,
         sidebarCollapse: () => settingGetters.sidebarCollapse,
-        showBreadcrumb: () => settingGetters.showBreadcrumb,
 
         renderHamburger() {
             return !(this.device === 'pc' && this.sidebarAutoHidden)
