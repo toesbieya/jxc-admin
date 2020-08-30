@@ -34,14 +34,17 @@ import PageFooter from "./component/PageFooter"
 export default {
     name: 'AppMain',
 
-    components: {BackToTop, Breadcrumb,PageView, PageFooter},
+    components: {BackToTop, Breadcrumb, PageView, PageFooter},
 
     computed: {
-        showBreadcrumb: () => settingGetters.showBreadcrumb,
-        showBackToTop:()=>settingGetters.showBackToTop,
+        showBreadcrumb() {
+            if (!settingGetters.showBreadcrumb) return false
+            return this.$route.meta.breadcrumb !== false
+        },
+        showBackToTop: () => settingGetters.showBackToTop,
 
-        cachedViews:()=>tagsViewGetters.cachedViews,
-        transitionName:()=>tagsViewGetters.transitionName,
+        cachedViews: () => tagsViewGetters.cachedViews,
+        transitionName: () => tagsViewGetters.transitionName,
 
         showIframe: () => iframeGetters.show,
         currentIframe: () => iframeGetters.current,

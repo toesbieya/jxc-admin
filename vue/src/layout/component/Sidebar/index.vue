@@ -1,7 +1,7 @@
 <script type="text/jsx">
 import actionOnSelectMenuMixin from "@/layout/mixin/actionOnSelectMenu"
 import {getters as mainGetters} from "@/layout/store/main"
-import {getters as settingGetters,mutations as settingMutations} from "@/layout/store/setting"
+import {getters as settingGetters, mutations as settingMutations} from "@/layout/store/setting"
 import Logo from './component/Logo'
 import SidebarItem from './component/SidebarItem'
 

@@ -12,11 +12,11 @@ const router = {
         },
         {
             path: 'order/detail/:type(see|add|edit)/:id?',
-            props: true,
             component: 'sell/order/detail',
             meta: {
                 title: '销售订单详情页',
                 hidden: true,
+                breadcrumb: false,
                 dynamicTitle(to) {
                     const {type, id} = to.params
                     switch (type) {
@@ -41,11 +41,11 @@ const router = {
         },
         {
             path: 'outbound/detail/:type(see|add|edit)/:id?',
-            props: true,
             component: 'sell/outbound/detail',
             meta: {
                 title: '销售出库详情页',
                 hidden: true,
+                breadcrumb: false,
                 dynamicTitle(to) {
                     const {type, id} = to.params
                     switch (type) {

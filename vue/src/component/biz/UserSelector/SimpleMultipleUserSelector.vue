@@ -17,7 +17,7 @@ export default {
 
     props: {value: Array, disabled: Boolean},
 
-    data:()=>({data:[]}),
+    data: () => ({data: []}),
 
     methods: {
         emit(v) {
