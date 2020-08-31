@@ -1,30 +1,9 @@
-//material design的基础颜色
-$--color-red: #F44336;
-$--color-pink: #E91E63;
-$--color-purple: #9C27B0;
-$--color-deep-purple: #673AB7;
-$--color-indigo: #3F51B5;
-$--color-blue: #2196F3;
-$--color-light-blue: #03A9F4;
-$--color-cyan: #00BCD4;
-$--color-teal: #009688;
-$--color-green: #4CAF50;
-$--color-light-green: #8BC34A;
-$--color-lime: #CDDC39;
-$--color-yellow: #FFEB3B;
-$--color-amber: #FFC107;
-$--color-orange: #FF9800;
-$--color-deep-orange: #FF5722;
-$--color-brown: #795548;
-$--color-gray: #9E9E9E;
-$--color-blue-gray: #607D8B;
-
 //覆盖element颜色
 $--color-primary: #1890ff;
 $--color-success: #21BA45;
-$--color-warning: $--color-deep-orange;
-$--color-danger: $--color-red;
-$--color-info: $--color-teal;
+$--color-warning: #FF5722;
+$--color-danger: #F44336;
+$--color-info: #009688;
 
 @mixin clearfix {
     &::after {

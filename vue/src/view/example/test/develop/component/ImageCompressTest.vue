@@ -174,8 +174,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/asset/style/variables.scss";
-
 .container {
     max-width: 1200px;
     text-align: center;
@@ -199,7 +197,7 @@ export default {
         text-align: center;
 
         p {
-            color: $--color-gray;
+            color: #909399;
             margin-top: 0;
             margin-bottom: 1rem;
         }

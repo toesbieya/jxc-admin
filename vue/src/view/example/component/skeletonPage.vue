@@ -27,7 +27,9 @@ import {skeletonAnimations, skeletonTypes} from '@/component/Skeleton/constant'
 
 export default {
     name: "skeletonExample",
+
     components: {QSkeleton},
+
     data() {
         return {
             skeletonTypes,
@@ -49,7 +51,7 @@ export default {
 }
 
 .bg-info {
-    background-color: $--color-teal;
+    background-color: $--color-info;
 }
 
 .bg-warning {
