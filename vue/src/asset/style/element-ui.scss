@@ -1,7 +1,7 @@
 // cover some element-ui styles
 .el-alert {
     &--info.is-light {
-        color: #515a6e;
+        color: #606266;
         background-color: #f0faff;
         border: 1px solid #abdcff;
 
@@ -57,7 +57,7 @@
     min-width: 384px;
 
     .el-dialog__header {
-        border-bottom: 1px solid #ebeef5;
+        border-bottom: 1px solid #EBEEF5;
         padding: 17px;
 
         .el-dialog__title {
@@ -72,7 +72,7 @@
     }
 
     .el-dialog__footer {
-        border-top: 1px solid #ebeef5;
+        border-top: 1px solid #EBEEF5;
         padding: 10px 16px;
     }
 
@@ -99,7 +99,7 @@
     border-width: 0;
 
     .el-message__icon, .el-message__content {
-        color: #fff !important;
+        color: #ffffff !important;
     }
 
     &.el-message--success {
@@ -165,7 +165,7 @@
 
 .el-table {
     thead {
-        color: rgba(0, 0, 0, .85)
+        color: #303133
     }
 
     thead > tr > th {
@@ -176,26 +176,5 @@
 .el-textarea {
     .el-input__count {
         background: transparent;
-    }
-}
-
-.el-timeline {
-    padding-left: 1px;
-
-    .el-timeline__empty {
-        margin: 0 auto;
-        text-align: center;
-    }
-
-    .el-timeline-item__tail {
-        left: 5px;
-    }
-
-    .el-timeline-item__node--normal {
-        left: 0;
-    }
-
-    .el-scrollbar__wrap {
-        overflow-x: hidden;
     }
 }

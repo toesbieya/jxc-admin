@@ -1,6 +1,6 @@
 .rg-header, .rg-search {
     padding: 2px 10px 0;
-    background-color: white;
+    background-color: #ffffff;
 }
 
 .rg-header {
@@ -27,7 +27,7 @@
         }
 
         &:hover {
-            color: black;
+            color: #000000;
         }
 
         &.rg-removeall-button {
@@ -42,7 +42,7 @@
 
 .rg-level-tabs {
     margin-top: 10px;
-    background-color: #fff;
+    background-color: #ffffff;
 
     ul {
         padding: 0;
@@ -67,7 +67,7 @@
             &.active {
                 a {
                     color: #333;
-                    background-color: #fff;
+                    background-color: #ffffff;
                     font-weight: 600;
                 }
 
@@ -96,7 +96,7 @@
             overflow: hidden;
             padding: 3px 10px;
             font-size: 14px;
-            color: black;
+            color: #000000;
             cursor: pointer;
 
             &.rg-item {
@@ -104,13 +104,13 @@
                 color: #777;
 
                 &:hover {
-                    color: black;
+                    color: #000000;
                     background-color: #F5F5F5;
                 }
 
                 &.active {
                     background-color: #E4EAEE;
-                    color: black;
+                    color: #000000;
                 }
             }
 

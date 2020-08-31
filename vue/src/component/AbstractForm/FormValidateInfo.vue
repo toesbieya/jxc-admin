@@ -110,7 +110,7 @@ export default {
 
     &-item {
         padding: 8px 16px;
-        background-color: #fff;
+        background-color: #ffffff;
         border-bottom: 1px solid #f0f0f0;
         cursor: pointer;
         transition: background-color .3s;

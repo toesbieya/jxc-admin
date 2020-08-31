@@ -204,7 +204,7 @@ export default {
 
         img {
             padding: .25rem;
-            background-color: #fff;
+            background-color: #ffffff;
             border: 1px solid #dee2e6;
             border-radius: .25rem;
             max-width: 100%;

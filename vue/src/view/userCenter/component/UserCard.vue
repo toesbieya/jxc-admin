@@ -53,6 +53,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~@/asset/style/variables.scss";
+
 .user-card {
     .avatar-container {
         position: relative;
@@ -79,7 +81,7 @@ export default {
         list-style: none;
 
         li {
-            border-bottom: 1px solid #F0F3F4;
+            border-bottom: 1px solid #EBEEF5;
             padding: 11px 0;
             font-size: 13px;
         }
@@ -88,7 +90,7 @@ export default {
             float: right;
 
             a {
-                color: #317EF3;
+                color: $--color-primary;
             }
         }
     }

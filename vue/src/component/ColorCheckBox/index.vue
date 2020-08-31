@@ -43,6 +43,6 @@ export default {
     margin-right: 8px;
     text-align: center;
     font-weight: bold;
-    color: #fff;
+    color: #ffffff;
 }
 </style>

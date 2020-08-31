@@ -238,7 +238,7 @@ export default {
         > .menu-popover {
             position: absolute;
             left: -20px;
-            background-color: #fff;
+            background-color: #ffffff;
             margin: 5px 0;
             padding: 5px 0;
             min-width: 100px;

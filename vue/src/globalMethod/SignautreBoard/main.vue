@@ -144,7 +144,7 @@ export default {
 <style lang="scss">
 .signature-board {
     position: fixed;
-    background-color: white;
+    background-color: #ffffff;
     top: 0;
     right: 0;
     height: 100vh;

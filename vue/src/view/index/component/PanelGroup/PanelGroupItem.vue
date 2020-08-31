@@ -45,7 +45,7 @@ export default {
     border-color: rgba(0, 0, 0, .05);
 
     &:hover .card-panel-icon-wrapper {
-        color: #fff;
+        color: #ffffff;
     }
 
     .card-panel-icon-wrapper {
