@@ -36,7 +36,7 @@
                 <el-table-column align="center" label="#" type="index" width="80"/>
                 <el-table-column align="center" label="角色名" prop="name" show-overflow-tooltip/>
                 <el-table-column align="center" label="创建人" prop="cname" show-overflow-tooltip/>
-                <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
+                <el-table-column align="center" label="创建时间" width="150">
                     <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="状 态" width="120">

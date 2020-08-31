@@ -123,13 +123,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-@import "~@/asset/style/variables.scss";
-
-.el-table {
-    a {
-        color: $--color-primary;
-    }
-}
-</style>

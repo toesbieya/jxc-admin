@@ -49,7 +49,7 @@
                 >
                     <el-table-column align="center" label="#" type="index" width="80"/>
                     <el-table-column align="center" label="商品分类">
-                        <el-link slot-scope="{row}" @click="more(row)">{{ row.cname }}</el-link>
+                        <a slot-scope="{row}" type="primary" @click="() => more(row)">{{ row.cname }}</a>
                     </el-table-column>
                     <el-table-column align="center" label="库存数量" prop="totalNum" show-overflow-tooltip/>
                     <el-table-column align="center" label="总 值" prop="totalPrice" show-overflow-tooltip/>

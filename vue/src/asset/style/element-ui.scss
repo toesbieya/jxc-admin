@@ -171,15 +171,6 @@
     thead > tr > th {
         background: #fbfbfb;
     }
-
-    .el-table__body tr.current-row > td {
-        background-color: $--color-primary;
-        color: #fff;
-
-        .el-table__expand-icon {
-            color: #fff;
-        }
-    }
 }
 
 .el-textarea {
@@ -206,12 +197,5 @@
 
     .el-scrollbar__wrap {
         overflow-x: hidden;
-    }
-}
-
-.el-tree {
-    &.el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
-        background-color: $--color-primary;
-        color: #fff;
     }
 }

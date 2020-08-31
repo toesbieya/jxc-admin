@@ -58,7 +58,7 @@
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="部 门" prop="deptName" show-overflow-tooltip/>
-                <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
+                <el-table-column align="center" label="创建时间" width="150">
                     <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="在线情况" width="120">

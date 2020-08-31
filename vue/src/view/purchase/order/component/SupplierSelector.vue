@@ -41,7 +41,7 @@
                     <el-table-column align="center" label="地 址" prop="address" show-overflow-tooltip/>
                     <el-table-column align="center" label="联系人" prop="linkman" show-overflow-tooltip/>
                     <el-table-column align="center" label="联系电话" prop="linkphone" show-overflow-tooltip/>
-                    <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
+                    <el-table-column align="center" label="创建时间" width="150">
                         <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
                     </el-table-column>
                     <el-table-column align="center" label="状 态" width="120">

@@ -70,13 +70,21 @@
                     </template>
                 </el-table-column>
                 <el-table-column align="center" label="#" type="index" width="80"/>
-                <el-table-column align="center" label="单 号" prop="id" width="160" show-overflow-tooltip/>
+                <el-table-column align="center" label="单 号" width="160">
+                    <router-link
+                        slot-scope="{row}"
+                        :to="`/sell/outbound/detail/see/${row.id}`"
+                        @click.native.stop
+                    >
+                        {{ row.id }}
+                    </router-link>
+                </el-table-column>
                 <el-table-column align="center" label="创建人" prop="cname" show-overflow-tooltip/>
-                <el-table-column align="center" label="创建时间" width="150" show-overflow-tooltip>
+                <el-table-column align="center" label="创建时间" width="150">
                     <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="审核人" prop="vname" show-overflow-tooltip/>
-                <el-table-column align="center" label="审核时间" width="150" show-overflow-tooltip>
+                <el-table-column align="center" label="审核时间" width="150">
                     <template v-slot="{row}">{{ row.vtime | timestamp2Date }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="状 态" width="120">

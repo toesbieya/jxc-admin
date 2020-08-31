@@ -41,7 +41,7 @@
                     <template v-slot="{row}">{{ transformStatus(row.status) }}</template>
                 </el-table-column>
                 <el-table-column align="center" label="发布人" prop="pname" show-overflow-tooltip/>
-                <el-table-column align="center" label="发布时间" width="150" show-overflow-tooltip>
+                <el-table-column align="center" label="发布时间" width="150">
                     <template v-slot="{row}">{{ row.ptime | timestamp2Date }}</template>
                 </el-table-column>
             </abstract-table>
