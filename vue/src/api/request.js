@@ -92,7 +92,7 @@ class Api {
     request(...args) {
         const params = this.arg ? this.arg(...args) : undefined
         const method = this.isGet ? 'get' : 'post'
-        const promise = instance[method](this.url, params)
+        const promise = instance[method](this.url, params).catch(e => console.error(e))
         return this.chain ? this.chain(promise) : promise
     }
 }
