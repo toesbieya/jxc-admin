@@ -17,11 +17,9 @@ function getComponentName(opts) {
     return opts && (opts.Ctor.options.name || opts.tag)
 }
 
-function pruneCacheEntry(cache, key, current) {
+function removeCache(cache, key) {
     const cached = cache[key]
-    if (cached && (!current || cached.tag !== current.tag)) {
-        cached.componentInstance && cached.componentInstance.$destroy()
-    }
+    cached && cached.componentInstance && cached.componentInstance.$destroy()
     delete cache[key]
 }
 
@@ -47,12 +45,12 @@ export default {
         include: {
             deep: true,
             handler(val) {
-                const {cache, $route, _vnode} = this
+                const {cache, $route} = this
                 for (const key of Object.keys(cache)) {
                     const cachedNode = cache[key]
                     const name = getCacheKey($route, cachedNode.componentOptions)
-                    if (name && !val.includes(name)) {
-                        pruneCacheEntry(cache, key, _vnode)
+                    if (!val || !val.includes(name)) {
+                        removeCache(cache, key)
                     }
                 }
             }
@@ -65,7 +63,7 @@ export default {
 
     beforeDestroy() {
         for (const key of Object.keys(this.cache)) {
-            pruneCacheEntry(this.cache, key)
+            removeCache(this.cache, key)
         }
     },
 
