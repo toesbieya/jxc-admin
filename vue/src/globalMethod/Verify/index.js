@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Main from './main.vue'
-import {PopupManager} from 'element-ui/lib/utils/popup'
 import {isEmpty} from "@/util"
 
 let Constructor = Vue.extend(Main)
@@ -13,7 +12,6 @@ const PuzzleVerify = function ({left, top} = {}) {
     instance.positionLeft = position.left
     instance.$mount()
     document.body.appendChild(instance.$el)
-    instance.$el.style.zIndex = PopupManager.nextZIndex()
     instance.visible = true
 
     return new Promise((resolve, reject) => {

@@ -2,6 +2,7 @@
 
 .puzzle-container {
     position: absolute;
+    z-index: 1000;
     box-shadow: 0 0 10px #cccccc;
     border: 1px solid #cccccc;
     background: #ffffff;
