@@ -2,7 +2,7 @@
 
 $iconSize: 16px;
 
-.sidebar-container {
+.aside {
     display: flex;
     flex-direction: column;
     width: $side-bar-width;
@@ -20,7 +20,7 @@ $iconSize: 16px;
     }
 
     //折叠设置
-    &.collapse-sidebar {
+    &.collapse {
         width: $iconSize + 20px * 2;
 
         .sidebar-item-content {
@@ -29,7 +29,7 @@ $iconSize: 16px;
     }
 
     //自动隐藏
-    &.hide-sidebar {
+    &.hide {
         width: 0;
         pointer-events: none;
         transform: translateX(-$side-bar-width);
@@ -132,6 +132,16 @@ $iconSize: 16px;
             border-bottom: 1px solid $sub-menu-background;
         }
     }
+}
+
+.aside-hidden-mask {
+    background: rgba(0, 0, 0, .5);
+    backdrop-filter: blur(10px);
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    position: fixed;
+    z-index: 9;
 }
 
 

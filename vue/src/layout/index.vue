@@ -1,59 +1,63 @@
-<template>
-    <section class="app-wrapper">
-        <v-aside/>
-
-        <section :class="containerClass">
-            <v-header/>
-            <v-main/>
-        </section>
-
-        <!--移动端侧边栏展开时的遮罩-->
-        <transition name="el-fade-in-linear">
-            <div v-if="showSidebarMask" class="drawer-bg" @click.stop.prevent="collapseSidebar"/>
-        </transition>
-    </section>
-</template>
-
-<script>
+<script type="text/jsx">
 import offlineMixin from './mixin/offline'
-import resizeMixin from './mixin/resize'
 import VAside from './component/Aside'
 import VHeader from './component/Header'
 import VMain from './component/Main'
-import {getters as mainGetters} from "@/layout/store/main"
-import {getters as settingGetters, mutations as settingMutations} from "@/layout/store/setting"
+import {getters as mainGetters, mutations as mainMutations} from "@/layout/store/main"
+import {getters as settingGetters} from "@/layout/store/setting"
+import {isMobile} from "@/util/browser"
+import {debounce} from "@/util"
 
 export default {
     name: 'Layout',
 
-    mixins: [offlineMixin, resizeMixin],
+    mixins: [offlineMixin],
 
     components: {VAside, VHeader, VMain},
 
     computed: {
-        device: () => mainGetters.device,
         hasNav: () => mainGetters.hasNav,
-
         useTagsView: () => settingGetters.useTagsView,
-        sidebarCollapse: () => settingGetters.sidebarCollapse,
-
         containerClass() {
             return {
                 'main-container': true,
                 'has-nav': this.hasNav,
                 'has-tags-view': this.useTagsView
             }
-        },
-
-        showSidebarMask() {
-            return !this.sidebarCollapse && this.device === 'mobile'
         }
     },
 
     methods: {
-        collapseSidebar() {
-            settingMutations.sidebarCollapse(true)
+        $_resizeHandler() {
+            if (!document.hidden) {
+                const mobile = isMobile()
+                mainMutations.device(mobile ? 'mobile' : 'pc')
+            }
         }
+    },
+
+    mounted() {
+        this.$_resizeHandler = debounce(this.$_resizeHandler)
+        this.$_resizeHandler()
+
+        window.addEventListener('resize', this.$_resizeHandler)
+
+        this.$once('hook:beforeDestroy', () => {
+            window.removeEventListener('resize', this.$_resizeHandler)
+        })
+    },
+
+    render() {
+        return (
+            <section class="app-wrapper">
+                <v-aside/>
+
+                <section class={this.containerClass}>
+                    <v-header/>
+                    <v-main/>
+                </section>
+            </section>
+        )
     }
 }
 </script>
@@ -64,16 +68,6 @@ export default {
     position: relative;
     height: 100%;
     width: 100%;
-
-    .drawer-bg {
-        background: rgba(0, 0, 0, .5);
-        backdrop-filter: blur(10px);
-        width: 100%;
-        top: 0;
-        height: 100%;
-        position: fixed;
-        z-index: 9;
-    }
 
     .main-container {
         display: flex;

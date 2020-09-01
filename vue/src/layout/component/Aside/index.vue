@@ -1,8 +1,10 @@
 <script type="text/jsx">
+import Vue from 'vue'
 import actionOnSelectMenuMixin from "@/layout/mixin/actionOnSelectMenu"
 import {getters as mainGetters} from "@/layout/store/main"
 import {getters as settingGetters, mutations as settingMutations} from "@/layout/store/setting"
 import Logo from './component/Logo'
+import Mask from "./component/Mask"
 import SidebarItem from './component/SidebarItem'
 
 export default {
@@ -47,12 +49,17 @@ export default {
                 || this.sidebarCollapse && this.device === 'mobile'
         },
 
-        sidebarClass() {
+        //是否显示移动端展开侧边栏时的遮罩
+        showHiddenMask() {
+            return !this.sidebarCollapse && this.device === 'mobile'
+        },
+
+        asideClass() {
             return {
-                'sidebar-container': true,
+                'aside': true,
                 'mobile': this.device === 'mobile',
-                'collapse-sidebar': this.collapse,
-                'hide-sidebar': this.hideSidebar
+                'collapse': this.collapse,
+                'hide': this.hideSidebar
             }
         }
     },
@@ -78,6 +85,15 @@ export default {
             }
         },
 
+        //切换至移动端时收起侧边栏
+        device: {
+            immediate: true,
+            handler(v) {
+                v === 'mobile' && this.collapseSidebar()
+            }
+        },
+
+        //顶部菜单改变时获取侧边栏菜单，并重设高亮项
         activeRootMenu: {
             immediate: true,
             handler(v) {
@@ -94,13 +110,14 @@ export default {
         },
 
         //设置了侧边栏自动隐藏后，根据状态添加或移除鼠标移动事件
-        hideSidebar: {
-            immediate: true,
-            handler(v) {
-                if (!this.sidebarAutoHidden) return
-                const method = `${v ? 'add' : 'remove'}EventListener`
-                document[method]('mousemove', this.moveEvent)
-            }
+        hideSidebar(v) {
+            if (!this.sidebarAutoHidden) return
+            const method = `${v ? 'add' : 'remove'}EventListener`
+            document[method]('mousemove', this.moveEvent)
+        },
+
+        showHiddenMask(v) {
+            this.maskInstance.show = v
         }
     },
 
@@ -128,11 +145,34 @@ export default {
             this.device === 'mobile' && settingMutations.sidebarCollapse(true)
 
             jump && this.actionOnSelectMenu(index)
+        },
+
+        collapseSidebar(e) {
+            if (e) {
+                e.preventDefault()
+                e.stopPropagation()
+            }
+            settingMutations.sidebarCollapse(true)
         }
     },
 
-    beforeDestroy() {
-        document.removeEventListener('mousemove', this.moveEvent)
+    mounted() {
+        if (this.sidebarAutoHidden) {
+            document.addEventListener('mousemove', this.moveEvent)
+        }
+
+        //插入遮罩组件
+        const MaskConstructor = Vue.extend(Mask)
+        this.maskInstance = new MaskConstructor().$mount()
+        this.maskInstance.onClick = this.collapseSidebar
+        document.body.appendChild(this.maskInstance.$el)
+
+        this.$once('hook:beforeDestroy', () => {
+            document.removeEventListener('mousemove', this.moveEvent)
+
+            document.body.removeChild(this.maskInstance.$el)
+            this.maskInstance.$destroy()
+        })
     },
 
     render() {
@@ -161,7 +201,7 @@ export default {
 
         return (
             <aside
-                class={this.sidebarClass}
+                class={this.asideClass}
                 on-mouseenter={() => this.mouseOutside = false}
                 on-mouseleave={() => this.mouseOutside = true}
             >
