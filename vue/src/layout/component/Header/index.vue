@@ -1,9 +1,9 @@
 <script type="text/jsx">
-import VNavbar from './Navbar'
-import TagsView from './TagsView'
 import {mutations as mainMutations} from "@/layout/store/main"
 import {getters as settingGetters} from "@/layout/store/setting"
 import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
+import VNavbar from './component/Navbar'
+import TagsView from './component/TagsView'
 
 export default {
     name: "Header",

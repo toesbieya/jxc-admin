@@ -6,7 +6,7 @@ import Logo from './component/Logo'
 import SidebarItem from './component/SidebarItem'
 
 export default {
-    name: 'sidebar',
+    name: 'Aside',
 
     mixins: [actionOnSelectMenuMixin],
 

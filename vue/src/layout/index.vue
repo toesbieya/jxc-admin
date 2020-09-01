@@ -1,6 +1,6 @@
 <template>
     <section class="app-wrapper">
-        <v-sidebar/>
+        <v-aside/>
 
         <section :class="containerClass">
             <v-header/>
@@ -17,9 +17,9 @@
 <script>
 import offlineMixin from './mixin/offline'
 import resizeMixin from './mixin/resize'
-import VMain from './component/Main'
+import VAside from './component/Aside'
 import VHeader from './component/Header'
-import VSidebar from './component/Sidebar'
+import VMain from './component/Main'
 import {getters as mainGetters} from "@/layout/store/main"
 import {getters as settingGetters, mutations as settingMutations} from "@/layout/store/setting"
 
@@ -28,7 +28,7 @@ export default {
 
     mixins: [offlineMixin, resizeMixin],
 
-    components: {VMain, VSidebar, VHeader},
+    components: {VAside, VHeader, VMain},
 
     computed: {
         device: () => mainGetters.device,
