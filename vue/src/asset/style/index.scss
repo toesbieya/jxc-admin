@@ -44,21 +44,23 @@ a:hover {
 }
 
 //非移动端的滚动条样式修改
-@media (min-width: 500px) {
-    ::-webkit-scrollbar {
-        width: 6px;
-
-        &:horizontal {
-            height: 6px;
-        }
-
-        &-thumb {
+@media (min-width: 768px) {
+    .scroll-container {
+        &::-webkit-scrollbar {
             width: 6px;
-            border-radius: 5px;
-            background-color: rgba($--color-primary, 0.8);
 
-            &:hover {
-                background-color: rgba($--color-primary, 1);
+            &:horizontal {
+                height: 6px;
+            }
+
+            &-thumb {
+                width: 6px;
+                border-radius: 5px;
+                background-color: rgba($--color-primary, 0.8);
+
+                &:hover {
+                    background-color: rgba($--color-primary, 1);
+                }
             }
         }
     }

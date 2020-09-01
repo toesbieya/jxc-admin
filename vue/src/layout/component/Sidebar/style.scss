@@ -74,6 +74,10 @@ $iconSize: 16px;
 
     .el-scrollbar {
         flex: 1;
+
+        &__wrap{
+            overflow-x: hidden;
+        }
     }
 }
 

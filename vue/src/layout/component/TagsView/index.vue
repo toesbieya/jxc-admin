@@ -8,8 +8,8 @@
                 :class="{'tags-view-item': true, active: isActive(tag)}"
                 :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
                 tag="div"
-                @contextmenu.prevent.stop.native="e => openMenu(tag, e)"
-                @dblclick.prevent.stop.native="() => closeSelectedTag(tag)"
+                @contextmenu.prevent.native="e => openMenu(tag, e)"
+                @dblclick.prevent.native="() => closeSelectedTag(tag)"
             >
                 {{ tag.title }}
                 <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="() => closeSelectedTag(tag)"/>
