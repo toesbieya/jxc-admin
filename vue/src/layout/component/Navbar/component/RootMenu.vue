@@ -25,11 +25,10 @@ export default {
     data() {
         return {
             //最后一个不被隐藏的顶部菜单的数组下标
-            //为undefined时，说明不需要隐藏菜单
-            //为-1时，说明需要隐藏全部菜单
+            //为undefined时，说明不需要隐藏菜单，为-1时，说明需要隐藏全部菜单
             lastVisibleIndex: undefined,
 
-            //是否显示menu-popover
+            //是否显示弹出菜单
             showPopover: false
         }
     },

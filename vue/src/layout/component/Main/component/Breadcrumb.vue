@@ -13,9 +13,11 @@ export default {
     data: () => ({data: []}),
 
     watch: {
-        $route(route) {
-            if (route.path.startsWith('/redirect')) return
-            this.getBreadcrumb()
+        $route: {
+            immediate: true,
+            handler(route) {
+                !route.path.startsWith('/redirect') && this.getBreadcrumb()
+            }
         }
     },
 
@@ -24,10 +26,6 @@ export default {
             // only show routes with meta.title
             this.data = this.$route.matched.filter(item => item.meta.title)
         }
-    },
-
-    mounted() {
-        this.getBreadcrumb()
     }
 }
 </script>
@@ -35,7 +33,7 @@ export default {
 <style lang="scss" scoped>
 .app-breadcrumb {
     width: 100%;
-    background: #fff;
+    background-color: #ffffff;
     padding: 16px 24px;
 
     .no-redirect {

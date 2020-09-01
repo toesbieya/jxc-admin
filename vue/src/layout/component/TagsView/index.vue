@@ -1,32 +1,3 @@
-<template>
-    <nav class="tags-view-container">
-        <scroll-pane ref="scrollPane" class="tags-view-wrapper">
-            <router-link
-                ref="tag"
-                v-for="tag in visitedViews"
-                :key="tag.path"
-                :class="{'tags-view-item': true, active: isActive(tag)}"
-                :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-                tag="div"
-                @contextmenu.prevent.native="e => openMenu(tag, e)"
-                @dblclick.prevent.native="() => closeSelectedTag(tag)"
-            >
-                {{ tag.title }}
-                <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="() => closeSelectedTag(tag)"/>
-            </router-link>
-        </scroll-pane>
-
-        <context-menu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
-            <context-menu-item @click="() => refreshSelectedTag(selectedTag)">刷新</context-menu-item>
-            <context-menu-item v-if="!isAffix(selectedTag)" @click="() => closeSelectedTag(selectedTag)">
-                关闭
-            </context-menu-item>
-            <context-menu-item @click="closeOthersTags">关闭其他</context-menu-item>
-            <context-menu-item @click="closeAllTags">关闭全部</context-menu-item>
-        </context-menu>
-    </nav>
-</template>
-
 <script type="text/jsx">
 import shortcutMixin from '@/layout/mixin/shortcut'
 import decideRouterTransitionMixin from '@/layout/mixin/decideRouterTransition'
@@ -109,11 +80,14 @@ export default {
         addTags(to = this.$route) {
             to.meta.title && tagsViewMutations.addView(to)
         },
+        getTags() {
+            return this.$refs.scrollPane.$children[0].$children
+        },
 
         //横向滚动条移动至当前tab
         moveToCurrentTag() {
             this.$nextTick(() => {
-                const tag = this.$refs.tag.find(i => i.to.path === this.$route.path)
+                const tag = this.getTags().find(i => i.to.path === this.$route.path)
                 tag && this.$refs.scrollPane.moveToTarget(tag)
             })
         },
@@ -122,9 +96,10 @@ export default {
         * 右键菜单选项
         * 刷新所选、关闭所选、关闭其他、关闭所有
         * */
-        refreshSelectedTag(view) {
-            tagsViewMutations.delCachedView(view)
-            this.$nextTick(() => this.$router.replace({path: `/redirect${view.fullPath}`}))
+        refreshSelectedTag() {
+            if (!this.selectedTag) return
+            tagsViewMutations.delCachedView(this.selectedTag)
+            this.$nextTick(() => this.$router.replace({path: `/redirect${this.selectedTag.fullPath}`}))
         },
         closeSelectedTag(view) {
             if (this.isAffix(view)) return
@@ -156,6 +131,8 @@ export default {
         },
 
         openMenu(tag, e) {
+            e.preventDefault()
+
             const menuMinWidth = 105
             const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
             const offsetWidth = this.$el.offsetWidth // container width
@@ -167,6 +144,44 @@ export default {
             this.contextmenu.show = true
 
             this.selectedTag = tag
+        },
+
+        renderTags(h) {
+            return this.visitedViews.map(tag => {
+                const {title, path, query, fullPath} = tag
+                const active = this.isActive(tag), affix = this.isAffix(tag)
+                const closeSelectedTag = (e, tag) => {
+                    e.preventDefault()
+                    this.closeSelectedTag(tag)
+                }
+                return (
+                    <router-link
+                        key={path}
+                        class={{'tags-view-item': true, active}}
+                        to={{path, query, fullPath}}
+                        tag="div"
+                        v-on:contextmenu_native={e => this.openMenu(tag, e)}
+                        v-on:dblclick_native={e => closeSelectedTag(e, tag)}
+                    >
+                        {title}
+                        {!affix && <i class="el-icon-close" on-click={e => closeSelectedTag(e, tag)}/>}
+                    </router-link>
+                )
+            })
+        },
+        renderContextmenu(h) {
+            const menu = this.contextmenu
+            return (
+                <context-menu v-model={menu.show} left={menu.left} top={menu.top}>
+                    <context-menu-item on-click={this.refreshSelectedTag}>刷新</context-menu-item>
+                    {!this.isAffix(this.selectedTag) &&
+                    <context-menu-item on-click={() => this.closeSelectedTag(this.selectedTag)}>
+                        关闭
+                    </context-menu-item>}
+                    <context-menu-item on-click={this.closeOthersTags}>关闭其他</context-menu-item>
+                    <context-menu-item on-click={this.closeAllTags}>关闭全部</context-menu-item>
+                </context-menu>
+            )
         }
     },
 
@@ -178,6 +193,17 @@ export default {
     mounted() {
         this.initTags()
         this.addTags()
+    },
+
+    render(h) {
+        return (
+            <nav class="tags-view-container">
+                <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+                    {this.renderTags(h)}
+                </scroll-pane>
+                {this.renderContextmenu(h)}
+            </nav>
+        )
     }
 }
 </script>

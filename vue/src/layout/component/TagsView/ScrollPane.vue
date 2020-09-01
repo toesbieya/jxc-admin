@@ -28,7 +28,7 @@ export default {
         moveToTarget(currentTag) {
             const $containerWidth = this.$refs.scrollContainer.$el.offsetWidth
             const {scrollWidth, scrollLeft} = this.getWrapper()
-            const tagList = this.$parent.$refs.tag
+            const tagList = this.$parent.getTags()
 
             let firstTag = null
             let lastTag = null
@@ -73,6 +73,7 @@ export default {
             })
         },
 
+        //在300ms内完成滚动
         smoothScroll(val) {
             if (this.rAF) window.cancelAnimationFrame(this.rAF)
             let cost = 300, times = cost / 16, gap = val / times + 1
