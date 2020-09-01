@@ -1,9 +1,9 @@
 <template>
-    <el-select :value="value" :disabled="disabled" multiple size="small" @input="emit">
+    <el-select :value="value" :disabled="disabled" multiple collapse-tags size="small" @input="emit">
         <el-option
             v-for="user in data"
             :key="user.id"
-            :label="user.name"
+            :label="user.nickName"
             :value="user.id"
         />
     </el-select>
@@ -28,7 +28,7 @@ export default {
     mounted() {
         search
             .request({page: 1, pageSize: 9999})
-            .then(({list}) => this.data = list)
+            .then(({data: {list}}) => this.data = list)
     }
 }
 </script>
