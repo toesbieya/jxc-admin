@@ -43,17 +43,23 @@ a:hover {
     text-decoration: none;
 }
 
-//滚动条样式修改
-::-webkit-scrollbar {
-    height: 6px;
-    width: 6px;
+//非移动端的滚动条样式修改
+@media (min-width: 500px) {
+    ::-webkit-scrollbar {
+        width: 6px;
 
-    &-thumb {
-        background-color: rgba(#909399, 0.3);
-        transition: .3s background-color;
+        &:horizontal {
+            height: 6px;
+        }
 
-        &:hover {
-            background: rgba(#909399, 0.5);
+        &-thumb {
+            width: 6px;
+            border-radius: 5px;
+            background-color: rgba($--color-primary, 0.8);
+
+            &:hover {
+                background-color: rgba($--color-primary, 1);
+            }
         }
     }
 }
