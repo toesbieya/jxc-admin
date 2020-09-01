@@ -75,7 +75,7 @@ $iconSize: 16px;
     .el-scrollbar {
         flex: 1;
 
-        &__wrap{
+        &__wrap {
             overflow-x: hidden;
         }
     }
@@ -85,6 +85,11 @@ $iconSize: 16px;
     border: none;
     height: 100%;
     width: 100%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
 
     .icon {
         margin-right: 16px;

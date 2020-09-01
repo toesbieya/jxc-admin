@@ -206,7 +206,7 @@ export default {
                 on-mouseleave={() => this.mouseOutside = true}
             >
                 {this.showLogo && <logo collapse={this.collapse}/>}
-                {<el-scrollbar noresize native>{menu}</el-scrollbar>}
+                {menu}
             </aside>
         )
     }
