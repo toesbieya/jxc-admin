@@ -5,6 +5,12 @@ $--color-warning: #FF5722;
 $--color-danger: #F44336;
 $--color-info: #009688;
 
+//覆盖el-menu的hover背景颜色
+$--menu-item-hover-fill: none;
+
+//引入element的scss时需要覆盖字体路径
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
+
 @mixin clearfix {
     &::after {
         visibility: hidden;
@@ -26,19 +32,19 @@ $--color-info: #009688;
     }
 }
 
-//el-sub-menu的背景色
-$sub-menu-background: #1f2d3d;
-//覆盖el-menu的背景色
-$--menu-background-color: #304156;
-//覆盖el-menu的文字颜色
-$--menu-item-font-color: hsla(0, 0%, 99.6%, .65);
-//el-menu的文字hover颜色
-$--menu-item-hover-color: #fefefe;
-//覆盖el-menu的文字hover背景颜色
-$--menu-item-hover-fill: none;
+//侧边菜单icon的大小
+$aside-icon-size: 16px;
+//侧边栏菜单的背景色
+$aside-menu-background: #304156;
+//侧边栏子菜单的背景色
+$aside-sub-menu-background: #1f2d3d;
+//侧边栏菜单文字的颜色
+$aside-menu-item-color: hsla(0, 0%, 99.6%, .65);
+//侧边栏菜单文字的hover颜色
+$aside-menu-item-hover-color: #fefefe;
 
 //侧边栏宽度
-$side-bar-width: 208px;
+$aside-width: 208px;
 //头部导航栏高度
 $nav-height: 50px;
 //头部多页签栏高度
@@ -46,9 +52,6 @@ $tags-view-height: 40px;
 
 //路由页面的margin
 $page-view-margin: 15px;
-
-//引入element的scss时需要覆盖字体路径
-$--font-path: '~element-ui/lib/theme-chalk/fonts';
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

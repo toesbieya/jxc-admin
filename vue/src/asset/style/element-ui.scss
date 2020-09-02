@@ -93,6 +93,38 @@
     color: $--color-primary;
 }
 
+.el-menu {
+    border: none;
+    height: 100%;
+    width: 100%;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
+
+    .icon {
+        margin-right: 16px;
+    }
+
+    //子级菜单激活时，父级同样高亮
+    .el-menu-item.is-active,
+    .is-active > .el-submenu__title {
+        color: $--color-primary !important;
+    }
+
+    //箭头图标与字体同色
+    .el-submenu__title i {
+        color: inherit;
+    }
+
+    //弹出菜单
+    &.el-menu--popup {
+        max-height: 88vh;
+        margin-bottom: 0.5vh;
+        overflow-y: overlay;
+    }
+}
+
 .el-message {
     @include deep-shadow;
     @include max-mobile-width;

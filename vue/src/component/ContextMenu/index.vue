@@ -67,7 +67,7 @@ export default {
 
 .contextmenu {
     margin: 0;
-    background: $--menu-background-color;
+    background: $aside-menu-background;
     z-index: 10;
     position: absolute;
     list-style-type: none;

@@ -57,6 +57,7 @@ export default {
         asideClass() {
             return {
                 'aside': true,
+                'el-menu--vertical': true,
                 'mobile': this.device === 'mobile',
                 'collapse': this.collapse,
                 'hide': this.hideSidebar
