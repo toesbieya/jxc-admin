@@ -3,11 +3,9 @@
         <h1 class="page-header-title">{{ title }}</h1>
 
         <el-breadcrumb>
-            <transition-group name="breadcrumb">
-                <el-breadcrumb-item v-for="(item,index) in data" :key="item.path">
-                    <span :class="{'no-redirect': index !== data.length - 1}">{{ item.meta.title }}</span>
-                </el-breadcrumb-item>
-            </transition-group>
+            <el-breadcrumb-item v-for="(item,index) in data" :key="item.path">
+                <span :class="{'no-redirect': index !== data.length - 1}">{{ item.meta.title }}</span>
+            </el-breadcrumb-item>
         </el-breadcrumb>
     </div>
 </template>
