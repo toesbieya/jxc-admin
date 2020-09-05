@@ -32,22 +32,6 @@ $transition-easing: cubic-bezier(0.215, 0.61, 0.355, 1);
     }
 }
 
-.breadcrumb-enter-active,
-.breadcrumb-leave-active,
-.breadcrumb-move {
-    transition: all .5s;
-}
-
-.breadcrumb-enter,
-.breadcrumb-leave-active {
-    opacity: 0;
-    transform: translateX(20px);
-}
-
-.breadcrumb-leave-active {
-    position: absolute;
-}
-
 .slide-right,
 .slide-left,
 .slide-up,
