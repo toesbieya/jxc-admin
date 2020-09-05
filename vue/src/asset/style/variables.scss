@@ -1,3 +1,6 @@
+//设定移动端的最大宽度
+$max-mobile-width: 500px;
+
 //覆盖element颜色
 $--color-primary: #1890ff;
 $--color-success: #21BA45;
@@ -26,14 +29,29 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
     box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 }
 
-@mixin max-mobile-width {
-    @media (max-width: 768px) {
+@mixin mobile {
+    @media (max-width: $max-mobile-width) {
+        @content
+    }
+}
+
+@mixin pc {
+    @media (min-width: $max-mobile-width) {
+        @content
+    }
+}
+
+@mixin max-width-on-mobile {
+    @include mobile {
         max-width: 384px;
     }
 }
 
+//菜单中icon和文字的距离
+$menu-icon-text-gap: 10px;
+
 //侧边菜单icon的大小
-$aside-icon-size: 16px;
+$aside-icon-size: 14px;
 //侧边栏菜单的背景色
 $aside-menu-background: #304156;
 //侧边栏子菜单的背景色
@@ -43,6 +61,11 @@ $aside-menu-item-color: hsla(0, 0%, 99.6%, .65);
 //侧边栏菜单文字的hover颜色
 $aside-menu-item-hover-color: #fefefe;
 
+//顶部菜单文字的颜色
+$head-menu-item-color: #303133;
+//顶部菜单文字的hover颜色
+$head-menu-item-hover-color: $--color-primary;
+
 //侧边栏宽度
 $aside-width: 208px;
 //头部导航栏高度
@@ -51,7 +74,7 @@ $nav-height: 50px;
 $tags-view-height: 40px;
 
 //路由页面的margin
-$page-view-margin: 15px;
+$page-view-margin: 24px;
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

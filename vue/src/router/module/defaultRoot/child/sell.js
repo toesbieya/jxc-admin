@@ -16,7 +16,7 @@ const router = {
             meta: {
                 title: '销售订单详情页',
                 hidden: true,
-                breadcrumb: false,
+                pageHeader: false,
                 dynamicTitle(to) {
                     const {type, id} = to.params
                     switch (type) {
@@ -45,7 +45,7 @@ const router = {
             meta: {
                 title: '销售出库详情页',
                 hidden: true,
-                breadcrumb: false,
+                pageHeader: false,
                 dynamicTitle(to) {
                     const {type, id} = to.params
                     switch (type) {

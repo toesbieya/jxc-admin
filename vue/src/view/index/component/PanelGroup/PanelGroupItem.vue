@@ -31,6 +31,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~@/asset/style/variables.scss";
+
 .card-panel {
     height: 108px;
     cursor: pointer;
@@ -76,7 +78,7 @@ export default {
     }
 }
 
-@media (max-width: 550px) {
+@include mobile {
     .card-panel-description {
         display: none;
     }

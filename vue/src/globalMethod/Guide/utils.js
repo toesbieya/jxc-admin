@@ -32,8 +32,8 @@ export function getStyleProperty(element, propertyName, prefixVendor = false) {
 }
 
 export function inAppView(element) {
-    let appView = document.querySelector('.app-main')
-    if (!appView) throw new Error('app-main未加载')
+    let appView = document.querySelector('.router-main')
+    if (!appView) throw new Error('router-main未加载')
     return appView.contains(element)
 }
 

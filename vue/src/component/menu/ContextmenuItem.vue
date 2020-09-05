@@ -1,6 +1,6 @@
 <script type="text/jsx">
 export default {
-    name: "ContextMenuItem",
+    name: "ContextmenuItem",
 
     functional: true,
 

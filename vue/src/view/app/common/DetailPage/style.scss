@@ -24,7 +24,7 @@
             width: 100%;
             margin-bottom: 12px;
 
-            @media (max-width: 768px) {
+            @include mobile {
                 display: block;
             }
         }

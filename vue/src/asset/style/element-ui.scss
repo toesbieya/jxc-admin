@@ -102,8 +102,14 @@
         width: 0;
     }
 
-    .icon {
-        margin-right: 16px;
+    //文字超出截断
+    .el-menu-item > span,
+    .el-submenu__title > span {
+        display: inline-block;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-all;
     }
 
     //子级菜单激活时，父级同样高亮
@@ -120,14 +126,21 @@
     //弹出菜单
     &.el-menu--popup {
         max-height: 88vh;
+        min-width: 160px;
+        padding: 0;
         margin-bottom: 0.5vh;
         overflow-y: overlay;
+
+        .el-menu-item,
+        .el-submenu__title {
+            padding: 0 20px;
+        }
     }
 }
 
 .el-message {
     @include deep-shadow;
-    @include max-mobile-width;
+    @include max-width-on-mobile;
     border-width: 0;
 
     .el-message__icon, .el-message__content {
@@ -154,7 +167,7 @@
 .el-message-box {
     position: relative;
     @include deep-shadow;
-    @include max-mobile-width;
+    @include max-width-on-mobile;
 }
 
 .el-notification {

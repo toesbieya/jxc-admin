@@ -37,10 +37,6 @@ export default {
 
     mixins: [MenuMixin, Emitter],
 
-    data() {
-        return {}
-    },
-
     props: {
         index: String,
         route: [String, Object],

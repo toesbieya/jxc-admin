@@ -5,7 +5,7 @@
 * 左侧菜单显示：name && !meta.hidden && meta.title
 * 左侧菜单排序：能在左侧菜单中显示 && meta.sort，升序排列
 * 左侧菜单不折叠只有一个children的路由：meta.alwaysShow
-* 面包屑显示：meta.breadcrumb !== false && (meta.title || meta.dynamicTitle)
+* 页头显示：meta.pageHeader !== false && (meta.title || meta.dynamicTitle)
 * tab栏显示：meta.title || meta.dynamicTitle
 * tab栏固定显示：meta.title && meta.affix
 * 页面不缓存：!name && !meta.usePathKey && !meta.useFullPathKey || meta.noCache

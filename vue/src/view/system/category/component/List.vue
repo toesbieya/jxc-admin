@@ -4,17 +4,17 @@
             <category-tree ref="tree" @node-click="see" @node-contextmenu="openContextMenu"/>
         </el-scrollbar>
 
-        <context-menu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
-            <context-menu-item v-show="canAdd" @click="add">添加分类</context-menu-item>
-            <context-menu-item v-show="currentCategory" @click="edit">编辑分类</context-menu-item>
-            <context-menu-item v-show="currentCategory" @click="del">删除分类</context-menu-item>
-        </context-menu>
+        <contextmenu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
+            <contextmenu-item v-show="canAdd" @click="add">添加分类</contextmenu-item>
+            <contextmenu-item v-show="currentCategory" @click="edit">编辑分类</contextmenu-item>
+            <contextmenu-item v-show="currentCategory" @click="del">删除分类</contextmenu-item>
+        </contextmenu>
     </el-card>
 </template>
 
 <script>
-import ContextMenu from "@/component/ContextMenu"
-import ContextMenuItem from "@/component/ContextMenu/item"
+import Contextmenu from "@/component/menu/Contextmenu"
+import ContextmenuItem from "@/component/menu/ContextmenuItem"
 import CategoryTree from '@/component/biz/CategoryTree'
 import {add, del, getAll} from "@/api/system/category"
 import {isEmpty, waitUntilSuccess} from '@/util'
@@ -22,7 +22,7 @@ import {auth} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
-    components: {ContextMenuItem, ContextMenu, CategoryTree},
+    components: {Contextmenu, ContextmenuItem, CategoryTree},
 
     props: ['form'],
 

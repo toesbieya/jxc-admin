@@ -1,9 +1,9 @@
 const {body} = document
-const WIDTH = 768
+const MAX_MOBILE_WIDTH = 500
 
 export function isMobile() {
     const rect = body.getBoundingClientRect()
-    return rect.width - 1 < WIDTH
+    return rect.width - 1 < MAX_MOBILE_WIDTH
 }
 
 //获取元素的内宽度
@@ -14,7 +14,6 @@ export function getElementInnerWidth(ele) {
     return parseFloat(style.width) - (parseFloat(style.paddingLeft) + parseFloat(style.paddingRight))
 }
 
-//获取元素的高度
 export function getElementHeight(ele, style) {
     if (!ele) return 0
 

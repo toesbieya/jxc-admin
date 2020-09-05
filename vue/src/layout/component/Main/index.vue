@@ -1,45 +1,21 @@
-<template>
-    <main class="app-main">
-        <div v-show="!showIframe" class="scroll-container">
-            <breadcrumb v-if="showBreadcrumb"/>
-            <page-view :include="cachedViews" :transition-name="transitionName"/>
-            <page-footer/>
-        </div>
-
-        <!--跨域iframe无法调整高度，只能使用原生滚动条-->
-        <iframe
-            v-for="src in iframeList"
-            v-show="showIframe && src === currentIframe"
-            :id="src"
-            :key="src"
-            :src="src"
-            frameborder="0"
-            height="100%"
-            width="100%"
-        />
-
-        <back-to-top :render="showBackToTop"/>
-    </main>
-</template>
-
-<script>
+<script type="text/jsx">
 import {getters as iframeGetters} from "@/layout/store/iframe"
 import {getters as settingGetters} from "@/layout/store/setting"
 import {getters as tagsViewGetters} from "@/layout/store/tagsView"
 import BackToTop from "./component/BackToTop"
-import Breadcrumb from './component/Breadcrumb'
+import PageHeader from "./component/PageHeader"
 import PageView from "./component/PageView"
 import PageFooter from "./component/PageFooter"
 
 export default {
     name: 'AppMain',
 
-    components: {BackToTop, Breadcrumb, PageView, PageFooter},
+    components: {BackToTop, PageHeader, PageView, PageFooter},
 
     computed: {
-        showBreadcrumb() {
-            if (!settingGetters.showBreadcrumb) return false
-            return this.$route.meta.breadcrumb !== false
+        showPageHeader() {
+            if (!settingGetters.showPageHeader) return false
+            return this.$route.meta.pageHeader !== false
         },
         showBackToTop: () => settingGetters.showBackToTop,
 
@@ -49,6 +25,41 @@ export default {
         showIframe: () => iframeGetters.show,
         currentIframe: () => iframeGetters.current,
         iframeList: () => iframeGetters.list,
+    },
+
+    methods: {
+        renderPage() {
+            return (
+                <div v-show={!this.showIframe} class="scroll-container">
+                    {this.showPageHeader && <page-header/>}
+                    <page-view include={this.cachedViews} transition-name={this.transitionName}/>
+                    <page-footer/>
+                </div>
+            )
+        },
+        renderIframe() {
+            return this.iframeList.map(src => (
+                <iframe
+                    v-show={this.showIframe && src === this.currentIframe}
+                    id={src}
+                    key={src}
+                    src={src}
+                    frameborder="0"
+                    height="100%"
+                    width="100%"
+                />
+            ))
+        }
+    },
+
+    render() {
+        return (
+            <main class="router-main">
+                {this.renderPage()}
+                {this.renderIframe()}
+                {this.showBackToTop && <back-to-top/>}
+            </main>
+        )
     }
 }
 </script>

@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: "ContextMenu",
+    name: "Contextmenu",
 
     props: {
         value: Boolean,

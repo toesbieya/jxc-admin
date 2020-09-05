@@ -1,3 +1,5 @@
+@import "~@/asset/style/variables.scss";
+
 .exception {
     width: 100%;
     height: 80%;
@@ -30,7 +32,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@include mobile{
     .exception {
         height: 100%;
         flex-direction: column;

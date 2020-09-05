@@ -16,14 +16,10 @@ export default {
     components: {VAside, VHeader, VMain},
 
     computed: {
-        hasNav: () => mainGetters.hasNav,
-        useTagsView: () => settingGetters.useTagsView,
         containerClass() {
-            return {
-                'main-container': true,
-                'has-nav': this.hasNav,
-                'has-tags-view': this.useTagsView
-            }
+            const arr = ['main-container', 'has-nav', `nav-mode-${settingGetters.navMode}`]
+            settingGetters.useTagsView && arr.push('has-tags-view')
+            return arr
         }
     },
 
@@ -48,9 +44,10 @@ export default {
     },
 
     render() {
+        const renderAide = mainGetters.device === 'mobile' || settingGetters.navMode !== 'head'
         return (
             <section class="app-wrapper">
-                <v-aside/>
+                {renderAide && <v-aside/>}
 
                 <section class={this.containerClass}>
                     <v-header/>
@@ -69,7 +66,7 @@ export default {
     height: 100%;
     width: 100%;
 
-    .main-container {
+    > .main-container {
         display: flex;
         flex: 1;
         overflow: hidden;

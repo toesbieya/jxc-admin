@@ -1,19 +1,19 @@
 @import "~@/asset/style/variables.scss";
 
-.app-main {
+.router-main {
     position: relative;
     flex: 1;
     overflow: hidden;
     background-color: #f0f2f5;
 
-    .scroll-container {
+    > .scroll-container {
         height: 100%;
         display: flex;
         flex-direction: column;
         overflow-y: overlay;
         overflow-x: inherit;
 
-        .page-view {
+        > .page-view {
             margin: $page-view-margin;
             flex: 1;
         }

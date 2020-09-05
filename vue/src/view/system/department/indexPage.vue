@@ -32,16 +32,16 @@
             </div>
         </div>
 
-        <context-menu
+        <contextmenu
             v-if="canAdd || canUpdate || canDel"
             v-model="contextmenu.show"
             :left="contextmenu.left"
             :top="contextmenu.top"
         >
-            <context-menu-item v-if="canAdd" @click="add">添加部门</context-menu-item>
-            <context-menu-item v-if="canUpdate" @click="update">编辑部门</context-menu-item>
-            <context-menu-item v-if="canDel" @click="del">删除部门</context-menu-item>
-        </context-menu>
+            <contextmenu-item v-if="canAdd" @click="add">添加部门</contextmenu-item>
+            <contextmenu-item v-if="canUpdate" @click="update">编辑部门</contextmenu-item>
+            <contextmenu-item v-if="canDel" @click="del">删除部门</contextmenu-item>
+        </contextmenu>
 
         <edit-dialog v-model="editDialog" :data="currentNode" :type="type" @success="search"/>
     </el-card>
@@ -52,8 +52,8 @@
  * 详情见iview-admin
  * https://admin.iviewui.com/component/org_tree_page
  */
-import ContextMenu from "@/component/ContextMenu"
-import ContextMenuItem from "@/component/ContextMenu/item"
+import Contextmenu from "@/component/menu/Contextmenu"
+import ContextmenuItem from "@/component/menu/ContextmenuItem"
 import EditDialog from "./component/EditDialog"
 import OrgTreeView from "./component/OrgTreeView"
 import ZoomControl from './component/ZoomControl'
@@ -65,7 +65,7 @@ import {createTreeByWorker} from "@/util/tree"
 export default {
     name: "departmentManagement",
 
-    components: {ContextMenu, ContextMenuItem, EditDialog, OrgTreeView, ZoomControl},
+    components: {Contextmenu, ContextmenuItem, EditDialog, OrgTreeView, ZoomControl},
 
     data() {
         return {

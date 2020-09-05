@@ -1,22 +1,21 @@
 <script type="text/jsx">
 function getInfo(type) {
-    const base = process.env.BASE_URL
     switch (type) {
         case '403':
             return {
-                img: `${base}static/img/403.svg`,
+                img: 'https://gw.alipayobjects.com/zos/rmsportal/wZcnGqRDyhPOEYFcZDnb.svg',
                 title: '403',
                 desc: '抱歉，你无权访问该页面'
             }
         case '404':
             return {
-                img: `${base}static/img/404.svg`,
+                img: 'https://gw.alipayobjects.com/zos/rmsportal/KpnpchXsobRgLElEozzI.svg',
                 title: '404',
                 desc: '抱歉，你访问的页面不存在'
             }
         case '500':
             return {
-                img: `${base}static/img/500.svg`,
+                img: 'https://gw.alipayobjects.com/zos/rmsportal/RVRUAYdCGeYNBWoKiIwB.svg',
                 title: '500',
                 desc: '抱歉，服务器出错了'
             }

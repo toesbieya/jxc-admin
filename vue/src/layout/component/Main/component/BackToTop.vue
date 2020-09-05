@@ -4,13 +4,9 @@ export default {
 
     functional: true,
 
-    props: {render: Boolean},
-
-    render(h, context) {
-        const {props: {render}} = context
-        if (!render) return
+    render() {
         return (
-            <el-backtop target=".app-main .scroll-container" visibility-height={400} bottom={66}>
+            <el-backtop target=".router-main .scroll-container" visibility-height={400} bottom={66}>
                 <div class="back-to-top">
                     <v-icon icon="el-icon-top"/>
                 </div>

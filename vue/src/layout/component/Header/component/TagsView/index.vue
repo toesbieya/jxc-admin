@@ -4,14 +4,14 @@ import decideRouterTransitionMixin from '@/layout/mixin/decideRouterTransition'
 import {route as routeConfig} from '@/config'
 import {getters as mainGetters} from "@/layout/store/main"
 import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
-import ContextMenu from "@/component/ContextMenu"
-import ContextMenuItem from "@/component/ContextMenu/item"
+import Contextmenu from "@/component/menu/Contextmenu"
+import ContextmenuItem from "@/component/menu/ContextmenuItem"
 import ScrollPane from './ScrollPane'
 
 export default {
     mixins: [shortcutMixin, decideRouterTransitionMixin],
 
-    components: {ContextMenu, ContextMenuItem, ScrollPane},
+    components: {Contextmenu, ContextmenuItem, ScrollPane},
 
     data() {
         return {
@@ -36,9 +36,6 @@ export default {
             this.decideRouteTransition && this.decideRouteTransition(to, from)
             this.addTags(to)
             this.moveToCurrentTag()
-        },
-        'contextmenu.show'(v) {
-            this.$emit('menu-show', v)
         }
     },
 
@@ -172,15 +169,15 @@ export default {
         renderContextmenu(h) {
             const menu = this.contextmenu
             return (
-                <context-menu v-model={menu.show} left={menu.left} top={menu.top}>
-                    <context-menu-item on-click={this.refreshSelectedTag}>刷新</context-menu-item>
+                <contextmenu v-model={menu.show} left={menu.left} top={menu.top}>
+                    <contextmenu-item on-click={this.refreshSelectedTag}>刷新</contextmenu-item>
                     {!this.isAffix(this.selectedTag) &&
-                    <context-menu-item on-click={() => this.closeSelectedTag(this.selectedTag)}>
+                    <contextmenu-item on-click={() => this.closeSelectedTag(this.selectedTag)}>
                         关闭
-                    </context-menu-item>}
-                    <context-menu-item on-click={this.closeOthersTags}>关闭其他</context-menu-item>
-                    <context-menu-item on-click={this.closeAllTags}>关闭全部</context-menu-item>
-                </context-menu>
+                    </contextmenu-item>}
+                    <contextmenu-item on-click={this.closeOthersTags}>关闭其他</contextmenu-item>
+                    <contextmenu-item on-click={this.closeAllTags}>关闭全部</contextmenu-item>
+                </contextmenu>
             )
         }
     },

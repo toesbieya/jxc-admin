@@ -44,7 +44,7 @@ a:hover {
 }
 
 //非移动端的滚动条样式修改
-@media (min-width: 768px) {
+@include pc {
     .scroll-container {
         &::-webkit-scrollbar {
             width: 6px;

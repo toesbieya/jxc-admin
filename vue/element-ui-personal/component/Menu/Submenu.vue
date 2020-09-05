@@ -55,16 +55,8 @@ export default {
             return this.rootMenu.openedMenus.includes(this.index)
         },
         active() {
-            const items = this.items
-
-            const isActive = Object.keys(items).some(key => items[key].active)
-
-            if (!isActive) {
-                const submenus = this.submenus
-                return Object.keys(submenus).some(key => submenus[key].active)
-            }
-
-            return isActive
+            const active = Object.values(this.items).some(v => v.active)
+            return active || Object.values(this.submenus).some(v => v.active)
         },
         mode() {
             return this.rootMenu.mode
@@ -96,26 +88,18 @@ export default {
 
     methods: {
         handleCollapseToggle(value) {
-            if (value) {
-                this.initPopper()
-            }
-            else {
-                this.doDestroy()
-            }
+            value ? this.initPopper() : this.doDestroy()
         },
 
         addItem(item) {
             this.$set(this.items, item.index, item)
         },
-
         removeItem(item) {
             delete this.items[item.index]
         },
-
         addSubmenu(item) {
             this.$set(this.submenus, item.index, item)
         },
-
         removeSubmenu(item) {
             delete this.submenus[item.index]
         },
@@ -133,42 +117,34 @@ export default {
         },
 
         handleMouseenter(event, showTimeout = this.showTimeout) {
-
             if (!('ActiveXObject' in window) && event.type === 'focus' && !event.relatedTarget) {
                 return
             }
-            const {rootMenu, disabled} = this
-            if (
-                (rootMenu.menuTrigger === 'click' && rootMenu.mode === 'horizontal') ||
-                (!rootMenu.collapse && rootMenu.mode === 'vertical') ||
-                disabled
-            ) {
-                return
-            }
-            this.dispatch('ElSubmenu', 'mouse-enter-child')
-            clearTimeout(this.timeout)
-            this.timeout = setTimeout(() => {
-                this.rootMenu.openMenu(this.index, this.indexPath)
-            }, showTimeout)
 
-            if (this.appendToBody) {
-                this.$parent.$el.dispatchEvent(new MouseEvent('mouseenter'))
-            }
+            const {rootMenu, disabled} = this
+
+            if (rootMenu.menuTrigger === 'click' && rootMenu.mode === 'horizontal'
+                || !rootMenu.collapse && rootMenu.mode === 'vertical'
+                || disabled) return
+
+            this.dispatch('ElSubmenu', 'mouse-enter-child')
+
+            clearTimeout(this.timeout)
+            this.timeout = setTimeout(() => this.rootMenu.openMenu(this.index, this.indexPath), showTimeout)
+
+            this.appendToBody && this.$parent.$el.dispatchEvent(new MouseEvent('mouseenter'))
         },
 
         handleMouseleave(deepDispatch = false) {
             const {rootMenu} = this
-            if (
-                (rootMenu.menuTrigger === 'click' && rootMenu.mode === 'horizontal') ||
-                (!rootMenu.collapse && rootMenu.mode === 'vertical')
-            ) {
-                return
-            }
+
+            if (rootMenu.menuTrigger === 'click' && rootMenu.mode === 'horizontal'
+                || !rootMenu.collapse && rootMenu.mode === 'vertical') return
+
             this.dispatch('ElSubmenu', 'mouse-leave-child')
+
             clearTimeout(this.timeout)
-            this.timeout = setTimeout(() => {
-                !this.mouseInChild && this.rootMenu.closeMenu(this.index)
-            }, this.hideTimeout)
+            this.timeout = setTimeout(() => !this.mouseInChild && this.rootMenu.closeMenu(this.index), this.hideTimeout)
 
             if (this.appendToBody && deepDispatch) {
                 if (this.$parent.$options.name === 'ElSubmenu') {

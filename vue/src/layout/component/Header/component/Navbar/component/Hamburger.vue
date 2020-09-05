@@ -4,11 +4,10 @@ export default {
 
     functional: true,
 
-    props: {render: Boolean, active: Boolean},
+    props: {active: Boolean},
 
     render(h, context) {
-        const {render, active} = context.props
-        if (!render) return
+        const {active} = context.props
         const className = `navbar-icon el-icon-s-unfold hamburger ${active ? 'is-active' : ''}`
         return (
             <div {...context.data} title={`${active ? '折叠' : '展开'}侧边栏`}>

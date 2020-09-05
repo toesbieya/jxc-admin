@@ -15,6 +15,7 @@
 
     > div {
         display: flex;
+        flex-wrap: nowrap;
         height: 100%;
     }
 
@@ -42,6 +43,54 @@
         span {
             margin-right: 5px;
             font-size: 18px;
+        }
+    }
+}
+
+//顶部水平菜单
+.el-menu--horizontal .el-menu,
+.el-menu--horizontal.el-menu {
+    font-size: 14px;
+
+    .icon {
+        font-size: 14px;
+    }
+
+    //图标和文字的间隔
+    .icon + .menu-item-content {
+        margin-left: $menu-icon-text-gap;
+    }
+
+    //菜单的文字以及hover颜色
+    .el-menu-item,
+    .el-submenu__title {
+        color: $head-menu-item-color;
+
+        &:hover {
+            color: $head-menu-item-hover-color;
+        }
+
+        > span {
+            max-width: 100px;
+        }
+    }
+}
+
+//顶部菜单的顶级节点
+.el-menu--horizontal.el-menu {
+    //不显示折叠展开按钮
+    > .el-submenu > .el-submenu__title > .el-submenu__icon-arrow {
+        display: none;
+    }
+
+    //顶级节点的高度以及hover颜色
+    > .el-menu-item,
+    > .el-submenu > .el-submenu__title {
+        height: $nav-height;
+        line-height: $nav-height;
+
+        &:hover {
+            border-bottom: 2px solid $head-menu-item-hover-color;
         }
     }
 }
