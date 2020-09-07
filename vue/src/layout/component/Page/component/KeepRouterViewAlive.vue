@@ -1,20 +1,13 @@
 <script>
 import {isEmpty} from "@/util"
+import {getRouterViewCacheKey} from "@/layout/util"
 
 const KEY = '_routerViewKey'
 
 function getFirstComponentChild(children) {
     if (Array.isArray(children)) {
-        for (const c of children) {
-            if (!isEmpty(c) && (!isEmpty(c.componentOptions) || c.isComment && c.asyncFactory)) {
-                return c
-            }
-        }
+        return children.find(c => !isEmpty(c) && (!isEmpty(c.componentOptions) || c.isComment && c.asyncFactory))
     }
-}
-
-function getComponentName(opts) {
-    return opts && (opts.Ctor.options.name || opts.tag)
 }
 
 function removeCache(cache, key) {
@@ -26,10 +19,9 @@ function removeCache(cache, key) {
 function getCacheKey(route, componentOptions) {
     if (KEY in componentOptions) return componentOptions[KEY]
 
-    const {path, fullPath, meta} = route
-    const key = meta.usePathKey ? path : meta.useFullPathKey ? fullPath : getComponentName(componentOptions)
+    const key = getRouterViewCacheKey(route)
 
-    componentOptions[KEY] = key
+    if (key) componentOptions[KEY] = key
 
     return key
 }
@@ -46,11 +38,10 @@ export default {
             deep: true,
             handler(val) {
                 const {cache, $route} = this
-                for (const key of Object.keys(cache)) {
-                    const cachedNode = cache[key]
-                    const name = getCacheKey($route, cachedNode.componentOptions)
-                    if (!val || !val.includes(name)) {
-                        removeCache(cache, key)
+                for (const [k, v] of Object.entries(cache)) {
+                    const cacheKey = getCacheKey($route, v.componentOptions)
+                    if (!val || !val.includes(cacheKey)) {
+                        removeCache(cache, k)
                     }
                 }
             }
@@ -70,6 +61,7 @@ export default {
     render() {
         const slot = this.$slots.default
         const vnode = getFirstComponentChild(slot)
+
         let componentOptions = vnode && vnode.componentOptions
 
         if (componentOptions) {

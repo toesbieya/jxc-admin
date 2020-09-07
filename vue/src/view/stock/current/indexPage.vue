@@ -68,8 +68,8 @@ import tableMixin from '@/mixin/tablePageMixin'
 import CategoryTree from '@/component/biz/CategoryTree'
 import DetailDialog from "./DetailDialog"
 import ExtraArea from '@/component/ExtraArea'
-import SearchForm from "@/component/SearchForm"
-import SearchFormItem from "@/component/SearchForm/item"
+import SearchForm from "@/component/form/Search"
+import SearchFormItem from "@/component/form/Search/item"
 import {search} from "@/api/stock/current"
 import {isEmpty, debounce} from "@/util"
 import {exportExcel} from "@/util/excel"

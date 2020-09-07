@@ -2,7 +2,7 @@
     <el-card :class="{collapsed}">
         <div slot="header" class="clearfix">
             <slot name="header">{{ header }}</slot>
-            <i class="el-icon-arrow-up form-card-icon"/>
+            <i class="el-icon-arrow-up form-collapse-card-icon"/>
         </div>
         <slot/>
     </el-card>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name: "FormCard",
+    name: "FormCollapseCard",
 
     props: {
         header: String
@@ -35,14 +35,14 @@ export default {
 </script>
 
 <style>
-.form-card-icon {
+.form-collapse-card-icon {
     float: right;
     font-weight: bold;
     transition: transform .3s;
     cursor: pointer;
 }
 
-.collapsed .form-card-icon {
+.collapsed .form-collapse-card-icon {
     transform: rotate(180deg);
 }
 

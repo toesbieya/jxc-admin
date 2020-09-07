@@ -1,6 +1,6 @@
 <script type="jsx">
-import FormAnchor from "@/component/AbstractForm/FormAnchor"
-import FormValidateInfo from "@/component/AbstractForm/FormValidateInfo"
+import FormAnchor from "@/component/form/Anchor"
+import FormValidateInfo from "@/component/form/ValidateInfo"
 
 const renderHeader = (h, title, description, extra, close) => (
     <div class="detail-page-header">

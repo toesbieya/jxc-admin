@@ -34,7 +34,7 @@ export function getLocalPersonalSettings() {
         obj = JSON.parse(obj)
     }
     catch (e) {
-        console.error('个性化设置数据异常！', e)
+        console.error('本地个性化设置数据解析失败！', e)
         removeLocalPersonalSettings()
         return {}
     }

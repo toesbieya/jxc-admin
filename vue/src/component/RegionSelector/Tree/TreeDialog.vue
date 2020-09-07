@@ -1,10 +1,10 @@
 <script type="text/jsx">
 import {store, init} from '../store'
-import FormDialog from "@/component/FormDialog"
+import AbstractDialog from "@/component/abstract/Dialog"
 import {createLimitTree, getNodeId} from "@/util/tree"
 
 export default {
-    components: {FormDialog},
+    components: {AbstractDialog},
 
     data() {
         return {
@@ -56,7 +56,7 @@ export default {
 
     render() {
         return (
-            <form-dialog
+            <abstract-dialog
                 v-model={this.visible}
                 directives={[{name: 'drag-dialog'}]}
                 class="tree-dialog"
@@ -77,7 +77,7 @@ export default {
                         </span>
                     )}
                 </el-tree>
-            </form-dialog>
+            </abstract-dialog>
         )
     }
 }

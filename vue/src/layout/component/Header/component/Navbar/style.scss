@@ -74,6 +74,11 @@
             max-width: 100px;
         }
     }
+
+    //submenu的右侧箭头会稍微偏上，不懂为啥
+    .el-submenu__icon-arrow {
+        margin-top: -4px;
+    }
 }
 
 //顶部菜单的顶级节点

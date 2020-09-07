@@ -1,6 +1,6 @@
 <script type="text/jsx">
 const MenuItemContent = {
-    name: "MenuItemContent",
+    name: "NavMenuItemContent",
 
     functional: true,
 
@@ -96,6 +96,8 @@ function renderMenu(h, {menu, showParent, collapse, showIconMaxDepth, depth = 1}
 }
 
 export default {
+    name: "NavMenuItem",
+
     functional: true,
 
     props: {

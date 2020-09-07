@@ -82,12 +82,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.panel-group {
-    padding-top: 17px;
-
-    > .el-col {
-        margin-bottom: 32px;
-    }
+<style>
+.panel-group > .el-col {
+    margin-bottom: 32px;
 }
 </style>

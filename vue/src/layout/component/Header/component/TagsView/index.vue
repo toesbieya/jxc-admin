@@ -2,16 +2,15 @@
 import shortcutMixin from '@/layout/mixin/shortcut'
 import decideRouterTransitionMixin from '@/layout/mixin/decideRouterTransition'
 import {route as routeConfig} from '@/config'
-import {getters as mainGetters} from "@/layout/store/main"
+import {getters as appGetters} from "@/layout/store/app"
 import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
-import Contextmenu from "@/component/menu/Contextmenu"
-import ContextmenuItem from "@/component/menu/ContextmenuItem"
+import ContextMenu from "@/component/menu/ContextMenu"
 import ScrollPane from './ScrollPane'
 
 export default {
     mixins: [shortcutMixin, decideRouterTransitionMixin],
 
-    components: {Contextmenu, ContextmenuItem, ScrollPane},
+    components: {ContextMenu, ScrollPane},
 
     data() {
         return {
@@ -28,7 +27,7 @@ export default {
 
     computed: {
         visitedViews: () => tagsViewGetters.visitedViews,
-        menus: () => mainGetters.menus
+        menus: () => appGetters.menus
     },
 
     watch: {
@@ -166,19 +165,21 @@ export default {
                 )
             })
         },
-        renderContextmenu(h) {
+        renderContextMenu(h) {
             const menu = this.contextmenu
-            return (
-                <contextmenu v-model={menu.show} left={menu.left} top={menu.top}>
-                    <contextmenu-item on-click={this.refreshSelectedTag}>刷新</contextmenu-item>
-                    {!this.isAffix(this.selectedTag) &&
-                    <contextmenu-item on-click={() => this.closeSelectedTag(this.selectedTag)}>
-                        关闭
-                    </contextmenu-item>}
-                    <contextmenu-item on-click={this.closeOthersTags}>关闭其他</contextmenu-item>
-                    <contextmenu-item on-click={this.closeAllTags}>关闭全部</contextmenu-item>
-                </contextmenu>
-            )
+            const items = [
+                {content: '刷新', click: this.refreshSelectedTag},
+                this.isAffix(this.selectedTag)
+                    ? undefined
+                    : {
+                        content: '关闭',
+                        click: () => this.closeSelectedTag(this.selectedTag)
+                    },
+                {content: '关闭其他', click: this.closeOthersTags},
+                {content: '关闭全部', click: this.closeAllTags}
+            ]
+
+            return <context-menu v-model={menu.show} items={items} left={menu.left} top={menu.top}/>
         }
     },
 
@@ -198,7 +199,7 @@ export default {
                 <scroll-pane ref="scrollPane" class="tags-view-wrapper">
                     {this.renderTags(h)}
                 </scroll-pane>
-                {this.renderContextmenu(h)}
+                {this.renderContextMenu(h)}
             </nav>
         )
     }

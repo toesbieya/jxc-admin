@@ -56,8 +56,8 @@
 <script>
 import tableMixin from '@/mixin/tablePageMixin'
 import EditDialog from './EditDialog'
-import SearchForm from "@/component/SearchForm"
-import SearchFormItem from "@/component/SearchForm/item"
+import SearchForm from "@/component/form/Search"
+import SearchFormItem from "@/component/form/Search/item"
 import {search, add, update, del} from "@/api/message/manage"
 import {isEmpty} from '@/util'
 import {auth} from "@/util/auth"

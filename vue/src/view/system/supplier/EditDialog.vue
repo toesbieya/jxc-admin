@@ -1,5 +1,5 @@
 <template>
-    <form-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
+    <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
         <abstract-form :model="form" :rules="rules" size="">
             <el-form-item label="名 称" prop="name">
                 <el-input v-model="form.name" :readonly="!canEdit" maxlength="20"/>
@@ -43,13 +43,13 @@
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
-    </form-dialog>
+    </abstract-dialog>
 </template>
 
 <script>
 import dialogMixin from "@/mixin/dialogMixin"
-import AbstractForm from "@/component/AbstractForm"
-import FormDialog from '@/component/FormDialog'
+import AbstractForm from "@/component/abstract/Form"
+import AbstractDialog from '@/component/abstract/Dialog'
 import RegionSelector from '@/component/RegionSelector'
 import {add, update} from "@/api/system/supplier"
 import {isEmpty, mergeObj, resetObj} from '@/util'
@@ -60,7 +60,7 @@ export default {
 
     mixins: [dialogMixin],
 
-    components: {AbstractForm, FormDialog, RegionSelector},
+    components: {AbstractForm, AbstractDialog, RegionSelector},
 
     props: {
         value: {type: Boolean, default: false},

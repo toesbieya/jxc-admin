@@ -2,7 +2,7 @@ import {MessageBox} from "element-ui"
 import {isEmpty} from "@/util"
 import {useMock, socketUrl} from '@/config'
 import SocketIO from 'socket.io-client'
-import {createMutations} from "@/util"
+import {createMutations} from "@/store/util"
 
 let socket
 

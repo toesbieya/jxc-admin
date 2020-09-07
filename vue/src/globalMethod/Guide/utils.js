@@ -9,9 +9,7 @@ export function getStyleProperty(element, propertyName, prefixVendor = false) {
             const prefixedProperty = prefixes[counter] + propertyName
             const foundValue = getStyleProperty(element, prefixedProperty)
 
-            if (foundValue) {
-                return foundValue
-            }
+            if (foundValue) return foundValue
         }
 
         return ''
@@ -23,17 +21,19 @@ export function getStyleProperty(element, propertyName, prefixVendor = false) {
         propertyValue = element.currentStyle[propertyName]
     }
     else if (document.defaultView && document.defaultView.getComputedStyle) {
-        propertyValue = document.defaultView
-            .getComputedStyle(element, null)
-            .getPropertyValue(propertyName)
+        propertyValue =
+            document
+                .defaultView
+                .getComputedStyle(element, null)
+                .getPropertyValue(propertyName)
     }
 
     return propertyValue && propertyValue.toLowerCase ? propertyValue.toLowerCase() : propertyValue
 }
 
-export function inAppView(element) {
-    let appView = document.querySelector('.router-main')
-    if (!appView) throw new Error('router-main未加载')
+export function inMainPage(element) {
+    const appView = document.querySelector('.router-main')
+    if (!appView) throw new Error('路由页面未加载')
     return appView.contains(element)
 }
 

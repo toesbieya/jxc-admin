@@ -7,11 +7,7 @@ export default {
     data: () => ({children: []}),
 
     render() {
-        return (
-            <div class="checkbox-group">
-                {this.$slots.default}
-            </div>
-        )
+        return <div class="checkbox-group">{this.$slots.default}</div>
     }
 }
 </script>
@@ -20,5 +16,6 @@ export default {
 .checkbox-group {
     display: flex;
     justify-content: space-around;
+    width: 100%;
 }
 </style>

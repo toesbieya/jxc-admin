@@ -177,23 +177,6 @@ export function waitUntilSuccess(success, callback, interval = 1000, maxTryTime 
     })
 }
 
-//vuex中根据state批量生成对应的mutation
-export function createMutations(state, all = false) {
-    const keys = Object.keys(state)
-    const obj = {}
-    keys.forEach(key => {
-        obj[key] = (s, v) => s[key] = v
-    })
-    if (all) {
-        obj['$all'] = (s, v) => {
-            keys.forEach(key => {
-                s[key] = v && v[key] || getInitialValue(s[key])
-            })
-        }
-    }
-    return obj
-}
-
 //删除所有url参数
 export function delAllUrlParam() {
     let paramStartIndex = location.href.indexOf('?')
@@ -201,4 +184,18 @@ export function delAllUrlParam() {
         const href = location.href.substring(0, paramStartIndex)
         history.replaceState(null, null, [...href].join(''))
     }
+}
+
+//将传入对象的所有函数的this绑定为其自身
+export function bindThis(obj, root = obj) {
+    if (!obj || typeof obj !== 'object') return
+
+    Object.entries(obj).forEach(([k, v]) => {
+        if (typeof v === 'function') {
+            obj[k] = v.bind(root)
+        }
+        bindThis(v, root)
+    })
+
+    return obj
 }

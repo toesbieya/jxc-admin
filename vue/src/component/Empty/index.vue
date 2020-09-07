@@ -1,4 +1,7 @@
 <script type="text/jsx">
+/**
+ * 从ant-design-vue处拷贝
+ */
 import DefaultEmptyImage from "./DefaultEmptyImage"
 
 export default {
@@ -21,9 +24,8 @@ export default {
         if (typeof image === 'string') {
             imageNode = <img alt={description} src={image}/>
         }
-        else {
-            imageNode = <DefaultEmptyImage/>
-        }
+        else imageNode = <DefaultEmptyImage/>
+
         return (
             <div class={cls} {...{on: context.listeners}}>
                 <div class={`${prefixCls}-image`} style={imageStyle}>{imageNode}</div>

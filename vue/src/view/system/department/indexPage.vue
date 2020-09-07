@@ -32,16 +32,12 @@
             </div>
         </div>
 
-        <contextmenu
-            v-if="canAdd || canUpdate || canDel"
+        <context-menu
             v-model="contextmenu.show"
+            :items="contextMenuItems"
             :left="contextmenu.left"
             :top="contextmenu.top"
-        >
-            <contextmenu-item v-if="canAdd" @click="add">添加部门</contextmenu-item>
-            <contextmenu-item v-if="canUpdate" @click="update">编辑部门</contextmenu-item>
-            <contextmenu-item v-if="canDel" @click="del">删除部门</contextmenu-item>
-        </contextmenu>
+        />
 
         <edit-dialog v-model="editDialog" :data="currentNode" :type="type" @success="search"/>
     </el-card>
@@ -52,20 +48,19 @@
  * 详情见iview-admin
  * https://admin.iviewui.com/component/org_tree_page
  */
-import Contextmenu from "@/component/menu/Contextmenu"
-import ContextmenuItem from "@/component/menu/ContextmenuItem"
+import ContextMenu from "@/component/menu/ContextMenu"
 import EditDialog from "./component/EditDialog"
 import OrgTreeView from "./component/OrgTreeView"
 import ZoomControl from './component/ZoomControl'
 import {add, update, del, get} from "@/api/system/department"
-import {auth} from "@/util/auth"
+import {wic} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {createTreeByWorker} from "@/util/tree"
 
 export default {
     name: "departmentManagement",
 
-    components: {Contextmenu, ContextmenuItem, EditDialog, OrgTreeView, ZoomControl},
+    components: {ContextMenu, EditDialog, OrgTreeView, ZoomControl},
 
     data() {
         return {
@@ -85,18 +80,21 @@ export default {
     },
 
     computed: {
+        ...wic({add, update, del}),
+
+        contextMenuItems() {
+            const items=[]
+
+            this.canAdd&&items.push({content:'添加部门',click:this.add})
+            this.canUpdate&&items.push({content:'编辑部门',click:this.update})
+            this.canDel&&items.push({content:'删除部门',click:this.del})
+
+            return items
+        },
+
         realZoom() {
             return this.zoom / 100
-        },
-        canAdd() {
-            return auth(add.url)
-        },
-        canUpdate() {
-            return auth(update.url)
-        },
-        canDel() {
-            return auth(del.url)
-        },
+        }
     },
 
     methods: {

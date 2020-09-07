@@ -123,8 +123,8 @@
 
 <script>
 import docTableMixin from '@/mixin/docTableMixin'
-import SearchForm from '@/component/SearchForm'
-import SearchFormItem from "@/component/SearchForm/item"
+import SearchForm from '@/component/form/Search'
+import SearchFormItem from "@/component/form/Search/item"
 import {baseUrl, add, update, del, withdraw, pass, reject, getSubById, search} from "@/api/doc/purchase/order"
 
 export default {

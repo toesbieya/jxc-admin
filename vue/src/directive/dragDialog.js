@@ -1,13 +1,11 @@
 export default {
-    bind(el, binding, vnode) {
+    bind(el) {
         const dialogHeaderEl = el.querySelector('.el-dialog__header')
         const dragDom = el.querySelector('.el-dialog')
         dialogHeaderEl.style.cssText += ';cursor:move;'
         dragDom.style.cssText += ';top:0px;'
 
-        const getStyle = (dom, attr) => getComputedStyle(dom)[attr]
-
-        dialogHeaderEl.onmousedown = (e) => {
+        dialogHeaderEl.addEventListener('mousedown', e => {
             // 鼠标按下，计算当前元素距离可视区的距离
             const disX = e.clientX - dialogHeaderEl.offsetLeft
             const disY = e.clientY - dialogHeaderEl.offsetTop
@@ -19,14 +17,13 @@ export default {
             const screenHeight = document.body.clientHeight
 
             const minDragDomLeft = dragDom.offsetLeft
-            const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth
+            const maxDragDomLeft = screenWidth - minDragDomLeft - dragDomWidth
 
             const minDragDomTop = dragDom.offsetTop
-            const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomHeight
+            const maxDragDomTop = screenHeight - minDragDomTop - dragDomHeight
 
             // 获取到的值带px 正则匹配替换
-            let styL = getStyle(dragDom, 'left')
-            let styT = getStyle(dragDom, 'top')
+            let {left: styL, top: styT} = window.getComputedStyle(dragDom)
 
             if (styL.includes('%')) {
                 styL = +document.body.clientWidth * (+styL.replace(/%/g, '') / 100)
@@ -37,7 +34,7 @@ export default {
                 styT = +styT.replace(/px/g, '')
             }
 
-            document.onmousemove = function (e) {
+            function onMousemove(e) {
                 // 通过事件委托，计算移动的距离
                 let left = e.clientX - disX
                 let top = e.clientY - disY
@@ -59,15 +56,15 @@ export default {
 
                 // 移动当前元素
                 dragDom.style.cssText += `;left:${left + styL}px;top:${top + styT}px;`
-
-                // emit onDrag event
-                vnode.child.$emit('dragDialog')
             }
 
-            document.onmouseup = function (e) {
-                document.onmousemove = null
-                document.onmouseup = null
+            function onMouseup() {
+                window.removeEventListener('mousemove', onMousemove)
+                window.removeEventListener('mouseup', onMouseup)
             }
-        }
+
+            window.addEventListener('mousemove', onMousemove)
+            window.addEventListener('mouseup', onMouseup)
+        })
     }
 }

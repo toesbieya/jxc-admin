@@ -1,7 +1,5 @@
 <script type="text/jsx">
 export default {
-    name: "BackToTop",
-
     functional: true,
 
     render() {

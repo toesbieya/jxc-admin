@@ -1,6 +1,6 @@
 import path from 'path'
 import {route as routeConfig} from '@/config'
-import {mutations as mainMutations} from "@/layout/store/main"
+import {mutations as appMutations} from "@/layout/store/app"
 import {addDynamicRoutes} from '@/router'
 import {getDynamicRoutes} from '@/router/define'
 import {parseRoutes, metaExtend} from "@/router/util"
@@ -61,7 +61,7 @@ const actions = {
                 //获取经过权限过滤后的菜单
                 const menus = getAuthorizedMenus({resources, admin}, routes)
 
-                mainMutations.menus(menus)
+                appMutations.menus(menus)
                 commit('resource', {data: data || [], admin})
 
                 //设置初始化完成的标志

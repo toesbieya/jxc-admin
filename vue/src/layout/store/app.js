@@ -11,13 +11,33 @@ const state = {
     activeRootMenu: '',
 
     //所有的树形菜单，每个元素为顶部菜单，顶部菜单的子级（如果有）为侧边栏菜单
-    menus: []
+    menus: [],
+
+    //主题色
+    color: '#1890ff',
+    //导航模式
+    navMode: 'mix'
 }
 
 const store = Vue.observable(state)
 
+export const getters = createGetters(store)
+
+export const mutations = {
+    ...createMutations(store),
+
+    menus(v) {
+        sort(v)
+        store.menus = v
+    }
+}
+
 //菜单排序
 function sort(routes) {
+    if (!Array.isArray(routes) || routes.length === 0) {
+        return
+    }
+
     const getSortValue = item => {
         const sort = deepTap(item)
         return isEmpty(sort) ? 10000 : sort
@@ -46,15 +66,4 @@ function sort(routes) {
             sort(children)
         }
     })
-}
-
-export const getters = createGetters(store)
-
-export const mutations = {
-    ...createMutations(store),
-
-    menus(v) {
-        sort(v)
-        store.menus = v
-    }
 }

@@ -4,7 +4,7 @@
             <slot name="extra"/>
         </el-col>
         <div style="display: flex;justify-content: center;align-items: center">
-            <el-link :icon="iconClass" :underline="false" style="font-size: 16px" @click="expanded=!expanded"/>
+            <el-link :icon="iconClass" :underline="false" style="font-size: 16px" @click="expanded = !expanded"/>
         </div>
         <el-col :span="defaultSpan">
             <slot/>
@@ -20,11 +20,7 @@ export default {
         extra: {type: Number, default: 5}
     },
 
-    data() {
-        return {
-            expanded: false
-        }
-    },
+    data: () => ({expanded: false}),
 
     computed: {
         extraSpan() {

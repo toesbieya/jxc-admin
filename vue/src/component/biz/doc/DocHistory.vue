@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import AbstractPagination from '@/component/AbstractPagination'
-import AbstractTable from "@/component/AbstractTable"
+import AbstractPagination from '@/component/abstract/Pagination'
+import AbstractTable from "@/component/abstract/Table"
 import {search} from "@/api/doc/history"
 import {isEmpty, timeFormat} from "@/util"
 

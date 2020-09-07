@@ -2,7 +2,7 @@
 import LoadingMask from './LoadingMask'
 
 export default {
-    name: "FormDialog",
+    name: "AbstractDialog",
 
     functional: true,
 
@@ -25,7 +25,7 @@ export default {
             <el-dialog
                 v-drag-dialog
                 visible={value}
-                custom-class="form-dialog"
+                custom-class="abstract-dialog"
                 top={top}
                 width={width}
                 on-close={onClose}
@@ -33,10 +33,10 @@ export default {
             >
                 <slot slot="title" name="title">{title}</slot>
 
-                <div class="form-dialog-container">
+                <div class="abstract-dialog-container">
                     <LoadingMask show={loading}/>
                     <el-scrollbar>
-                        <div class="form-dialog-body">
+                        <div class="abstract-dialog-body">
                             {children}
                         </div>
                         <div style="margin-bottom: 17px"/>

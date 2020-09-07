@@ -1,11 +1,9 @@
 <script type="text/jsx">
-import Vue from 'vue'
 import menuMixin from "@/layout/mixin/menu"
-import {getters as mainGetters} from "@/layout/store/main"
-import {getters as settingGetters, mutations as settingMutations} from "@/layout/store/setting"
-import Logo from './component/Logo'
-import Mask from "./component/Mask"
-import MenuItem from '@/component/menu/MenuItem'
+import {getters as appGetters} from "@/layout/store/app"
+import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
+import Logo from './Logo'
+import NavMenuItem from '@/component/menu/NavMenu/item'
 import {getSidebarMenus, getActiveMenuByRoute} from "@/layout/util"
 
 export default {
@@ -13,7 +11,7 @@ export default {
 
     mixins: [menuMixin],
 
-    components: {Logo, MenuItem},
+    components: {Logo, NavMenuItem},
 
     data() {
         return {
@@ -23,26 +21,20 @@ export default {
     },
 
     computed: {
-        device: () => mainGetters.device,
-        activeRootMenu: () => mainGetters.activeRootMenu,
+        device: () => appGetters.device,
+        activeRootMenu: () => appGetters.activeRootMenu,
 
         //侧边栏的折叠状态，true折叠false展开，仅在pc端可折叠
         collapse() {
-            return settingGetters.sidebarCollapse && this.device === 'pc'
+            return asideGetters.collapse && this.device === 'pc'
         },
 
         //是否隐藏侧边栏
         //①设置了侧边栏自动隐藏且鼠标不在侧边栏内且是pc端
         //②侧边栏处于折叠状态且是移动端
-        hideSidebar() {
-            const one = settingGetters.sidebarAutoHidden && this.mouseOutside && this.device === 'pc',
-                two = settingGetters.sidebarCollapse && this.device === 'mobile'
-            return one || two
-        },
-
-        //是否显示移动端展开侧边栏时的遮罩
-        showHiddenMask() {
-            return !settingGetters.sidebarCollapse && this.device === 'mobile'
+        hide() {
+            return asideGetters.autoHide && this.mouseOutside && this.device === 'pc'
+                || asideGetters.collapse && this.device === 'mobile'
         }
     },
 
@@ -71,7 +63,7 @@ export default {
         device: {
             immediate: true,
             handler(v) {
-                v === 'mobile' && this.collapseSidebar()
+                v === 'mobile' && asideMutations.close()
             }
         },
 
@@ -81,14 +73,10 @@ export default {
         },
 
         //设置了侧边栏自动隐藏后，根据状态添加或移除鼠标移动事件
-        hideSidebar(v) {
-            if (!settingGetters.sidebarAutoHidden) return
+        hide(v) {
+            if (!asideGetters.autoHide) return
             const method = `${v ? 'add' : 'remove'}EventListener`
             document[method]('mousemove', this.moveEvent)
-        },
-
-        showHiddenMask(v) {
-            this.maskInstance.show = v
         }
     },
 
@@ -100,40 +88,23 @@ export default {
         //模拟选中菜单
         onSelect(index, indexPath, item, jump = true) {
             //开启手风琴模式时，激活没有子级的菜单时收起其它展开项
-            if (settingGetters.sidebarUniqueOpen && indexPath.length === 1) {
+            if (asideGetters.uniqueOpen && indexPath.length === 1) {
                 const menu = this.$refs.menu
                 const opened = menu.openedMenus
                 opened.forEach(i => i !== index && menu.closeMenu(i))
             }
 
             jump && this.actionOnSelectMenu(index)
-        },
-
-        collapseSidebar(e) {
-            if (e) {
-                e.preventDefault()
-                e.stopPropagation()
-            }
-            settingMutations.sidebarCollapse(true)
         }
     },
 
     mounted() {
-        if (settingGetters.sidebarAutoHidden) {
+        if (asideGetters.autoHide) {
             document.addEventListener('mousemove', this.moveEvent)
         }
 
-        //插入遮罩组件
-        const MaskConstructor = Vue.extend(Mask)
-        this.maskInstance = new MaskConstructor().$mount()
-        this.maskInstance.onClick = this.collapseSidebar
-        document.body.appendChild(this.maskInstance.$el)
-
         this.$once('hook:beforeDestroy', () => {
             document.removeEventListener('mousemove', this.moveEvent)
-
-            document.body.removeChild(this.maskInstance.$el)
-            this.maskInstance.$destroy()
         })
     },
 
@@ -141,40 +112,52 @@ export default {
         const menus = getSidebarMenus()
         if (menus.length <= 0) return
 
-        const asideClass = {
-            'aside': true,
-            'mobile': this.device === 'mobile',
-            'collapse': this.collapse,
-            'hide': this.hideSidebar
-        }
-
-        return (
+        const aside = (
             <aside
-                class={asideClass}
+                class={{'aside': true, 'collapse': this.collapse}}
                 on-mouseenter={() => this.mouseOutside = false}
                 on-mouseleave={() => this.mouseOutside = true}
             >
-                {settingGetters.showLogo && <logo collapse={this.collapse}/>}
+                {asideGetters.showLogo && <logo collapse={this.collapse}/>}
                 <el-menu
                     ref="menu"
                     class="el-menu--vertical"
                     collapse={this.collapse}
                     collapse-transition={false}
                     default-active={this.activeMenu}
-                    unique-opened={settingGetters.sidebarUniqueOpen}
+                    unique-opened={asideGetters.uniqueOpen}
                     on-select={this.onSelect}
                 >
                     {menus.map(m => (
-                        <menu-item
+                        <nav-menu-item
                             menu={m}
-                            show-parent={settingGetters.sidebarShowParent}
-                            collapse={settingGetters.sidebarCollapse}
+                            show-parent={asideGetters.showParentOnCollapse}
+                            collapse={asideGetters.collapse}
                             show-icon-max-depth={1}
                         />
                     ))}
                 </el-menu>
             </aside>
         )
+
+        //当是移动端 或 设置了侧边栏自动隐藏时，渲染成抽屉
+        const renderInDrawer = this.device === 'mobile' || asideGetters.autoHide
+
+        if (renderInDrawer) {
+            return (
+                <el-drawer
+                    visible={asideGetters.show}
+                    with-header={false}
+                    direction="ltr"
+                    size="auto"
+                    on-close={() => asideMutations.close()}
+                >
+                    {aside}
+                </el-drawer>
+            )
+        }
+
+        return aside
     }
 }
 </script>

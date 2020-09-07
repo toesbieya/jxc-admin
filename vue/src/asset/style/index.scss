@@ -45,22 +45,20 @@ a:hover {
 
 //非移动端的滚动条样式修改
 @include pc {
-    .scroll-container {
-        &::-webkit-scrollbar {
+    ::-webkit-scrollbar {
+        width: 6px;
+
+        &:horizontal {
+            height: 6px;
+        }
+
+        &-thumb {
             width: 6px;
+            border-radius: 5px;
+            background-color: rgba($--color-primary, 0.8);
 
-            &:horizontal {
-                height: 6px;
-            }
-
-            &-thumb {
-                width: 6px;
-                border-radius: 5px;
-                background-color: rgba($--color-primary, 0.8);
-
-                &:hover {
-                    background-color: rgba($--color-primary, 1);
-                }
+            &:hover {
+                background-color: rgba($--color-primary, 1);
             }
         }
     }

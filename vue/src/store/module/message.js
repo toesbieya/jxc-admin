@@ -1,4 +1,4 @@
-import {createMutations} from "@/util"
+import {createMutations} from "@/store/util"
 import {search} from '@/api/message/user'
 
 const state = {

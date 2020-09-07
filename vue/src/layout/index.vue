@@ -2,23 +2,23 @@
 import offlineMixin from './mixin/offline'
 import VAside from './component/Aside'
 import VHeader from './component/Header'
-import VMain from './component/Main'
-import {getters as mainGetters, mutations as mainMutations} from "@/layout/store/main"
-import {getters as settingGetters} from "@/layout/store/setting"
-import {isMobile} from "@/util/browser"
+import VPage from './component/Page'
+import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
+import {getters as tagsViewGetters} from "@/layout/store/tagsView"
 import {debounce} from "@/util"
+import {isMobile} from "@/util/browser"
 
 export default {
     name: 'Layout',
 
     mixins: [offlineMixin],
 
-    components: {VAside, VHeader, VMain},
+    components: {VAside, VHeader, VPage},
 
     computed: {
         containerClass() {
-            const arr = ['main-container', 'has-nav', `nav-mode-${settingGetters.navMode}`]
-            settingGetters.useTagsView && arr.push('has-tags-view')
+            const arr = ['main-container', 'has-nav', `nav-mode-${appGetters.navMode}`]
+            tagsViewGetters.enabled && arr.push('has-tags-view')
             return arr
         }
     },
@@ -27,7 +27,7 @@ export default {
         $_resizeHandler() {
             if (!document.hidden) {
                 const mobile = isMobile()
-                mainMutations.device(mobile ? 'mobile' : 'pc')
+                appMutations.device(mobile ? 'mobile' : 'pc')
             }
         }
     },
@@ -44,14 +44,14 @@ export default {
     },
 
     render() {
-        const renderAide = mainGetters.device === 'mobile' || settingGetters.navMode !== 'head'
+        const renderAide = appGetters.device === 'mobile' || appGetters.navMode !== 'head'
         return (
             <section class="app-wrapper">
                 {renderAide && <v-aside/>}
 
                 <section class={this.containerClass}>
                     <v-header/>
-                    <v-main/>
+                    <v-page/>
                 </section>
             </section>
         )

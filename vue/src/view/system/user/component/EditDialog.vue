@@ -1,5 +1,5 @@
 <template>
-    <form-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
+    <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
         <abstract-form :model="form" :rules="rules" label-width="90px" size="">
             <el-form-item label="登录名" prop="loginName">
                 <el-input v-model="form.loginName" :readonly="!!form.id || !canEdit" maxlength="20"/>
@@ -35,14 +35,14 @@
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
-    </form-dialog>
+    </abstract-dialog>
 </template>
 
 <script>
 import dialogMixin from "@/mixin/dialogMixin"
-import AbstractForm from "@/component/AbstractForm"
+import AbstractForm from "@/component/abstract/Form"
 import DepartmentSelector from "./DepartmentSelector"
-import FormDialog from '@/component/FormDialog'
+import AbstractDialog from '@/component/abstract/Dialog'
 import RoleSelector from './RoleSelector'
 import {checkLoginName, checkNickName} from "@/api/account"
 import {add, update} from "@/api/system/user"
@@ -54,7 +54,7 @@ export default {
 
     mixins: [dialogMixin],
 
-    components: {AbstractForm, DepartmentSelector, FormDialog, RoleSelector},
+    components: {AbstractForm, DepartmentSelector, AbstractDialog, RoleSelector},
 
     props: {
         value: {type: Boolean, default: false},

@@ -4,9 +4,8 @@
  * TODO 菜单隐藏后再显示出来存在BUG，怀疑是组件复用的问题
  */
 import menuMixin from "@/layout/mixin/menu"
-import {getters as mainGetters, mutations as mainMutations} from "@/layout/store/main"
-import {getters as settingGetters} from "@/layout/store/setting"
-import MenuItem from "@/component/menu/MenuItem"
+import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
+import NavMenuItem from "@/component/menu/NavMenu/item"
 import {getActiveMenuByRoute} from "@/layout/util"
 
 export default {
@@ -14,7 +13,7 @@ export default {
 
     mixins: [menuMixin],
 
-    components: {MenuItem},
+    components: {NavMenuItem},
 
     props: {
         //是否在只有一个顶部菜单时仍然渲染
@@ -30,17 +29,17 @@ export default {
     },
 
     computed: {
-        navMode: () => settingGetters.navMode,
+        navMode: () => appGetters.navMode,
 
         menus() {
-            if (mainGetters.device === 'mobile') return []
+            if (appGetters.device === 'mobile') return []
             switch (this.navMode) {
                 case 'aside':
                     return []
                 case 'head' :
-                    return mainGetters.menus
+                    return appGetters.menus
                 case 'mix':
-                    return mainGetters.menus.map(root => ({...root, children: undefined}))
+                    return appGetters.menus.map(root => ({...root, children: undefined}))
             }
         }
     },
@@ -72,7 +71,7 @@ export default {
         setActiveMenu(navMode = this.navMode, {path, meta, matched} = this.$route) {
             //设置当前激活的顶部菜单
             const rootPath = matched[0].path || '/'
-            mainMutations.activeRootMenu(rootPath)
+            appMutations.activeRootMenu(rootPath)
 
             //只有在混合导航模式下才将当前激活的顶部菜单认为是当前菜单
             if (navMode === 'mix') {
@@ -82,7 +81,7 @@ export default {
             else this.activeMenu = getActiveMenuByRoute({path, meta})
         },
         onSelect(index) {
-            if (this.navMode === 'mix' && index === mainGetters.activeRootMenu) {
+            if (this.navMode === 'mix' && index === appGetters.activeRootMenu) {
                 return
             }
             this.actionOnSelectMenu(index)
@@ -144,7 +143,7 @@ export default {
         },
 
         renderVisibleMenus(h, visibleMenus) {
-            return visibleMenus.map(m => <menu-item menu={m} show-icon-max-depth={1}/>)
+            return visibleMenus.map(m => <nav-menu-item menu={m} show-icon-max-depth={1}/>)
         },
         renderHiddenMenus(h, hiddenMenus, hideAll) {
             if (hiddenMenus.length <= 0) return
@@ -153,7 +152,7 @@ export default {
                 ? <v-icon slot="title" icon={'el-icon-menu'}/>
                 : <span slot="title" class="menu-item-content">{'...'}</span>
 
-            const children = hiddenMenus.map(m => <menu-item menu={m} show-icon-max-depth={0}/>)
+            const children = hiddenMenus.map(m => <nav-menu-item menu={m} show-icon-max-depth={0}/>)
             children.unshift(content)
 
             return <el-submenu index={'_'}>{children}</el-submenu>

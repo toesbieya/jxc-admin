@@ -2,8 +2,8 @@
 * 列表页通用混入
 * 引用者必须要有search方法
 * */
-import AbstractPagination from '@/component/AbstractPagination'
-import AbstractTable from '@/component/AbstractTable'
+import AbstractPagination from '@/component/abstract/Pagination'
+import AbstractTable from '@/component/abstract/Table'
 
 const mixin = {
     components: {AbstractPagination, AbstractTable},

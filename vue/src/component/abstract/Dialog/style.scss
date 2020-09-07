@@ -1,13 +1,13 @@
-.form-dialog {
+.abstract-dialog {
     .el-dialog__body {
         padding: 0;
     }
 
-    .form-dialog-container {
+    .abstract-dialog-container {
         position: relative;
         width: 100%;
 
-        .form-dialog-body {
+        .abstract-dialog-body {
             padding: 24px 24px 0
         }
 

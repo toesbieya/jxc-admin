@@ -5,8 +5,8 @@ import Bell from "./component/Bell"
 import Hamburger from './component/Hamburger'
 import HeadMenu from "./component/HeadMenu"
 import SettingDrawer from './component/SettingDrawer'
-import {getters as mainGetters} from "@/layout/store/main"
-import {getters as settingGetters, mutations as settingMutations} from "@/layout/store/setting"
+import {getters as appGetters} from "@/layout/store/app"
+import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
 import {getSidebarMenus} from "@/layout/util"
 import {elConfirm} from "@/util/message"
 
@@ -22,10 +22,6 @@ export default {
     computed: mapState('user', ['avatar', 'name', 'prepareLogout']),
 
     methods: {
-        sidebarCtrl() {
-            settingMutations.sidebarCollapse(!settingGetters.sidebarCollapse)
-        },
-
         refresh() {
             this.$router.replace({path: `/redirect${this.$route.fullPath}`})
         },
@@ -52,18 +48,18 @@ export default {
             //③桌面端且非顶部导航
             //④桌面端且未设置侧边栏自动隐藏
             const hasSidebarMenus = getSidebarMenus().length > 0,
-                isMobile = mainGetters.device === 'mobile',
-                notHeadMode = settingGetters.navMode !== 'head',
-                notAutoHidden = !settingGetters.sidebarAutoHidden,
+                isMobile = appGetters.device === 'mobile',
+                notHeadMode = appGetters.navMode !== 'head',
+                notAutoHidden = !asideGetters.autoHide,
                 renderHamburger = hasSidebarMenus && (isMobile || notHeadMode && notAutoHidden)
 
             if (renderHamburger) {
-                const active = !settingGetters.sidebarCollapse
-                return <hamburger class="navbar-item" active={active} on-click={this.sidebarCtrl}/>
+                const active = isMobile ? asideGetters.show : !asideGetters.collapse
+                return <hamburger class="navbar-item" active={active} on-click={() => asideMutations.switch()}/>
             }
         },
         renderHeadMenuMenu() {
-            if (settingGetters.navMode !== 'aside' && mainGetters.device !== 'mobile') {
+            if (appGetters.navMode !== 'aside' && appGetters.device !== 'mobile') {
                 return <head-menu always-show/>
             }
         },

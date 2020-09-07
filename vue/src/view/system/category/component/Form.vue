@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import AbstractForm from "@/component/AbstractForm"
+import AbstractForm from "@/component/abstract/Form"
 import {add, update} from "@/api/system/category"
 import {isEmpty, mergeObj, waitUntilSuccess} from '@/util'
 import {elConfirm} from "@/util/message"

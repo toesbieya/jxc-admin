@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {getters as mainGetters} from "@/layout/store/main"
+import {getters as appGetters} from "@/layout/store/app"
 import MessageStream from './MessageStream'
 
 export default {
@@ -27,7 +27,7 @@ export default {
 
     computed: {
         tabPosition() {
-            return mainGetters.device === 'pc' ? 'left' : 'top'
+            return appGetters.device === 'pc' ? 'left' : 'top'
         },
         tabContentClass() {
             return this.tabPosition === 'left' ? 'tab-main-right' : 'tab-main-top'

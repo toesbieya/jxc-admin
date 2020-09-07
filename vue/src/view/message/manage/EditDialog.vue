@@ -1,5 +1,5 @@
 <template>
-    <form-dialog :loading="loading" :title="title" :value="value" width="50%" @close="cancel" @open="open">
+    <abstract-dialog :loading="loading" :title="title" :value="value" width="50%" @close="cancel" @open="open">
         <abstract-form :model="form" :rules="rules">
             <abstract-form-item label="标 题" prop="title" dense>
                 <el-input v-model="form.title" maxlength="100" :readonly="!canSave"/>
@@ -48,14 +48,14 @@
             <el-button v-if="canPublish" size="small" type="primary" @click="publish">发 布</el-button>
             <el-button v-if="canWithdraw" size="small" type="danger" @click="withdraw">撤 回</el-button>
         </template>
-    </form-dialog>
+    </abstract-dialog>
 </template>
 
 <script>
 import dialogMixin from "@/mixin/dialogMixin"
-import AbstractForm from "@/component/AbstractForm"
-import AbstractFormItem from "@/component/AbstractForm/item"
-import FormDialog from '@/component/FormDialog'
+import AbstractForm from "@/component/abstract/Form"
+import AbstractFormItem from "@/component/abstract/Form/item"
+import AbstractDialog from '@/component/abstract/Dialog'
 import RichTextEditor from "@/component/editor/RichTextEditor"
 import UserSelector from '@/component/biz/UserSelector/SimpleMultipleUserSelector'
 import {add, update, publish, withdraw} from "@/api/message/manage"
@@ -68,7 +68,7 @@ export default {
 
     mixins: [dialogMixin],
 
-    components: {AbstractForm, AbstractFormItem, FormDialog, RichTextEditor, UserSelector},
+    components: {AbstractForm, AbstractFormItem, AbstractDialog, RichTextEditor, UserSelector},
 
     props: {
         value: {type: Boolean, default: false},

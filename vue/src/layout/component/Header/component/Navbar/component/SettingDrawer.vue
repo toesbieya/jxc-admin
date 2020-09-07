@@ -3,14 +3,14 @@
         <div class="drawer-container">
             <el-divider>主题色</el-divider>
             <div class="drawer-item">
-                <checkbox-group :value="color" @input="changeColor">
+                <checkbox-group :value="appGetters.color" @input="changeThemeColor">
                     <color-checkbox v-for="i in colors" :key="i" :value="i"/>
                 </checkbox-group>
             </div>
 
             <el-divider>导航模式</el-divider>
             <div class="drawer-item">
-                <checkbox-group :value="navMode" @input="e => setValue(e, 'navMode')">
+                <checkbox-group :value="appGetters.navMode" @input="changeNavMode">
                     <img-checkbox
                         v-for="{title, value, img} in navModes"
                         :key="value"
@@ -21,13 +21,41 @@
                 </checkbox-group>
             </div>
 
-            <template v-for="{title, children} in settings">
-                <el-divider>{{ title }}</el-divider>
-                <div v-for="{title, key} in children" :key="key" class="drawer-item">
-                    <span>{{ title }}</span>
-                    <el-switch :value="getValue(key)" class="drawer-switch" @input="e => setValue(e, key)"/>
-                </div>
-            </template>
+            <el-divider>页面设置</el-divider>
+            <div class="drawer-item">
+                <span>显示页头</span>
+                <el-switch :value="pageGetters.showPageHeader" @input="changePageShowHeader"/>
+            </div>
+            <div class="drawer-item">
+                <span>使用多页签</span>
+                <el-switch :value="tagsViewGetters.enabled" @input="changeTagsViewEnabled"/>
+            </div>
+            <div class="drawer-item">
+                <span>显示返回顶部按钮</span>
+                <el-switch :value="pageGetters.showBackToTop" @input="changePageBackToTop"/>
+            </div>
+
+            <el-divider>侧边栏设置</el-divider>
+            <div class="drawer-item">
+                <span>显示logo</span>
+                <el-switch :value="asideGetters.showLogo" @input="changeAsideShowLogo"/>
+            </div>
+            <div class="drawer-item">
+                <span>手风琴效果</span>
+                <el-switch :value="asideGetters.uniqueOpen" @input="changeAsideUniqueOpen"/>
+            </div>
+            <div class="drawer-item">
+                <span>折叠</span>
+                <el-switch :value="asideGetters.collapse" @input="changeAsideCollapse"/>
+            </div>
+            <div class="drawer-item">
+                <span>折叠时显示上级</span>
+                <el-switch :value="asideGetters.showParentOnCollapse" @input="changeAsideCollapseParent"/>
+            </div>
+            <div class="drawer-item">
+                <span>自动隐藏</span>
+                <el-switch :value="asideGetters.autoHide" @input="changeAsideAutoHide"/>
+            </div>
         </div>
     </el-drawer>
 </template>
@@ -39,7 +67,12 @@ import {isDev} from '@/config'
 import CheckboxGroup from "@/component/checkbox/Group"
 import ColorCheckbox from "@/component/checkbox/ColorCheckbox"
 import ImgCheckbox from "@/component/checkbox/ImgCheckbox"
-import {getters, mutations} from "@/layout/store/setting"
+import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
+import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
+import {getters as pageGetters, mutations as pageMutations} from "@/layout/store/page"
+import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
+import {mergeObj} from "@/util"
+import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/util/storage"
 
 export default {
     name: "SettingDrawer",
@@ -50,6 +83,8 @@ export default {
 
     data() {
         return {
+            appGetters, asideGetters, pageGetters, tagsViewGetters,
+
             colors: ['#f5222d', '#fa541c', '#fadb14', '#3eaf7c', '#13c2c2', '#1890ff', '#722ed1', '#eb2f96'],
             navModes: [
                 {
@@ -68,51 +103,121 @@ export default {
                     img: 'https://gw.alipayobjects.com/zos/antfincdn/x8Ob%26B8cy8/LCkqqYNmvBEbokSDscrm.svg'
                 },
             ],
-            settings: [
-                {
-                    title: '页面设置',
-                    children: [
-                        {title: '显示logo', key: 'showLogo'},
-                        {title: '显示页头', key: 'showPageHeader'},
-                        {title: '使用多页签', key: 'useTagsView'}
-                    ]
-                },
-                {
-                    title: '侧边栏设置',
-                    children: [
-                        {title: '手风琴效果', key: 'sidebarUniqueOpen'},
-                        {title: '折叠', key: 'sidebarCollapse'},
-                        {title: '折叠状态下显示上级', key: 'sidebarShowParent'},
-                        {title: '自动隐藏', key: 'sidebarAutoHidden'},
-                    ]
-                },
-                {
-                    title: '其他设置',
-                    children: [
-                        {title: '显示返回顶部按钮', key: 'showBackToTop'}
-                    ]
-                }
-            ]
-        }
-    },
 
-    computed: {
-        color: () => getters.themeColor,
-        navMode: () => getters.navMode,
+            setting: {
+                app: {
+                    color: '#1890ff',
+                    navMode: 'mix'
+                },
+                page: {
+                    showPageHeader: true,
+                    useTagsView: true,
+                    showBackToTop: true
+                },
+                aside: {
+                    showLogo: true,
+                    uniqueOpen: true,
+                    collapse: false,
+                    showParentOnCollapse: false,
+                    autoHide: false
+                }
+            }
+        }
     },
 
     methods: {
-        changeColor(color) {
-            this.setValue(color,'themeColor')
-            isDev && client.changer.changeColor({newColors: forElementUI.getElementUISeries(color)})
+        //按照此处的设置项修改layout中的store
+        updateLayoutStore() {
+            const {app, page, aside} = this.setting
+
+            appMutations.color(app.color)
+            appMutations.navMode(app.navMode)
+
+            pageMutations.showPageHeader(page.showPageHeader)
+            tagsViewMutations.enabled(page.useTagsView)
+            pageMutations.showBackToTop(page.showBackToTop)
+
+            asideMutations.showLogo(aside.showLogo)
+            asideMutations.uniqueOpen(aside.uniqueOpen)
+            asideMutations.collapse(aside.collapse)
+            asideMutations.showParentOnCollapse(aside.showParentOnCollapse)
+            asideMutations.autoHide(aside.autoHide)
+
+        },
+        //将layout中的store数据同步到此处的设置项
+        syncLayoutStore() {
+            const {app, page, aside, other} = this.setting
+            app.color = appGetters.color
+            app.navMode = appGetters.navMode
+
+            page.showPageHeader = pageGetters.showPageHeader
+            page.useTagsView = tagsViewGetters.enabled
+            page.showBackToTop = pageGetters.showBackToTop
+
+            aside.showLogo = asideGetters.showLogo
+            aside.uniqueOpen = asideGetters.uniqueOpen
+            aside.collapse = asideGetters.collapse
+            aside.showParentOnCollapse = asideGetters.showParentOnCollapse
+            aside.autoHide = asideGetters.autoHide
+        },
+        //将此处的设置项保存到本地
+        saveSetting() {
+            this.syncLayoutStore()
+            setLocalPersonalSettings(this.setting)
         },
 
-        getValue(key) {
-            return getters[key]
+        changeThemeColor(v) {
+            isDev && client.changer.changeColor({newColors: forElementUI.getElementUISeries(v)})
+            appMutations.color(v)
+            this.saveSetting()
         },
-        setValue(value, key) {
-            mutations[key](value)
+        changeNavMode(v) {
+            appMutations.navMode(v)
+            this.saveSetting()
+        },
+
+        changePageShowHeader(v) {
+            pageMutations.showPageHeader(v)
+            this.saveSetting()
+        },
+        changeTagsViewEnabled(v) {
+            tagsViewMutations.enabled(v)
+            this.saveSetting()
+        },
+        changePageBackToTop(v) {
+            pageMutations.showBackToTop(v)
+            this.saveSetting()
+        },
+
+        changeAsideShowLogo(v) {
+            asideMutations.showLogo(v)
+            this.saveSetting()
+        },
+        changeAsideUniqueOpen(v) {
+            asideMutations.uniqueOpen(v)
+            this.saveSetting()
+        },
+        changeAsideCollapse(v) {
+            asideMutations.collapse(v)
+            this.saveSetting()
+        },
+        changeAsideCollapseParent(v) {
+            asideMutations.showParentOnCollapse(v)
+            this.saveSetting()
+        },
+        changeAsideAutoHide(v) {
+            asideMutations.autoHide(v)
+            this.saveSetting()
         }
+    },
+
+    mounted() {
+        mergeObj(this.setting, getLocalPersonalSettings())
+
+        //由于数据结构可能发生变化，所以在合并后覆盖本地数据
+        setLocalPersonalSettings(this.setting)
+
+        this.updateLayoutStore()
     }
 }
 </script>
@@ -125,13 +230,11 @@ export default {
     word-wrap: break-word;
 
     .drawer-item {
+        display: flex;
+        justify-content: space-between;
         color: rgba(0, 0, 0, .65);
         font-size: 14px;
         padding: 12px 0;
-    }
-
-    .drawer-switch {
-        float: right
     }
 }
 </style>

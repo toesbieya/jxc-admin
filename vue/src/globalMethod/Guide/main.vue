@@ -38,7 +38,7 @@
  * vue里交互型的导航不太行，太多东西做不到，换成引导手册吧
  */
 import {debounce, isEmpty} from "@/util"
-import {addHighlightClasses, getCalculatedPosition, inAppView, jump, removeHighlightClasses} from "./utils"
+import {addHighlightClasses, getCalculatedPosition, inMainPage, jump, removeHighlightClasses} from "./utils"
 
 export default {
     name: "Guide",
@@ -204,7 +204,7 @@ export default {
             this.lastHighlightedElement = this.highlightedElement
             this.highlightedElement = el
 
-            if (inAppView(el)) jump(el)
+            if (inMainPage(el)) jump(el)
 
             this.$_setStageStyle(getCalculatedPosition(el))
 

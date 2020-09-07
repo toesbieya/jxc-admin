@@ -57,8 +57,8 @@
 <script>
 import tableMixin from '@/mixin/tablePageMixin'
 import EditDialog from './EditDialog'
-import SearchForm from "@/component/SearchForm"
-import SearchFormItem from "@/component/SearchForm/item"
+import SearchForm from "@/component/form/Search"
+import SearchFormItem from "@/component/form/Search/item"
 import {add, update, del, search} from "@/api/system/role"
 import {isEmpty} from '@/util'
 import {wic} from "@/util/auth"

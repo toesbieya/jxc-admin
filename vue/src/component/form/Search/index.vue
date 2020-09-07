@@ -12,8 +12,8 @@ export default {
 
     props: {
         labelWidth: {type: String, default: '120px'},
-        xs: {type: Number, default: 1},// <768px
-        sm: {type: Number, default: 2},// >=768px
+        xs: {type: Number, default: 1}, // <768px
+        sm: {type: Number, default: 2}, // >=768px
         md: {type: Number, default: 3}, // >=998px
         lg: {type: Number, default: 4}  // >=1200px
     },

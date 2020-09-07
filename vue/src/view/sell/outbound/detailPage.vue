@@ -10,20 +10,20 @@
         @close="close"
     >
         <abstract-form :model="form" :rules="rules">
-            <form-card ref="progress" header="流程进度">
+            <form-collapse-card ref="progress" header="流程进度">
                 <doc-steps :status="form.status" :type="type"/>
-            </form-card>
+            </form-collapse-card>
 
-            <form-card ref="base" header="基础信息">
+            <form-collapse-card ref="base" header="基础信息">
                 <abstract-form-item label="销售订单" prop="pid">
                     <el-input v-if="canSave" :value="form.pid" readonly>
                         <el-button slot="append" @click="parentDialog=true">选择</el-button>
                     </el-input>
                     <template v-else>{{ form.pid }}</template>
                 </abstract-form-item>
-            </form-card>
+            </form-collapse-card>
 
-            <form-card ref="goods" header="出库商品">
+            <form-collapse-card ref="goods" header="出库商品">
                 <abstract-table :data="displayTableData" :highlight-current-row="false">
                     <el-table-column align="center" type="expand">
                         <el-table slot-scope="{row}" :data="row.data" border show-summary
@@ -56,18 +56,18 @@
                     <el-table-column align="center" label="出库数量" prop="num" width="150"/>
                     <el-table-column align="center" label="订单剩余未出库数量" prop="remainNum" width="250"/>
                 </abstract-table>
-            </form-card>
+            </form-collapse-card>
 
-            <form-card ref="attachment" header="附件">
+            <form-collapse-card ref="attachment" header="附件">
                 <upload-file
                     :file-list="form.imageList"
                     :disabled="!canSave"
                     @remove="removeUpload"
                     @success="uploadSuccess"
                 />
-            </form-card>
+            </form-collapse-card>
 
-            <form-card ref="remark" header="备注">
+            <form-collapse-card ref="remark" header="备注">
                 <el-input
                     v-model="form.remark"
                     :rows="4"
@@ -76,11 +76,11 @@
                     show-word-limit
                     type="textarea"
                 />
-            </form-card>
+            </form-collapse-card>
 
-            <form-card ref="history" header="单据历史">
+            <form-collapse-card ref="history" header="单据历史">
                 <doc-history :id="form.id"/>
-            </form-card>
+            </form-collapse-card>
         </abstract-form>
 
         <order-selector v-model="parentDialog" @select="selectParent"/>

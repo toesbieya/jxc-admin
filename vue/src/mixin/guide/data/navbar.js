@@ -8,7 +8,7 @@ const steps = [
         content: '这是个性设置按钮，可以根据自己喜好进行一些设置',
     },
     {
-        element: '.avatar-container.navbar-item',
+        element: '.navbar .el-dropdown.navbar-item',
         content: '这是用户中心',
     },
     {

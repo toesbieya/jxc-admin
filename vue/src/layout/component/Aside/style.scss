@@ -13,21 +13,9 @@
     box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
     transition: all 0.2s ease-in-out;
 
-    //移动端时为fixed
-    &.mobile {
-        position: fixed;
-    }
-
     //折叠状态
     &.collapse {
         width: $aside-icon-size + 20px * 2;
-    }
-
-    //抽屉模式时的隐藏状态
-    &.hide {
-        width: 0;
-        pointer-events: none;
-        transform: translateX(-$aside-width);
     }
 
     .sidebar-logo-container {
@@ -122,17 +110,6 @@
         color: $aside-menu-item-hover-color;
         border-bottom: 1px solid $aside-sub-menu-background;
     }
-}
-
-//移动端侧边栏展开时的遮罩
-.aside-hidden-mask {
-    background: rgba(0, 0, 0, .5);
-    backdrop-filter: blur(10px);
-    height: 100vh;
-    width: 100vw;
-    top: 0;
-    position: fixed;
-    z-index: 9;
 }
 
 

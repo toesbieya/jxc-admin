@@ -4,17 +4,17 @@
             <category-tree ref="tree" @node-click="see" @node-contextmenu="openContextMenu"/>
         </el-scrollbar>
 
-        <contextmenu v-model="contextmenu.show" :left="contextmenu.left" :top="contextmenu.top">
-            <contextmenu-item v-show="canAdd" @click="add">添加分类</contextmenu-item>
-            <contextmenu-item v-show="currentCategory" @click="edit">编辑分类</contextmenu-item>
-            <contextmenu-item v-show="currentCategory" @click="del">删除分类</contextmenu-item>
-        </contextmenu>
+        <context-menu
+            v-model="contextmenu.show"
+            :items="contextMenuItems"
+            :left="contextmenu.left"
+            :top="contextmenu.top"
+        />
     </el-card>
 </template>
 
 <script>
-import Contextmenu from "@/component/menu/Contextmenu"
-import ContextmenuItem from "@/component/menu/ContextmenuItem"
+import ContextMenu from "@/component/menu/ContextMenu"
 import CategoryTree from '@/component/biz/CategoryTree'
 import {add, del, getAll} from "@/api/system/category"
 import {isEmpty, waitUntilSuccess} from '@/util'
@@ -22,7 +22,7 @@ import {auth} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
-    components: {Contextmenu, ContextmenuItem, CategoryTree},
+    components: {ContextMenu, CategoryTree},
 
     props: ['form'],
 
@@ -43,6 +43,16 @@ export default {
         canAdd() {
             return auth(add.url) && !this.currentCategory
                 || !this.currentCategory.leaf && this.currentCategory.level < this.maxLevel
+        },
+
+        contextMenuItems() {
+            const items = []
+
+            this.canAdd && items.push({content: '添加分类', click: this.add})
+            this.currentCategory && items.push({content: '编辑分类', click: this.edit})
+            this.currentCategory && items.push({content: '删除分类', click: this.del})
+
+            return items
         }
     },
 

@@ -146,7 +146,7 @@
 
 <script>
 import treePageMixin from '@/mixin/treePageMixin'
-import AbstractForm from "@/component/AbstractForm"
+import AbstractForm from "@/component/abstract/Form"
 import JsonEditor from "@/component/editor/JsonEditor"
 import {add, update, del} from '@/api/system/resource'
 import {isEmpty, mergeObj, resetObj} from "@/util"

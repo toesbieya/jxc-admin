@@ -6,10 +6,7 @@ export default {
 
     functional: true,
 
-    props: {
-        include: Array,
-        transitionName: String
-    },
+    props: {include: Array, transitionName: String},
 
     render(h, context) {
         const {include, transitionName} = context.props

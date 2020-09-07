@@ -1,5 +1,5 @@
 <template>
-    <form-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
+    <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
         <abstract-form :model="form" :rules="rules" size="">
             <el-form-item v-show="parentName" label="上级部门">
                 <el-input :value="parentName" readonly/>
@@ -19,13 +19,13 @@
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
-    </form-dialog>
+    </abstract-dialog>
 </template>
 
 <script>
 import dialogMixin from "@/mixin/dialogMixin"
-import AbstractForm from "@/component/AbstractForm"
-import FormDialog from '@/component/FormDialog'
+import AbstractForm from "@/component/abstract/Form"
+import AbstractDialog from '@/component/abstract/Dialog'
 import {add, update} from "@/api/system/department"
 import {isEmpty} from '@/util'
 import {elConfirm, elSuccess} from "@/util/message"
@@ -35,7 +35,7 @@ export default {
 
     mixins: [dialogMixin],
 
-    components: {AbstractForm, FormDialog},
+    components: {AbstractForm, AbstractDialog},
 
     props: {
         value: {type: Boolean, default: false},
