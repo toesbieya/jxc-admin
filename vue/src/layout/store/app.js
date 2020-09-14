@@ -4,8 +4,8 @@ import {isMobile} from "@/util/browser"
 import {createGetters, createMutations} from "@/util/observable"
 
 const state = {
-    //区分pc和移动端（mobile）
-    device: isMobile() ? 'mobile' : 'pc',
+    //区分pc和移动端
+    isMobile: isMobile(),
 
     //当前激活的顶部菜单的fullPath
     activeRootMenu: '',

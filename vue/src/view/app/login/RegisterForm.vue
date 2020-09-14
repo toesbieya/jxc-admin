@@ -136,11 +136,11 @@ export default {
         },
 
         addEvent() {
-            document.addEventListener('keyup', this.capsLockTip)
+            window.addEventListener('keyup', this.capsLockTip)
         },
 
         removeEvent() {
-            document.removeEventListener('keyup', this.addCapsLockEvent)
+            window.removeEventListener('keyup', this.addCapsLockEvent)
         }
     },
 

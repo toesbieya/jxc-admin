@@ -81,7 +81,7 @@ export default class Firework {
     start() {
         this.resizeObserver = new ResizeObserver(() => this.resize())
         this.resizeObserver.observe(this.canvas)
-        document.addEventListener('click', this.addRocket)
+        window.addEventListener('click', this.addRocket)
         this.timer = window.setInterval(this.addRocket, 1000)
         this.resize()
         this.loop()

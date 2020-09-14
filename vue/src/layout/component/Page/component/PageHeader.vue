@@ -21,8 +21,8 @@ export default {
             immediate: true,
             handler(to) {
                 const {path, meta: {title}, matched} = to
-                this.title = title
                 if (!path.startsWith('/redirect')) {
+                    this.title = title
                     this.data = matched.filter(item => item.meta.title)
                 }
             }
@@ -32,13 +32,16 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~@/asset/style/variables.scss";
+
 .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
+    height: $page-header-height;
     font-size: 14px;
-    padding: 16px 24px 0 24px;
+    padding: 16px $page-view-margin 0 $page-view-margin;
 
     > .el-breadcrumb .no-redirect {
         color: #909399;

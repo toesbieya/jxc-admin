@@ -26,8 +26,7 @@ export default {
     methods: {
         $_resizeHandler() {
             if (!document.hidden) {
-                const mobile = isMobile()
-                appMutations.device(mobile ? 'mobile' : 'pc')
+                appMutations.isMobile(isMobile())
             }
         }
     },
@@ -44,7 +43,7 @@ export default {
     },
 
     render() {
-        const renderAide = appGetters.device === 'mobile' || appGetters.navMode !== 'head'
+        const renderAide = appGetters.isMobile || appGetters.navMode !== 'head'
         return (
             <section class="app-wrapper">
                 {renderAide && <v-aside/>}

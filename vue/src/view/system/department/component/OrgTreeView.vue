@@ -62,8 +62,8 @@ export default {
             this.initPageY = event.pageY
             this.oldMarginLeft = this.orgTreeOffsetLeft
             this.oldMarginTop = this.orgTreeOffsetTop
-            document.addEventListener('mousemove', this.mousemoveView)
-            document.addEventListener('mouseup', this.mouseupView)
+            window.addEventListener('mousemove', this.mousemoveView)
+            window.addEventListener('mouseup', this.mouseupView)
         },
         mousemoveView(event) {
             if (!this.canMove) return
@@ -73,8 +73,8 @@ export default {
         },
         mouseupView() {
             this.canMove = false
-            document.removeEventListener('mousemove', this.mousemoveView)
-            document.removeEventListener('mouseup', this.mouseupView)
+            window.removeEventListener('mousemove', this.mousemoveView)
+            window.removeEventListener('mouseup', this.mouseupView)
         }
     }
 }

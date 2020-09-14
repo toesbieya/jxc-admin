@@ -150,7 +150,7 @@ export default class ParticleNetwork {
 
         this.onTouchStart = function (e) {
             e.preventDefault()
-            setTimeout(function () {
+            window.setTimeout(function () {
                 if (!this.touchIsMoving) {
                     for (let i = 0; i < this.spawnQuantity; i++) {
                         this.particles.push(new Particle(this, e.changedTouches[0].clientX, e.changedTouches[0].clientY))

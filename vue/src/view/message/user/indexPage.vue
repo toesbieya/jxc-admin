@@ -27,7 +27,7 @@ export default {
 
     computed: {
         tabPosition() {
-            return appGetters.device === 'pc' ? 'left' : 'top'
+            return appGetters.isMobile ? 'top' : 'left'
         },
         tabContentClass() {
             return this.tabPosition === 'left' ? 'tab-main-right' : 'tab-main-top'

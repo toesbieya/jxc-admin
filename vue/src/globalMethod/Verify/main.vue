@@ -285,14 +285,14 @@ export default {
             if (this.moveStartAtX !== null) {
                 const success = maxLeft > distance && distance > minLeft
                 this.stat = success ? 'success' : 'fail'
-                setTimeout(() => {
+                window.setTimeout(() => {
                     this.stat = 'ready'
                     if (!success) return this.initCanvas()
                     this.resolve()
                     this.close()
                 }, success ? 500 : 1000)
             }
-            setTimeout(() => {
+            window.setTimeout(() => {
                 this.sliderStyle.left = '0'
                 this.sliderStyle.transition = "left 0.5s"
             }, 1000)
@@ -302,17 +302,17 @@ export default {
 
         addListener() {
             if (this.image.loading) return
-            document.addEventListener("mousemove", this.moving)
-            document.addEventListener("mouseup", this.moveEnd)
-            document.addEventListener("touchmove", this.moving)
-            document.addEventListener("touchend", this.moveEnd)
+            window.addEventListener("mousemove", this.moving)
+            window.addEventListener("mouseup", this.moveEnd)
+            window.addEventListener("touchmove", this.moving)
+            window.addEventListener("touchend", this.moveEnd)
         },
 
         removeListener() {
-            document.removeEventListener("mousemove", this.moving)
-            document.removeEventListener("mouseup", this.moveEnd)
-            document.addEventListener("touchmove", this.moving)
-            document.addEventListener("touchend", this.moveEnd)
+            window.removeEventListener("mousemove", this.moving)
+            window.removeEventListener("mouseup", this.moveEnd)
+            window.addEventListener("touchmove", this.moving)
+            window.addEventListener("touchend", this.moveEnd)
         },
 
         handleAfterLeave() {

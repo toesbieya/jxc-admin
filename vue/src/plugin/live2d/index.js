@@ -56,7 +56,7 @@ export default class Waifu {
             `
         )
 
-        setTimeout(() => document.getElementById("waifu").style.bottom = '0', 0)
+        window.setTimeout(() => document.getElementById("waifu").style.bottom = '0', 0)
     }
 
     addEventListener() {
@@ -190,7 +190,7 @@ export default class Waifu {
 
                 this.showMessage(result.hitokoto, 6000, 9)
 
-                setTimeout(() => this.showMessage(text, 4000, 9), 6000)
+                window.setTimeout(() => this.showMessage(text, 4000, 9), 6000)
             })
     }
 
@@ -286,6 +286,6 @@ export default class Waifu {
         const dom = document.getElementById("waifu")
         dom.style.bottom = "-500px"
 
-        setTimeout(() => dom.remove && dom.remove(), 3000)
+        window.setTimeout(() => dom.remove && dom.remove(), 3000)
     }
 }

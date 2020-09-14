@@ -107,7 +107,7 @@ export default {
             elSuccess('登陆成功')
             const redirect = this.$route.query.redirect || '/'
             //由于清除消息时会造成卡顿，所以延迟0.2s跳转
-            setTimeout(() => this.$router.replace(redirect), 200)
+            window.setTimeout(() => this.$router.replace(redirect), 200)
         },
 
         thirdPartyLogin(channel) {
@@ -119,11 +119,11 @@ export default {
         },
 
         addCapsLockEvent() {
-            document.addEventListener('keyup', this.capsLockTip)
+            window.addEventListener('keyup', this.capsLockTip)
         },
 
         removeEvent() {
-            document.removeEventListener('keyup', this.addCapsLockEvent)
+            window.removeEventListener('keyup', this.addCapsLockEvent)
         }
     },
 

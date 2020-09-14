@@ -48,7 +48,7 @@ export default {
             //③桌面端且非顶部导航
             //④桌面端且未设置侧边栏自动隐藏
             const hasSidebarMenus = getSidebarMenus().length > 0,
-                isMobile = appGetters.device === 'mobile',
+                isMobile = appGetters.isMobile,
                 notHeadMode = appGetters.navMode !== 'head',
                 notAutoHidden = !asideGetters.autoHide,
                 renderHamburger = hasSidebarMenus && (isMobile || notHeadMode && notAutoHidden)
@@ -59,7 +59,7 @@ export default {
             }
         },
         renderHeadMenuMenu() {
-            if (appGetters.navMode !== 'aside' && appGetters.device !== 'mobile') {
+            if (appGetters.navMode !== 'aside' && !appGetters.isMobile) {
                 return <head-menu always-show/>
             }
         },

@@ -99,17 +99,19 @@
     width: 100%;
 
     &::-webkit-scrollbar {
-        width: 0;
+        display: none;
     }
 
-    //文字超出截断
-    .el-menu-item > span,
-    .el-submenu__title > span {
-        display: inline-block;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-all;
+    .el-menu-item,
+    .el-submenu__title {
+        //文字超出截断
+        > span {
+            display: inline-block;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            word-break: break-all;
+        }
     }
 
     //子级菜单激活时，父级同样高亮

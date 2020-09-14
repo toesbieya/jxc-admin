@@ -1,23 +1,25 @@
-const {body} = document
-const MAX_MOBILE_WIDTH = 500
-
+//根据body宽度判断是否为移动端，是则返回true
 export function isMobile() {
-    const rect = body.getBoundingClientRect()
-    return rect.width - 1 < MAX_MOBILE_WIDTH
+    const rect = document.body.getBoundingClientRect()
+    return rect.width < 501
 }
 
-//获取元素的内宽度
+export function isDom(obj) {
+    return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string'
+}
+
 export function getElementInnerWidth(ele) {
     if (!ele) return 0
 
     const style = window.getComputedStyle(ele)
+
     return parseFloat(style.width) - (parseFloat(style.paddingLeft) + parseFloat(style.paddingRight))
 }
 
 export function getElementHeight(ele, style) {
     if (!ele) return 0
 
-    let node = ele.cloneNode(true)
+    const node = ele.cloneNode(true)
     node.style.opacity = '0'
 
     if (style) {
@@ -36,6 +38,7 @@ export function getElementHeight(ele, style) {
     return height
 }
 
+//获取元素距离其容器的顶部距离
 export function getOffsetTop(element, container) {
     if (!element) return 0
 
@@ -57,11 +60,10 @@ export function getOffsetTop(element, container) {
 }
 
 /**
- * 加载js或css
- *
+ * @desc 加载js或css
  * @param url
  * @param type js|css
- * @returns {Promise<String>} url
+ * @returns {Promise<String>} 加载成功返回url（若资源此前已加载，返回undefined）
  */
 export function loadExternalResource(url, type = 'js') {
     return new Promise((resolve, reject) => {
@@ -92,45 +94,52 @@ export function loadExternalResource(url, type = 'js') {
     })
 }
 
-export function scrollTo(y, options = {}) {
-    const raf = window.requestAnimationFrame
-    const {getContainer = () => window, callback, duration = 450} = options
+/**
+ * @desc 平滑滚动至指定的位置
+ * @param el 滚动容器，或可用于querySelector的字符串，或一个返回DOM的函数
+ * @param position 滚动的目的地
+ * @param options
+ */
+export function scrollTo(el, position, options) {
+    const {
+        callback,          //滚动完成的回调
+        duration = 300,    //滚动耗时
+        direction = 'top'  //滚动方向，top滚动至距元素顶部distance的位置，left滚动至距元素左边distance的位置
+    } = options || {}
 
-    const container = getContainer()
-    const scrollTop = getScroll(container, true)
-    const startTime = Date.now()
+    if (typeof el === 'string') el = document.querySelector(el)
+    else if (typeof el === 'function') el = el()
+
+    if (!isDom(el)) return
+
+    const elPosition = getScroll(el, direction === 'top')
+    const scrollFunc = ((el, direction) => {
+        if (el === window) {
+            return direction === 'top'
+                ? y => el.scrollTo(window.pageXOffset, window.pageYOffset + y)
+                : x => el.scrollTo(window.pageXOffset + x, window.pageYOffset)
+        }
+        return direction === 'top'
+            ? y => el.scrollTop += y
+            : x => el.scrollLeft += x
+    })(el, direction)
+
+    let times = duration / 16, distance = (position - elPosition) / (times + 1)
 
     const frameFunc = () => {
-        const timestamp = Date.now()
-        const time = timestamp - startTime
-        const nextScrollTop = easeInOutCubic(time > duration ? duration : time, scrollTop, y, duration)
-        if (container === window) {
-            container.scrollTo(window.pageXOffset, nextScrollTop)
+        if (times > 0) {
+            scrollFunc(distance)
+            times--
+            return window.requestAnimationFrame(frameFunc)
         }
-        else {
-            container.scrollTop = nextScrollTop
-        }
-        if (time < duration) {
-            raf(frameFunc)
-        }
-        else if (typeof callback === 'function') {
-            callback()
-        }
+        typeof callback === 'function' && callback()
     }
-    raf(frameFunc)
+
+    return window.requestAnimationFrame(frameFunc)
 }
 
-export function getScroll(target, top) {
-    const prop = top ? 'pageYOffset' : 'pageXOffset'
-    const method = top ? 'scrollTop' : 'scrollLeft'
-    return target === window ? target[prop] : target[method]
-}
-
-export function easeInOutCubic(t, b, c, d) {
-    const cc = c - b
-    t /= d / 2
-    if (t < 1) {
-        return (cc / 2) * t * t * t + b
-    }
-    return (cc / 2) * ((t -= 2) * t * t + 2) + b
+export function getScroll(el, top) {
+    return el === window
+        ? el[top ? 'pageYOffset' : 'pageXOffset']
+        : el[top ? 'scrollTop' : 'scrollLeft']
 }

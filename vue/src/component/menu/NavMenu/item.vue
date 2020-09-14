@@ -4,26 +4,31 @@ const MenuItemContent = {
 
     functional: true,
 
-    props: {icon: String, title: String},
+    props: {icon: String, title: String, useTitleAsIcon: Boolean},
 
     render(h, context) {
-        const {icon, title} = context.props
-        const vnodes = []
+        const {icon, title, useTitleAsIcon} = context.props
 
         const iconComponent =
-            icon ? <v-icon icon={icon}/> : <span class="icon" style="display: none"/>
+            useTitleAsIcon
+                ? <em>{title[0]}</em>
+                : icon
+                ? <v-icon icon={icon}/>
+                : <span class="icon" style="display: none"/>
 
-        vnodes.push(iconComponent)
+        const vnodes = [iconComponent]
 
-        if (title) vnodes.push(<span slot="title" class="menu-item-content">{title}</span>)
+        title && vnodes.push(<span slot="title" class="menu-item-content">{title}</span>)
 
         return vnodes
     }
 }
 
 //根据showIconMaxDepth、depth判断是否需要限制图标的显示
-function getIcon(icon, showIconMaxDepth, depth) {
-    if (!showIconMaxDepth || showIconMaxDepth < 0) return icon
+function getIcon({icon, showIconMaxDepth, depth}) {
+    if (!showIconMaxDepth || showIconMaxDepth < 0) {
+        return icon
+    }
     return showIconMaxDepth < depth ? undefined : icon
 }
 
@@ -38,18 +43,20 @@ function getOnlyChild(menu) {
     return null
 }
 
-function renderSingleMenu(h, {index, icon, title}) {
+function renderSingleMenu(h, {index, icon, title, collapse, depth}) {
+    const useTitleAsIcon = depth === 1 && collapse && !!!icon && !!title
     return (
         <el-menu-item key={index} index={index}>
-            <MenuItemContent icon={icon} title={title}/>
+            <MenuItemContent icon={icon} title={title} useTitleAsIcon={useTitleAsIcon}/>
         </el-menu-item>
     )
 }
 
-function renderSubMenu(h, {index, icon, title, children}) {
+function renderSubMenu(h, {index, icon, title, children, collapse, depth}) {
+    const useTitleAsIcon = depth === 1 && collapse && !!!icon && !!title
     return (
         <el-submenu key={index} index={index} popper-append-to-body>
-            <MenuItemContent slot="title" icon={icon} title={title}/>
+            <MenuItemContent slot="title" icon={icon} title={title} useTitleAsIcon={useTitleAsIcon}/>
             {children}
         </el-submenu>
     )
@@ -71,7 +78,13 @@ function renderMenu(h, {menu, showParent, collapse, showIconMaxDepth, depth = 1}
 
     if (showSingle) {
         const {fullPath, meta: {icon, title}} = onlyOneChild
-        return renderSingleMenu(h, {index: fullPath, icon: getIcon(icon, showIconMaxDepth, depth), title})
+        return renderSingleMenu(h, {
+            index: fullPath,
+            icon: getIcon({icon, showIconMaxDepth, depth}),
+            title,
+            collapse,
+            depth
+        })
     }
 
     const {icon, title} = menu.meta
@@ -92,7 +105,14 @@ function renderMenu(h, {menu, showParent, collapse, showIconMaxDepth, depth = 1}
         }
     }
 
-    return renderSubMenu(h, {index: menu.fullPath, icon: getIcon(icon, showIconMaxDepth, depth), title, children})
+    return renderSubMenu(h, {
+        index: menu.fullPath,
+        icon: getIcon({icon, showIconMaxDepth, depth}),
+        title,
+        children,
+        collapse,
+        depth
+    })
 }
 
 export default {

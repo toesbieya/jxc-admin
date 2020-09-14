@@ -16,7 +16,7 @@ import Router from 'vue-router'
 import {route as routeConfig} from '@/config'
 import {stringifyRoutes, parseRoutes, generateRoutes} from './util'
 import defaultRoutes from './define'
-import registerGuard from './guard'
+import registerGuardian from './guardian'
 
 Vue.use(Router)
 
@@ -27,7 +27,7 @@ const router = new Router({
     routes: defaultRoutes
 })
 
-registerGuard(router)
+registerGuardian(router)
 
 export default router
 

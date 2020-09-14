@@ -94,9 +94,7 @@ export default {
                 this.pause = false
                 this.startAt = Date.now()
                 if (this.remainTime === 0) this.remainTime = this.duration
-                this.timer = setTimeout(() => {
-                    !this.closed && this.close()
-                }, this.remainTime)
+                this.timer = window.setTimeout(() => !this.closed && this.close(), this.remainTime)
             }
         }
     },

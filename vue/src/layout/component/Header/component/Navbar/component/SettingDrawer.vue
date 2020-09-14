@@ -142,11 +142,10 @@ export default {
             asideMutations.collapse(aside.collapse)
             asideMutations.showParentOnCollapse(aside.showParentOnCollapse)
             asideMutations.autoHide(aside.autoHide)
-
         },
         //将layout中的store数据同步到此处的设置项
         syncLayoutStore() {
-            const {app, page, aside, other} = this.setting
+            const {app, page, aside} = this.setting
             app.color = appGetters.color
             app.navMode = appGetters.navMode
 
@@ -211,7 +210,7 @@ export default {
         }
     },
 
-    mounted() {
+    created() {
         mergeObj(this.setting, getLocalPersonalSettings())
 
         //由于数据结构可能发生变化，所以在合并后覆盖本地数据

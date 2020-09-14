@@ -152,7 +152,7 @@ export default {
             this.closeDialog()
             this.needSearch && this.$emit('search')
 
-            setTimeout(() => this.clearForm(), 200)
+            window.setTimeout(() => this.clearForm(), 200)
             this.loading = false
         },
 

@@ -32,7 +32,7 @@ export default {
         navMode: () => appGetters.navMode,
 
         menus() {
-            if (appGetters.device === 'mobile') return []
+            if (appGetters.isMobile) return []
             switch (this.navMode) {
                 case 'aside':
                     return []

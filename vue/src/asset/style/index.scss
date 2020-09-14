@@ -72,10 +72,6 @@ a:hover {
     overflow: hidden !important;
 }
 
-.text-center {
-    text-align: center
-}
-
 .flex {
     display: flex;
     flex-wrap: wrap;
@@ -83,19 +79,36 @@ a:hover {
     align-content: space-between;
 }
 
+/*----------路由页面的最大高度开始----------*/
 .max-view-height {
     height: calc(100vh - #{$page-view-margin * 2});
 }
 
-.has-nav {
-    .max-view-height {
-        height: calc(100vh - #{$nav-height} - #{$page-view-margin * 2});
-    }
-
-    &.has-tags-view .max-view-height {
-        height: calc(100vh - #{$nav-height} - #{$tags-view-height} - #{$page-view-margin * 2});
-    }
+.has-nav .max-view-height {
+    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height});
 }
+
+.has-tags-view .max-view-height {
+    height: calc(100vh - #{$page-view-margin * 2} - #{$tags-view-height});
+}
+
+.has-page-header .max-view-height {
+    height: calc(100vh - #{$page-view-margin * 2} - #{$page-header-height});
+}
+
+.has-nav.has-tags-view .max-view-height {
+    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height});
+}
+
+.has-nav .has-page-header .max-view-height {
+    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$page-header-height});
+}
+
+.has-nav.has-tags-view .has-page-header .max-view-height {
+    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height} - #{$page-header-height});
+}
+
+/*----------路由页面的最大高度结束----------*/
 
 .table-container {
     margin-top: 10px;

@@ -5,12 +5,12 @@ import {route as routeConfig} from '@/config'
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
 import ContextMenu from "@/component/menu/ContextMenu"
-import ScrollPane from './ScrollPane'
+import ScrollPanel from './ScrollPanel'
 
 export default {
     mixins: [shortcutMixin, decideRouterTransitionMixin],
 
-    components: {ContextMenu, ScrollPane},
+    components: {ContextMenu, ScrollPanel},
 
     data() {
         return {
@@ -34,39 +34,43 @@ export default {
         $route(to, from) {
             this.decideRouteTransition && this.decideRouteTransition(to, from)
             this.addTags(to)
-            this.moveToCurrentTag()
+            this.$nextTick(this.moveToCurrentTag)
         }
     },
 
     methods: {
-        isActive(route) {
-            return route.path === this.$route.path
+        //判断页签是否激活，考虑刷新的情况
+        isActive({path}) {
+            const {path: routePath} = this.$route
+            return routePath === path || routePath === `/redirect${path}`
         },
         isAffix(tag) {
             return tag.meta && tag.meta.affix
         },
 
-        filterAffixTags(menus) {
-            const tags = []
-            menus.forEach(({name, fullPath, children, meta}) => {
-                if (meta && meta.title && meta.affix) {
-                    tags.push({
-                        //注意，此处的fullPath并不是$route.fullPath，而是路由树拼接后的全路径
-                        fullPath,
-                        path: fullPath,
-                        name,
-                        meta: {...meta}
-                    })
-                }
-                if (children) {
-                    const tempTags = this.filterAffixTags(children)
-                    tempTags.length && tags.push(...tempTags)
-                }
-            })
-            return tags
-        },
         initTags() {
-            this.affixTags = this.filterAffixTags(this.menus)
+            //获取所有需要固定显示的页签
+            function getAffixTags(menus) {
+                const tags = []
+                menus.forEach(({name, fullPath, children, meta}) => {
+                    if (meta && meta.title && meta.affix) {
+                        tags.push({
+                            //注意，此处的fullPath并不是$route.fullPath，而是路由树拼接后的全路径
+                            fullPath,
+                            path: fullPath,
+                            name,
+                            meta: {...meta}
+                        })
+                    }
+                    if (children) {
+                        const tempTags = getAffixTags(children)
+                        tempTags.length && tags.push(...tempTags)
+                    }
+                })
+                return tags
+            }
+
+            this.affixTags = getAffixTags(this.menus)
             for (const tag of this.affixTags) {
                 tagsViewMutations.addVisitedView(tag)
             }
@@ -76,16 +80,13 @@ export default {
         addTags(to = this.$route) {
             to.meta.title && tagsViewMutations.addView(to)
         },
-        getTags() {
-            return this.$refs.scrollPane.$children[0].$children
-        },
 
         //横向滚动条移动至当前tab
         moveToCurrentTag() {
-            this.$nextTick(() => {
-                const tag = this.getTags().find(i => i.to.path === this.$route.path)
-                tag && this.$refs.scrollPane.moveToTarget(tag)
-            })
+            //获取所有页签的componentInstance
+            const tagInstances = this.$refs.scrollPanel.$children
+            const tag = tagInstances.find(i => this.isActive(i.to))
+            tag && this.$refs.scrollPanel.moveToTarget(tag, tagInstances)
         },
 
         /*
@@ -155,7 +156,7 @@ export default {
                         key={path}
                         class={{'tags-view-item': true, active}}
                         to={{path, query, fullPath}}
-                        tag="div"
+                        tag="a"
                         v-on:contextmenu_native={e => this.openMenu(tag, e)}
                         v-on:dblclick_native={e => closeSelectedTag(e, tag)}
                     >
@@ -196,9 +197,9 @@ export default {
     render(h) {
         return (
             <nav class="tags-view-container">
-                <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+                <scroll-panel ref="scrollPanel" class="tags-view-wrapper">
                     {this.renderTags(h)}
-                </scroll-pane>
+                </scroll-panel>
                 {this.renderContextMenu(h)}
             </nav>
         )

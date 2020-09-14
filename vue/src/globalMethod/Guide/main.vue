@@ -208,7 +208,7 @@ export default {
 
             this.$_setStageStyle(getCalculatedPosition(el))
 
-            setTimeout(() => {
+            window.setTimeout(() => {
                 this.$refs.popover.updatePopper()
                 this.moving = false
             }, 300)

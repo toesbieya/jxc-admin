@@ -1,4 +1,5 @@
 <script type="text/jsx">
+const SVG_PREFIX = 'svg-'
 
 export default {
     name: 'VIcon',
@@ -9,12 +10,12 @@ export default {
 
     render(h, context) {
         const {data, props: {icon}} = context
-        const svgPrefix = 'svg-'
 
-        if (icon.startsWith(svgPrefix)) {
+        //渲染成svg
+        if (icon.startsWith(SVG_PREFIX)) {
             return (
-                <svg class="icon" aria-hidden="true" {...data}>
-                    <use href={`#icon-${icon.replace(svgPrefix, '')}`}/>
+                <svg class="icon svg" aria-hidden="true" {...data}>
+                    <use href={`#icon-${icon.replace(SVG_PREFIX, '')}`}/>
                 </svg>
             )
         }
@@ -28,6 +29,9 @@ export default {
 .icon {
     width: 1em;
     height: 1em;
+}
+
+.icon.svg {
     fill: currentColor;
 }
 </style>

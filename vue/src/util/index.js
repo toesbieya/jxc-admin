@@ -96,7 +96,7 @@ export function debounce(func, wait = 100, immediate = false) {
 
         // 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
         if (last < wait && last > 0) {
-            timeout = setTimeout(later, wait - last)
+            timeout = window.setTimeout(later, wait - last)
         }
         else {
             timeout = null
@@ -114,7 +114,7 @@ export function debounce(func, wait = 100, immediate = false) {
         timestamp = new Date().getTime()
         const callNow = immediate && !timeout
         // 如果延时不存在，重新设定延时
-        if (!timeout) timeout = setTimeout(later, wait)
+        if (!timeout) timeout = window.setTimeout(later, wait)
         if (callNow) {
             result = func.apply(context, args)
             context = args = null
@@ -141,7 +141,7 @@ export function throttle(func, delay = 100) {
         clearTimeout(timeoutID)
 
         if (elapsed > delay) exec()
-        else timeoutID = setTimeout(exec, delay - elapsed)
+        else timeoutID = window.setTimeout(exec, delay - elapsed)
     }
 
     return wrapper

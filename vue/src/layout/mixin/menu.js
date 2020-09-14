@@ -8,7 +8,10 @@ export default {
     data() {
         return {
             //当前激活的菜单的fullPath
-            activeMenu: ''
+            activeMenu: '',
+
+            //el-menu的openedMenus
+            openedMenus: []
         }
     },
 
@@ -40,6 +43,22 @@ export default {
             //所以手动更新el-menu的当前高亮菜单
             const menu = this.$refs.menu
             menu && menu.updateActiveIndex()
+        },
+
+        //渲染el-menu时监听其展开菜单
+        watchOpenedMenus() {
+            //尝试取消之前设置的监听
+            if (this.watchOpenedMenusCallback) {
+                this.watchOpenedMenusCallback()
+                this.watchOpenedMenusCallback = null
+            }
+
+            const menu = this.$refs.menu
+            if (!menu) return
+
+            this.watchOpenedMenusCallback = menu.$watch('openedMenus', v => {
+                this.openedMenus = [...v]
+            })
         }
     }
 }

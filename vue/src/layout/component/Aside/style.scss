@@ -18,7 +18,7 @@
         width: $aside-icon-size + 20px * 2;
     }
 
-    .sidebar-logo-container {
+    > .sidebar-logo-container {
         position: relative;
         width: 100%;
         height: $nav-height;
@@ -54,21 +54,16 @@
             }
         }
     }
-
-    .el-scrollbar {
-        flex: 1;
-
-        &__wrap {
-            overflow-x: hidden;
-        }
-    }
 }
 
-//侧边栏垂直菜单
+/*-------侧边栏垂直菜单开始---------*/
+.el-menu--vertical.el-menu {
+    overflow-y: auto;
+}
+
 .el-menu--vertical .el-menu,
 .el-menu--vertical.el-menu {
     background-color: $aside-menu-background;
-    overflow-y: auto;
 
     .icon {
         font-size: $aside-icon-size;
@@ -87,7 +82,8 @@
             color: $aside-menu-item-hover-color;
         }
 
-        > span {
+        //菜单文字的最大宽度
+        > .menu-item-content {
             //侧边栏宽度、菜单左右padding、左侧图标宽度、距离左右的距离、右侧图标宽度
             max-width: $aside-width - 20px * 2 - $aside-icon-size - $menu-icon-text-gap * 2 - 12px;
         }
@@ -111,7 +107,4 @@
         border-bottom: 1px solid $aside-sub-menu-background;
     }
 }
-
-
-
-
+/*-------侧边栏垂直菜单结束---------*/

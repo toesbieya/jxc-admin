@@ -10,7 +10,7 @@
 //    Readable (more or less) version of the code
 //    ...
 
-document.addEventListener("DOMContentLoaded", go)
+window.addEventListener("DOMContentLoaded", go)
 
 function go() {
     "use strict"

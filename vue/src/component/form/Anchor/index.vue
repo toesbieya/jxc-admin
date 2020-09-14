@@ -64,16 +64,21 @@ export default {
 
         click(ref) {
             if (!ref || this.animating || !this.reference) return
+
             this.cur = ref
-            const {offsetTop, getContainer} = this
-            const container = getContainer()
-            const scrollTop = getScroll(container, true)
+
             const targetElement = this.getDomFromRef(ref)
             if (!targetElement) return
-            const eleOffsetTop = getOffsetTop(targetElement, container)
-            const y = scrollTop + eleOffsetTop - offsetTop
+
             this.animating = true
-            scrollTo(y, {callback: () => this.animating = false, getContainer})
+
+            const container = this.getContainer()
+            const scrollTop = getScroll(container, true)
+            const elOffsetTop = getOffsetTop(targetElement, container)
+            const y = scrollTop + elOffsetTop - this.offsetTop
+
+            //由于滚动监听函数的防抖阈值是100ms，所以延迟设置滚动标识
+            scrollTo(container, y, {callback: () => window.setTimeout(() => this.animating = false, 110)})
         },
 
         scroll() {

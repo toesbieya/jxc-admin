@@ -12,7 +12,7 @@ export function getSidebarMenus() {
     if (!Array.isArray(menus)) {
         return []
     }
-    if (appGetters.device === 'mobile') {
+    if (appGetters.isMobile) {
         return menus
     }
     switch (appGetters.navMode) {

@@ -33,25 +33,15 @@ export const getters = createGetters(store)
 export const mutations = bindThis({
     ...createMutations(store),
 
-    /*折叠和自动隐藏不能同时启用*/
-    collapse(v) {
-        if (v) store.autoHide = false
-        store.collapse = v
-    },
-    autoHide(v) {
-        if (v) store.collapse = false
-        store.autoHide = v
-    },
-
-    /*移动端是打开关闭抽屉，桌面端是展开折叠*/
+    /*移动端或设置了侧边栏自动隐藏时打开关闭抽屉，否则展开折叠*/
     open() {
-        if (appGetters.device === 'mobile') {
+        if (appGetters.isMobile || store.autoHide) {
             store.show = true
         }
         else store.collapse = false
     },
     close() {
-        if (appGetters.device === 'mobile') {
+        if (appGetters.isMobile || store.autoHide) {
             store.show = false
         }
         else store.collapse = true
@@ -65,7 +55,7 @@ export const mutations = bindThis({
                 return this.close()
             default :
                 let open = true
-                if (appGetters.device === 'mobile') {
+                if (appGetters.isMobile) {
                     open = !store.show
                 }
                 else open = store.collapse
