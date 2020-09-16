@@ -5,7 +5,7 @@ import {download} from "@/util/file"
 import {flatTree} from "@/util/tree"
 
 /**
- * 搜索表格页导出excel
+ * 导出excel
  * 响应头为json时进行前端导出，否则直接下载文件
  *
  * @param url              搜索的请求地址
@@ -25,7 +25,6 @@ export function abstractExportExcel(url, searchForm, options, json2workbook, exp
                 const reader = new FileReader()
                 reader.onload = () => {
                     const response = JSON.parse(reader.result)
-                    if (response.status !== 200) return elError(response.msg)
                     const {columns, merge} = options
                     const workbook = json2workbook(response.data, columns, merge)
                     exportExcelByJs(workbook, filename)
@@ -125,6 +124,7 @@ export function mergeExcel(props, data, primaryKey, orderKey, ignoreRows = 1) {
  *
  * @param columns     列配置
  * @param separator   分隔符
+ * @return {headers, headerMerge}
  */
 export function generateHeaders(columns, separator = '-') {
     const tree = []
@@ -211,6 +211,7 @@ export function generateHeaders(columns, separator = '-') {
  *
  * @param data    json数组
  * @param propMap 表头和字段名的映射表
+ * @return 基数组为excel中每一行的二维数组
  */
 export function jsonArray2rowArray(data, propMap) {
     return data.map(i => Object.keys(i)

@@ -104,7 +104,7 @@
 import docTableMixin from '@/mixin/docTableMixin'
 import SearchForm from '@/component/form/Search'
 import SearchFormItem from "@/component/form/Search/item"
-import {baseUrl, add, update, del, withdraw, pass, reject, getSubById, search} from "@/api/doc/sell/outbound"
+import {add, update, del, withdraw, pass, reject, getSubById, search, exportExcel} from "@/api/doc/sell/outbound"
 
 export default {
     name: "sellOutbound",
@@ -114,9 +114,8 @@ export default {
     components: {SearchForm, SearchFormItem},
 
     data() {
-        this.api = {add, update, del, withdraw, pass, reject, getSubById, search}
+        this.api = {add, update, del, withdraw, pass, reject, getSubById, search, exportExcel}
         return {
-            exportUrl: `${baseUrl}/export`,
             searchForm: {
                 pidFuzzy: null
             },

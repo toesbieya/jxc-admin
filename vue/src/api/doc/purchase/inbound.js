@@ -1,23 +1,23 @@
 import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `/doc/purchase/inbound`
+export const getById = new GetApi('/doc/purchase/inbound/getById', id => ({params: {id}}))
 
-export const getById = new GetApi(`${baseUrl}/getById`, id => ({params: {id}}))
+export const getSubById = new GetApi('/doc/purchase/inbound/getSubById', id => ({params: {id}}))
 
-export const getSubById = new GetApi(`${baseUrl}/getSubById`, id => ({params: {id}}))
+export const search = new PostApi('/doc/purchase/inbound/search')
 
-export const search = new PostApi(`${baseUrl}/search`)
+export const exportExcel = new PostApi('/doc/purchase/inbound/export')
 
-export const add = new PostApi(`${baseUrl}/add`)
+export const add = new PostApi('/doc/purchase/inbound/add')
 
-export const update = new PostApi(`${baseUrl}/update`)
+export const update = new PostApi('/doc/purchase/inbound/update')
 
-export const commit = new PostApi(`${baseUrl}/commit`)
+export const commit = new PostApi('/doc/purchase/inbound/commit')
 
-export const withdraw = new PostApi(`${baseUrl}/withdraw`)
+export const withdraw = new PostApi('/doc/purchase/inbound/withdraw')
 
-export const pass = new PostApi(`${baseUrl}/pass`)
+export const pass = new PostApi('/doc/purchase/inbound/pass')
 
-export const reject = new PostApi(`${baseUrl}/reject`)
+export const reject = new PostApi('/doc/purchase/inbound/reject')
 
-export const del = new GetApi(`${baseUrl}/del`, id => ({params: {id}}))
+export const del = new GetApi('/doc/purchase/inbound/del', id => ({params: {id}}))

@@ -35,12 +35,6 @@ const mutations = {
             }
         })
 
-        //为path为'/'的根节点设置默认名称
-        const root = data.find(i => i.pid === 0 && i.path === '/')
-        if (root) {
-            root.meta = {title: '初始节点'}
-        }
-
         state.resourceTree = createTree(data)
     },
     init(state, sign) {

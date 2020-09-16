@@ -1,23 +1,23 @@
 import {GetApi, PostApi} from "@/api/request"
 
-export const baseUrl = `/doc/sell/order`
+export const getById = new GetApi('/doc/sell/order/getById', id => ({params: {id}}))
 
-export const getById = new GetApi(`${baseUrl}/getById`, id => ({params: {id}}))
+export const getSubById = new GetApi('/doc/sell/order/getSubById', id => ({params: {id}}))
 
-export const getSubById = new GetApi(`${baseUrl}/getSubById`, id => ({params: {id}}))
+export const search = new PostApi('/doc/sell/order/search')
 
-export const search = new PostApi(`${baseUrl}/search`)
+export const exportExcel = new PostApi('/doc/sell/order/export')
 
-export const add = new PostApi(`${baseUrl}/add`)
+export const add = new PostApi('/doc/sell/order/add')
 
-export const update = new PostApi(`${baseUrl}/update`)
+export const update = new PostApi('/doc/sell/order/update')
 
-export const commit = new PostApi(`${baseUrl}/commit`)
+export const commit = new PostApi('/doc/sell/order/commit')
 
-export const withdraw = new PostApi(`${baseUrl}/withdraw`)
+export const withdraw = new PostApi('/doc/sell/order/withdraw')
 
-export const pass = new PostApi(`${baseUrl}/pass`)
+export const pass = new PostApi('/doc/sell/order/pass')
 
-export const reject = new PostApi(`${baseUrl}/reject`)
+export const reject = new PostApi('/doc/sell/order/reject')
 
-export const del = new GetApi(`${baseUrl}/del`, id => ({params: {id}}))
+export const del = new GetApi('/doc/sell/order/del', id => ({params: {id}}))

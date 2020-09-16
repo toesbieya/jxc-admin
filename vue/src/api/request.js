@@ -77,38 +77,36 @@ instance.interceptors.response.use(
 class Api {
     /**
      * 数据接口定义
-     * @param url    请求url，不带参数
-     * @param arg    对传入参数的处理方法，返回值将作为axios[get,post]的第二个参数
-     * @param chain  形参为请求返回的promise
-     * @param isGet  是否为get请求
+     * @param url     请求url，不带参数
+     * @param arg     对传入参数的处理方法，返回值将作为axios[get,post]的第二个参数
+     * @param chain   形参为请求返回的promise
+     * @param method  请求方法，小写，get、post...
      */
-    constructor(url, arg, chain, isGet) {
+    constructor(url, arg, chain, method) {
         this.url = url
         this.arg = arg
         this.chain = chain
-        this.isGet = isGet
+        this.method = method
     }
 
     request(...args) {
         const params = this.arg ? this.arg(...args) : undefined
-        const method = this.isGet ? 'get' : 'post'
-        const promise = instance[method](this.url, params).catch(e => console.error(e))
+        const promise = instance[this.method](this.url, params).catch(e => console.error(e))
         return this.chain ? this.chain(promise) : promise
     }
 }
 
 export class PostApi extends Api {
     constructor(url, arg, chain) {
-        if (!arg) {
-            arg = data => data
-        }
-        super(url, arg, chain, false)
+        if (!arg) arg = data => data
+
+        super(url, arg, chain, 'post')
     }
 }
 
 export class GetApi extends Api {
     constructor(url, arg, chain) {
-        super(url, arg, chain, true)
+        super(url, arg, chain, 'get')
     }
 }
 

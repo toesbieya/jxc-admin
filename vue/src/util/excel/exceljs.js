@@ -32,10 +32,11 @@ export function exportExcelByJs(workbook, filename) {
 }
 
 /**
+ * @desc 通过json数组生成workbook对象
  * @param data        json数组
  * @param columns     列配置
  * @param merge       合并配置项
- * @returns
+ * @returns workbook
  */
 export function json2workbook(data, columns, merge) {
     const workbook = new window.ExcelJS.Workbook()

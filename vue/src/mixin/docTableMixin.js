@@ -4,6 +4,7 @@ import {isEmpty} from "@/util"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {auth} from "@/util/auth"
 import {exportExcel} from "@/util/excel"
+
 export const commonMethods = {
     getStatus(status) {
         switch (status) {
@@ -63,12 +64,13 @@ export default {
             return auth(this.api.del.url)
         },
         canExport() {
-            return auth(this.exportUrl)
+            return auth(this.api.exportExcel.url)
         },
     },
 
     methods: {
         ...commonMethods,
+
         search() {
             if (this.config.loading) return
             this.config.loading = true
@@ -98,6 +100,7 @@ export default {
                 })
                 .finally(() => row._loading = false)
         },
+
         add() {
             this.row = null
             this.$router.push(`${this.$route.path}/detail/add`)
@@ -130,8 +133,9 @@ export default {
                 })
                 .finally(() => this.config.operating = false)
         },
+
         downloadExcel() {
-            exportExcel(this.exportUrl, this.mergeSearchForm(), this.excel)
+            exportExcel(this.api.exportExcel.url, this.mergeSearchForm(), this.excel)
         }
     }
 }

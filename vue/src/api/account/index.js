@@ -1,26 +1,26 @@
 import {GetApi, PostApi} from "@/api/request"
 
-export const login = new PostApi(`/account/login`)
+export const login = new PostApi('/account/login')
 
-export const logout = new GetApi(`/account/logout`)
+export const logout = new GetApi('/account/logout')
 
-export const register = new PostApi(`/account/register`)
+export const register = new PostApi('/account/register')
 
-export const updateUserPwd = new PostApi(`/account/updatePwd`)
+export const updateUserPwd = new PostApi('/account/updatePwd')
 
 export const updateAvatar = new GetApi(
-    `/account/updateAvatar`,
+    '/account/updateAvatar',
     key => ({params: {key: encodeURIComponent(key)}})
 )
 
-export const validate = new GetApi(`/account/validate`, pwd => ({params: {pwd}}))
+export const validate = new GetApi('/account/validate', pwd => ({params: {pwd}}))
 
 export const checkLoginName = new GetApi(
-    `/account/checkLoginName`,
+    '/account/checkLoginName',
     (name, id) => ({params: {name, id}})
 )
 
 export const checkNickName = new GetApi(
-    `/account/checkNickName`,
+    '/account/checkNickName',
     (name, id) => ({params: {name, id}})
 )
