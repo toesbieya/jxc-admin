@@ -135,6 +135,7 @@ export default {
     components: {SearchForm, SearchFormItem},
 
     data() {
+        this.api = {add, update, del, withdraw, pass, reject, getSubById, search}
         return {
             exportUrl: `${baseUrl}/export`,
             searchForm: {
@@ -144,7 +145,6 @@ export default {
                 finish: [],
                 ftime: []
             },
-            api: {add, update, del, withdraw, pass, reject, getSubById, search},
             excel: {
                 columns: [
                     {header: '序号', prop: 'id'},

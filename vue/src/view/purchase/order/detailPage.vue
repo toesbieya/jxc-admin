@@ -135,11 +135,9 @@ export default {
     components: {CategorySelector, SupplierSelector},
 
     data() {
+        this.docName = '采购订单'
+        this.api = {getById, add, update, commit, withdraw, pass, reject}
         return {
-            docName: '采购订单',
-            api: {
-                getById, add, update, commit, withdraw, pass, reject
-            },
             form: {
                 sid: null,
                 sname: null,

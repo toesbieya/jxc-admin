@@ -120,11 +120,9 @@ export default {
     components: {CustomerSelector, StockSelector},
 
     data() {
+        this.docName = '销售订单'
+        this.api = {getById, add, update, commit, withdraw, pass, reject}
         return {
-            docName: '销售订单',
-            api: {
-                getById, add, update, commit, withdraw, pass, reject
-            },
             form: {
                 customerId: null,
                 customerName: null,

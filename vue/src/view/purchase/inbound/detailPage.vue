@@ -89,11 +89,9 @@ export default {
     components: {OrderSelector},
 
     data() {
+        this.docName = '采购入库单'
+        this.api = {getById, add, update, commit, withdraw, pass, reject}
         return {
-            docName: '采购入库单',
-            api: {
-                getById, add, update, commit, withdraw, pass, reject
-            },
             form: {
                 pid: null
             },

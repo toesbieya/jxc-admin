@@ -114,9 +114,9 @@ export default {
     components: {SearchForm, SearchFormItem},
 
     data() {
+        this.api = {add, update, del, withdraw, pass, reject, getSubById, search}
         return {
             exportUrl: `${baseUrl}/export`,
-            api: {add, update, del, withdraw, pass, reject, getSubById, search},
             searchForm: {
                 pidFuzzy: null
             },
