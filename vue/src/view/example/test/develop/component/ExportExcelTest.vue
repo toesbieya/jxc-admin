@@ -12,10 +12,11 @@
 </template>
 
 <script>
-import {exportExcelByJs, json2workbook} from "@/util/excel"
+import {workbook2excel, json2workbook} from "@/util/excel"
 
 export default {
     name: "ExportExcelTest",
+
     data() {
         return {
             loading: false,
@@ -34,22 +35,24 @@ export default {
             cost: 0
         }
     },
+
     methods: {
         exportExcel() {
             if (this.loading) return
-            const start = Date.now()
+
             this.loading = true
+            const start = Date.now()
             const arr = new Array(this.rows).fill(this.row)
 
-            const workbook = json2workbook(arr, this.columns, this.merge ? {
-                primaryKey: 'name',
-                orderKey: 'no'
-            } : null)
-            exportExcelByJs(workbook, '测试导出.xlsx')
+            const workbook = json2workbook(
+                arr,
+                this.columns,
+                this.merge ? {primaryKey: 'name', orderKey: 'no'} : null)
 
+            workbook2excel(workbook, '测试导出.xlsx')
+
+            this.cost = Date.now() - start
             this.loading = false
-            const end = Date.now()
-            this.cost = end - start
         },
     },
 }

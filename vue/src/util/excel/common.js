@@ -10,11 +10,11 @@ import {flatTree} from "@/util/tree"
  *
  * @param url              搜索的请求地址
  * @param searchForm       搜索参数
- * @param options          合并选项{columns, merge}，只有前端导出时才需要
+ * @param options          {columns, merge}，只有前端导出时才需要
  * @param json2workbook
- * @param exportExcelByJs
+ * @param workbook2excel
  */
-export function abstractExportExcel(url, searchForm, options, json2workbook, exportExcelByJs) {
+export function abstractExportExcel(url, searchForm, options, json2workbook, workbook2excel) {
     request({url, method: 'post', responseType: 'blob', data: searchForm})
         .then(({headers, data}) => {
             const contentType = headers['content-type']
@@ -27,7 +27,7 @@ export function abstractExportExcel(url, searchForm, options, json2workbook, exp
                     const response = JSON.parse(reader.result)
                     const {columns, merge} = options
                     const workbook = json2workbook(response.data, columns, merge)
-                    exportExcelByJs(workbook, filename)
+                    workbook2excel(workbook, filename)
                 }
                 reader.readAsText(data)
             }
@@ -124,9 +124,9 @@ export function mergeExcel(props, data, primaryKey, orderKey, ignoreRows = 1) {
  *
  * @param columns     列配置
  * @param separator   分隔符
- * @return {headers, headerMerge}
+ * @return {{header: [], mergeCells: []}}
  */
-export function generateHeaders(columns, separator = '-') {
+export function generateHeader(columns, separator = '-') {
     const tree = []
     let maxDepth = 1
 
@@ -175,10 +175,10 @@ export function generateHeaders(columns, separator = '-') {
 
     tree.forEach(node => traverse(node))
 
-    const headers = []
-    for (let i = 0; i < maxDepth; i++) headers.push([])
+    const header = []
+    for (let i = 0; i < maxDepth; i++) header.push([])
 
-    const headerMerge = []
+    const mergeCells = []
 
     let lastDepth = 0, colIndex = 0 //当前是第几列，从0开始
 
@@ -188,22 +188,22 @@ export function generateHeaders(columns, separator = '-') {
         lastDepth = node.depth
 
         //填充表头
-        headers[node.depth - 1][colIndex] = node.value
+        header[node.depth - 1][colIndex] = node.value
 
         //获取合并结果，要么rowSpan大于1要么colSpan大于1，两者不可能同时大于1
         const startColHeader = number2excelColumnHeader(colIndex)
         const startCell = startColHeader + node.depth
         if (node.rowSpan > 1) {
             const endCell = startColHeader + (node.depth + node.rowSpan - 1)
-            headerMerge.push(`${startCell}:${endCell}`)
+            mergeCells.push(`${startCell}:${endCell}`)
         }
         if (node.colSpan > 1) {
             const endCell = number2excelColumnHeader(colIndex + node.colSpan - 1) + node.depth
-            headerMerge.push(`${startCell}:${endCell}`)
+            mergeCells.push(`${startCell}:${endCell}`)
         }
     }
 
-    return {headers, headerMerge}
+    return {header, mergeCells}
 }
 
 /**

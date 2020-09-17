@@ -218,6 +218,14 @@
     thead > tr > th {
         background: #fbfbfb;
     }
+
+    .el-table--scrollable-x .el-table__body-wrapper {
+        overflow-x: overlay;
+    }
+
+    .el-table--scrollable-y .el-table__body-wrapper {
+        overflow-y: overlay;
+    }
 }
 
 .el-textarea {
