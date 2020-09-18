@@ -15,12 +15,12 @@ export default {
         renderPage() {
             const render = pageGetters.showPageHeader && this.$route.meta.pageHeader !== false
             const className = {'scroll-container': true, 'has-page-header': render}
-            const {cachedViews, transitionName} = tagsViewGetters
+            const {enabled, cachedViews, transitionName} = tagsViewGetters
 
             return (
                 <div v-show={!pageGetters.showIframe} class={className}>
                     {render && <page-header/>}
-                    <page-view include={cachedViews} transition-name={transitionName}/>
+                    <page-view include={cachedViews} transition-name={transitionName} cacheable={enabled}/>
                     <page-footer/>
                 </div>
             )

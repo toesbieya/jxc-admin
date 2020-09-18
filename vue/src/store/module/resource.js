@@ -11,10 +11,9 @@ import {createTree} from "@/util/tree"
 import {isExternal} from "@/util/validate"
 
 const state = {
-    //后端返回的原始权限数据
-    //权限表：<权限路径，权限id>，用于util.auth
+    //权限映射表：<权限路径，权限id>，用于util.auth
     resourceMap: {},
-    //由原始权限数据生成的树（当用户非admin时过滤了admin专属权限）
+    //权限树（当用户非admin时过滤了admin专属权限），用于菜单管理、角色管理中的权限选择
     resourceTree: [],
 
     //判断权限是否已经初始化
@@ -67,22 +66,31 @@ const actions = {
 //将后台返回的数据转换为合法的route数组
 function transformOriginRouteData(data) {
     if (!Array.isArray(data)) return []
+
+    //未开启后端动态路由功能时，返回前端预设的静态路由
     if (!routeConfig.useBackendDataAsRoute) return getDynamicRoutes()
-    data = JSON.parse(JSON.stringify(data))
-    data = data.filter(i => {
+
+    data = JSON.parse(JSON.stringify(data)).filter(i => {
+        //过滤掉数据接口或者未启用的项
         if (i.type === 3 || !i.enable) {
             return false
         }
+
+        //清理一些空属性，避免vue-router出错
         ['name', 'component', 'meta'].forEach(key => {
             if (key in i && isEmpty(i[key])) {
                 delete i[key]
             }
         })
+
+        //将字符串形式的meta转为合法的js对象
         if (typeof i.meta === 'string') {
             i.meta = parseRoutes(i.meta)
         }
+
         return true
     })
+
     return createTree(data)
 }
 
@@ -97,36 +105,12 @@ function getAuthorizedMenus({resources, admin}, menus) {
     return menus
 }
 
-//菜单添加全路径
-function addFullPath(routes, basePath = '/') {
-    routes.forEach(route => {
-        route.fullPath = isExternal(route.path) ? route.path : path.resolve(basePath, route.path)
-        route.children && addFullPath(route.children, route.fullPath)
-    })
-}
-
-//若没有children且未通过，则删除，若有，当children长度为0时删除
-function filter(arr, fun) {
-    for (let i = arr.length - 1; i >= 0; i--) {
-        const {children} = arr[i]
-
-        if (!children || children.length <= 0) {
-            !fun(arr[i]) && arr.splice(i, 1)
-            continue
-        }
-
-        filter(children, fun)
-
-        children.length <= 0 && arr.splice(i, 1)
-    }
-}
-
-//删除不显示的菜单(没有children且没有meta.title，左侧菜单需清除meta.hidden=true)
-function clean(menus, cleanHidden = true) {
+//删除不显示的菜单(没有children且没有meta.title)
+function clean(menus) {
     for (let i = menus.length - 1; i >= 0; i--) {
         const {children = [], meta: {title, alwaysShow, hidden} = {}} = menus[i]
 
-        if (cleanHidden && hidden) {
+        if (hidden) {
             menus.splice(i, 1)
             continue
         }
@@ -138,7 +122,7 @@ function clean(menus, cleanHidden = true) {
             continue
         }
 
-        clean(children, cleanHidden)
+        clean(children)
 
         if (children.length === 0 && !alwaysShow) {
             menus.splice(i, 1)
@@ -148,6 +132,31 @@ function clean(menus, cleanHidden = true) {
         if (isEmpty(title)) {
             menus.splice(i, 1, ...children)
         }
+    }
+}
+
+//菜单添加全路径
+function addFullPath(routes, basePath = '/') {
+    routes.forEach(route => {
+        //外链保持原样
+        route.fullPath = isExternal(route.path) ? route.path : path.resolve(basePath, route.path)
+        route.children && addFullPath(route.children, route.fullPath)
+    })
+}
+
+//若没有children且传入的validate校验方法未通过，则删除，若有，当children长度为0时删除
+function filter(arr, validate) {
+    for (let i = arr.length - 1; i >= 0; i--) {
+        const {children} = arr[i]
+
+        if (!children || children.length <= 0) {
+            !validate(arr[i]) && arr.splice(i, 1)
+            continue
+        }
+
+        filter(children, validate)
+
+        children.length <= 0 && arr.splice(i, 1)
     }
 }
 
@@ -161,7 +170,7 @@ function generateResourceMap(resources) {
 
     const result = {}
 
-    //临时表：<id,resource>
+    //用于加速查找的临时表：<id,resource>
     const map = resources.reduce((map, i) => {
         //如果是接口类型的节点，直接放入结果表
         if (i.type === 3) result[i.path] = i.id
@@ -181,6 +190,7 @@ function generateResourceMap(resources) {
         }
         return node.type === 2
     })
+
     //获取叶子菜单的全路径
     const getMenuFullPath = menu => {
         const parents = [menu.path]

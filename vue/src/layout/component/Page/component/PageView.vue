@@ -6,19 +6,22 @@ export default {
 
     functional: true,
 
-    props: {include: Array, transitionName: String},
+    props: {include: Array, transitionName: String, cacheable: Boolean},
 
     render(h, context) {
-        const {include, transitionName} = context.props
-        return (
-            <div class="page-view">
-                <KeepRouterViewAlive include={include}>
-                    <transition name={transitionName} mode="out-in">
-                        <router-view/>
-                    </transition>
-                </KeepRouterViewAlive>
-            </div>
+        const {include, transitionName, cacheable} = context.props
+
+        let view = (
+            <transition name={transitionName} mode="out-in">
+                <router-view/>
+            </transition>
         )
+
+        if (cacheable) {
+            view = <KeepRouterViewAlive include={include}>{view}</KeepRouterViewAlive>
+        }
+
+        return <div class="page-view">{view}</div>
     }
 }
 </script>
