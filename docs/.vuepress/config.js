@@ -24,7 +24,6 @@ module.exports = {
             'start',
             {
                 title: '前端',
-                collapsable: false,
                 children: [
                     '/frontend/',
                     '/frontend/icon',
@@ -35,20 +34,18 @@ module.exports = {
                     '/frontend/deploy',
                     {
                         title: '组件',
-                        collapsable: false,
                         children: [
-                            '/frontend/components/abstract-table',
-                            '/frontend/components/region-selector',
-                            '/frontend/components/search-form',
-                            '/frontend/components/upload-file',
-                            '/frontend/components/tree-select',
+                            '/frontend/component/abstract-table',
+                            '/frontend/component/region-selector',
+                            '/frontend/component/search-form',
+                            '/frontend/component/upload-file',
+                            '/frontend/component/tree-select',
                         ]
                     },
                     '/frontend/directives',
                     '/frontend/filters',
                     {
                         title: '全局方法',
-                        collapsable: false,
                         children: [
                             '/frontend/global-methods/bottom-tip',
                             '/frontend/global-methods/guide',
@@ -64,9 +61,8 @@ module.exports = {
             },
             {
                 title:'后端',
-                collapsable: false,
                 children: [
-                    '/backend/',
+                    '/backend/'
                 ]
             }
         ]

@@ -1,10 +1,10 @@
-# 路由
+# 路由和菜单
 
 项目中默认使用了前端预设的静态路由，
-要使用后端返回的动态路由的话需要打开 `@/config/index.js` 中的 `route.useBackendDataAsRoute` 选项。
+要使用后端返回的数据来生成动态路由和菜单的话需要将 `@/config/index.js` 中的 `route.useBackendDataAsRoute` 设为 `true`。
 
-本项目不支持二级以上的路由，虽然路由配置可以无限级，但是实际上是二级路由的效果，因为在处理路由
-数据时会将二级以上的路由缩减为其叶子节点，也就是说如果有如下路由：
+本项目不支持二级以上的路由，虽然路由配置可以无限级，但是实际上是二级路由的效果。
+因为在处理路由数据时会将二级以上的路由缩减为其叶子节点，也就是说如果有如下路由：
 ```js
 const routes = [
     {
@@ -48,21 +48,20 @@ const routes = [
     }
 ]
 ```
-这样做的目的是为了避免多级路由缓存失效的问题，而且大部分情况下，三级路由（或更高）可以借助动态组件
-来实现同样的效果，
+这样做的目的是为了避免多级路由缓存失效的问题，而且大部分情况下，三级路由（或更高）可以借助动态组件来实现同样的效果。
 
 ## 路由配置项
 
-路由配置项不光参与路由的生成，也参与侧边栏的生成。
+本项目的路由配置除了`component`以外，与`vue-router`没有区别，仅在`meta`中添加了一些用于生成路由和菜单的字段。
 
-这里约定，配置项中只有根节点（即顶部菜单）的path以'/'开头。
-并且，只有根节点和叶子节点可以自定义component。
-目前根节点的component固定为`Layout`
+这里约定，配置项中只有根节点（即顶部菜单）的path以'/'开头，并且，只有根节点和叶子节点可以自定义`component`。
 
-此外，所有根节点（经过缩减）的redirect属性都将设为其第一个子节点的fullPath，目前不支持自定义。
+目前根节点的`component`固定为`'Layout'`。
+
+此外，所有根节点（经过降级缩减）的`redirect`属性都将设为其第一个子节点的`fullPath`，目前不支持自定义。
 
 ::: warning 注意 
-项目中，路由配置项中的component是字符串，比如组件路径是`@/views/test/indexPage.vue`，那么component可以是
+路由配置项中的`component`是字符串，比如组件路径是`@/view/test/indexPage.vue`，那么component可以是
 `test/`、`test/index`、`test/indexPage`、`test/indexPage.vue`，具体可以看`@/router/util.js` 中的 `generateRoutes` 方法。
 :::
 
@@ -73,18 +72,18 @@ const routes = [
 | :------------: | :--------------------------------------------------: | :--------: | :---: |
 | title          | 路由在侧边栏、面包屑、页签                           | `string`   | -     |
 | dynamicTitle   | 路由在面包屑、页签中的动态名称，参数为(to,from)      | `function` | -     |
-| hidden         | 是否在侧边栏中显示                                   | `boolean`  | -     |
-| alwaysShow     | 是否总是把只有一个子级的菜单以嵌套模式在侧边栏中展示 | `boolean`  | -     | 
+| hidden         | 是否在菜单中隐藏                                     | `boolean`  | -     |
+| alwaysShow     | 是否总是把只有一个子级的菜单以嵌套模式展示           | `boolean`  | -     | 
 | sort           | 侧边栏的排序值，值越小越靠前                         | `number`   | 10000 | 
-| icon           | 图标名，<v-icon>的icon属性                           | `string`   | -     |
+| icon           | 图标名，`<v-icon>`的icon属性                         | `string`   | -     |
 | affix          | 是否在多页签中固定显示                               | `boolean`  | -     |
-| noCache        | true时缓存页面                                       | `boolean`  | -     |
-| activeMenu     | 侧边栏当前激活菜单的index                            | `string`   | -     |
+| noCache        | true时不缓存页面                                     | `boolean`  | -     |
+| activeMenu     | 当前激活菜单的index，因为激活菜单可能并非当前路由    | `string`   | -     |
 | noAuth         | true时路由不需要鉴权                                 | `boolean`  | -     |
 | iframe         | 需要打开的iframe的地址                               | `string`   | -     |
 | usePathKey     | 是否使用$route.path作为组件缓存的key                 | `boolean`  | -     |
 | useFullPathKey | 是否使用$route.fullPath作为组件缓存的key             | `boolean`  | -     |
-| commonModule   | 共用组件的唯一标识                                   | `any`      | -     |
+| commonModule   | 共用组件的唯一标识，用于判断路由是否复用组件         | `any`      | -     |
 
 ::: tip 注意
 路由meta上的noAuth、noCache会被子路由继承，优先使用子路由的值
@@ -113,19 +112,36 @@ const routes = [
 所以在 `router.beforeEach` 中做了判断，如果跳转前后的路由的 `meta.commonModule` 相同的话，那么借助 `/redirect` 跳转一次，从而避免组件复用的问题
 
 ::: warning 注意
-如果使用 `name`，需要缓存的页面的 `name` 必须和路由的 `name` 一致
+如果使用`name`作为组件缓存的标识，那么缓存的页面的`name`必须和路由的`name`一致
 :::
 
 ## 路由白名单
 
-在 `@/router/index.js` 中有这么一句:
+在 `@/router/guardian/security.js` 中有这么一句:
 ```js
-const whiteList = transformWhiteList(['/login', '/register', '/404', '/403'])
+const whiteList = ['/login', '/register', '/403', '/404', '/500'].map(url => pathToRegexp(url))
 ```
-这个 `whiteList` 就是白名单，里面的值会被转为正则表达式，详细请查看[path-to-regexp文档](https://github.com/pillarjs/path-to-regexp)。
-被`whiteList` 匹配的路由不需要验证，直接放行。
+这个`whiteList`就是白名单，里面的值会被转为正则表达式，详细请查看[path-to-regexp文档](https://github.com/pillarjs/path-to-regexp)。
+被白名单匹配的路由不需要验证，直接放行。
+
+## 路由守卫
+
+所有路由守卫全部位于`@/router/guardian`中。
+
+预设的路由守卫如下：
+- nprogress进度条守卫
+- 防止路由复用组件的守卫
+- 修改页面标题信息的守卫
+- 登陆和权限守卫
+- 控制iframe显隐的守卫
+
+::: warning 注意
+路由守卫是有先后顺序的，请查看`@/router/guardian/index.js`
+:::
 
 ## 首屏加载效果
+
+<img :src="$withBase('/路由和菜单-首屏加载效果.png')">
 
 想体验的可以把 `network` 设为 `slow 3g` 就可以在在线实例看到效果。
 
@@ -141,6 +157,8 @@ const whiteList = transformWhiteList(['/login', '/register', '/404', '/403'])
 在 `vuejs` 初始化完成后，`app` 里的内容会被替换，从而实现加载效果。
 
 ## 骨架屏
+
+<img :src="$withBase('/路由和菜单-骨架屏.png')">
 
 通常情况下，路由组件都是以 `import(...)` 的形式异步引入，
 如果想让路由在加载异步组件时显示，可以使用以下方式：
@@ -160,7 +178,7 @@ component: lazyLoadView(import(...))
 ```
 项目中具体的使用方式可以查看 `@/router/util #generateRoutes`方法。
 
-关于 `AsyncHandler` 的更多选项，可以查看[官方文档](https://cn.vuejs.org/v2/guide/components-dynamic-async.html#%E5%A4%84%E7%90%86%E5%8A%A0%E8%BD%BD%E7%8A%B6%E6%80%81)
+关于 `AsyncHandler` 的更多选项，可以查看[官方文档](https://cn.vuejs.org/v2/guide/component-dynamic-async.html#%E5%A4%84%E7%90%86%E5%8A%A0%E8%BD%BD%E7%8A%B6%E6%80%81)
 
 ## 过渡动画
 

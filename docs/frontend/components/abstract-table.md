@@ -18,7 +18,7 @@
 
 ### 引入：
 
-`@/components/AbstractTable`。
+`@/component/AbstractTable`。
 
 ### 使用：
 

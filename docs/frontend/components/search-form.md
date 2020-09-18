@@ -7,7 +7,7 @@
 
 ### 引入：
 
-`@/components/SearchForm`，`@/components/SearchFormItem`
+`@/component/SearchForm`，`@/component/SearchFormItem`
 
 ### 使用：
 ```html

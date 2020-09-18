@@ -1,12 +1,12 @@
 # 行政区划选择器
 
-目前分 `树型` 和 `选项卡型` 两种，由于 `树型` 不完善，所以这里只介绍 `选项卡型`，有兴趣的可以查看源码`@/components/RegionSelector/Tree`。
+目前分 `树型` 和 `选项卡型` 两种，由于 `树型` 不完善，所以这里只介绍 `选项卡型`，有兴趣的可以查看源码`@/component/RegionSelector/Tree`。
 
 <img :src="$withBase('/region-selector_tab.png')">
 
 ### 引入：
 
-`@/components/RegionSelector`
+`@/component/RegionSelector`
 
 ### 使用：
 ```html

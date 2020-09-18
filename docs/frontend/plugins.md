@@ -9,7 +9,7 @@
 
 ## 图片压缩
 
-支持 `png`、`jpg` 两种格式的图片，使用方法参考 `@/views/example/developingTest/components/ImageCompressTest.vue`。
+支持 `png`、`jpg` 两种格式的图片，使用方法参考 `@/view/example/test/develop/component/ImageCompressTest.vue`。
 
 ::: tip
 由于是以 `worker` 的形式调用，所以需要准备 `cjpeg.min.js` 和 `pngquant.min.js`，这两个文件都放在项目的 `public`下。

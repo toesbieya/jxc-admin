@@ -1,6 +1,6 @@
 # 构建和发布
 
-## 构建
+### 构建
 
 当项目开发完毕，只需要运行一行命令就可以打包你的应用：
 ```shell script
@@ -12,7 +12,7 @@ npm run build
 
 如果需要指定`dist`目录等，则需要通过`vue.config.js`的`outputDir`进行配置。
 
-## 发布
+### 发布
 
 如果静态文件不是部署在根目录下，比如想部署在 `/app` 下，那么需要将 `@/config/index.js` 中的 `contextPath` 改为 `/app/`。
 
@@ -24,7 +24,7 @@ npm run build
 `contextPath` 应始终以 `/` 开头，以 `/` 结束。
 :::
 
-## 路由模式
+### 路由模式
 
 项目提供了动态修改路由模式的功能，只需要修改 `@/config/index.js` 中的 `route.mode` 即可。
 

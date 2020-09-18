@@ -3,7 +3,7 @@
 ## el-dialog拖拽
 
 已全局注册，使用方式：
-```js
+```html
 <el-dialog v-drag-dialog/>
 ```
 
@@ -11,7 +11,7 @@
 
 从[quasar](https://quasar.dev/vue-directives/material-ripple)处搬运
 已全局注册，使用方式：
-```js
+```html
 <div v-ripple/>
 ```
 更多细节请根据quasar文档使用

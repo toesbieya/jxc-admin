@@ -10,7 +10,7 @@
 
 ### 引入：
 
-`@/components/TreeSelect`
+`@/component/TreeSelect`
 
 ### 使用：
 ```html

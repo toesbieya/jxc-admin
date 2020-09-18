@@ -6,7 +6,7 @@
 
 ### 引入：
 
-`@/components/UploadFile`
+`@/component/UploadFile`
 
 ### 使用： 
 ```html

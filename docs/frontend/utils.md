@@ -36,9 +36,9 @@ const tree2 = createTree(arr2, 0, 'xid', 'ypid')
 
 ## 纯前端导出excel
 
-依赖exceljs（实际上项目中还有xlsx-style的实现版本，见 `@/utils/excel/xlsx`，不过存在问题，所以弃用了）。
+依赖exceljs，项目中使用script引入。
 ```js
-import {json2workbook, exportExcelByJs} from '@/utils/excel'
+import {json2workbook, workbook2excel} from '@/utils/excel'
 
 const column = [
     {header: ['合并表头演示', '序号'], prop: 'no', merge: true},
@@ -52,33 +52,29 @@ const arr = [
 
 const workbook = json2workbook(arr, column)
 
-exportExcelByJs(workbook, '测试导出.xlsx')
+workbook2excel(workbook, '测试导出.xlsx')
 ```
 
 ### json2workbook(data, columns, merge) : workbook
 
 - `data` : `array`，json数组。
-
 - `columns` : `array`，列配置项数组，列配置详细如下：
-```js
-{
-    header : string | array，表头名称，通过使用'-'分隔符或者传入array来实现多级表头
-    prop : string，表头对应的 json 字段名称，如果为空，则该字段不会写入excel表格
-    merge : boolean，是否需要合并，true的话会从上至下合并值相同的相邻单元格
-    width : number，单元格宽度，默认 20
-}
-```
+
+| 参数   | 说明                                                          | 类型           | 默认 |
+| :----: | :-----------------------------------------------------------: | :------------: | :--: |
+| header | 表头名称，通过使用'-'分隔符或者传入array来实现多级表头        | `string|array` | -    |
+| prop   | 表头对应的 json 字段名称，如果为空，则该字段不会写入excel表格 | `string`       | -    |
+| merge  | 是否需要合并，true的话会从上至下合并值相同的相邻单元格        | `boolean`      | -    |
+| width  | 单元格宽度                                                    | `number`       | 20   |
 
 - `merge` : `object`，合并配置项，详细如下：
-```js
-{
-    primaryKey : string，每行json数据的唯一标识字段名称
-    orderKey : string，每行json数据的序号字段名称
-}
-```
 
-### exportExcelByJs(workbook, filename)
+| 参数       | 说明                           | 类型     | 默认 |
+| :--------: | :----------------------------: | :------: | :--: |
+| primaryKey | 每行json数据的唯一标识字段名称 | `string` | -    |
+| orderKey   | 每行json数据的序号字段名称     | `string` | -    |
 
-- `workbook`，json2workbook的返回结果
+### workbook2excel(workbook, filename)
 
+- `workbook`，exceljs的workbook对象
 - `filename` : `string`，导出的文件名称，需要带上.xlsx后缀
