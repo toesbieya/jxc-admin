@@ -47,7 +47,7 @@
 
 ### 侧边栏菜单
 
-侧边栏菜单借助了 `@/component/menu/NavMenu/item.vue` 来渲染菜单项，具体配置请查看[路由配置](./router/.html)。
+侧边栏菜单借助了 `@/component/menu/NavMenu/item.vue` 来渲染菜单项，具体配置请查看[路由配置](./router.html)。
 
 侧边栏菜单扩展了以下功能：
 - 点击已激活的菜单可刷新路由

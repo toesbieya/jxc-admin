@@ -35,11 +35,11 @@ module.exports = {
                     {
                         title: '组件',
                         children: [
-                            '/frontend/component/abstract-table',
-                            '/frontend/component/region-selector',
-                            '/frontend/component/search-form',
-                            '/frontend/component/upload-file',
-                            '/frontend/component/tree-select',
+                            '/frontend/components/abstract-table',
+                            '/frontend/components/region-selector',
+                            '/frontend/components/search-form',
+                            '/frontend/components/upload-file',
+                            '/frontend/components/tree-select',
                         ]
                     },
                     '/frontend/directives',
