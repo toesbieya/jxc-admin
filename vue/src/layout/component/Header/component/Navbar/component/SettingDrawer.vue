@@ -27,10 +27,6 @@
                 <el-switch :value="pageGetters.showPageHeader" @input="changePageShowHeader"/>
             </div>
             <div class="drawer-item">
-                <span>使用多页签</span>
-                <el-switch :value="tagsViewGetters.enabled" @input="changeTagsViewEnabled"/>
-            </div>
-            <div class="drawer-item">
                 <span>显示返回顶部按钮</span>
                 <el-switch :value="pageGetters.showBackToTop" @input="changePageBackToTop"/>
             </div>
@@ -55,6 +51,20 @@
             <div class="drawer-item">
                 <span>自动隐藏</span>
                 <el-switch :value="asideGetters.autoHide" @input="changeAsideAutoHide"/>
+            </div>
+
+            <el-divider>多页签设置</el-divider>
+            <div class="drawer-item">
+                <span>启用</span>
+                <el-switch :value="tagsViewGetters.enabled" @input="changeTagsViewEnabled"/>
+            </div>
+            <div class="drawer-item">
+                <span>启用快捷键切换</span>
+                <el-switch :value="tagsViewGetters.shortcut" @input="changeTagsViewShortcut"/>
+            </div>
+            <div class="drawer-item">
+                <span>持久化</span>
+                <el-switch :value="tagsViewGetters.persistent" @input="changeTagsViewPersistent"/>
             </div>
         </div>
     </el-drawer>
@@ -111,7 +121,6 @@ export default {
                 },
                 page: {
                     showPageHeader: true,
-                    useTagsView: true,
                     showBackToTop: true
                 },
                 aside: {
@@ -120,6 +129,11 @@ export default {
                     collapse: false,
                     showParentOnCollapse: false,
                     autoHide: false
+                },
+                tagsView: {
+                    enabled: true,
+                    shortcut: true,
+                    persistent: true
                 }
             }
         }
@@ -128,13 +142,12 @@ export default {
     methods: {
         //按照此处的设置项修改layout中的store
         updateLayoutStore() {
-            const {app, page, aside} = this.setting
+            const {app, page, aside, tagsView} = this.setting
 
             appMutations.color(app.color)
             appMutations.navMode(app.navMode)
 
             pageMutations.showPageHeader(page.showPageHeader)
-            tagsViewMutations.enabled(page.useTagsView)
             pageMutations.showBackToTop(page.showBackToTop)
 
             asideMutations.showLogo(aside.showLogo)
@@ -142,15 +155,18 @@ export default {
             asideMutations.collapse(aside.collapse)
             asideMutations.showParentOnCollapse(aside.showParentOnCollapse)
             asideMutations.autoHide(aside.autoHide)
+
+            tagsViewMutations.enabled(tagsView.enabled)
+            tagsViewMutations.shortcut(tagsView.shortcut)
+            tagsViewMutations.persistent(tagsView.persistent)
         },
         //将layout中的store数据同步到此处的设置项
         syncLayoutStore() {
-            const {app, page, aside} = this.setting
+            const {app, page, aside, tagsView} = this.setting
             app.color = appGetters.color
             app.navMode = appGetters.navMode
 
             page.showPageHeader = pageGetters.showPageHeader
-            page.useTagsView = tagsViewGetters.enabled
             page.showBackToTop = pageGetters.showBackToTop
 
             aside.showLogo = asideGetters.showLogo
@@ -158,6 +174,10 @@ export default {
             aside.collapse = asideGetters.collapse
             aside.showParentOnCollapse = asideGetters.showParentOnCollapse
             aside.autoHide = asideGetters.autoHide
+
+            tagsView.enabled = tagsViewGetters.enabled
+            tagsView.shortcut = tagsViewGetters.shortcut
+            tagsView.persistent = tagsViewGetters.persistent
         },
         //将此处的设置项保存到本地
         saveSetting() {
@@ -168,49 +188,56 @@ export default {
         changeThemeColor(v) {
             isDev && client.changer.changeColor({newColors: forElementUI.getElementUISeries(v)})
             appMutations.color(v)
-            this.saveSetting()
         },
         changeNavMode(v) {
             appMutations.navMode(v)
-            this.saveSetting()
         },
 
         changePageShowHeader(v) {
             pageMutations.showPageHeader(v)
-            this.saveSetting()
-        },
-        changeTagsViewEnabled(v) {
-            tagsViewMutations.enabled(v)
-            this.saveSetting()
         },
         changePageBackToTop(v) {
             pageMutations.showBackToTop(v)
-            this.saveSetting()
         },
 
         changeAsideShowLogo(v) {
             asideMutations.showLogo(v)
-            this.saveSetting()
         },
         changeAsideUniqueOpen(v) {
             asideMutations.uniqueOpen(v)
-            this.saveSetting()
         },
         changeAsideCollapse(v) {
             asideMutations.collapse(v)
-            this.saveSetting()
         },
         changeAsideCollapseParent(v) {
             asideMutations.showParentOnCollapse(v)
-            this.saveSetting()
         },
         changeAsideAutoHide(v) {
             asideMutations.autoHide(v)
-            this.saveSetting()
+        },
+
+        changeTagsViewEnabled(v) {
+            tagsViewMutations.enabled(v)
+        },
+        changeTagsViewShortcut(v) {
+            tagsViewMutations.shortcut(v)
+        },
+        changeTagsViewPersistent(v) {
+            tagsViewMutations.persistent(v)
         }
     },
 
     created() {
+        //增强所有以change开头的方法
+        for (const key of Object.keys(this)) {
+            if (!key.startsWith('change')) continue
+            const originMethod = this[key]
+            this[key] = (...arg) => {
+                originMethod.apply(this, arg)
+                this.saveSetting()
+            }
+        }
+
         mergeObj(this.setting, getLocalPersonalSettings())
 
         //由于数据结构可能发生变化，所以在合并后覆盖本地数据

@@ -4,6 +4,12 @@ import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
 const {animate} = routeConfig
 
 export default {
+    watch: {
+        $route(to, from) {
+            this.decideRouteTransition(to, from)
+        }
+    },
+
     methods: {
         //根据访问的tab页的左右顺序来确定路由动画
         decideRouteTransition(to, from) {

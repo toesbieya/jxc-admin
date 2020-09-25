@@ -18,7 +18,7 @@ const beforeEach = async (to, from, next) => {
 
     //初始化路由和菜单权限
     if (!store.state.resource.init) {
-        await store.dispatch('resource/init', {...store.state.user, addRoutes: true})
+        await store.dispatch('resource/init', store.state.user)
         return next({...to, replace: true})
     }
 

@@ -6,7 +6,7 @@ import {getDynamicRoutes} from '@/router/define'
 import {parseRoutes, metaExtend} from "@/router/util"
 import {getAll} from "@/api/system/resource"
 import {isEmpty} from "@/util"
-import {needAuth} from "@/util/auth"
+import {needAuth, auth} from "@/util/auth" // 此处存在循环引用？
 import {createTree} from "@/util/tree"
 import {isExternal} from "@/util/validate"
 
@@ -42,20 +42,20 @@ const mutations = {
 }
 
 const actions = {
-    init({commit}, {resources, admin, addRoutes = false}) {
+    init({state, commit}, {resources, admin}) {
         return getAll
             .request()
             .then(({data}) => {
+                commit('resource', {data: data || [], admin})
+
                 //动态添加路由，这里不需要进行权限过滤
                 const routes = transformOriginRouteData(data)
                 metaExtend(routes)
-                addRoutes && addDynamicRoutes(routes)
+                //可能存在多次调用的情况，所以仅在第一次调用时添加进vue-router
+                !state.init && addDynamicRoutes(routes)
 
-                //获取经过权限过滤后的菜单
-                const menus = getAuthorizedMenus({resources, admin}, routes)
-
-                appMutations.menus(menus)
-                commit('resource', {data: data || [], admin})
+                //生成经过权限过滤后的菜单
+                appMutations.menus(getAuthorizedMenus({resources, admin}, routes))
 
                 //设置初始化完成的标志
                 commit('init', true)
@@ -99,9 +99,10 @@ function getAuthorizedMenus({resources, admin}, menus) {
     menus = JSON.parse(JSON.stringify(menus))
     clean(menus)
     addFullPath(menus)
-    if (admin === true) return menus
-    if (!resources) return []
-    filter(menus, i => !needAuth(i) || i.fullPath in resources)
+    // if (admin === true) return menus
+    // if (!resources) return []
+    // filter(menus, i => !needAuth(i) || i.fullPath in resources)
+    filter(menus, i => !needAuth(i) || auth(i.fullPath))
     return menus
 }
 

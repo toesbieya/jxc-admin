@@ -11,8 +11,12 @@ import {createGetters, createMutations} from "@/util/observable"
 const state = {
     //是否启用
     enabled: true,
+    //是否启用快捷键切换功能
+    shortcut: true,
+    //是否将页签持久化到sessionStorage
+    persistent: true,
 
-    //显示的页签，{...route,title:route.meta.title}对象数组
+    //显示的页签，routeConfig对象数组
     visitedViews: [],
 
     //缓存的页签，用于<keep-router-view-alive/>:include
@@ -36,11 +40,9 @@ export const mutations = bindThis({
     },
 
     addVisitedView(view) {
-        const {title = '暂无标题'} = view.meta || {}
-
         if (store.visitedViews.some(v => v.path === view.path)) return
 
-        store.visitedViews.push({...view, title})
+        store.visitedViews.push(view)
     },
     addCachedView(view) {
         const {noCache, iframe, usePathKey, useFullPathKey} = view.meta || {}

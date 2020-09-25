@@ -1,6 +1,7 @@
 <script type="text/jsx">
-import shortcutMixin from '@/layout/mixin/shortcut'
+import shortcutMixin from '@/layout/mixin/tagsViewShortcut'
 import decideRouterTransitionMixin from '@/layout/mixin/decideRouterTransition'
+import persistenceMixin from '@/layout/mixin/tagsViewPersistent'
 import {route as routeConfig} from '@/config'
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
@@ -8,7 +9,7 @@ import ContextMenu from "@/component/menu/ContextMenu"
 import ScrollPanel from './ScrollPanel'
 
 export default {
-    mixins: [shortcutMixin, decideRouterTransitionMixin],
+    mixins: [shortcutMixin, decideRouterTransitionMixin, persistenceMixin],
 
     components: {ContextMenu, ScrollPanel},
 
@@ -19,9 +20,7 @@ export default {
                 top: 0,
                 left: 0,
             },
-            selectedTag: {},
-            affixTags: [],
-            scroller: null
+            selectedTag: {}
         }
     },
 
@@ -31,15 +30,14 @@ export default {
     },
 
     watch: {
-        $route(to, from) {
-            this.decideRouteTransition && this.decideRouteTransition(to, from)
-            this.addTags(to)
+        $route(to) {
+            this.addTag(to)
             this.$nextTick(this.moveToCurrentTag)
         }
     },
 
     methods: {
-        //判断页签是否激活，考虑刷新的情况
+        //判断页签是否激活，考虑redirect刷新的情况
         isActive({path}) {
             const {path: routePath} = this.$route
             return routePath === path || routePath === `/redirect${path}`
@@ -70,14 +68,12 @@ export default {
                 return tags
             }
 
-            this.affixTags = getAffixTags(this.menus)
-            for (const tag of this.affixTags) {
+            for (const tag of getAffixTags(this.menus)) {
                 tagsViewMutations.addVisitedView(tag)
             }
         },
-
-        //将当前具有meta.title的路由添加为tab页
-        addTags(to = this.$route) {
+        //将具有meta.title的路由添加为tab页
+        addTag(to = this.$route) {
             to.meta.title && tagsViewMutations.addView(to)
         },
 
@@ -145,7 +141,7 @@ export default {
 
         renderTags(h) {
             return this.visitedViews.map(tag => {
-                const {title, path, query, fullPath} = tag
+                const {path, query, fullPath, meta: {title}} = tag
                 const active = this.isActive(tag), affix = this.isAffix(tag)
                 const closeSelectedTag = (e, tag) => {
                     e.preventDefault()
@@ -191,7 +187,7 @@ export default {
 
     mounted() {
         this.initTags()
-        this.addTags()
+        this.addTag()
     },
 
     render(h) {

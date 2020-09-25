@@ -115,11 +115,14 @@ export default {
         },
 
         //添加或移除鼠标移动事件
-        shouldBindMouseMoveEvent(v) {
-            //尝试移除之前可能添加的事件
-            window.removeEventListener('mousemove', this.moveEvent)
+        shouldBindMouseMoveEvent: {
+            immediate: true,
+            handler(v) {
+                //尝试移除之前可能添加的事件
+                window.removeEventListener('mousemove', this.moveEvent)
 
-            v && window.addEventListener('mousemove', this.moveEvent)
+                v && window.addEventListener('mousemove', this.moveEvent)
+            }
         }
     },
 

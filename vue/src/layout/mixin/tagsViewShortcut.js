@@ -3,7 +3,28 @@
  * ctrl + →，下一个页签
  * ctrl + ←，上一个页签
  */
+
+import {getters as tagsViewGetters} from "@/layout/store/tagsView"
+
 export default {
+    computed: {
+        shouldBindKeydownEvent() {
+            return tagsViewGetters.shortcut
+        }
+    },
+
+    watch: {
+        shouldBindKeydownEvent: {
+            immediate: true,
+            handler(v) {
+                //尝试移除之前可能添加的事件
+                window.removeEventListener('keydown', this.shortcutsListen)
+
+                v && window.addEventListener('keydown', this.shortcutsListen)
+            }
+        }
+    },
+
     methods: {
         //上一个页签
         gotoViewFront() {
@@ -40,11 +61,7 @@ export default {
         }
     },
 
-    mounted() {
-        window.addEventListener('keydown', this.shortcutsListen)
-
-        this.$once('hook:beforeDestroy', () => {
-            window.removeEventListener('keydown', this.shortcutsListen)
-        })
+    beforeDestroy() {
+        window.removeEventListener('keydown', this.shortcutsListen)
     }
 }

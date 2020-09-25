@@ -2,7 +2,11 @@ import store from '@/store'
 import {uppercaseFirst} from "@/filter"
 import {isEmpty} from "@/util"
 
-//判断路由是否需要鉴权，需要则返回true
+/**
+ * @desc 判断是否需要鉴权，需要则返回true
+ * @param route vue-router的routeConfig或项目中说明的路由配置项
+ * @returns {boolean}
+ */
 export function needAuth(route) {
     if (route.path.startsWith('/redirect')) return false
     const {meta} = route
