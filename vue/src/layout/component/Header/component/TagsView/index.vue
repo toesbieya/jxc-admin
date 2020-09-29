@@ -68,12 +68,16 @@ export default {
                 return tags
             }
 
+            //添加所有固定显示的页签
             for (const tag of getAffixTags(this.menus)) {
                 tagsViewMutations.addVisitedView(tag)
             }
+
+            //将当前路由对象添加为页签
+            this.addTag(this.$route)
         },
-        //将具有meta.title的路由添加为tab页
-        addTag(to = this.$route) {
+        //将具有meta.title的路由对象添加为tab页
+        addTag(to) {
             to.meta.title && tagsViewMutations.addView(to)
         },
 
@@ -187,7 +191,6 @@ export default {
 
     mounted() {
         this.initTags()
-        this.addTag()
     },
 
     render(h) {

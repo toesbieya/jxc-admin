@@ -16,7 +16,7 @@ const state = {
     //是否将页签持久化到sessionStorage
     persistent: true,
 
-    //显示的页签，routeConfig对象数组
+    //显示的页签，vue-router的routeConfig对象数组
     visitedViews: [],
 
     //缓存的页签，用于<keep-router-view-alive/>:include

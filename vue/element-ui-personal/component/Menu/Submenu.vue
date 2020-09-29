@@ -129,8 +129,8 @@ export default {
 
             this.dispatch('ElSubmenu', 'mouse-enter-child')
 
-            clearTimeout(this.timeout)
-            this.timeout = setTimeout(() => this.rootMenu.openMenu(this.index, this.indexPath), showTimeout)
+            window.clearTimeout(this.timeout)
+            this.timeout = window.setTimeout(() => this.rootMenu.openMenu(this.index, this.indexPath), showTimeout)
 
             this.appendToBody && this.$parent.$el.dispatchEvent(new MouseEvent('mouseenter'))
         },
@@ -143,8 +143,8 @@ export default {
 
             this.dispatch('ElSubmenu', 'mouse-leave-child')
 
-            clearTimeout(this.timeout)
-            this.timeout = setTimeout(() => !this.mouseInChild && this.rootMenu.closeMenu(this.index), this.hideTimeout)
+            window.clearTimeout(this.timeout)
+            this.timeout = window.setTimeout(() => !this.mouseInChild && this.rootMenu.closeMenu(this.index), this.hideTimeout)
 
             if (this.appendToBody && deepDispatch) {
                 if (this.$parent.$options.name === 'ElSubmenu') {
@@ -170,11 +170,11 @@ export default {
         this.$on('toggle-collapse', this.handleCollapseToggle)
         this.$on('mouse-enter-child', () => {
             this.mouseInChild = true
-            clearTimeout(this.timeout)
+            window.clearTimeout(this.timeout)
         })
         this.$on('mouse-leave-child', () => {
             this.mouseInChild = false
-            clearTimeout(this.timeout)
+            window.clearTimeout(this.timeout)
         })
     },
 

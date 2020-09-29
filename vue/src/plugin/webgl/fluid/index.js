@@ -216,7 +216,7 @@ const WebGLFluid = canvas => {
         applyInputs()
         if (!config.PAUSED) step(dt)
         render(null)
-        requestAnimationFrame(update)
+        window.requestAnimationFrame(update)
     }
 
     function calcDeltaTime() {

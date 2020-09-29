@@ -5,7 +5,6 @@
         append-to-body
         title="选择销售订单"
         width="70%"
-        top="50px"
         @close="cancel"
         @open="search"
     >

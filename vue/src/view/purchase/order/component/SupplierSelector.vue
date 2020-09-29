@@ -5,7 +5,6 @@
         append-to-body
         title="选择供应商"
         width="70%"
-        top="50px"
         @close="cancel"
         @open="search"
     >

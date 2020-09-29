@@ -217,7 +217,7 @@ function go() {
 
         // this[rte](B)}
 
-        requestAnimationFrame(onFrame)
+        window.requestAnimationFrame(onFrame)
     }
 
     // Call our requestAnimationFrame handler to start rendering. Since it takes no arguments use the argument

@@ -138,7 +138,7 @@ export function throttle(func, delay = 100) {
             func.apply(self, args)
         }
 
-        clearTimeout(timeoutID)
+        window.clearTimeout(timeoutID)
 
         if (elapsed > delay) exec()
         else timeoutID = window.setTimeout(exec, delay - elapsed)
@@ -173,7 +173,7 @@ export function waitUntilSuccess(success, callback, interval = 1000, maxTryTime 
 
         if (success()) return check()
 
-        fun = setInterval(check, interval)
+        fun = window.setInterval(check, interval)
     })
 }
 

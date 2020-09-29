@@ -69,12 +69,14 @@ $head-menu-item-hover-color: $--color-primary;
 //侧边栏宽度
 $aside-width: 208px;
 //头部导航栏高度
-$nav-height: 50px;
+$nav-height: 48px;
 //头部多页签栏高度
-$tags-view-height: 40px;
+$tags-view-height: 32px;
 
-//页头高度
-$page-header-height: 51px;
+//页头行高
+$page-header-line-height: 26px;
+//页头的上下padding
+$page-header-padding: 12px;
 //路由页面的margin
 $page-view-margin: 24px;
 
@@ -86,4 +88,5 @@ $page-view-margin: 24px;
     success: $--color-success;
     danger: $--color-danger;
     warning: $--color-warning;
+    navHeight: $nav-height;
 }

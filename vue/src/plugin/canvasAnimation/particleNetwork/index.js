@@ -87,7 +87,7 @@ export default class ParticleNetwork {
         if (isInitial) {
             let counter = 0
             window.clearInterval(this.timer)
-            this.timer = setInterval(() => {
+            this.timer = window.setInterval(() => {
                 if (counter < quantity - 1) this.particles.push(new Particle(this))
                 else window.clearInterval(this.timer)
                 counter++
@@ -134,7 +134,7 @@ export default class ParticleNetwork {
             this.mouseIsDown = true
             let counter = 0
             let quantity = this.spawnQuantity
-            let intervalId = setInterval(function () {
+            let intervalId = window.setInterval(function () {
                 if (this.mouseIsDown) {
                     if (counter === 1) quantity = 1
                     for (let i = 0; i < quantity; i++) {

@@ -80,6 +80,8 @@ a:hover {
 }
 
 /*----------路由页面的最大高度开始----------*/
+$page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
+
 .max-view-height {
     height: calc(100vh - #{$page-view-margin * 2});
 }
@@ -93,7 +95,7 @@ a:hover {
 }
 
 .has-page-header .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$page-header-height});
+    height: calc(100vh - #{$page-view-margin * 2} - #{$page-header-offsetHeight});
 }
 
 .has-nav.has-tags-view .max-view-height {
@@ -101,11 +103,11 @@ a:hover {
 }
 
 .has-nav .has-page-header .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$page-header-height});
+    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$page-header-offsetHeight});
 }
 
 .has-nav.has-tags-view .has-page-header .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height} - #{$page-header-height});
+    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height} - #{$page-header-offsetHeight});
 }
 
 /*----------路由页面的最大高度结束----------*/

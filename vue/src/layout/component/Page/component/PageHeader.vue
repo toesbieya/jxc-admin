@@ -1,6 +1,6 @@
 <template>
     <div class="page-header">
-        <h1 class="page-header-title">{{ title }}</h1>
+        <span class="page-header-title">{{ title }}</span>
 
         <el-breadcrumb>
             <el-breadcrumb-item v-for="(item,index) in data" :key="item.path">
@@ -39,9 +39,9 @@ export default {
     justify-content: space-between;
     align-items: center;
     flex-wrap: nowrap;
-    height: $page-header-height;
     font-size: 14px;
-    padding: 16px $page-view-margin 0 $page-view-margin;
+    line-height: $page-header-line-height;
+    padding: $page-header-padding $page-view-margin $page-header-padding $page-view-margin;
 
     > .el-breadcrumb .no-redirect {
         color: #909399;
@@ -49,13 +49,17 @@ export default {
     }
 
     &-title {
-        margin: 4px 0;
         color: #303133;
-        font-weight: 400;
-        font-size: 24px;
+        font-weight: 600;
+        font-size: 18px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+    }
+
+    // 页头渲染时页面顶部margin为0
+    & + .page-view {
+        margin-top: 0 !important;
     }
 }
 </style>

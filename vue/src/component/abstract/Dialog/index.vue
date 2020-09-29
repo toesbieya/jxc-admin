@@ -1,4 +1,5 @@
 <script type="text/jsx">
+import variables from '@/asset/style/variables.scss'
 import LoadingMask from './LoadingMask'
 
 export default {
@@ -10,7 +11,7 @@ export default {
         value: Boolean,
         title: String,
         loading: {type: Boolean, default: true},
-        top: {type: String, default: '50px'},
+        top: {type: String, default: variables['navHeight']},
         width: {type: String, default: '30%'}
     },
 

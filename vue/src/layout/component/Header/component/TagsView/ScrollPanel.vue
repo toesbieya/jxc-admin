@@ -22,7 +22,7 @@ export default {
                 || eventDelta < 0 && scrollWidth <= scrollLeft + clientWidth) {
                 return
             }
-            this.smoothScroll(-eventDelta * 2)
+            this.smoothScroll(-eventDelta)
         },
 
         smoothScroll(val) {
@@ -31,7 +31,7 @@ export default {
                 this.rAf = null
             }
 
-            this.rAf = scrollTo(this.$el, this.$el.scrollLeft + val, {direction: 'left'})
+            this.rAf = scrollTo(this.$el, this.$el.scrollLeft + val, {direction: 'left', duration: 100})
         },
 
         moveToTarget(currentTag, tagInstances) {

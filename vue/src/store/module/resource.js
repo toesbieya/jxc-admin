@@ -99,9 +99,6 @@ function getAuthorizedMenus({resources, admin}, menus) {
     menus = JSON.parse(JSON.stringify(menus))
     clean(menus)
     addFullPath(menus)
-    // if (admin === true) return menus
-    // if (!resources) return []
-    // filter(menus, i => !needAuth(i) || i.fullPath in resources)
     filter(menus, i => !needAuth(i) || auth(i.fullPath))
     return menus
 }
