@@ -58,7 +58,7 @@
 import axios from 'axios'
 import {deleteUpload} from '@/api/file'
 import {file as fileConfig} from '@/config'
-import {debounce, isEmpty} from '@/util'
+import {debounce, isEmpty, deepClone} from '@/util'
 import {elError} from "@/util/message"
 import {isImage, isDoc, isPdf, isPpt, isRar, isXls, isTxt, isZip} from "@/util/validate"
 import {preview, download, upload, autoCompleteUrl} from "@/util/file"
@@ -129,7 +129,7 @@ export default {
                         return {...file, url: getCoverImage(downloadUrl, file.name), downloadUrl}
                     })]
                 }
-                this.tempData = JSON.parse(JSON.stringify(this.data))
+                this.tempData = deepClone(this.data)
             }
         }
     },

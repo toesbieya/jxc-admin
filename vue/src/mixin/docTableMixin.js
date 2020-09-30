@@ -1,5 +1,7 @@
 import tableMixin from '@/mixin/tablePageMixin'
+import SearchFormItem from "@/component/form/Search/item"
 import LinerProgress from '@/component/LinerProgress'
+import ListPage from '@/view/app/common/ListPage'
 import {isEmpty} from "@/util"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {auth} from "@/util/auth"
@@ -33,7 +35,7 @@ export const commonMethods = {
 export default {
     mixins: [tableMixin],
 
-    components: {LinerProgress},
+    components: {SearchFormItem, LinerProgress, ListPage},
 
     data() {
         return {
@@ -66,6 +68,30 @@ export default {
         canExport() {
             return auth(this.api.exportExcel.url)
         },
+
+        buttonGroup() {
+            return [
+                {icon: 'el-icon-search', type: 'primary', e: this.search, content: '查 询'},
+                this.canAdd && {icon: 'el-icon-plus', type: 'primary', e: this.add, content: '添 加'},
+                {icon: 'el-icon-view', type: 'primary', e: this.see, content: '查 看'},
+                this.canUpdate && {icon: 'el-icon-edit', type: 'primary', e: this.edit, content: '编 辑'},
+                this.canDel && {icon: 'el-icon-delete', type: 'danger', e: this.del, content: '删 除'},
+                this.canExport && {icon: 'el-icon-download', type: 'info', e: this.downloadExcel, content: '导 出'}
+            ]
+        },
+        listPageConfig() {
+            return {
+                loading: this.config.loading,
+                tableConfig: {
+                    props: {data: this.tableData},
+                    on: {'row-click': this.rowClick, 'expand-change': this.getSubList}
+                },
+                paginationConfig: {
+                    props: {model: this.searchForm},
+                    on: {'current-change': this.pageChange}
+                }
+            }
+        }
     },
 
     methods: {

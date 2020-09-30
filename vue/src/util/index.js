@@ -199,3 +199,19 @@ export function bindThis(obj, root = obj) {
 
     return obj
 }
+
+export function deepClone(source) {
+    if (source === null || typeof source !== 'object' || source instanceof Promise) {
+        return source
+    }
+
+    if (Array.isArray(source)) {
+        return source.map(i => deepClone(i))
+    }
+    else {
+        return Object.keys(source).reduce((obj, key) => {
+            obj[key] = deepClone(source[key])
+            return obj
+        }, {})
+    }
+}

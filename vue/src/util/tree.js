@@ -1,3 +1,4 @@
+import {deepClone} from "@/util/index"
 import {createWorker} from '@/util/worker'
 
 const DEFAULT_PROPS = {id: 'id', pid: 'pid', children: 'children', leafHasChildren: true}
@@ -49,7 +50,7 @@ export function createLimitTree(full, limit) {
         return m
     }, {})
 
-    full = JSON.parse(JSON.stringify(full))
+    full = deepClone(full)
 
     const result = shakeTree(full, node => {
         const value = map[node.id]

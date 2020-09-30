@@ -5,10 +5,10 @@ import Page403 from "@/view/app/403"
 import Page404 from "@/view/app/404"
 import Page500 from "@/view/app/500"
 import routes from './module'
-import {parseRoutes, stringifyRoutes} from "./util"
+import {deepClone} from "@/util"
 
 export function getDynamicRoutes() {
-    return parseRoutes(stringifyRoutes(routes))
+    return deepClone(routes)
 }
 
 //系统自有路由

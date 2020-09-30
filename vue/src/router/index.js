@@ -14,7 +14,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import {route as routeConfig} from '@/config'
-import {stringifyRoutes, parseRoutes, generateRoutes} from './util'
+import {deepClone} from "@/util"
+import {generateRoutes} from './util'
 import defaultRoutes from './define'
 import registerGuardian from './guardian'
 
@@ -32,7 +33,7 @@ registerGuardian(router)
 export default router
 
 export function addDynamicRoutes(jsonTree) {
-    jsonTree = parseRoutes(stringifyRoutes(jsonTree))
+    jsonTree = deepClone(jsonTree)
     const endRoute = {path: '*', redirect: '/404'}
     router.addRoutes([...generateRoutes(jsonTree), endRoute])
 }

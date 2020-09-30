@@ -37,7 +37,7 @@
  * 由driver.js改造而来
  * vue里交互型的导航不太行，太多东西做不到，换成引导手册吧
  */
-import {debounce, isEmpty} from "@/util"
+import {debounce, isEmpty, deepClone} from "@/util"
 import {addHighlightClasses, getCalculatedPosition, inMainPage, jump, removeHighlightClasses} from "./utils"
 
 export default {
@@ -101,7 +101,7 @@ export default {
             else if (index === 'first') index = 0
 
             if (index > this.steps.length - 1 || !this.steps[index]) {
-                console.error('error index:', index, 'error steps:', JSON.parse(JSON.stringify(this.steps)))
+                console.error('error index:', index, 'error steps:', deepClone(this.steps))
                 throw new Error('起始步骤有误')
             }
 

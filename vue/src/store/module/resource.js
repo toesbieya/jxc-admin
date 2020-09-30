@@ -3,9 +3,9 @@ import {route as routeConfig} from '@/config'
 import {mutations as appMutations} from "@/layout/store/app"
 import {addDynamicRoutes} from '@/router'
 import {getDynamicRoutes} from '@/router/define'
-import {parseRoutes, metaExtend} from "@/router/util"
+import {str2routeConfig, metaExtend} from "@/router/util"
 import {getAll} from "@/api/system/resource"
-import {isEmpty} from "@/util"
+import {isEmpty, deepClone} from "@/util"
 import {needAuth, auth} from "@/util/auth" // 此处存在循环引用？
 import {createTree} from "@/util/tree"
 import {isExternal} from "@/util/validate"
@@ -70,22 +70,15 @@ function transformOriginRouteData(data) {
     //未开启后端动态路由功能时，返回前端预设的静态路由
     if (!routeConfig.useBackendDataAsRoute) return getDynamicRoutes()
 
-    data = JSON.parse(JSON.stringify(data)).filter(i => {
+    data = deepClone(data).filter(i => {
         //过滤掉数据接口或者未启用的项
         if (i.type === 3 || !i.enable) {
             return false
         }
 
-        //清理一些空属性，避免vue-router出错
-        ['name', 'component', 'meta'].forEach(key => {
-            if (key in i && isEmpty(i[key])) {
-                delete i[key]
-            }
-        })
-
         //将字符串形式的meta转为合法的js对象
         if (typeof i.meta === 'string') {
-            i.meta = parseRoutes(i.meta)
+            i.meta = str2routeConfig(i.meta)
         }
 
         return true
@@ -96,7 +89,7 @@ function transformOriginRouteData(data) {
 
 //获取经过权限控制后的菜单
 function getAuthorizedMenus({resources, admin}, menus) {
-    menus = JSON.parse(JSON.stringify(menus))
+    menus = deepClone(menus)
     clean(menus)
     addFullPath(menus)
     filter(menus, i => !needAuth(i) || auth(i.fullPath))
@@ -164,7 +157,7 @@ function generateResourceMap(resources) {
         return {}
     }
 
-    resources = JSON.parse(JSON.stringify(resources))
+    resources = deepClone(resources)
 
     const result = {}
 

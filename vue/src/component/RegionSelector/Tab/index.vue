@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import {debounce} from "@/util"
+import {debounce, deepClone} from "@/util"
 import {createLimitTree, getNodeId} from "@/util/tree"
 import {store, init} from '../store'
 import common from '../mixin'
@@ -174,7 +174,7 @@ export default {
         setTabs(item, level) {
             const prev = this.selected.slice(0, level - 1)
             prev.push(item)
-            const next = JSON.parse(JSON.stringify(DEFAULT_TABS))
+            const next = deepClone(DEFAULT_TABS)
 
             if (level === 1) {
                 //选择直辖市的时候，最大深度-1，移除'市'tab
@@ -239,7 +239,7 @@ export default {
 
         removeAll() {
             this.realMaxLevel = this.maxLevel
-            this.selected = JSON.parse(JSON.stringify(DEFAULT_TABS))
+            this.selected = deepClone(DEFAULT_TABS)
             this.currentLevel = 1
             this.searchText = ''
             this.setItems(this.currentLevel)
@@ -284,7 +284,7 @@ export default {
 
     created() {
         this.search = debounce(this.search, 200)
-        this.selected = JSON.parse(JSON.stringify(DEFAULT_TABS))
+        this.selected = deepClone(DEFAULT_TABS)
     },
 
     mounted() {
