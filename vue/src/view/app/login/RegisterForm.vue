@@ -4,7 +4,7 @@
             <span class="svg-container">
                 <v-icon icon="svg-user"/>
             </span>
-            <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入登陆名称"/>
+            <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入登录名称"/>
         </el-form-item>
 
         <el-form-item prop="nick">
@@ -47,7 +47,7 @@
 
         <div class="flex" style="margin-top: 20px">
             <p/>
-            <el-button type="text" @click="login">已有账户登陆</el-button>
+            <el-button type="text" @click="login">已有账户登录</el-button>
         </div>
     </el-form>
 </template>
@@ -86,7 +86,7 @@ export default {
             },
             rules: {
                 username: [
-                    {required: true, message: '请输入登陆名称', trigger: 'change'},
+                    {required: true, message: '请输入登录名称', trigger: 'change'},
                     {validator: validateLoginName, trigger: 'change'}
                 ],
                 nick: [

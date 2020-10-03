@@ -50,7 +50,7 @@
                         @click.stop="() => previewAvatar(row.avatar)"
                     >
                 </el-table-column>
-                <el-table-column align="center" label="登陆名" prop="loginName" show-overflow-tooltip/>
+                <el-table-column align="center" label="登录名" prop="loginName" show-overflow-tooltip/>
                 <el-table-column align="center" label="昵称" prop="nickName" show-overflow-tooltip/>
                 <el-table-column align="center" label="角 色" show-overflow-tooltip>
                     <template v-slot="{row}">

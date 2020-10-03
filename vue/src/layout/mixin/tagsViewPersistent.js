@@ -10,9 +10,7 @@ import {getTagsView, setTagsView} from "@/util/storage"
 
 export default {
     computed: {
-        shouldPersistent() {
-            return tagsViewGetters.persistent
-        }
+        shouldPersistent: () => tagsViewGetters.persistent
     },
 
     watch: {
@@ -36,15 +34,8 @@ export default {
         }
     },
 
-    methods: {
-        persistentTagsView(v) {
-            //只提取部分属性
-            setTagsView(v.map(({name, path, fullPath, meta}) => ({name, path, fullPath, meta})))
-        }
-    },
-
     beforeCreate() {
-        this.persistentTagsView = debounce(this.persistentTagsView)
+        this.persistentTagsView = debounce(setTagsView)
     },
 
     mounted() {

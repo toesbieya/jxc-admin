@@ -104,7 +104,7 @@ export default {
         },
 
         success() {
-            elSuccess('登陆成功')
+            elSuccess('登录成功')
             const redirect = this.$route.query.redirect || '/'
             //由于清除消息时会造成卡顿，所以延迟0.2s跳转
             window.setTimeout(() => this.$router.replace(redirect), 200)

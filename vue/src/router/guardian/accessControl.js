@@ -1,18 +1,17 @@
-import {pathToRegexp} from 'path-to-regexp'
 import store from "@/store"
+import {isEmpty} from "@/util"
 import {auth, needAuth} from "@/util/auth"
-import {isUserExist} from "@/util/storage"
 
-const whiteList = ['/login', '/register', '/403', '/404', '/500'].map(url => pathToRegexp(url))
+const noLoginList = ['/login', '/register', '/403', '/404', '/500']
 
 const beforeEach = async (to, from, next) => {
-    //白名单内不需要进行权限控制
-    if (whiteList.some(reg => reg.test(to.path))) {
+    //放行不需要登录即可访问的路由
+    if (noLoginList.includes(to.path)) {
         return next()
     }
 
     //未登录时返回登录页
-    if (!isUserExist()) {
+    if (isEmpty(store.state.user.id, store.state.user.token)) {
         return next({path: '/login', query: {redirect: to.fullPath}})
     }
 
@@ -31,11 +30,12 @@ const beforeEach = async (to, from, next) => {
     next('/403')
 }
 
-//获取进行权限验证的路由地址，使用了动态路由的会用到
+//获取进行权限验证的路由地址
 function getAuthorizedPath(route) {
-    const {params, path, matched} = route
-    const isDynamic = Object.values(params).some(v => path.includes(v))
-    return isDynamic ? matched[matched.length - 1].path : path
+    const {path, matched} = route, len = matched.length
+
+    //可能会有路由使用动态路径(诸如/:id)，matched中的path是routeConfig中声明的原始路径
+    return len > 0 ? matched[len - 1].path : path
 }
 
 export default function (router) {

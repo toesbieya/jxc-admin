@@ -35,7 +35,7 @@ const actions = {
                 user.avatar = autoCompleteUrl(user.avatar)
                 commit('$all', user)
                 setUser(user)
-                return dispatch('socket/init', user, {root: true})
+                return dispatch('socket/init', null, {root: true})
             })
     },
 

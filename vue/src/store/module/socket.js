@@ -13,21 +13,19 @@ const state = {
 const mutations = createMutations(state)
 
 const actions = {
-    init(context, user) {
-        if (useMock || isEmpty(user, user.id, user.token)) return
+    init(context) {
+        const {id, token} = context.rootState.user
 
-        socket = initSocket(user)
+        if (useMock || isEmpty(id, token)) return
 
-        defaultEventBind(socket, context)
-        customEventBind(socket, context)
+        socket = initSocket({id, token})
+
+        bindDefaultEvent(socket, context)
+        bindCustomEvent(socket, context)
     },
 
     close() {
-        return new Promise(resolve => {
-            if (!socket) return resolve()
-            socket.close()
-            resolve()
-        })
+        socket && socket.close()
     }
 }
 
@@ -35,7 +33,7 @@ function initSocket({id, token}) {
     return new SocketIO(socketUrl, {query: {id, token}, transports: ['websocket']})
 }
 
-function defaultEventBind(socket, {state, commit, dispatch}) {
+function bindDefaultEvent(socket, {state, commit, dispatch}) {
     socket.on('connect', () => {
         commit('online', true)
         console.log('socket连接成功')
@@ -72,10 +70,10 @@ function defaultEventBind(socket, {state, commit, dispatch}) {
     })
 }
 
-function customEventBind(socket, {state, commit, dispatch, rootState}) {
+function bindCustomEvent(socket, {state, commit, dispatch, rootState}) {
     socket.on('logout', msg => {
         if (rootState.user.prepareLogout) return
-        MessageBox.alert(msg || '你已被强制下线，请重新登陆', {
+        MessageBox.alert(msg || '你已被强制下线，请重新登录', {
             type: 'warning',
             beforeClose: (action, instance, done) => {
                 dispatch('user/logout', null, {root: true}).finally(done)

@@ -1,16 +1,17 @@
-/*
-* 路由配置
-*
-* 需要鉴权的路由：!meta.noAuth
-* 左侧菜单显示：name && !meta.hidden && meta.title
-* 左侧菜单排序：能在左侧菜单中显示 && meta.sort，升序排列
-* 左侧菜单不折叠只有一个children的路由：meta.alwaysShow
-* 页头显示：meta.pageHeader !== false && (meta.title || meta.dynamicTitle)
-* tab栏显示：meta.title || meta.dynamicTitle
-* tab栏固定显示：meta.title && meta.affix
-* 页面不缓存：!name && !meta.usePathKey && !meta.useFullPathKey || meta.noCache
-* 打开iframe：meta.iframe，不会重复打开相同src的iframe
-* */
+/**
+ * 路由配置说明
+ *
+ * 不需要鉴权的路由：meta.noAuth
+ * 左侧菜单显示：name && !meta.hidden && meta.title
+ * 左侧菜单排序：能在左侧菜单中显示 && meta.sort，升序排列
+ * 左侧菜单不折叠只有一个children的路由：meta.alwaysShow
+ * 页头显示：meta.pageHeader !== false && (meta.title || meta.dynamicTitle)
+ * tab栏显示：meta.title || meta.dynamicTitle
+ * tab栏固定显示：meta.title && meta.affix
+ * 页面不缓存：!name && !meta.usePathKey && !meta.useFullPathKey || meta.noCache
+ * 打开iframe：meta.iframe，不会重复打开相同src的iframe
+ */
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import {route as routeConfig} from '@/config'

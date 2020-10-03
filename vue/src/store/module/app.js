@@ -1,7 +1,7 @@
 import {createMutations} from "@/store/util"
 
 const state = {
-    //登陆页背景动画
+    //登录页背景动画
     loginBackgroundAnimation: 'sparkRain',
 }
 

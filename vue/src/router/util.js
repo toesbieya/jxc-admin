@@ -128,7 +128,7 @@ export function generateRoutes(jsonTree) {
     return jsonTree
 }
 
-//子路由继承父路由meta上的{noAuth,noCache}，优先使用子路由的值
+//子路由继承父路由meta上的{noAuth, noCache}，优先使用子路由的值
 export function metaExtend(routes, parentMeta) {
     const keys = ['noAuth', 'noCache']
     routes.forEach(route => {

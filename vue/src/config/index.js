@@ -8,7 +8,7 @@ module.exports = {
     //项目的部署路径，始终以'/'开头，以'/'结束
     contextPath,
 
-    //页面标题、登陆注册页的标题
+    //页面标题、登录注册页的标题
     title: 'BiuBiuBiu~',
 
     //全局axios的baseUrl、devServer的路由前缀

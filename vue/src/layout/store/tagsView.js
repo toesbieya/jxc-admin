@@ -35,23 +35,30 @@ export const mutations = bindThis({
 
     enabled(v) {
         store.enabled = v
+
         //多页签停用时清除所有页面缓存
         !v && this.delAllViews()
     },
 
-    addVisitedView(view) {
-        if (store.visitedViews.some(v => v.path === view.path)) return
+    addVisitedView({name, path, fullPath, meta = {}}) {
+        if (store.visitedViews.some(v => v.path === path)) {
+            return
+        }
 
-        store.visitedViews.push(view)
+        store.visitedViews.push({name, path, fullPath, meta: {...meta}})
     },
     addCachedView(view) {
         const {noCache, iframe, usePathKey, useFullPathKey} = view.meta || {}
 
-        if (noCache || iframe || !view.name && !usePathKey && !useFullPathKey) return
+        if (noCache || iframe || !view.name && !usePathKey && !useFullPathKey) {
+            return
+        }
 
         const key = getRouterViewCacheKey(view)
 
-        if (store.cachedViews.includes(key)) return
+        if (store.cachedViews.includes(key)) {
+            return
+        }
 
         store.cachedViews.push(key)
     },

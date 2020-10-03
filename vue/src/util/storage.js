@@ -59,10 +59,6 @@ const sessionUserKey = 'SESS-USER'
 const localPersonalSettingsKey = 'LOCAL-PERSONAL-SETTINGS'
 const sessionTagsViewKey = 'SESS-TAGS-VIEW'
 
-export function isUserExist() {
-    return exist(sessionUserKey)
-}
-
 export function getUser() {
     let user = get(sessionUserKey)
     if (isEmpty(user)) {
