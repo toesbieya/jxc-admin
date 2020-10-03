@@ -213,6 +213,7 @@ export default {
             <aside
                 class={{'aside': true, 'collapse': this.collapse}}
                 on-mouseleave={() => this.mouseOutside = true}
+                on-mouseenter={() => this.mouseOutside = false}
             >
                 {asideGetters.showLogo && <logo collapse={this.collapse}/>}
                 <el-menu
