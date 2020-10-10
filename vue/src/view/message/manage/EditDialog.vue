@@ -71,7 +71,7 @@ export default {
     components: {AbstractForm, AbstractFormItem, AbstractDialog, RichTextEditor, UserSelector},
 
     props: {
-        value: {type: Boolean, default: false},
+        value: Boolean,
         type: {type: String, default: 'see'},
         data: {type: Object, default: () => ({})}
     },

@@ -58,12 +58,7 @@ export default {
         },
 
         getFormRef() {
-            let ref = this.form
-            if (!ref) return
-            if (typeof ref === 'function') {
-                ref = ref()
-            }
-            return ref
+            return typeof this.form === 'function' ? this.form() : this.form
         },
 
         findFormItem(prop) {

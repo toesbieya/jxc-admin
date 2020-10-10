@@ -23,9 +23,6 @@ module.exports = {
     //侧边栏顶上的logo地址
     sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
 
-    //是否使用错误日志捕捉，暂时没啥用
-    errorLog: true,
-
     //路由配置
     route: {
         //路由模式，['hash','history']

@@ -83,13 +83,12 @@ export default {
         ...wic({add, update, del}),
 
         contextMenuItems() {
-            const items=[]
-
-            this.canAdd&&items.push({content:'添加部门',click:this.add})
-            this.canUpdate&&items.push({content:'编辑部门',click:this.update})
-            this.canDel&&items.push({content:'删除部门',click:this.del})
-
-            return items
+            return [
+                this.canAdd && {content: '添 加', click: this.add},
+                {content: '查 看', click: this.see},
+                this.canUpdate && {content: '编 辑', click: this.edit},
+                this.canDel && {content: '删 除', click: this.del}
+            ]
         },
 
         realZoom() {
@@ -131,7 +130,12 @@ export default {
             this.editDialog = true
         },
 
-        update() {
+        see() {
+            this.type = 'see'
+            this.editDialog = true
+        },
+
+        edit() {
             this.type = 'edit'
             this.editDialog = true
         },

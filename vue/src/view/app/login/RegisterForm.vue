@@ -53,10 +53,10 @@
 </template>
 
 <script>
-import md5 from "js-md5"
 import {register, checkLoginName, checkNickName} from "@/api/account"
 import {debounce} from "@/util"
 import {elSuccess} from "@/util/message"
+import {md5} from "@/util/secret"
 
 export default {
     name: "RegisterForm",

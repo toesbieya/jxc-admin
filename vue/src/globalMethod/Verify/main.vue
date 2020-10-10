@@ -140,7 +140,7 @@ export default {
         },
 
         refresh() {
-            this.initImage().then(() => this.initCanvas())
+            this.initImage().then(this.initCanvas)
         },
 
         initCanvas() {
@@ -322,7 +322,7 @@ export default {
     },
 
     mounted() {
-        this.initImage().then(() => this.initCanvas())
+        this.refresh()
     },
 }
 </script>

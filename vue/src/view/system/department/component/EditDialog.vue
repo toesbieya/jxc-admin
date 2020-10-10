@@ -1,6 +1,6 @@
 <template>
     <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
-        <abstract-form :model="form" :rules="rules" size="">
+        <abstract-form :model="form" :rules="rules">
             <el-form-item v-show="parentName" label="上级部门">
                 <el-input :value="parentName" readonly/>
             </el-form-item>
@@ -17,7 +17,7 @@
 
         <template v-slot:footer>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
-            <el-button size="small" type="primary" @click="confirm">确 定</el-button>
+            <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
     </abstract-dialog>
 </template>
@@ -27,7 +27,7 @@ import dialogMixin from "@/mixin/dialogMixin"
 import AbstractForm from "@/component/abstract/Form"
 import AbstractDialog from '@/component/abstract/Dialog'
 import {add, update} from "@/api/system/department"
-import {isEmpty} from '@/util'
+import {isEmpty, mergeObj} from '@/util'
 import {elConfirm, elSuccess} from "@/util/message"
 
 export default {
@@ -38,7 +38,7 @@ export default {
     components: {AbstractForm, AbstractDialog},
 
     props: {
-        value: {type: Boolean, default: false},
+        value: Boolean,
         type: {type: String, default: 'add'},
         data: {type: Object, default: () => ({})},
     },
@@ -81,6 +81,10 @@ export default {
             }
         },
 
+        canEdit() {
+            return ['add', 'edit'].includes(this.type)
+        },
+
         parentName() {
             if (!this.data) return ''
             if (this.type === 'add') return this.data.fullname
@@ -91,10 +95,8 @@ export default {
     methods: {
         open() {
             this.$nextTick(() => {
-                if (this.type === 'edit') {
-                    Object
-                        .keys(this.data)
-                        .forEach(key => key in this.form && (this.form[key] = this.data[key]))
+                if (this.type !== 'add') {
+                    mergeObj(this.form, this.data)
                 }
                 else this.form.pid = this.data.id
             })

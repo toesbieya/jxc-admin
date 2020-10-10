@@ -1,6 +1,6 @@
 <template>
     <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
-        <abstract-form :model="form" :rules="rules" size="">
+        <abstract-form :model="form" :rules="rules">
             <el-form-item label="名 称" prop="name">
                 <el-input v-model="form.name" :readonly="!canEdit" maxlength="20"/>
             </el-form-item>
@@ -63,7 +63,7 @@ export default {
     components: {AbstractForm, AbstractDialog, RegionSelector},
 
     props: {
-        value: {type: Boolean, default: false},
+        value: Boolean,
         type: {type: String, default: 'see'},
         data: {
             type: Object,

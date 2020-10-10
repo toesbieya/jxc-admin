@@ -1,16 +1,16 @@
 <template>
-    <list-page :loading="config.operating" :buttons="buttonGroup" :list="listPageConfig">
+    <list-page :data="listPageConfig">
         <template v-slot:searchForm>
-            <search-form-item label="单 号">
+            <el-form-item label="单 号">
                 <el-input v-model="searchForm.idFuzzy" clearable maxlength="50"/>
-            </search-form-item>
-            <search-form-item label="客 户">
+            </el-form-item>
+            <el-form-item label="客 户">
                 <el-input v-model="searchForm.customerName" clearable maxlength="50"/>
-            </search-form-item>
-            <search-form-item label="创建人">
+            </el-form-item>
+            <el-form-item label="创建人">
                 <el-input v-model="searchForm.cname" clearable maxlength="50"/>
-            </search-form-item>
-            <search-form-item label="创建时间">
+            </el-form-item>
+            <el-form-item label="创建时间">
                 <el-date-picker
                     v-model="temp.ctime"
                     format="yyyy-MM-dd"
@@ -18,11 +18,11 @@
                     type="daterange"
                     value-format="timestamp"
                 />
-            </search-form-item>
-            <search-form-item label="审核人">
+            </el-form-item>
+            <el-form-item label="审核人">
                 <el-input v-model="searchForm.vname" clearable maxlength="50"/>
-            </search-form-item>
-            <search-form-item label="审核时间">
+            </el-form-item>
+            <el-form-item label="审核时间">
                 <el-date-picker
                     v-model="temp.vtime"
                     format="yyyy-MM-dd"
@@ -30,22 +30,22 @@
                     type="daterange"
                     value-format="timestamp"
                 />
-            </search-form-item>
-            <search-form-item label="状 态">
+            </el-form-item>
+            <el-form-item label="状 态">
                 <el-select v-model="temp.status" clearable multiple>
                     <el-option :value="0" label="拟定"/>
                     <el-option :value="1" label="待审核"/>
                     <el-option :value="2" label="已审核"/>
                 </el-select>
-            </search-form-item>
-            <search-form-item label="完成情况">
+            </el-form-item>
+            <el-form-item label="完成情况">
                 <el-select v-model="temp.finish" clearable multiple>
                     <el-option :value="0" label="未开始"/>
                     <el-option :value="1" label="进行中"/>
                     <el-option :value="2" label="已完成"/>
                 </el-select>
-            </search-form-item>
-            <search-form-item label="结束时间">
+            </el-form-item>
+            <el-form-item label="结束时间">
                 <el-date-picker
                     v-model="temp.ftime"
                     format="yyyy-MM-dd"
@@ -53,7 +53,7 @@
                     type="daterange"
                     value-format="timestamp"
                 />
-            </search-form-item>
+            </el-form-item>
         </template>
         <template v-slot:tableColumn>
             <el-table-column align="center" type="expand">

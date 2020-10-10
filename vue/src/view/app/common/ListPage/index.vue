@@ -2,18 +2,32 @@
 import AbstractTable from "@/component/abstract/Table"
 import AbstractPagination from "@/component/abstract/Pagination"
 import SearchForm from "@/component/form/Search"
+import {isEmpty} from "@/util"
 
-const renderSearchForm = (h, slot) => {
-    return slot && <SearchForm>{slot()}</SearchForm>
+const renderSearchForm = (h, config, slot) => {
+    return slot && <SearchForm {...config}>{slot()}</SearchForm>
 }
 
 const renderButtons = (h, buttons) => {
+    if (buttons.length > 0 && isEmpty(buttons[0].type)) {
+        buttons[0].type = 'primary'
+    }
     return (
         <el-row class="button-group">
             {buttons.map(button => {
                 if (!button) return
                 const {icon, type, content, e} = button
-                return <el-button icon={icon} size="small" type={type} on-click={e}>{content}</el-button>
+                return (
+                    <el-button
+                        icon={icon}
+                        size="small"
+                        plain={isEmpty(type)}
+                        type={type || 'dashed'}
+                        on-click={e}
+                    >
+                        {content}
+                    </el-button>
+                )
             })}
         </el-row>
     )
@@ -34,19 +48,23 @@ export default {
     functional: true,
 
     props: {
-        loading: Boolean,
-        buttons: {type: Array, default: () => []},
-        list: Object
+        data: Object
     },
 
     render(h, context) {
-        const {props: {loading, buttons, list}, scopedSlots} = context
+        const {props: {data: {pageLoading, buttons, dataLoading, search, table, pagination}}, scopedSlots} = context
 
         return (
-            <el-card v-loading={loading}>
-                {renderSearchForm(h, scopedSlots.searchForm)}
+            <el-card v-loading={pageLoading}>
+                {renderSearchForm(h, search, scopedSlots.searchForm)}
                 {renderButtons(h, buttons)}
-                {renderList(h, {...list, tableColumn: scopedSlots.tableColumn})}
+                {renderList(h, {
+                    loading: dataLoading,
+                    tableConfig: table,
+                    tableColumn: scopedSlots.tableColumn,
+                    paginationConfig: pagination
+                })}
+                {scopedSlots.default && scopedSlots.default()}
             </el-card>
         )
     }

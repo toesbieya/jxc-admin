@@ -1,10 +1,10 @@
 <template>
-    <el-card v-loading="config.operating">
-        <search-form>
-            <search-form-item label="供应商">
+    <list-page :data="listPageConfig">
+        <template v-slot:searchForm>
+            <el-form-item label="供应商">
                 <el-input v-model="searchForm.name" clearable maxlength="50"/>
-            </search-form-item>
-            <search-form-item label="行政区域">
+            </el-form-item>
+            <el-form-item label="行政区域">
                 <region-selector
                     :value="temp.regionName"
                     limit
@@ -13,23 +13,23 @@
                     @clear="clearSidSearch"
                     @select="selectRegion"
                 />
-            </search-form-item>
-            <search-form-item label="地 址">
+            </el-form-item>
+            <el-form-item label="地 址">
                 <el-input v-model="searchForm.address" clearable maxlength="100"/>
-            </search-form-item>
-            <search-form-item label="联系人">
+            </el-form-item>
+            <el-form-item label="联系人">
                 <el-input v-model="searchForm.linkman" clearable maxlength="50"/>
-            </search-form-item>
-            <search-form-item label="联系电话">
+            </el-form-item>
+            <el-form-item label="联系电话">
                 <el-input v-model="searchForm.linkphone" clearable maxlength="20"/>
-            </search-form-item>
-            <search-form-item label="状 态">
+            </el-form-item>
+            <el-form-item label="状 态">
                 <el-select v-model="searchForm.enable" clearable @clear="searchForm.enable = null">
                     <el-option :value="true" label="启用"/>
                     <el-option :value="false" label="禁用"/>
                 </el-select>
-            </search-form-item>
-            <search-form-item label="创建时间">
+            </el-form-item>
+            <el-form-item label="创建时间">
                 <el-date-picker
                     v-model="temp.ctime"
                     format="yyyy-MM-dd"
@@ -37,48 +37,36 @@
                     type="daterange"
                     value-format="timestamp"
                 />
-            </search-form-item>
-        </search-form>
+            </el-form-item>
+        </template>
 
-        <el-row class="button-group">
-            <el-button icon="el-icon-search" size="small" type="primary" @click="search">查 询</el-button>
-            <el-button v-if="canAdd" icon="el-icon-plus" size="small" type="primary" @click="add">添 加</el-button>
-            <el-button v-if="canUpdate" icon="el-icon-edit" size="small" type="primary" @click="edit">编 辑</el-button>
-            <el-button v-if="canDel" icon="el-icon-delete" size="small" type="danger" @click="del">删 除</el-button>
-        </el-row>
-
-        <el-row v-loading="config.loading" class="table-container">
-            <abstract-table :data="tableData" @row-click="rowClick">
-                <el-table-column align="center" label="#" type="index" width="80"/>
-                <el-table-column align="center" label="供应商" prop="name" show-overflow-tooltip/>
-                <el-table-column align="center" label="行政区域" prop="regionName" show-overflow-tooltip/>
-                <el-table-column align="center" label="地 址" prop="address" show-overflow-tooltip/>
-                <el-table-column align="center" label="联系人" prop="linkman" show-overflow-tooltip/>
-                <el-table-column align="center" label="联系电话" prop="linkphone" show-overflow-tooltip/>
-                <el-table-column align="center" label="创建时间" width="150">
-                    <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
-                </el-table-column>
-                <el-table-column align="center" label="状 态" width="120">
-                    <template v-slot="{row}">
-                        <span :class="row.enable ? 'success' : 'error'" class="dot"/>
-                        <span>{{ row.enable ? '启用' : '禁用' }}</span>
-                    </template>
-                </el-table-column>
-            </abstract-table>
-
-            <abstract-pagination :model="searchForm" @current-change="pageChange"/>
-        </el-row>
+        <template v-slot:tableColumn>
+            <el-table-column align="center" label="#" type="index" width="80"/>
+            <el-table-column align="center" label="供应商" prop="name" show-overflow-tooltip/>
+            <el-table-column align="center" label="行政区域" prop="regionName" show-overflow-tooltip/>
+            <el-table-column align="center" label="地 址" prop="address" show-overflow-tooltip/>
+            <el-table-column align="center" label="联系人" prop="linkman" show-overflow-tooltip/>
+            <el-table-column align="center" label="联系电话" prop="linkphone" show-overflow-tooltip/>
+            <el-table-column align="center" label="创建时间" width="150">
+                <template v-slot="{row}">{{ row.ctime | timestamp2Date }}</template>
+            </el-table-column>
+            <el-table-column align="center" label="状 态" width="120">
+                <template v-slot="{row}">
+                    <span :class="row.enable ? 'success' : 'error'" class="dot"/>
+                    <span>{{ row.enable ? '启用' : '禁用' }}</span>
+                </template>
+            </el-table-column>
+        </template>
 
         <edit-dialog v-model="editDialog" :data="row" :type="type" @success="success"/>
-    </el-card>
+    </list-page>
 </template>
 
 <script>
 import tableMixin from '@/mixin/tablePageMixin'
+import ListPage from '@/view/app/common/ListPage'
 import EditDialog from './EditDialog'
 import RegionSelector from "@/component/RegionSelector"
-import SearchForm from "@/component/form/Search"
-import SearchFormItem from "@/component/form/Search/item"
 import {add, update, del, getLimitRegion, search} from "@/api/system/supplier"
 import {isEmpty} from '@/util'
 import {wic} from "@/util/auth"
@@ -89,7 +77,7 @@ export default {
 
     mixins: [tableMixin],
 
-    components: {EditDialog, RegionSelector, SearchForm, SearchFormItem},
+    components: {ListPage,EditDialog, RegionSelector},
 
     data() {
         return {
@@ -109,7 +97,34 @@ export default {
         }
     },
 
-    computed: wic({add, update, del}),
+    computed: {
+        ...wic({add, update, del}),
+
+        listPageConfig() {
+            return {
+                pageLoading: this.config.operating,
+                buttons: [
+                    this.canAdd && {icon: 'el-icon-plus', e: this.add, content: '添 加'},
+                    {icon: 'el-icon-view', e: this.see, content: '查 看'},
+                    this.canUpdate && {icon: 'el-icon-edit', e: this.edit, content: '编 辑'},
+                    this.canDel && {icon: 'el-icon-delete', e: this.del, content: '删 除'}
+                ],
+                dataLoading: this.config.loading,
+                search: {
+                    props: {model: this.searchForm},
+                    on: {search: this.search}
+                },
+                table: {
+                    props: {data: this.tableData},
+                    on: {'row-click': this.rowClick}
+                },
+                pagination: {
+                    props: {model: this.searchForm},
+                    on: {'current-change': this.pageChange}
+                }
+            }
+        }
+    },
 
     methods: {
         getLimitRegion() {
@@ -150,6 +165,12 @@ export default {
 
         add() {
             this.type = 'add'
+            this.editDialog = true
+        },
+
+        see() {
+            if (isEmpty(this.row)) return elError('请选择要查看的供应商')
+            this.type = 'see'
             this.editDialog = true
         },
 

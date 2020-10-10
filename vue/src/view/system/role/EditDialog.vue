@@ -1,6 +1,6 @@
 <template>
     <abstract-dialog :loading="loading" :title="title" :value="value" width="40%" @close="cancel" @open="open">
-        <abstract-form :model="form" :rules="rules" size="">
+        <abstract-form :model="form" :rules="rules">
             <el-form-item label="名 称" prop="name">
                 <el-input v-model="form.name" maxlength="20"/>
             </el-form-item>
@@ -56,7 +56,7 @@
                 </el-dropdown-menu>
             </el-dropdown>
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
-            <el-button size="small" type="primary" @click="confirm">确 定</el-button>
+            <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
     </abstract-dialog>
 </template>
@@ -68,7 +68,8 @@ import AbstractDialog from '@/component/abstract/Dialog'
 import {get as getDepartments} from "@/api/system/department"
 import {add, update} from "@/api/system/role"
 import {isEmpty, mergeObj} from '@/util'
-import {createTreeByWorker, elTreeControl} from '@/util/tree'
+import {expandControl} from "@/util/element-ui/elTree"
+import {createTreeByWorker} from '@/util/tree'
 import {getNodeTitle, getNodeInfo} from "@/view/system/menu/common"
 
 export default {
@@ -79,7 +80,7 @@ export default {
     components: {AbstractForm, AbstractDialog},
 
     props: {
-        value: {type: Boolean, default: false},
+        value: Boolean,
         type: {type: String, default: 'add'},
         data: {type: Object, default: () => ({})},
     },
@@ -127,6 +128,10 @@ export default {
 
         resourceTree() {
             return this.$store.state.resource.resourceTree
+        },
+
+        canEdit() {
+            return ['add', 'edit'].includes(this.type)
         }
     },
 
@@ -134,10 +139,10 @@ export default {
         getNodeInfo,
         getNodeTitle,
         treeCommand({action, level}) {
-            elTreeControl(this.$refs.perm, action, level)
+            expandControl(this.$refs.perm, action, level)
         },
         open() {
-            if (this.type !== 'edit') return
+            if (this.type === 'add') return
             this.$nextTick(() => {
                 mergeObj(this.form, this.data)
                 this.$refs.perm.setCheckedKeys(this.form.resourceId)

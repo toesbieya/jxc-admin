@@ -122,7 +122,7 @@ export default {
             if (this.beforeExit) {
                 const result = this.beforeExit(this.hasDone)
                 if (result && result.then) {
-                    result.then(() => this.$_clear())
+                    result.then(this.$_clear)
                 }
                 else result !== false && this.$_clear()
                 return
@@ -138,7 +138,7 @@ export default {
             if (this.step.onPrevious) {
                 const result = this.step.onPrevious()
                 if (result && result.then) {
-                    result.then(() => this.$_movePrevious())
+                    result.then(this.$_movePrevious)
                 }
                 else result !== false && this.$_movePrevious()
             }
@@ -152,7 +152,7 @@ export default {
             if (this.step.onNext) {
                 const result = this.step.onNext()
                 if (result && result.then) {
-                    result.then(() => this.$_moveNext())
+                    result.then(this.$_moveNext)
                 }
                 else result !== false && this.$_moveNext()
             }

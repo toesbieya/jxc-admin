@@ -1,4 +1,7 @@
 import pako from 'pako'
+import md5 from 'js-md5'
+
+export {md5}
 
 export function unzip(b64Data) {
     let strData = atob(b64Data)

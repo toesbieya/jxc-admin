@@ -181,11 +181,14 @@
 }
 
 .el-pagination {
-    padding-top: 20px;
     text-align: right;
 
     .el-pagination__editor.el-input {
         margin: 0 5px;
+    }
+
+    .el-table + & {
+        padding-top: 20px;
     }
 }
 

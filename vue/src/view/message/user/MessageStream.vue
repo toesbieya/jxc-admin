@@ -132,7 +132,7 @@ export default {
         },
 
         readAll() {
-            readAll.request().then(() => this.search())
+            readAll.request().then(this.search)
         },
 
         transformType(type) {

@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import md5 from "js-md5"
 import dialogMixin from "@/mixin/dialogMixin"
 import AbstractForm from "@/component/abstract/Form"
 import AbstractDialog from '@/component/abstract/Dialog'
 import {updateUserPwd} from "@/api/account"
 import {elSuccess} from "@/util/message"
+import {md5} from "@/util/secret"
 
 export default {
     mixins: [dialogMixin],

@@ -1,5 +1,4 @@
 import tableMixin from '@/mixin/tablePageMixin'
-import SearchFormItem from "@/component/form/Search/item"
 import LinerProgress from '@/component/LinerProgress'
 import ListPage from '@/view/app/common/ListPage'
 import {isEmpty} from "@/util"
@@ -35,7 +34,7 @@ export const commonMethods = {
 export default {
     mixins: [tableMixin],
 
-    components: {SearchFormItem, LinerProgress, ListPage},
+    components: {LinerProgress, ListPage},
 
     data() {
         return {
@@ -69,24 +68,26 @@ export default {
             return auth(this.api.exportExcel.url)
         },
 
-        buttonGroup() {
-            return [
-                {icon: 'el-icon-search', type: 'primary', e: this.search, content: '查 询'},
-                this.canAdd && {icon: 'el-icon-plus', type: 'primary', e: this.add, content: '添 加'},
-                {icon: 'el-icon-view', type: 'primary', e: this.see, content: '查 看'},
-                this.canUpdate && {icon: 'el-icon-edit', type: 'primary', e: this.edit, content: '编 辑'},
-                this.canDel && {icon: 'el-icon-delete', type: 'danger', e: this.del, content: '删 除'},
-                this.canExport && {icon: 'el-icon-download', type: 'info', e: this.downloadExcel, content: '导 出'}
-            ]
-        },
         listPageConfig() {
             return {
-                loading: this.config.loading,
-                tableConfig: {
+                pageLoading: this.config.operating,
+                buttons: [
+                    this.canAdd && {icon: 'el-icon-plus', e: this.add, content: '添 加'},
+                    {icon: 'el-icon-view', e: this.see, content: '查 看'},
+                    this.canUpdate && {icon: 'el-icon-edit', e: this.edit, content: '编 辑'},
+                    this.canDel && {icon: 'el-icon-delete', e: this.del, content: '删 除'},
+                    this.canExport && {icon: 'el-icon-download', e: this.downloadExcel, content: '导 出'}
+                ],
+                dataLoading: this.config.loading,
+                search: {
+                    props: {model: this.searchForm},
+                    on: {search: this.search}
+                },
+                table: {
                     props: {data: this.tableData},
                     on: {'row-click': this.rowClick, 'expand-change': this.getSubList}
                 },
-                paginationConfig: {
+                pagination: {
                     props: {model: this.searchForm},
                     on: {'current-change': this.pageChange}
                 }

@@ -54,9 +54,9 @@
 </template>
 
 <script>
-import md5 from "js-md5"
-import {elSuccess} from "@/util/message"
 import {isEmpty} from "@/util"
+import {elSuccess} from "@/util/message"
+import {md5} from "@/util/secret"
 
 export default {
     name: "LoginForm",
@@ -94,7 +94,7 @@ export default {
                         ...this.form,
                         password: md5(this.form.password)
                     }))
-                    .then(() => this.success())
+                    .then(this.success)
                     .catch(() => this.loading = false)
             })
         },

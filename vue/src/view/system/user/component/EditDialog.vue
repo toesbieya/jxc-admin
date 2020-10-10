@@ -1,6 +1,6 @@
 <template>
     <abstract-dialog :loading="loading" :title="title" :value="value" @close="cancel" @open="open">
-        <abstract-form :model="form" :rules="rules" label-width="90px" size="">
+        <abstract-form :model="form" :rules="rules" label-width="90px">
             <el-form-item label="登录名" prop="loginName">
                 <el-input v-model="form.loginName" :readonly="!!form.id || !canEdit" maxlength="20"/>
             </el-form-item>
@@ -46,8 +46,7 @@ import AbstractDialog from '@/component/abstract/Dialog'
 import RoleSelector from './RoleSelector'
 import {checkLoginName, checkNickName} from "@/api/account"
 import {add, update} from "@/api/system/user"
-import {isEmpty, debounce} from '@/util'
-import {elConfirm} from "@/util/message"
+import {isEmpty, debounce, mergeObj} from '@/util'
 
 export default {
     name: "EditDialog",
@@ -57,7 +56,7 @@ export default {
     components: {AbstractForm, DepartmentSelector, AbstractDialog, RoleSelector},
 
     props: {
-        value: {type: Boolean, default: false},
+        value: Boolean,
         type: {type: String, default: 'see'},
         data: {type: Object, default: () => ({})},
     },
@@ -134,10 +133,8 @@ export default {
     methods: {
         open() {
             this.$nextTick(() => {
-                if (this.type === 'edit') {
-                    Object
-                        .keys(this.data)
-                        .forEach(key => key in this.form && (this.form[key] = this.data[key]))
+                if (this.type !== 'add') {
+                    mergeObj(this.form,this.data)
                 }
             })
         },

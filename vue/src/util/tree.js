@@ -132,20 +132,6 @@ export function calc(node, valueKey = 'value', childrenKey = 'children') {
     return value
 }
 
-/**
- * el-tree展开收缩
- * 有兴趣的可以研究下怎么平滑展开收缩
- * @param ref el-tree实例
- * @param action expand | collapse
- * @param level 展开的节点最大深度，为0时匹配全部节点
- */
-export function elTreeControl(ref, action = 'expand', level = 1) {
-    ref.store._getAllNodes().forEach(node => {
-        const value = action === 'expand'
-        node.expanded = level === 0 || node.level <= level ? value : !value
-    })
-}
-
 export function getNodeId(arr) {
     if (!arr) return []
 

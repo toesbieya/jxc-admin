@@ -1,3 +1,4 @@
+@import "~normalize.css/normalize.css";
 @import "./variables";
 @import "~element-ui/packages/theme-chalk/src/index";
 @import "~@ele/style/index.scss";
@@ -54,7 +55,7 @@ a:hover {
 
         &-thumb {
             width: 6px;
-            border-radius: 5px;
+            //border-radius: 5px;
             background-color: rgba($--color-primary, 0.8);
 
             &:hover {
@@ -78,6 +79,7 @@ a:hover {
     justify-content: space-between;
     align-content: space-between;
 }
+
 
 /*----------路由页面的最大高度开始----------*/
 $page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
@@ -111,6 +113,7 @@ $page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
 }
 
 /*----------路由页面的最大高度结束----------*/
+
 
 .table-container {
     margin-top: 10px;

@@ -150,9 +150,9 @@ import AbstractForm from "@/component/abstract/Form"
 import JsonEditor from "@/component/editor/JsonEditor"
 import {add, update, del} from '@/api/system/resource'
 import {isEmpty, mergeObj, resetObj} from "@/util"
-import {elSuccess, elError, elConfirm} from "@/util/message"
-import {elTreeControl} from "@/util/tree"
 import {wic} from "@/util/auth"
+import {expandControl} from "@/util/element-ui/elTree"
+import {elSuccess, elError, elConfirm} from "@/util/message"
 import {nodeType, getNodeInfo, getNodeTitle} from "./common"
 
 export default {
@@ -312,7 +312,7 @@ export default {
         },
         more({action, level}) {
             if (this.loading) return
-            elTreeControl(this.$refs.tree, action, level)
+            expandControl(this.$refs.tree, action, level)
         },
 
         init() {

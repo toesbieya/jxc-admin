@@ -1,13 +1,11 @@
 import Vue from 'vue'
-import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 import Element from 'element-ui'
 import ElementPersonal from '@ele'
-import '@/asset/style/index.scss' // global css
+import '@/asset/style/index.scss'
 import App from '@/App'
 import store from '@/store'
 import router from '@/router'
 import '@/asset/icon'
-import '@/util/errorLog'
 import '@/directive'
 import filters from './filter'
 import globalMethod from '@/globalMethod'

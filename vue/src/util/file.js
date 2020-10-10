@@ -63,6 +63,6 @@ export function upload(blob, filename, options = {}) {
 //自动补全附件链接前缀
 export function autoCompleteUrl(url) {
     if (isEmpty(url)) return ''
-    if (['http', 'https'].some(i => url.startsWith(i))) return url
+    if (url.startsWith('http')) return url
     return fileConfig.storePrefix + url
 }

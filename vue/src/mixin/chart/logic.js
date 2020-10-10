@@ -14,8 +14,7 @@ export default {
 
     data() {
         return {
-            loading: false,
-            chart: null
+            loading: false
         }
     },
 

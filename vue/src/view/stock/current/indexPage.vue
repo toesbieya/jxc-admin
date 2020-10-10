@@ -15,16 +15,16 @@
             </template>
 
             <search-form>
-                <search-form-item label="商品分类">
+                <el-form-item label="商品分类">
                     <el-input :value="temp.cname" maxlength="100" clearable @clear="clearCidSearch"/>
-                </search-form-item>
-                <search-form-item label="采购订单">
+                </el-form-item>
+                <el-form-item label="采购订单">
                     <el-input v-model="searchForm.cgddid" maxlength="100" clearable/>
-                </search-form-item>
-                <search-form-item label="采购入库单">
+                </el-form-item>
+                <el-form-item label="采购入库单">
                     <el-input v-model="searchForm.cgrkid" maxlength="100" clearable/>
-                </search-form-item>
-                <search-form-item label="入库时间">
+                </el-form-item>
+                <el-form-item label="入库时间">
                     <el-date-picker
                         v-model="temp.ctime"
                         format="yyyy-MM-dd"
@@ -32,7 +32,7 @@
                         type="daterange"
                         value-format="timestamp"
                     />
-                </search-form-item>
+                </el-form-item>
             </search-form>
 
             <el-row class="button-group">
@@ -69,7 +69,6 @@ import CategoryTree from '@/component/biz/CategoryTree'
 import DetailDialog from "./DetailDialog"
 import ExtraArea from '@/component/ExtraArea'
 import SearchForm from "@/component/form/Search"
-import SearchFormItem from "@/component/form/Search/item"
 import {search} from "@/api/stock/current"
 import {isEmpty, debounce} from "@/util"
 import {exportExcel} from "@/util/excel"
@@ -81,7 +80,7 @@ export default {
 
     mixins: [tableMixin],
 
-    components: {CategoryTree, DetailDialog, ExtraArea, SearchForm, SearchFormItem},
+    components: {CategoryTree, DetailDialog, ExtraArea, SearchForm},
 
     data() {
         return {

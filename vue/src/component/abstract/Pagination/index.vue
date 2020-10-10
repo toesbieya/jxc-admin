@@ -19,7 +19,6 @@ export default {
                 current-page={page}
                 page-size={pageSize}
                 total={total}
-                hide-on-single-page
                 layout="total, prev, pager, next, jumper"
                 {...context.data}
             />
