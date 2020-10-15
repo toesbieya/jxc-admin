@@ -35,7 +35,7 @@ module.exports = {
                     {
                         title: '组件',
                         children: [
-                            '/frontend/components/abstract-table',
+                            '/frontend/components/abstract',
                             '/frontend/components/region-selector',
                             '/frontend/components/search-form',
                             '/frontend/components/upload-file',

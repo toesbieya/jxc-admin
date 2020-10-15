@@ -20,6 +20,7 @@
 | 参数                | 说明                                    | 类型             | 默认    |
 | :-----------------: | :-------------------------------------: | :--------------: | :-----: |
 | type                | 选择器类型，`tab / tree`                | `string`         | `'tab'` |
+| regionDataUrl       | 行政区域json的请求地址                  | `string`         | `${process.env.BASE_URL}static/json/region-pca.json` |
 | value / v-model     | 绑定值                                  | `string / array` | -       | 
 | readonly            | 等同于`el-select`的`disabled`           | `boolean`        | -       | 
 | size                | 等同于`el-select`的`size`               | `string`         | -       | 

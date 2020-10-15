@@ -1,11 +1,11 @@
 # 插件
 
-这里放的是即使删掉也不会影响运行的东东，基本都通过`import().then()`的方式来引用。
+`@/plugin` 中放的是即使删掉也不会影响运行的东东，都通过`import().then()`的方式来引用。
 
 ## canvas动画
 
-所有动画位于 `@/plugin/canvasAnimation`下，使用 `new Animation(canvas)`的方式来创建一个动画。
-想停止的话调用 `Animation.stop()` 即可。
+所有动画位于 `@/plugin/canvasAnimation`下，每一个文件夹都会导出一个`Animation`对象，
+使用 `new Animation(canvas)`的方式来创建一个动画，想停止的话调用 `Animation.stop()` 即可。
 
 ## 图片压缩
 

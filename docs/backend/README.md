@@ -10,4 +10,4 @@ cloud版基于SpringBoot、SpringCloud、SpringCloudAlibaba、SpringMVC、Mybati
 目前两者在功能上的差别就是local版支持动态修改资源的限流设置，而cloud版由于还在研究sentinel中，
 所以还未实现，暂时以gateway的 `default-filters` 作为替代。
 
-*文档完善中。。。*
+具体文档不写啦，代码写得太垃圾了。。。
