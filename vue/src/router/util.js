@@ -50,7 +50,7 @@ export function generateRoutes(jsonTree) {
         if (!Array.isArray(routes)) return
 
         for (let i = routes.length - 1; i >= 0; i--) {
-            const {path, component, children, meta = {}} = routes[i]
+            const {path, redirect, component, children, meta = {}} = routes[i]
 
             //剔除外链节点以及无component且非iframe的节点
             if (isExternal(path) || !component && !meta.iframe) {
@@ -82,8 +82,8 @@ export function generateRoutes(jsonTree) {
             if (!children || children.length <= 0) {
                 routes[i].props = true
             }
-            //设置根节点的redirect
-            else if (depth === 1) {
+            //仅在根节点未设置redirect时，将其第一个子节点的路径设为redirect
+            else if (depth === 1 && isEmpty(redirect)) {
                 const rootPath = path.endsWith('/') ? path : `${path}/`
                 routes[i].redirect = `${rootPath}${children[0].path}`
             }

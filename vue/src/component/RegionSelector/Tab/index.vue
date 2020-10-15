@@ -271,7 +271,7 @@ export default {
         init() {
             this.loading = true
             const hasInit = this.regionTree.length > 0
-            const promise = () => hasInit ? Promise.resolve() : init()
+            const promise = () => hasInit ? Promise.resolve() : init(this.regionDataUrl)
             return promise()
                 .then(() => this.limit ? this.limitApi() : Promise.resolve())
                 .then(data => {

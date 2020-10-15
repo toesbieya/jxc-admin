@@ -37,25 +37,31 @@ export function resetObj(obj) {
 
 //简单合并对象
 export function mergeObj(target, source) {
-    Object.keys(target).forEach(key => {
-        if (!isEmpty(source) && key in source) {
-            if (Array.isArray(target[key])) {
-                target[key] = source[key] || []
-            }
-            else if (typeof target[key] === 'number') {
-                target[key] = source[key] || 0
-            }
-            else if (target[key] !== null && typeof target[key] === 'object') {
-                mergeObj(target[key], source[key])
-            }
-            else {
-                if (typeof source[key] === 'function') {
-                    target[key] = source[key].toString()
-                }
-                else target[key] = source[key]
-            }
+    if (isEmpty(target, source)) return
+
+    for (const key of Object.keys(target)) {
+        if (!(key in source)) continue
+
+        //数组类型直接赋值，不做深拷贝
+        if (Array.isArray(target[key])) {
+            target[key] = source[key] || []
+            continue
         }
-    })
+
+        //number类型不考虑NaN
+        if (typeof target[key] === 'number') {
+            target[key] = source[key] || 0
+            continue
+        }
+
+        //非空对象递归处理
+        if (target[key] !== null && typeof target[key] === 'object') {
+            mergeObj(target[key], source[key])
+            continue
+        }
+
+        target[key] = source[key]
+    }
 }
 
 export function timeFormat(fmt, date = new Date()) {

@@ -1,12 +1,11 @@
 import Vue from 'vue'
-import {regionDataUrl} from '@/config'
 
 export const store = Vue.observable({
     data: []
 })
 
-export function init() {
-    return fetch(regionDataUrl)
+export function init(url) {
+    return fetch(url)
         .then(r => r.json())
         .then(r => store.data = r || [])
 }

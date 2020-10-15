@@ -61,8 +61,5 @@ module.exports = {
 
         //读写时是否进行压缩的默认值
         zip: !isDev
-    },
-
-    //省市地区json数据请求地址
-    regionDataUrl: `${contextPath}static/json/region-pca.json`
+    }
 }

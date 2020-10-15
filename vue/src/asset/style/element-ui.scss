@@ -78,7 +78,7 @@
 
     .el-scrollbar__wrap {
         //53 for dialog header,53 for dialog footer
-        max-height: calc(100vh - 53px - 53px - #{$nav-height * 2});
+        max-height: calc(100vh - 53px - 53px - #{$dialog-top * 2});
     }
 }
 

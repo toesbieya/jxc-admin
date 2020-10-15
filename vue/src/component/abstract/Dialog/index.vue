@@ -11,16 +11,16 @@ export default {
         value: Boolean,
         title: String,
         loading: {type: Boolean, default: true},
-        top: {type: String, default: variables['navHeight']},
+        top: {type: String, default: variables['dialogTop']},
         width: {type: String, default: '30%'}
     },
 
     render(h, context) {
         const {data, children, listeners, props: {value, title, loading, top, width}} = context
 
-        function onClose() {
-            listeners.input && listeners.input(false)
-        }
+        const onClose = function () {
+            return listeners.close ? () => listeners.close(false) : () => ({})
+        }()
 
         return (
             <el-dialog

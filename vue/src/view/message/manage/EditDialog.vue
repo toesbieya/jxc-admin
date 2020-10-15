@@ -1,40 +1,40 @@
 <template>
     <abstract-dialog :loading="loading" :title="title" :value="value" width="50%" @close="cancel" @open="open">
         <abstract-form :model="form" :rules="rules">
-            <abstract-form-item label="标 题" prop="title" dense>
+            <abstract-form-item label="标 题" prop="title" thin>
                 <el-input v-model="form.title" maxlength="100" :readonly="!canSave"/>
             </abstract-form-item>
-            <abstract-form-item label="消息类型" prop="type" dense>
+            <abstract-form-item label="消息类型" prop="type" thin>
                 <el-select v-model="form.type" :disabled="!canSave">
                     <el-option :value="0" label="通知提醒"/>
                     <el-option :value="1" label="系统公告"/>
                 </el-select>
             </abstract-form-item>
-            <abstract-form-item v-if="type!=='add'" label="创建人" dense>
+            <abstract-form-item v-if="type!=='add'" label="创建人" thin>
                 <el-input :value="form.cname" readonly/>
             </abstract-form-item>
-            <abstract-form-item v-if="type!=='add'" label="创建时间" dense>
+            <abstract-form-item v-if="type!=='add'" label="创建时间" thin>
                 <el-date-picker :value="form.ctime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
             </abstract-form-item>
-            <abstract-form-item label="通知对象" prop="broadcast" dense>
+            <abstract-form-item label="通知对象" prop="broadcast" thin>
                 <el-select v-model="form.broadcast" :disabled="!canSave">
                     <el-option :value="false" label="指定用户"/>
                     <el-option :value="true" label="全体用户"/>
                 </el-select>
             </abstract-form-item>
-            <abstract-form-item v-if="!form.broadcast" label="选择用户" prop="recipient" dense>
+            <abstract-form-item v-if="!form.broadcast" label="选择用户" prop="recipient" thin>
                 <user-selector v-model="form.recipient" :disabled="!canSave"/>
             </abstract-form-item>
-            <abstract-form-item v-if="form.pname" label="发布人" dense>
+            <abstract-form-item v-if="form.pname" label="发布人" thin>
                 <el-input :value="form.pname" readonly/>
             </abstract-form-item>
-            <abstract-form-item v-if="form.ptime" label="发布时间" dense>
+            <abstract-form-item v-if="form.ptime" label="发布时间" thin>
                 <el-date-picker :value="form.ptime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
             </abstract-form-item>
-            <abstract-form-item v-if="form.status===2" label="撤回人" dense>
+            <abstract-form-item v-if="form.status===2" label="撤回人" thin>
                 <el-input :value="form.wname" readonly/>
             </abstract-form-item>
-            <abstract-form-item v-if="form.status===2" label="撤回时间" dense>
+            <abstract-form-item v-if="form.status===2" label="撤回时间" thin>
                 <el-date-picker :value="form.wtime" format="yyyy-MM-dd HH:mm:ss" readonly type="date"/>
             </abstract-form-item>
             <abstract-form-item label="内 容" full>

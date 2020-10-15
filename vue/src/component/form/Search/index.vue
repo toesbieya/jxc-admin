@@ -1,8 +1,14 @@
 <script type="text/jsx">
+import {deepClone} from "@/util"
 import {getElementInnerWidth} from '@/util/browser'
 
 export default {
     name: "SearchForm",
+
+    model: {
+        prop: 'model',
+        event: 'reset'
+    },
 
     props: {
         model: Object,
@@ -38,7 +44,7 @@ export default {
                 return
             }
 
-            this.$emit('reset')
+            this.$emit('reset', deepClone(this.initialModel))
         },
 
         getElementNumInRow() {
@@ -93,7 +99,7 @@ export default {
 
     mounted() {
         //记录初始条件
-        this.initialModel = this.model
+        this.initialModel = deepClone(this.model)
 
         this.resize()
         this.resizeObserver = new ResizeObserver(() => this.resize())

@@ -80,6 +80,9 @@ $page-header-padding: 12px;
 //路由页面的margin
 $page-view-margin: 24px;
 
+//dialog距离顶部的距离，用于<el-dialog>的top属性、<el-dialog>中滚动区域的最大高度
+$dialog-top: 100px;
+
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
@@ -88,5 +91,5 @@ $page-view-margin: 24px;
     success: $--color-success;
     danger: $--color-danger;
     warning: $--color-warning;
-    navHeight: $nav-height;
+    dialogTop: $dialog-top;
 }

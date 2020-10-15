@@ -14,7 +14,7 @@
                 <category-tree ref="tree" :filter-node-method="filterNode" @node-click="nodeClick"/>
             </template>
 
-            <search-form>
+            <search-form v-model="searchForm" @search="search" @reset="clearCidSearch">
                 <el-form-item label="商品分类">
                     <el-input :value="temp.cname" maxlength="100" clearable @clear="clearCidSearch"/>
                 </el-form-item>
@@ -36,8 +36,7 @@
             </search-form>
 
             <el-row class="button-group">
-                <el-button icon="el-icon-search" size="small" type="primary" @click="search">查 询</el-button>
-                <el-button icon="el-icon-download" size="small" type="info" @click="downloadExcel">导 出</el-button>
+                <el-button icon="el-icon-download" size="small" type="primary" @click="downloadExcel">导 出</el-button>
             </el-row>
 
             <el-row v-loading="config.loading" class="table-container">

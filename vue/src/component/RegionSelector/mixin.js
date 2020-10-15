@@ -5,6 +5,7 @@ export default {
         size: String,
         getChildrenOnSelect: Boolean,
         limit: Boolean,
-        limitApi: Function
+        limitApi: Function,
+        regionDataUrl: String
     }
 }

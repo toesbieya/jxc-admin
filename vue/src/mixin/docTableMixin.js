@@ -81,7 +81,7 @@ export default {
                 dataLoading: this.config.loading,
                 search: {
                     props: {model: this.searchForm},
-                    on: {search: this.search}
+                    on: {search: this.search, reset: v => this.searchForm = v}
                 },
                 table: {
                     props: {data: this.tableData},

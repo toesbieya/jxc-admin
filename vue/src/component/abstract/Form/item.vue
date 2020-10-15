@@ -4,17 +4,17 @@ export default {
 
     functional: true,
 
-    props: {full: Boolean, dense: Boolean, label: String, prop: String},
+    props: {full: Boolean, thin: Boolean, label: String, prop: String},
 
     render(h, context) {
-        const {full, dense, label, prop} = context.props
-        let attrs = {xs: 24, sm: 12, lg: 8}
+        const {full, thin, label, prop} = context.props
+        let props = {xs: 24, sm: 12, lg: 8}
 
-        if (full) attrs = {span: 24}
-        else if (dense) attrs.lg = 12
+        if (full) props = {span: 24}
+        else if (thin) props.lg = 12
 
         return (
-            <el-col {...{attrs}}>
+            <el-col {...{props}}>
                 <el-form-item label={label} prop={prop}>
                     {context.children}
                 </el-form-item>
