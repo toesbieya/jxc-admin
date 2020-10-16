@@ -1,5 +1,5 @@
 <template>
-    <el-card v-loading="loading" class="card-container max-view-height">
+    <el-card v-loading="loading" class="card-container max-view-height full">
         <div class="department-outer">
             <div class="view-box">
                 <org-tree-view

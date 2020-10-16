@@ -2,69 +2,75 @@
 import AbstractTable from "@/component/abstract/Table"
 import AbstractPagination from "@/component/abstract/Pagination"
 import SearchForm from "@/component/form/Search"
+import autoAdaptHeightMixin from "./autoAdaptHeightMixin"
 import {isEmpty} from "@/util"
-
-const renderSearchForm = (h, config, slot) => {
-    return slot && <SearchForm {...config}>{slot()}</SearchForm>
-}
-
-const renderButtons = (h, buttons) => {
-    if (buttons.length > 0 && isEmpty(buttons[0].type)) {
-        buttons[0].type = 'primary'
-    }
-    return (
-        <el-row class="button-group">
-            {buttons.map(button => {
-                if (!button) return
-                const {icon, type, content, e} = button
-                return (
-                    <el-button
-                        icon={icon}
-                        size="small"
-                        plain={isEmpty(type)}
-                        type={type || 'dashed'}
-                        on-click={e}
-                    >
-                        {content}
-                    </el-button>
-                )
-            })}
-        </el-row>
-    )
-}
-
-const renderList = (h, {loading, tableConfig, tableColumn, paginationConfig}) => {
-    return (
-        <el-row v-loading={loading} class="table-container">
-            <AbstractTable {...tableConfig}>{tableColumn()}</AbstractTable>
-            <AbstractPagination {...paginationConfig}/>
-        </el-row>
-    )
-}
 
 export default {
     name: "ListPage",
 
-    functional: true,
+    mixins: [autoAdaptHeightMixin],
 
-    props: {
-        data: Object
+    components: {AbstractTable, AbstractPagination, SearchForm},
+
+    props: {data: Object},
+
+    methods: {
+        renderSearchForm(config, slot) {
+            return slot && <search-form {...config}>{slot()}</search-form>
+        },
+        renderButtons(buttons) {
+            if (buttons.length > 0 && isEmpty(buttons[0].type)) {
+                buttons[0].type = 'primary'
+            }
+            return (
+                <el-row class="button-group">
+                    {buttons.map(button => {
+                        if (!button) return
+                        const {icon, type, content, e} = button
+                        return (
+                            <el-button
+                                icon={icon}
+                                size="small"
+                                plain={isEmpty(type)}
+                                type={type || 'dashed'}
+                                on-click={e}
+                            >
+                                {content}
+                            </el-button>
+                        )
+                    })}
+                </el-row>
+            )
+        },
+        renderTableAndPagination({loading, table, pagination}) {
+            //为了配合autoAdaptHeightMixin
+            if (!table.props || !table.props.maxHeight) {
+                table.props.maxHeight = this.tableMaxHeight
+            }
+
+            return (
+                <el-row v-loading={loading} class="table-container">
+                    <abstract-table {...table}/>
+                    <abstract-pagination {...pagination}/>
+                </el-row>
+            )
+        }
     },
 
-    render(h, context) {
-        const {props: {data: {pageLoading, buttons, dataLoading, search, table, pagination}}, scopedSlots} = context
+    render() {
+        const {data: {pageLoading, buttons, dataLoading, search, table, pagination}, $scopedSlots} = this
+
+        if (!table.scopedSlots) {
+            table.scopedSlots = {}
+        }
+        table.scopedSlots.default = $scopedSlots.tableColumn
 
         return (
-            <el-card v-loading={pageLoading}>
-                {renderSearchForm(h, search, scopedSlots.searchForm)}
-                {renderButtons(h, buttons)}
-                {renderList(h, {
-                    loading: dataLoading,
-                    tableConfig: table,
-                    tableColumn: scopedSlots.tableColumn,
-                    paginationConfig: pagination
-                })}
-                {scopedSlots.default && scopedSlots.default()}
+            <el-card v-loading={pageLoading} class="max-view-height">
+                {this.renderSearchForm(search, $scopedSlots.searchForm)}
+                {this.renderButtons(buttons)}
+                {this.renderTableAndPagination({loading: dataLoading, table, pagination})}
+                {$scopedSlots.default && $scopedSlots.default()}
             </el-card>
         )
     }

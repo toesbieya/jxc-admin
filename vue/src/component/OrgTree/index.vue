@@ -8,8 +8,6 @@
                 :label-width="labelWidth"
                 :collapsable="collapsable"
                 :label-class-name="labelClassName"
-                :node-render="nodeRender"
-                :button-render="buttonRender"
                 @on-expand="handleExpand"
                 @on-node-click="handleNodeClick"
             />
@@ -38,8 +36,6 @@ export default {
         },
         horizontal: Boolean,
         collapsable: Boolean,
-        nodeRender: Function,
-        buttonRender: Function,
         labelWidth: [String, Number],
         labelClassName: [Function, String],
         expandAll: Boolean

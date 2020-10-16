@@ -236,3 +236,22 @@
         background: transparent;
     }
 }
+
+.el-upload {
+    $size: 100px;
+
+    &-list__item-thumbnail {
+        object-fit: cover;
+    }
+
+    &.el-upload--picture-card {
+        height: $size;
+        width: $size;
+        line-height: $size;
+    }
+
+    &-list .el-upload-list__item {
+        height: $size;
+        width: $size;
+    }
+}

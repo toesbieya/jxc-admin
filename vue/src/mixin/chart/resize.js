@@ -3,7 +3,7 @@ import {debounce} from '@/util'
 export default {
     methods: {
         $_initResizeEvent() {
-            this.resizeObserver = new ResizeObserver(() => this.$_resizeHandler())
+            this.resizeObserver = new ResizeObserver(this.$_resizeHandler)
             this.resizeObserver.observe(this.$el)
         },
         $_destroyResizeEvent() {

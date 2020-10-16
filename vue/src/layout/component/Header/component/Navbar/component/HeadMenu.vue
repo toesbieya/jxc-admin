@@ -138,8 +138,12 @@ export default {
             //如果已创建observer，则返回
             if (this.resizeObserver) return
 
-            this.resizeObserver = new ResizeObserver(() => this.resize())
+            this.resizeObserver = new ResizeObserver(this.resize)
             this.resizeObserver.observe(this.getMenuEl())
+
+            this.$once('hook:beforeDestroy', () => {
+                this.resizeObserver && this.resizeObserver.disconnect()
+            })
         },
 
         renderVisibleMenus(h, visibleMenus) {
@@ -162,10 +166,6 @@ export default {
     mounted() {
         this.setChildrenWidth()
         this.createResizeObserver()
-
-        this.$once('hook:beforeDestroy', () => {
-            this.resizeObserver && this.resizeObserver.disconnect()
-        })
     },
 
     render(h) {

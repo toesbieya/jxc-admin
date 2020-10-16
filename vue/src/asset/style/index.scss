@@ -84,32 +84,37 @@ a:hover {
 /*----------路由页面的最大高度开始----------*/
 $page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
 
+.max-view-height.full {
+    height: 100vh;
+}
+
 .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2});
+    overflow-y: hidden;
+    max-height: calc(100vh - #{$page-view-margin * 2});
 }
 
 .has-nav .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height});
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height});
 }
 
 .has-tags-view .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$tags-view-height});
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$tags-view-height});
 }
 
 .has-page-header .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$page-header-offsetHeight});
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$page-header-offsetHeight});
 }
 
 .has-nav.has-tags-view .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height});
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height});
 }
 
 .has-nav .has-page-header .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$page-header-offsetHeight});
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$page-header-offsetHeight});
 }
 
 .has-nav.has-tags-view .has-page-header .max-view-height {
-    height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height} - #{$page-header-offsetHeight});
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height} - #{$page-header-offsetHeight});
 }
 
 /*----------路由页面的最大高度结束----------*/

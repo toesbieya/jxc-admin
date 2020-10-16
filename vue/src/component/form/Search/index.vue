@@ -102,7 +102,7 @@ export default {
         this.initialModel = deepClone(this.model)
 
         this.resize()
-        this.resizeObserver = new ResizeObserver(() => this.resize())
+        this.resizeObserver = new ResizeObserver(this.resize)
         this.resizeObserver.observe(this.$el.parentNode)
 
         this.$once('hook:beforeDestroy', () => {

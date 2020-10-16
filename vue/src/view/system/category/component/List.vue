@@ -1,5 +1,5 @@
 <template>
-    <el-card v-loading="loading" class="card-container max-view-height" header="分类列表">
+    <el-card v-loading="loading" class="card-container max-view-height full" header="分类列表">
         <el-scrollbar>
             <category-tree ref="tree" @node-click="see" @node-contextmenu="openContextMenu"/>
         </el-scrollbar>

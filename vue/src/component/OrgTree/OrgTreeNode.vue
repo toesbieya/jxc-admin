@@ -31,7 +31,6 @@ const renderNode = (h, data, context) => {
 const renderLabel = (h, data, context) => {
     const {props} = context
     const label = data[props.props.label]
-    const nodeRender = props.nodeRender
     const clickHandler = context.listeners['on-node-click']
     const mousedownHandler = e => {
         e.stopPropagation()
@@ -44,10 +43,7 @@ const renderLabel = (h, data, context) => {
     const touchleaveHandler = context.listeners['on-node-touchleave']
 
     const childNodes = []
-    if (typeof nodeRender === 'function') {
-        childNodes.push(nodeRender(h, data))
-    }
-    else if (context.parent.$scopedSlots.default) {
+    if (context.parent.$scopedSlots.default) {
         childNodes.push(context.parent.$scopedSlots.default(data))
     }
     else childNodes.push(label)
@@ -97,7 +93,7 @@ const renderBtn = (h, data, context) => {
 
     return (
         <span class="org-tree-button-wrapper" on-click={onClock} on-mousedown={onMousedown}>
-            {props.buttonRender ? props.buttonRender(h, data) : <span class={cls.join(' ')}/>}
+            <span class={cls.join(' ')}/>
         </span>
     )
 }
