@@ -44,7 +44,7 @@ export function numberFormatter(num, digits = 2) {
 
 /**
  * 10000 => "10,000"
- * @param {number} num
+ * @param num {number}
  */
 export function toThousandFilter(num) {
     if (isEmpty(num)) return ''
@@ -53,7 +53,7 @@ export function toThousandFilter(num) {
 
 /**
  * Upper case first char
- * @param {String} string
+ * @param string {string}
  */
 export function uppercaseFirst(string) {
     if (isEmpty(string)) return ''

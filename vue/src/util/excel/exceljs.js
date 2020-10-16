@@ -1,6 +1,12 @@
 import {isEmpty} from "@/util"
 import {download} from "@/util/file"
-import {abstractExportExcel, jsonArray2rowArray, mergeExcel, generateHeader, number2excelColumnHeader} from "./common"
+import {
+    abstractExportExcel,
+    jsonArray2rowArray,
+    mergeExcel,
+    generateHeader,
+    number2excelColumnHeader
+} from "./common"
 
 //默认的excel单元格样式
 const defaultCellStyle = {
@@ -21,6 +27,9 @@ const defaultHeaderStyle = {
     border: {top: {style: 'thin'}, left: {style: 'thin'}, bottom: {style: 'thin'}, right: {style: 'thin'}}
 }
 
+/**
+ * excel导出的具体实现
+ */
 export function exportExcel(url, searchForm, options) {
     abstractExportExcel(url, searchForm, options, json2workbook, workbook2excel)
 }
@@ -31,11 +40,12 @@ export function workbook2excel(workbook, filename) {
 }
 
 /**
- * @desc 通过json数组生成workbook对象
+ * 通过json数组生成workbook对象
+ *
  * @param data         json数组
  * @param columns      列配置
  * @param mergeOption  合并配置项
- * @returns workbook
+ * @return workbook    exceljs的workbook对象
  */
 export function json2workbook(data, columns, mergeOption) {
     const columnStyle = [] //列设置
@@ -60,7 +70,17 @@ export function json2workbook(data, columns, mergeOption) {
     return generateWorkbook('Sheet1', columnStyle, header, body, mergeCells)
 }
 
-export function generateWorkbook(sheetName, columnStyle, header, body, mergeCells) {
+/**
+ * 生成workbook的代码抽取
+ *
+ * @param sheetName {string}    第一个sheet的名称
+ * @param columnStyle {array}   列样式
+ * @param header {array}        头部，二维数组
+ * @param body {array}          内容，二维数组
+ * @param mergeCells {array}    需要合并的单元格，形如['A1:B1'...]
+ * @return workbook
+ */
+function generateWorkbook(sheetName, columnStyle, header, body, mergeCells) {
     const workbook = new window.ExcelJS.Workbook()
     const sheet = workbook.addWorksheet(sheetName)
 

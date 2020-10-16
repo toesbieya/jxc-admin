@@ -70,7 +70,7 @@ export default {
             this.flatData[data[this.props.id]] = data
         },
         /**
-         * @description 工具方法，用于遍历树状数据的每个节点， fn为在该节点做的操作，其有一个参数即当前节点数据
+         * 工具方法，用于遍历树状数据的每个节点， fn为在该节点做的操作，其有一个参数即当前节点数据
          */
         _mapData(data, fn) {
             fn(data)
@@ -78,7 +78,7 @@ export default {
             children && children.forEach(child => this._mapData(child, fn))
         },
         /**
-         * @description 用来便利所有节点数据，将树状数据扁平化存放到flatData，用于数据更新后展开状态的恢复
+         * 用来便利所有节点数据，将树状数据扁平化存放到flatData，用于数据更新后展开状态的恢复
          */
         _updateExpandStatus() {
             this._mapData(this.dataCloned, this._setFlatData)

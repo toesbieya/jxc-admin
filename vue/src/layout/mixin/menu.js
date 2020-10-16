@@ -2,6 +2,7 @@
  * 顶部菜单和侧边栏菜单的公共混入
  */
 import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
+import {refreshPage} from "@/util/route"
 import {isExternal} from "@/util/validate"
 
 export default {
@@ -32,8 +33,8 @@ export default {
             //触发的菜单路径是当前路由时，根据参数判断是否进行刷新
             if (this.$route.path === fullPath) {
                 if (!refreshWhenSame) return
-                tagsViewMutations.delCachedView(this.$route)
-                this.$nextTick(() => this.$router.replace({path: '/redirect' + this.$route.fullPath}))
+                tagsViewMutations.delCacheOnly(this.$route)
+                this.$nextTick(() => refreshPage())
             }
             else this.$router.push(fullPath)
         },

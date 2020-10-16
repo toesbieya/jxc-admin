@@ -9,6 +9,7 @@ import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
 import {getSidebarMenus} from "@/layout/util"
 import {elConfirm} from "@/util/message"
+import {refreshPage} from "@/util/route"
 
 export default {
     name: 'navbar',
@@ -22,10 +23,6 @@ export default {
     computed: mapState('user', ['avatar', 'name', 'prepareLogout']),
 
     methods: {
-        refresh() {
-            this.$router.replace({path: `/redirect${this.$route.fullPath}`})
-        },
-
         command(command) {
             switch (command) {
                 case 'user':
@@ -67,7 +64,7 @@ export default {
             return [
                 <bell class="navbar-item"/>,
 
-                <div class="navbar-item" title="刷新" on-click={this.refresh}>
+                <div class="navbar-item" title="刷新" on-click={() => refreshPage()}>
                     <i class="el-icon-refresh-right navbar-icon"/>
                 </div>,
 

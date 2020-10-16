@@ -234,7 +234,7 @@ export default {
                 const editUrl = this.$route.path.replace('/add', `/edit/${id}`)
                 return closeCurrentPage(editUrl)
             }
-            else return this.init(this.form.id)
+            return this.init(this.form.id)
         },
 
         //关闭页面

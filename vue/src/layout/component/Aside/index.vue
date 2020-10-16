@@ -5,7 +5,7 @@ import {getters as asideGetters, mutations as asideMutations} from "@/layout/sto
 import Logo from './Logo'
 import NavMenuItem from '@/component/menu/NavMenu/item'
 import {getSidebarMenus, getActiveMenuByRoute} from "@/layout/util"
-import {getOffsetTop} from "@/util/browser"
+import {getTopDistance} from "@/util/browser"
 
 export default {
     name: 'Aside',
@@ -186,7 +186,7 @@ export default {
             //当菜单高度不足以滚动时跳过
             if (scrollHeight <= menuHeight) return
 
-            const elHeight = el.offsetHeight, between = getOffsetTop(el, container)
+            const elHeight = el.offsetHeight, between = getTopDistance(el, container)
 
             //计算需要滚动的距离，undefined说明不需要滚动
             let distance

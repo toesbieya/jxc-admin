@@ -42,6 +42,6 @@ export default {
         if (!this.shouldPersistent) return
 
         const tags = getTagsView()
-        Array.isArray(tags) && tags.forEach(tagsViewMutations.addVisitedView)
+        Array.isArray(tags) && tags.forEach(tagsViewMutations.addTagOnly)
     }
 }

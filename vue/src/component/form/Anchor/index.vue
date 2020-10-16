@@ -14,7 +14,7 @@
 
 <script>
 import {debounce} from "@/util"
-import {getScroll, getOffsetTop, scrollTo} from "@/util/browser"
+import {getScroll, getTopDistance, scrollTo} from "@/util/browser"
 
 export default {
     name: "FormAnchor",
@@ -44,7 +44,7 @@ export default {
             for (const {ref} of this.data) {
                 const target = this.getDomFromRef(ref)
                 if (!target) continue
-                const top = getOffsetTop(target, container)
+                const top = getTopDistance(target, container)
                 if (top <= offsetTop + bounds) {
                     sections.push({ref, top})
                 }
@@ -74,7 +74,7 @@ export default {
 
             const container = this.getContainer()
             const scrollTop = getScroll(container, true)
-            const elOffsetTop = getOffsetTop(targetElement, container)
+            const elOffsetTop = getTopDistance(targetElement, container)
             const y = scrollTop + elOffsetTop - this.offsetTop
 
             //由于滚动监听函数的防抖阈值是100ms，所以延迟设置滚动标识

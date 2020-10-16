@@ -5,10 +5,11 @@ const DEFAULT_PROPS = {id: 'id', pid: 'pid', children: 'children', leafHasChildr
 
 /**
  * 列表转树形结构
- * @param {Array} list
- * @param {Number|String|Function} rootSign 根节点的判定方法
- * @param {Object} props 树的配置项
- * @returns {Array}
+ *
+ * @param list {array}
+ * @param rootSign {number|String|Function} 根节点的判定方法
+ * @param props 树的配置项，{id, pid, children, leafHasChildren}
+ * @return {array}
  */
 export function createTree(list, rootSign = 0, props = {}) {
     if (!list || list.length <= 0) return []
@@ -27,6 +28,12 @@ export function createTree(list, rootSign = 0, props = {}) {
         if (leafHasChildren) i[children] = []
     })
 
+    const predicate = (() => {
+        return typeof rootSign === 'function'
+            ? rootSign
+            : key => key === rootSign
+    })()
+
     return list.filter(node => {
         const key = node[pid]
         const parent = info[key]
@@ -34,15 +41,16 @@ export function createTree(list, rootSign = 0, props = {}) {
             if (!parent[children]) parent[children] = []
             parent[children].push(node)
         }
-        return typeof rootSign === 'function' ? rootSign(node) : key === rootSign
+        return predicate(key, node)
     })
 }
 
 /**
  * 完全树full，拿到某些带value的节点数组limit，获得裁剪后的树
  * 只用于裁剪客户和供应商的行政区域树
- * @param full
- * @param limit
+ *
+ * @param full {array}
+ * @param limit {array}
  */
 export function createLimitTree(full, limit) {
     const map = limit.reduce((m, n) => {
@@ -68,8 +76,9 @@ export function createLimitTree(full, limit) {
 
 /**
  * createLimitTree的另一版本
+ *
  * @param fullMap 完全树的节点map
- * @param limit
+ * @param limit {array}
  */
 export function createLimitTreeByMap(fullMap, limit) {
     const resultNodes = {}
@@ -105,19 +114,28 @@ export function createLimitTreeByMap(fullMap, limit) {
 
 /**
  * 根据判断函数裁剪树，当节点不满足predicate且无下级节点时将被裁剪
- * @param tree
- * @param predicate
- * @param childrenKey
- * @returns {*[]} 经过裁剪后的树
+ *
+ * @param tree {array}            原始树
+ * @param predicate {function}    判断节点是否满足条件的函数，传入一个节点data
+ * @param childrenKey {string}    节点中代表子节点数组含义的字段名称，比如[{ch:[...]}]就是'ch'
+ * @return {array} 经过裁剪后的树
  */
-export function shakeTree(tree = [], predicate = () => true, childrenKey = 'children') {
+function shakeTree(tree = [], predicate = () => true, childrenKey = 'children') {
     return tree.filter(data => {
         data[childrenKey] = shakeTree(data[childrenKey], predicate)
         return predicate(data) || data[childrenKey].length
     })
 }
 
-export function calc(node, valueKey = 'value', childrenKey = 'children') {
+/**
+ * 自底向上计算每个节点下有多少子节点
+ *
+ * @param node
+ * @param valueKey {string}
+ * @param childrenKey {string}
+ * @return {*|number}
+ */
+function calc(node, valueKey = 'value', childrenKey = 'children') {
     if (!node) return 0
 
     const children = node[childrenKey]
@@ -132,6 +150,7 @@ export function calc(node, valueKey = 'value', childrenKey = 'children') {
     return value
 }
 
+//树转一维id数组
 export function getNodeId(arr) {
     if (!arr) return []
 

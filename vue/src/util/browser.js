@@ -1,25 +1,48 @@
-//根据body宽度判断是否为移动端，是则返回true
+/**
+ * 根据body宽度判断是否为移动端，是则返回true
+ *
+ * @return {boolean}
+ */
 export function isMobile() {
     const rect = document.body.getBoundingClientRect()
     return rect.width < 501
 }
 
+/**
+ * 判断是否为dom元素
+ *
+ * @param obj
+ * @return {boolean}
+ */
 export function isDom(obj) {
-    return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string'
+    return !!obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string'
 }
 
-export function getElementInnerWidth(ele) {
-    if (!ele) return 0
+/**
+ * 获取元素的内宽（去除padding）
+ *
+ * @param el {HTMLElement}
+ * @return {number}
+ */
+export function getElementInnerWidth(el) {
+    if (!el) return 0
 
-    const style = window.getComputedStyle(ele)
+    const style = window.getComputedStyle(el)
 
     return parseFloat(style.width) - (parseFloat(style.paddingLeft) + parseFloat(style.paddingRight))
 }
 
-export function getElementHeight(ele, style) {
-    if (!ele) return 0
+/**
+ * 获取元素的真实高度
+ *
+ * @param el {HTMLElement}
+ * @param style 元素的style键值对
+ * @return {number}
+ */
+export function getElementHeight(el, style) {
+    if (!el) return 0
 
-    const node = ele.cloneNode(true)
+    const node = el.cloneNode(true)
     node.style.opacity = '0'
 
     if (style) {
@@ -38,19 +61,25 @@ export function getElementHeight(ele, style) {
     return height
 }
 
-//获取元素距离其容器的顶部距离
-export function getOffsetTop(element, container) {
-    if (!element) return 0
+/**
+ * 获取元素距离其容器的顶部距离
+ *
+ * @param el {HTMLElement}   目标元素
+ * @param container {HTMLElement|Window} 容器元素
+ * @return {number}
+ */
+export function getTopDistance(el, container) {
+    if (!el) return 0
 
-    if (!element.getClientRects().length) {
+    if (!el.getClientRects().length) {
         return 0
     }
 
-    const rect = element.getBoundingClientRect()
+    const rect = el.getBoundingClientRect()
 
     if (rect.width || rect.height) {
         if (container === window) {
-            container = element.ownerDocument.documentElement
+            container = el.ownerDocument.documentElement
             return rect.top - container.clientTop
         }
         return rect.top - container.getBoundingClientRect().top
@@ -60,10 +89,11 @@ export function getOffsetTop(element, container) {
 }
 
 /**
- * @desc 加载js或css
- * @param url
- * @param type js|css
- * @returns {Promise<String>} 加载成功返回url（若资源此前已加载，返回undefined）
+ * 加载js或css
+ *
+ * @param url {string}  资源地址
+ * @param type {string} 'js'或'css'
+ * @return {Promise<String>} 加载成功返回url（若资源此前已加载，返回undefined）
  */
 export function loadExternalResource(url, type = 'js') {
     return new Promise((resolve, reject) => {
@@ -95,9 +125,10 @@ export function loadExternalResource(url, type = 'js') {
 }
 
 /**
- * @desc 平滑滚动至指定的位置
- * @param el 滚动容器，或可用于querySelector的字符串，或一个返回DOM的函数
- * @param position 滚动的目的地
+ * 平滑滚动至指定的位置
+ *
+ * @param el {Window|HTMLElement|string|function} 滚动容器，或可用于querySelector的字符串，或一个返回DOM的函数
+ * @param position {number} 滚动的目的地
  * @param options
  */
 export function scrollTo(el, position, options) {
@@ -107,22 +138,27 @@ export function scrollTo(el, position, options) {
         direction = 'top'  //滚动方向，top滚动至距元素顶部distance的位置，left滚动至距元素左边distance的位置
     } = options || {}
 
-    if (typeof el === 'string') el = document.querySelector(el)
-    else if (typeof el === 'function') el = el()
+    if (typeof el === 'string') {
+        el = document.querySelector(el)
+    }
+    else if (typeof el === 'function') {
+        el = el()
+    }
 
     if (!isDom(el)) return
 
-    const elPosition = getScroll(el, direction === 'top')
-    const scrollFunc = ((el, direction) => {
+    const toTop = direction === 'top'
+    const elPosition = getScroll(el, toTop)
+    const scrollFunc = (el => {
         if (el === window) {
-            return direction === 'top'
+            return toTop
                 ? y => el.scrollTo(window.pageXOffset, window.pageYOffset + y)
                 : x => el.scrollTo(window.pageXOffset + x, window.pageYOffset)
         }
-        return direction === 'top'
+        return toTop
             ? y => el.scrollTop += y
             : x => el.scrollLeft += x
-    })(el, direction)
+    })(el)
 
     let times = duration / 16, distance = (position - elPosition) / (times + 1)
 
@@ -138,6 +174,13 @@ export function scrollTo(el, position, options) {
     return window.requestAnimationFrame(frameFunc)
 }
 
+/**
+ * 获取元素的滚动距离
+ *
+ * @param el {Window|HTMLElement}
+ * @param top {boolean} 是否获取垂直的滚动距离
+ * @return {number}
+ */
 export function getScroll(el, top) {
     return el === window
         ? el[top ? 'pageYOffset' : 'pageXOffset']

@@ -146,10 +146,10 @@ export default {
             })
         },
 
-        renderVisibleMenus(h, visibleMenus) {
+        renderVisibleMenus(visibleMenus) {
             return visibleMenus.map(m => <nav-menu-item menu={m} show-icon-max-depth={1}/>)
         },
-        renderHiddenMenus(h, hiddenMenus, hideAll) {
+        renderHiddenMenus(hiddenMenus, hideAll) {
             if (hiddenMenus.length <= 0) return
 
             const content = hideAll
@@ -168,7 +168,7 @@ export default {
         this.createResizeObserver()
     },
 
-    render(h) {
+    render() {
         const {lastVisibleIndex, menus} = this
         if (!Array.isArray(menus) || menus.length <= 0 || menus.length === 1 && !this.alwaysShow) {
             return
@@ -195,8 +195,8 @@ export default {
                 default-active={this.activeMenu}
                 on-select={this.onSelect}
             >
-                {this.renderVisibleMenus(h, visibleMenus)}
-                {this.renderHiddenMenus(h, hiddenMenus, hiddenMenus.length === menus.length)}
+                {this.renderVisibleMenus(visibleMenus)}
+                {this.renderHiddenMenus(hiddenMenus, hiddenMenus.length === menus.length)}
             </el-menu>
         )
     }

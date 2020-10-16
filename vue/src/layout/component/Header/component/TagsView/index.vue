@@ -2,11 +2,11 @@
 import shortcutMixin from '@/layout/mixin/tagsViewShortcut'
 import decideRouterTransitionMixin from '@/layout/mixin/decideRouterTransition'
 import persistenceMixin from '@/layout/mixin/tagsViewPersistent'
-import {route as routeConfig} from '@/config'
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
 import ContextMenu from "@/component/menu/ContextMenu"
 import ScrollPanel from './ScrollPanel'
+import {refreshPage} from "@/util/route"
 
 export default {
     mixins: [shortcutMixin, decideRouterTransitionMixin, persistenceMixin],
@@ -70,7 +70,7 @@ export default {
 
             //添加所有固定显示的页签
             for (const tag of getAffixTags(this.menus)) {
-                tagsViewMutations.addVisitedView(tag)
+                tagsViewMutations.addTagOnly(tag)
             }
 
             //将当前路由对象添加为页签
@@ -78,7 +78,7 @@ export default {
         },
         //将具有meta.title的路由对象添加为tab页
         addTag(to) {
-            to.meta.title && tagsViewMutations.addView(to)
+            to.meta.title && tagsViewMutations.addTagAndCache(to)
         },
 
         //横向滚动条移动至当前tab
@@ -95,23 +95,23 @@ export default {
         * */
         refreshSelectedTag() {
             if (!this.selectedTag) return
-            tagsViewMutations.delCachedView(this.selectedTag)
-            this.$nextTick(() => this.$router.replace({path: `/redirect${this.selectedTag.fullPath}`}))
+            tagsViewMutations.delCacheOnly(this.selectedTag)
+            this.$nextTick(() => refreshPage(this.selectedTag))
         },
         closeSelectedTag(view) {
             if (this.isAffix(view)) return
-            tagsViewMutations.delView(view)
+            tagsViewMutations.delTagAndCache(view)
             this.isActive(view) && this.gotoLastView()
         },
         closeOthersTags() {
-            tagsViewMutations.delOthersViews(this.selectedTag)
+            tagsViewMutations.delOtherTagAndCache(this.selectedTag)
             //当前选中的页签不是当前路由时，跳转到选中页签的地址
             if (this.selectedTag.path !== this.$route.path) {
                 return this.$router.push(this.selectedTag)
             }
         },
         closeAllTags() {
-            tagsViewMutations.delAllViews()
+            tagsViewMutations.delAllTagAndCache()
             this.gotoLastView()
         },
 
@@ -124,7 +124,7 @@ export default {
             if (this.$route.path !== latest.path) {
                 this.$router.push(latest.path)
             }
-            else this.$router.replace(`/redirect${this.$route.fullPath}`)
+            else refreshPage()
         },
 
         openMenu(tag, e) {
@@ -143,7 +143,7 @@ export default {
             this.selectedTag = tag
         },
 
-        renderTags(h) {
+        renderTags() {
             return this.visitedViews.map(tag => {
                 const {path, query, fullPath, meta: {title}} = tag
                 const active = this.isActive(tag), affix = this.isAffix(tag)
@@ -166,7 +166,7 @@ export default {
                 )
             })
         },
-        renderContextMenu(h) {
+        renderContextMenu() {
             const menu = this.contextmenu
             const items = [
                 {content: '刷新', click: this.refreshSelectedTag},
@@ -184,22 +184,17 @@ export default {
         }
     },
 
-    beforeDestroy() {
-        //销毁前将路由动画改为fade
-        tagsViewMutations.transitionName(routeConfig.animate.default)
-    },
-
     mounted() {
         this.initTags()
     },
 
-    render(h) {
+    render() {
         return (
             <nav class="tags-view-container">
                 <scroll-panel ref="scrollPanel" class="tags-view-wrapper">
-                    {this.renderTags(h)}
+                    {this.renderTags()}
                 </scroll-panel>
-                {this.renderContextMenu(h)}
+                {this.renderContextMenu()}
             </nav>
         )
     }

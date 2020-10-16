@@ -1,9 +1,9 @@
 /**
- * @desc el-tree展开折叠控制
+ * el-tree展开折叠控制
  * @param ref      el-tree实例
  * @param action  'expand' | 'collapse'
  * @param level   展开的节点最大深度，为0时匹配全部节点
- * @param func    自定义展开的函数，传入一个node，优先使用
+ * @param func    自定义展开的函数，传入一个node，返回boolean，优先使用
  */
 export function expandControl(ref, action = 'expand', level = 1, func) {
     const handler = function () {

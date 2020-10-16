@@ -5,14 +5,14 @@ import {download} from "@/util/file"
 import {flatTree} from "@/util/tree"
 
 /**
- * 导出excel
+ * 导出excel的抽象模板
  * 响应头为json时进行前端导出，否则直接下载文件
  *
  * @param url              搜索的请求地址
  * @param searchForm       搜索参数
- * @param options          {columns, merge}，只有前端导出时才需要
- * @param json2workbook
- * @param workbook2excel
+ * @param options          {object}，只有前端导出时才需要
+ * @param json2workbook    将json数据转换为workbook的函数，参考./exceljs.js #json2workbook
+ * @param workbook2excel   workbook对象转换为excel文件，参考./exceljs.js #workbook2excel
  */
 export function abstractExportExcel(url, searchForm, options, json2workbook, workbook2excel) {
     request({url, method: 'post', responseType: 'blob', data: searchForm})
@@ -45,7 +45,7 @@ export function abstractExportExcel(url, searchForm, options, json2workbook, wor
  * @param primaryKey   该行json的唯一标识字段名
  * @param orderKey     该行json的序号字段名
  * @param ignoreRows   忽略的行数，默认为1（忽略表头）
- * @return 包含合并信息的数组，形如['A1:A10',...]
+ * @return {array}    包含合并信息的数组，形如['A1:A10',...]
  */
 export function mergeExcel(props, data, primaryKey, orderKey, ignoreRows = 1) {
     const result = [], merge = [], temp = []
@@ -97,7 +97,7 @@ export function mergeExcel(props, data, primaryKey, orderKey, ignoreRows = 1) {
             nextRow[orderKey] = currentRow[orderKey]
         }
 
-        props.forEach((_, colIndex) => !isEmpty(_) && compare(currentRow, lastRow, nextRow, colIndex))
+        props.forEach((prop, colIndex) => !isEmpty(prop) && compare(currentRow, lastRow, nextRow, colIndex))
     }
 
     function mergeResultConstructor(arr, colIndex) {
@@ -209,9 +209,9 @@ export function generateHeader(columns, separator = '-') {
 /**
  * 生成二维数组，例如json为[{id:1,name:'x'}]，结果为[[1,'x']]
  *
- * @param data    json数组
- * @param propMap 表头和字段名的映射表
- * @return 基数组为excel中每一行的二维数组
+ * @param data     json数组
+ * @param propMap  表头和字段名的映射表
+ * @return {array} 基数组为excel中每一行的二维数组
  */
 export function jsonArray2rowArray(data, propMap) {
     return data.map(i => Object.keys(i)
@@ -221,7 +221,13 @@ export function jsonArray2rowArray(data, propMap) {
         }, []))
 }
 
-//数字转excel列名
+/**
+ * 数字转excel列名
+ * 1 -> A  27 -> AB
+ *
+ * @param n {number}
+ * @return {string}
+ */
 export function number2excelColumnHeader(n) {
     let s = ""
     while (n >= 0) {

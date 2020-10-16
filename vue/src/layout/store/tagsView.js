@@ -33,21 +33,40 @@ export const getters = createGetters(store)
 export const mutations = bindThis({
     ...createMutations(store),
 
+    /**
+     * 多页签的启用/停用
+     * 停用时会移除所有缓存，并且重置路由过渡动画
+     * @param v 启用为true，停用为false
+     */
     enabled(v) {
         store.enabled = v
 
-        //多页签停用时清除所有页面缓存
-        !v && this.delAllViews()
+        if (!v) {
+            this.transitionName(routeConfig.animate.default)
+            this.delAllTagAndCache()
+        }
     },
 
-    addVisitedView({name, path, fullPath, meta = {}}) {
+    /**
+     * 在页签栏上添加一个页签，path已存在的不会重复添加，调用时需要保证meta.title有值
+     * @param view {routeConfig}
+     */
+    addTagOnly(view) {
+        const {name, path, fullPath, meta} = view
+
         if (store.visitedViews.some(v => v.path === path)) {
             return
         }
 
         store.visitedViews.push({name, path, fullPath, meta: {...meta}})
     },
-    addCachedView(view) {
+
+    /**
+     * 将传入的routeConfig加入<keep-router-view-alive>的缓存中
+     * 以下调用无效：设置了不缓存、是iframe页、未设置唯一标识、已缓存
+     * @param view {routeConfig}
+     */
+    addCacheOnly(view) {
         const {noCache, iframe, usePathKey, useFullPathKey} = view.meta || {}
 
         if (noCache || iframe || !view.name && !usePathKey && !useFullPathKey) {
@@ -62,33 +81,64 @@ export const mutations = bindThis({
 
         store.cachedViews.push(key)
     },
-    addView(view) {
-        this.addVisitedView(view)
-        this.addCachedView(view)
+
+    /**
+     * 同时调用{@link #addTagOnly}、{@link #addCacheOnly}
+     * @param view {routeConfig}
+     */
+    addTagAndCache(view) {
+        this.addTagOnly(view)
+        this.addCacheOnly(view)
     },
 
-    delVisitedView(view) {
+    /**
+     * 根据path从页签栏中移除一个页签
+     * @param view {path}，routeConfig
+     */
+    delTagOnly(view) {
         const index = store.visitedViews.findIndex(i => i.path === view.path)
         index > -1 && store.visitedViews.splice(index, 1)
     },
-    delCachedView(view) {
+
+    /**
+     * 删除<keep-router-view-alive>对应的缓存
+     * @param view {routeConfig}
+     */
+    delCacheOnly(view) {
         const key = getRouterViewCacheKey(view)
         const index = store.cachedViews.indexOf(key)
         index > -1 && store.cachedViews.splice(index, 1)
     },
-    delView(view) {
-        this.delVisitedView(view)
-        this.delCachedView(view)
-        pageMutations.delIframe(view.meta ? view.meta.iframe : null)
+
+    /**
+     * 同时调用{@link #delTagOnly}、{@link #delCacheOnly}，移除iframe页
+     * @param view {routeConfig}
+     */
+    delTagAndCache(view) {
+        this.delTagOnly(view)
+        this.delCacheOnly(view)
+
+        const iframe = view.meta && view.meta.iframe
+        iframe && pageMutations.delIframe(iframe)
     },
-    delOthersViews(view) {
+
+    /**
+     * 从页签栏上移除除了routeConfig以外的所有非固定页签
+     * 并且从<keep-router-view-alive>中移除除了routeConfig以外的所有缓存
+     * @param view {routeConfig}
+     */
+    delOtherTagAndCache(view) {
         const visitedViews = store.visitedViews.filter(v => v.meta.affix || v.path === view.path)
         const key = store.cachedViews.find(key => key === getRouterViewCacheKey(view))
 
         store.visitedViews = visitedViews
         store.cachedViews = key ? [key] : []
     },
-    delAllViews() {
+
+    /**
+     * 从页签栏上移除所有非固定页签，并且移除<keep-router-view-alive>的所有缓存
+     */
+    delAllTagAndCache() {
         store.visitedViews = store.visitedViews.filter(tag => tag.meta && tag.meta.affix)
         store.cachedViews = []
     }

@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import {refreshPage} from "@/util/route"
+
 export default {
     name: "Bell",
 
@@ -16,9 +18,11 @@ export default {
 
     methods: {
         jump() {
-            let target = '/message/user'
-            if (this.$route.path === target) target = `/redirect${target}`
-            this.$router.replace(target)
+            const target = '/message/user'
+
+            this.$route.path === target
+                ? refreshPage()
+                : this.$router.push(target)
         }
     },
 

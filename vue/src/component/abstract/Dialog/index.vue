@@ -1,5 +1,5 @@
 <script type="text/jsx">
-import variables from '@/asset/style/variables.scss'
+import cssVariables from '@/asset/style/variables.scss'
 import LoadingMask from './LoadingMask'
 
 export default {
@@ -11,12 +11,11 @@ export default {
         value: Boolean,
         title: String,
         loading: {type: Boolean, default: true},
-        top: {type: String, default: variables['dialogTop']},
         width: {type: String, default: '30%'}
     },
 
     render(h, context) {
-        const {data, children, listeners, props: {value, title, loading, top, width}} = context
+        const {data, children, listeners, props: {value, title, loading, width}} = context
 
         const onClose = function () {
             return listeners.close ? () => listeners.close(false) : () => ({})
@@ -27,7 +26,7 @@ export default {
                 v-drag-dialog
                 visible={value}
                 custom-class="abstract-dialog"
-                top={top}
+                top={cssVariables['dialogTop']}
                 width={width}
                 on-close={onClose}
                 {...data}

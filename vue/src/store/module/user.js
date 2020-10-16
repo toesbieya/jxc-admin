@@ -50,7 +50,7 @@ const actions = {
                     return Promise.all([
                         dispatch('socket/close', null, {root: true}),
                         dispatch('removeUser'),
-                        tagsViewMutations.delAllViews()
+                        tagsViewMutations.delAllTagAndCache()
                     ])
                 })
                 .then(() => {
