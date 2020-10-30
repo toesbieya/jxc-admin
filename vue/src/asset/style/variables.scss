@@ -2,7 +2,7 @@
 $max-mobile-width: 500px;
 
 //覆盖element颜色
-$--color-primary: #1890ff;
+$--color-primary: #1890ff; //这里如果有改动，需要同时修改vue.config.js中ThemeColorReplacer的配置
 $--color-success: #21BA45;
 $--color-warning: #FF5722;
 $--color-danger: #F44336;

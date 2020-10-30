@@ -15,7 +15,7 @@ const state = {
 
     //主题色
     color: '#1890ff',
-    //导航模式
+    //导航模式，'aside'、'aside-two-part'、'head'、'mix'
     navMode: 'mix'
 }
 

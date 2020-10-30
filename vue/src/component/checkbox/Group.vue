@@ -15,7 +15,7 @@ export default {
 <style>
 .checkbox-group {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
     width: 100%;
 }
 </style>

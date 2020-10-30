@@ -18,8 +18,7 @@ export default [
         component: Layout,
         children: [
             {
-                path: ':path(.*)',
-                props: true,
+                path: '*',
                 component: Redirect
             }
         ]

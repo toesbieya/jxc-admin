@@ -19,7 +19,7 @@ export function isDom(obj) {
 }
 
 /**
- * 获取元素的内宽（去除padding）
+ * 获取元素的内宽（扣除左右padding后）
  *
  * @param el {HTMLElement}
  * @return {number}
@@ -101,7 +101,9 @@ export function loadExternalResource(url, type = 'js') {
 
         if (type === "css") {
             const links = Array.from(document.getElementsByTagName('link'))
-            if (links.some(link => link.getAttribute('href') === url)) return resolve()
+            if (links.some(link => link.getAttribute('href') === url)) {
+                return resolve()
+            }
 
             tag = document.createElement("link")
             tag.rel = "stylesheet"
@@ -109,7 +111,9 @@ export function loadExternalResource(url, type = 'js') {
         }
         else if (type === "js") {
             const scripts = Array.from(document.getElementsByTagName('script'))
-            if (scripts.some(script => script.getAttribute('src') === url)) return resolve()
+            if (scripts.some(script => script.getAttribute('src') === url)) {
+                return resolve()
+            }
 
             tag = document.createElement("script")
             tag.src = url
@@ -122,6 +126,34 @@ export function loadExternalResource(url, type = 'js') {
         }
         else reject(`没有这个东东,url:${url},type:${type}`)
     })
+}
+
+/**
+ * 将dom按最小距离垂直地滚动至视窗内
+ * 比如dom在视窗下，那么会滚动到视窗底部
+ *
+ * @param child {HTMLElement}          需要滚动的dom
+ * @param parent {HTMLElement|Window}  包含child的容器
+ */
+export function scrollIntoViewVertically(child, parent = window) {
+    const {scrollTop, scrollHeight, offsetHeight: containerHeight} = parent
+
+    //当菜单高度不足以滚动时跳过
+    if (scrollHeight <= containerHeight) return
+
+    const elHeight = child.offsetHeight, between = getTopDistance(child, parent)
+
+    //计算需要滚动的距离，undefined说明不需要滚动
+    let distance
+
+    if (between < 0) distance = between
+    else if (between + elHeight > containerHeight) {
+        distance = between + elHeight - containerHeight
+    }
+
+    if (distance !== undefined) {
+        parent.scrollTo({top: scrollTop + distance, behavior: 'smooth'})
+    }
 }
 
 /**

@@ -112,6 +112,11 @@ export default {
                     value: 'mix',
                     img: 'https://gw.alipayobjects.com/zos/antfincdn/x8Ob%26B8cy8/LCkqqYNmvBEbokSDscrm.svg'
                 },
+                {
+                    title: '双层侧边栏导航',
+                    value: 'aside-two-part',
+                    img: 'https://gw.alipayobjects.com/zos/antfincdn/XwFOFbLkSM/LCkqqYNmvBEbokSDscrm.svg'
+                }
             ],
 
             setting: {

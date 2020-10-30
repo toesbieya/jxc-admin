@@ -2,10 +2,10 @@
 import menuMixin from "@/layout/mixin/menu"
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
-import Logo from './Logo'
+import Logo from '@/layout/component/Aside/Logo'
 import NavMenuItem from '@/component/menu/NavMenu/item'
 import {getSidebarMenus, getActiveMenuByRoute} from "@/layout/util"
-import {getTopDistance} from "@/util/browser"
+import {moveToActiveMenuVertically} from "@/util/element-ui/elMenu"
 
 export default {
     name: 'Aside',
@@ -23,7 +23,6 @@ export default {
 
     computed: {
         isMobile: () => appGetters.isMobile,
-        activeRootMenu: () => appGetters.activeRootMenu,
 
         //侧边栏菜单
         menus: () => getSidebarMenus(),
@@ -48,7 +47,7 @@ export default {
             if (!this.mouseOutside) return true
 
             //侧边栏处于折叠状态 且 存在弹出的子菜单，true
-            return this.collapse && this.openedMenus.length > 0
+            return this.collapse && this.openedMenuNum > 0
         },
 
         //侧边栏的折叠状态，true折叠、false展开，仅在pc端可折叠
@@ -104,11 +103,6 @@ export default {
             }
         },
 
-        //顶部菜单改变时重设高亮项（ele考虑不周，只要菜单被点击就会激活）
-        activeRootMenu(v) {
-            v && this.resetActiveMenu()
-        },
-
         //抽屉模式下侧边栏显示时滚动至激活菜单
         show(v) {
             v && this.$nextTick(this.moveToCurrentMenu)
@@ -153,52 +147,7 @@ export default {
 
         //滚动至当前激活的菜单
         moveToCurrentMenu() {
-            const menu = this.$refs.menu, cur = this.activeMenu
-            if (!menu || !cur) return
-
-            const curInstance = menu.items[cur]
-            if (!curInstance) return
-
-            let el = curInstance.$el
-
-            //当侧边栏折叠时，需要滚动至可视区域的元素是激活菜单的最顶层父节点
-            if (this.collapse) {
-                let rootParent = curInstance
-                while (rootParent.$parent.$options.componentName !== 'ElMenu') {
-                    rootParent = rootParent.$parent
-                }
-                el = rootParent.$el
-            }
-
-            /*
-            * 这里考虑了菜单展开时的200ms动画时间
-            * 为什么不分情况讨论？比如当subMenu已经是展开状态时，无需延时滚动
-            * 但这种情况无法判断，因为这时menu.openedMenus已经包含了subMenu，无论subMenu之前是否展开
-            * 所以统一延时300ms
-            * */
-            window.setTimeout(() => this.scrollMenuIntoView(el, menu.$el), 300)
-        },
-
-        //将指定菜单滚动到可视区域内
-        scrollMenuIntoView(el, container) {
-            const {scrollTop, scrollHeight, offsetHeight: menuHeight} = container
-
-            //当菜单高度不足以滚动时跳过
-            if (scrollHeight <= menuHeight) return
-
-            const elHeight = el.offsetHeight, between = getTopDistance(el, container)
-
-            //计算需要滚动的距离，undefined说明不需要滚动
-            let distance
-
-            if (between < 0) distance = between
-            else if (between + elHeight > menuHeight) {
-                distance = between + elHeight - menuHeight
-            }
-
-            if (distance !== undefined) {
-                container.scrollTo({top: scrollTop + distance, behavior: 'smooth'})
-            }
+            moveToActiveMenuVertically(this.$refs.menu)
         }
     },
 
@@ -229,7 +178,7 @@ export default {
                         <nav-menu-item
                             menu={m}
                             show-parent={asideGetters.showParentOnCollapse}
-                            collapse={asideGetters.collapse}
+                            collapse={this.collapse}
                             show-icon-max-depth={1}
                         />
                     ))}

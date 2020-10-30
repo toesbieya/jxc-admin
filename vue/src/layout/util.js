@@ -17,12 +17,15 @@ export function getSidebarMenus() {
     }
     switch (appGetters.navMode) {
         case 'aside':
+        case 'aside-two-part':
             return menus
         case 'head':
             return []
         case 'mix':
             const root = menus.find(i => i.path === appGetters.activeRootMenu)
             return root ? root.children || [] : []
+        default:
+            return []
     }
 }
 

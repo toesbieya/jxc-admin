@@ -35,7 +35,9 @@ export default {
         },
 
         moveToTarget(currentTag, tagInstances) {
-            const {offsetWidth: $containerWidth, scrollWidth, scrollLeft} = this.$el
+            const {offsetWidth: containerWidth, scrollWidth, scrollLeft} = this.$el
+
+            if (containerWidth >= scrollWidth) return
 
             let firstTag = null
             let lastTag = null
@@ -47,29 +49,28 @@ export default {
             }
 
             if (firstTag === currentTag) {
-                this.scrollLeft(0)
+                return this.scrollLeft(0)
             }
-            else if (lastTag === currentTag) {
-                this.scrollLeft(scrollWidth - $containerWidth)
+            if (lastTag === currentTag) {
+                return this.scrollLeft(scrollWidth - containerWidth)
             }
-            else {
-                // find preTag and nextTag
-                const currentIndex = tagInstances.findIndex(item => item === currentTag)
-                const prevTag = tagInstances[currentIndex - 1]
-                const nextTag = tagInstances[currentIndex + 1]
 
-                // the tag's offsetLeft after of nextTag
-                const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + this.between
+            // find preTag and nextTag
+            const currentIndex = tagInstances.findIndex(item => item === currentTag)
+            const prevTag = tagInstances[currentIndex - 1]
+            const nextTag = tagInstances[currentIndex + 1]
 
-                // the tag's offsetLeft before of prevTag
-                const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - this.between
+            // the tag's offsetLeft after of nextTag
+            const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + this.between
 
-                if (afterNextTagOffsetLeft > scrollLeft + $containerWidth) {
-                    this.scrollLeft(afterNextTagOffsetLeft - $containerWidth)
-                }
-                else if (beforePrevTagOffsetLeft < scrollLeft) {
-                    this.scrollLeft(beforePrevTagOffsetLeft)
-                }
+            // the tag's offsetLeft before of prevTag
+            const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - this.between
+
+            if (afterNextTagOffsetLeft > scrollLeft + containerWidth) {
+                this.scrollLeft(afterNextTagOffsetLeft - containerWidth)
+            }
+            else if (beforePrevTagOffsetLeft < scrollLeft) {
+                this.scrollLeft(beforePrevTagOffsetLeft)
             }
         },
 

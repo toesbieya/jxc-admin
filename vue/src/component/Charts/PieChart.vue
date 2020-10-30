@@ -17,7 +17,6 @@ export default {
         data: {
             deep: true,
             handler(val) {
-                if (!window.echarts) return
                 this.init(val)
             }
         }
@@ -25,7 +24,7 @@ export default {
 
     methods: {
         init(data) {
-            this.chart.setOption({
+            this.chart && this.chart.setOption({
                 title: {
                     text: this.title,
                     left: 'center',

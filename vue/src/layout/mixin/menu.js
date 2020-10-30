@@ -9,10 +9,11 @@ export default {
     data() {
         return {
             //当前激活的菜单的fullPath
+            //之所以手动维护是因为el-menu在点击后就会设置activeIndex
             activeMenu: '',
 
-            //el-menu的openedMenus
-            openedMenus: []
+            //用于判断鼠标是否在弹出菜单内
+            openedMenuNum: 0
         }
     },
 
@@ -23,11 +24,7 @@ export default {
             if (isExternal(fullPath)) {
                 window.open(fullPath)
                 //重置高亮菜单
-                const menu = this.$refs.menu
-                if (menu && menu.updateActiveIndex) {
-                    menu.updateActiveIndex(this.activeMenu)
-                }
-                return
+                return this.resetActiveMenu()
             }
 
             //触发的菜单路径是当前路由时，根据参数判断是否进行刷新
@@ -39,11 +36,11 @@ export default {
             else this.$router.push(fullPath)
         },
 
+        //由于侧边栏菜单数组更新后，el-menu不一定会更新（当数组中不存在单级菜单时）
+        //所以手动更新el-menu的当前高亮菜单
         resetActiveMenu() {
-            //由于侧边栏菜单数组更新后，el-menu不一定会更新（当数组中不存在单级菜单时）
-            //所以手动更新el-menu的当前高亮菜单
             const menu = this.$refs.menu
-            menu && menu.updateActiveIndex()
+            menu && menu.updateActiveIndex(this.activeMenu)
         },
 
         //渲染el-menu时监听其展开菜单
@@ -58,7 +55,7 @@ export default {
             if (!menu) return
 
             this.watchOpenedMenusCallback = menu.$watch('openedMenus', v => {
-                this.openedMenus = [...v]
+                this.openedMenuNum = v.length
             })
         }
     }

@@ -33,8 +33,20 @@ registerGuardian(router)
 
 export default router
 
-export function addDynamicRoutes(jsonTree) {
-    jsonTree = deepClone(jsonTree)
-    const endRoute = {path: '*', redirect: '/404'}
-    router.addRoutes([...generateRoutes(jsonTree), endRoute])
-}
+/**
+ * 向外部暴露的动态路由添加方法，只能被调用一次
+ *
+ * @param jsonTree {array} 路由配置项构成的树型数组
+ */
+export const addDynamicRoutes = (() => {
+    let init = false
+
+    return (jsonTree) => {
+        if (init) return
+        init = true
+
+        jsonTree = deepClone(jsonTree)
+        const endRoute = {path: '*', redirect: '/404'}
+        router.addRoutes([...generateRoutes(jsonTree), endRoute])
+    }
+})()

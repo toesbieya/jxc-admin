@@ -23,6 +23,8 @@ export default {
 @import "~@/asset/style/variables.scss";
 
 .img-checkbox {
+    width: 55px;
+    margin: 10px;
     border-radius: 2px;
     cursor: pointer;
     position: relative;

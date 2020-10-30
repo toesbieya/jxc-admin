@@ -81,6 +81,7 @@ export default {
             else this.activeMenu = getActiveMenuByRoute({path, meta})
         },
         onSelect(index) {
+            //混合导航模式下，点击相同菜单不刷新页面
             if (this.navMode === 'mix' && index === appGetters.activeRootMenu) {
                 return
             }

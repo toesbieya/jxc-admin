@@ -1,4 +1,11 @@
-import {delAllUrlParam} from "@/util"
+//删除所有url参数
+function delAllUrlParam() {
+    let paramStartIndex = location.href.indexOf('?')
+    if (paramStartIndex > -1) {
+        const href = location.href.substring(0, paramStartIndex)
+        history.replaceState(null, null, [...href].join(''))
+    }
+}
 
 //将引导步骤中函数的this绑定为组件实例
 function transformGuideSteps(instance, steps) {

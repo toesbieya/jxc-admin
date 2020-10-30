@@ -4,7 +4,7 @@ import GuideMixin from '@/mixin/guide'
 import Bell from "./component/Bell"
 import Hamburger from './component/Hamburger'
 import HeadMenu from "./component/HeadMenu"
-import SettingDrawer from './component/SettingDrawer'
+import SettingDrawer from '@/layout/component/SettingDrawer'
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
 import {getSidebarMenus} from "@/layout/util"
@@ -42,13 +42,13 @@ export default {
             //渲染折叠按钮的条件
             //①侧边栏有菜单
             //②移动端
-            //③桌面端且非顶部导航
+            //③桌面端且是侧边栏导航或混合导航模式
             //④桌面端且未设置侧边栏自动隐藏
             const hasSidebarMenus = getSidebarMenus().length > 0,
                 isMobile = appGetters.isMobile,
-                notHeadMode = appGetters.navMode !== 'head',
+                correctMode = ['aside','mix'].includes(appGetters.navMode),
                 notAutoHidden = !asideGetters.autoHide,
-                renderHamburger = hasSidebarMenus && (isMobile || notHeadMode && notAutoHidden)
+                renderHamburger = hasSidebarMenus && (isMobile || correctMode && notAutoHidden)
 
             if (renderHamburger) {
                 const active = isMobile ? asideGetters.show : !asideGetters.collapse
@@ -56,7 +56,7 @@ export default {
             }
         },
         renderHeadMenuMenu() {
-            if (appGetters.navMode !== 'aside' && !appGetters.isMobile) {
+            if (['head', 'mix'].includes(appGetters.navMode) && !appGetters.isMobile) {
                 return <head-menu always-show/>
             }
         },

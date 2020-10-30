@@ -20,6 +20,7 @@ export default {
 .color-checkbox {
     width: 20px;
     height: 20px;
+    margin: 5px;
     border-radius: 2px;
     cursor: pointer;
     text-align: center;

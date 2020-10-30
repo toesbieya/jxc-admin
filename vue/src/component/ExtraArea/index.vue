@@ -12,7 +12,7 @@
     </el-row>
 </template>
 
-<script type="text/jsx">
+<script>
 export default {
     name: "ExtraArea",
 
