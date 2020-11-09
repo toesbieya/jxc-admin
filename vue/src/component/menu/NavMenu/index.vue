@@ -11,11 +11,31 @@ export default {
         mode: {type: String, default: 'vertical'},
         collapse: Boolean,
         showParentOnCollapse: Boolean,
-        showIconMaxDepth: {type: Number, default: 1}
+        showIconMaxDepth: {type: Number, default: 1},
+        switchTransition: Boolean,
+        switchTransitionName: {type: String, default: 'sidebar'}
     },
 
     render(h, context) {
-        const {data, props: {mode, menus, collapse, showParentOnCollapse, showIconMaxDepth}} = context
+        const {
+            data, children,
+            props: {
+                mode, menus, collapse, showParentOnCollapse,
+                showIconMaxDepth, switchTransition, switchTransitionName
+            }
+        } = context
+
+        let items = children || menus.map(m => (
+            <Item
+                menu={m}
+                show-parent={showParentOnCollapse}
+                collapse={collapse}
+                show-icon-max-depth={showIconMaxDepth}
+            />
+        ))
+        if (switchTransition) {
+            items = <transition-group name={switchTransitionName}>{items}</transition-group>
+        }
 
         return (
             <el-menu
@@ -26,16 +46,11 @@ export default {
                 collapse-transition={false}
                 {...data}
             >
-                {menus.map(m => (
-                    <Item
-                        menu={m}
-                        show-parent={showParentOnCollapse}
-                        collapse={collapse}
-                        show-icon-max-depth={showIconMaxDepth}
-                    />
-                ))}
+                {items}
             </el-menu>
         )
     }
 }
 </script>
+
+<style lang="scss" src="./style.scss"></style>

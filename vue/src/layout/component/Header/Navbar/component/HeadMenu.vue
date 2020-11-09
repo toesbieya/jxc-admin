@@ -5,6 +5,7 @@
  */
 import menuMixin from "@/layout/mixin/menu"
 import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
+import NavMenu from "@/component/menu/NavMenu"
 import NavMenuItem from "@/component/menu/NavMenu/item"
 import {getActiveMenuByRoute} from "@/layout/util"
 
@@ -13,7 +14,7 @@ export default {
 
     mixins: [menuMixin],
 
-    components: {NavMenuItem},
+    components: {NavMenu, NavMenuItem},
 
     props: {
         //是否在只有一个顶部菜单时仍然渲染
@@ -190,15 +191,14 @@ export default {
         }
 
         return (
-            <el-menu
-                ref="menu"
+            <nav-menu
                 mode="horizontal"
                 default-active={this.activeMenu}
                 on-select={this.onSelect}
             >
                 {this.renderVisibleMenus(visibleMenus)}
                 {this.renderHiddenMenus(hiddenMenus, hiddenMenus.length === menus.length)}
-            </el-menu>
+            </nav-menu>
         )
     }
 }

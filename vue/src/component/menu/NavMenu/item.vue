@@ -1,7 +1,5 @@
 <script type="text/jsx">
 const MenuItemContent = {
-    name: "NavMenuItemContent",
-
     functional: true,
 
     props: {icon: String, title: String, useTitleAsIcon: Boolean},
@@ -11,7 +9,7 @@ const MenuItemContent = {
 
         const iconComponent =
             useTitleAsIcon
-                ? <em>{title[0]}</em>
+                ? <i class="icon" style="font-style: normal">{title[0]}</i>
                 : icon
                 ? <v-icon icon={icon}/>
                 : <span class="icon" style="display: none"/>
@@ -116,8 +114,6 @@ function renderMenu(h, {menu, showParent, collapse, showIconMaxDepth, depth = 1}
 }
 
 export default {
-    name: "NavMenuItem",
-
     functional: true,
 
     props: {

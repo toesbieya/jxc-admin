@@ -11,6 +11,8 @@ export default {
     render(h, context) {
         const {data, props: {icon}} = context
 
+        if (!icon) return
+
         //渲染成svg
         if (icon.startsWith(SVG_PREFIX)) {
             return (

@@ -24,3 +24,48 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+@import "~@/asset/style/variables.scss";
+
+$logoSize: 30px;
+
+.sidebar-logo-container {
+    position: relative;
+    width: 100%;
+    height: $nav-height;
+    line-height: $nav-height;
+    padding-left: 20px;
+
+    .sidebar-logo-link {
+        height: 100%;
+        width: 100%;
+
+        .sidebar-logo {
+            width: $logoSize;
+            height: $logoSize;
+            vertical-align: middle;
+
+            & + .sidebar-title {
+                margin-left: 12px;
+            }
+        }
+
+        .sidebar-title {
+            display: inline-block;
+            margin: 0;
+            color: #ffffff;
+            font-weight: 600;
+            line-height: $nav-height;
+            font-size: 14px;
+            font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+            vertical-align: middle;
+        }
+    }
+
+    &.collapse {
+        text-align: center;
+        padding-left: 0;
+    }
+}
+</style>

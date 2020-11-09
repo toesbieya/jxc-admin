@@ -42,13 +42,14 @@ export default {
             //渲染折叠按钮的条件
             //①侧边栏有菜单
             //②移动端
-            //③桌面端且是侧边栏导航或混合导航模式
-            //④桌面端且未设置侧边栏自动隐藏
+            //③桌面端是双层侧边栏导航
+            //④桌面端且是侧边栏导航或混合导航时，未设置侧边栏自动隐藏
             const hasSidebarMenus = getSidebarMenus().length > 0,
                 isMobile = appGetters.isMobile,
-                correctMode = ['aside','mix'].includes(appGetters.navMode),
-                notAutoHidden = !asideGetters.autoHide,
-                renderHamburger = hasSidebarMenus && (isMobile || correctMode && notAutoHidden)
+                correctMode =
+                    ['aside', 'mix'].includes(appGetters.navMode) && !asideGetters.autoHide
+                    || appGetters.navMode === 'aside-two-part',
+                renderHamburger = hasSidebarMenus && (isMobile || correctMode)
 
             if (renderHamburger) {
                 const active = isMobile ? asideGetters.show : !asideGetters.collapse
@@ -123,4 +124,53 @@ export default {
 }
 </script>
 
-<style lang="scss" src="./style.scss"></style>
+<style lang="scss">
+@import "~@/asset/style/variables.scss";
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: $nav-height;
+    padding: 0 12px;
+    transition: height .3s ease-in-out;
+    position: relative;
+    z-index: 9;
+    background-color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+
+    > div {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 100%;
+    }
+
+    .navbar-icon {
+        font-size: 18px;
+    }
+
+    .navbar-item {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        color: #5a5e66;
+        transition: background .3s;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(0, 0, 0, .025)
+        }
+    }
+
+    .avatar-wrapper {
+        display: flex;
+        align-items: center;
+
+        span {
+            margin-right: 5px;
+            font-size: 18px;
+        }
+    }
+}
+</style>

@@ -209,19 +209,16 @@ $transition-easing: cubic-bezier(0.215, 0.61, 0.355, 1);
     &-enter-to,
     &-leave {
         transform: perspective(400px) rotate3d(1, 1, 0, 0deg)
-
     }
 }
 
 .flip-right {
     &-enter {
         transform: perspective(400px) rotate3d(0, 1, 0, -180deg)
-
     }
 
     &-leave-to {
         transform: perspective(400px) rotate3d(0, 1, 0, 180deg)
-
     }
 }
 
