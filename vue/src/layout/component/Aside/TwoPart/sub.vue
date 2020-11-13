@@ -95,3 +95,37 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+@import "~@/asset/style/variables.scss";
+
+.sub-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: $aside-width;
+    background-color: $aside-menu-background;
+    font-size: 0;
+    height: 100vh;
+    z-index: 10;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+    transition: all 0.2s ease-in-out;
+
+    //折叠状态
+    &.collapse {
+        width: $aside-icon-size + 20px * 2;
+
+        .sub-sidebar-title,
+        .menu-item-content {
+            display: none;
+        }
+    }
+
+    &-title {
+        height: $nav-height;
+        line-height: $nav-height;
+        padding-left: 20px;
+        color: #ffffff;
+        font-size: 16px;
+    }
+}
+</style>

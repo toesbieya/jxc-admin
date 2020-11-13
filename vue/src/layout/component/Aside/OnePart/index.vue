@@ -2,7 +2,8 @@
 import menuMixin from "@/layout/mixin/menu"
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
-import Logo from '@/layout/component/Aside/Logo'
+import {getters as pageGetters} from "@/layout/store/page"
+import Logo from '@/layout/component/Logo'
 import NavMenu from '@/component/menu/NavMenu'
 import {getSidebarMenus, getActiveMenuByRoute} from "@/layout/util"
 import {moveToActiveMenuVertically} from "@/util/element-ui/elMenu"
@@ -158,13 +159,15 @@ export default {
     render() {
         if (this.menus.length <= 0) return
 
+        const showLogo = pageGetters.showLogo && pageGetters.logoPosition === 'aside'
+
         const aside = (
             <aside
                 class={{'aside': true, 'sidebar': true, 'collapse': this.collapse}}
                 on-mouseleave={() => this.mouseOutside = true}
                 on-mouseenter={() => this.mouseOutside = false}
             >
-                {asideGetters.showLogo && <logo collapse={this.collapse}/>}
+                {showLogo && <logo show-title={!this.collapse}/>}
                 <nav-menu
                     menus={this.menus}
                     collapse={this.collapse}
@@ -182,9 +185,10 @@ export default {
                 <el-drawer
                     visible={this.show}
                     with-header={false}
+                    modal={this.isMobile} //设置自动隐藏时不使用遮罩
                     direction="ltr"
                     size="auto"
-                    on-close={() => asideMutations.close()}
+                    on-close={asideMutations.close}
                 >
                     {aside}
                 </el-drawer>

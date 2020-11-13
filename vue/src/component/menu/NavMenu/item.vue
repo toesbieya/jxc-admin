@@ -9,7 +9,7 @@ const MenuItemContent = {
 
         const iconComponent =
             useTitleAsIcon
-                ? <i class="icon" style="font-style: normal">{title[0]}</i>
+                ? <em class="icon" style="font-style: normal">{title[0]}</em>
                 : icon
                 ? <v-icon icon={icon}/>
                 : <span class="icon" style="display: none"/>

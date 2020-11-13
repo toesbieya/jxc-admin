@@ -1,12 +1,10 @@
 const isDev = process.env.NODE_ENV === 'development'
 
-const contextPath = '/'
-
 module.exports = {
     isDev,
 
     //项目的部署路径，始终以'/'开头，以'/'结束
-    contextPath,
+    contextPath: '/',
 
     //页面标题、登录注册页的标题
     title: 'BiuBiuBiu~',
@@ -19,9 +17,6 @@ module.exports = {
 
     //socket连接地址
     socketUrl: isDev ? 'http://localhost:12580' : 'https://toesbieya.cn',
-
-    //侧边栏顶上的logo地址
-    sidebarLogoUrl: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png',
 
     //路由配置
     route: {

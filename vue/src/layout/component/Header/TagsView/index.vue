@@ -89,10 +89,10 @@ export default {
             tag && this.$refs.scrollPanel.moveToTarget(tag, tagInstances)
         },
 
-        /*
-        * 右键菜单选项
-        * 刷新所选、关闭所选、关闭其他、关闭所有
-        * */
+        /**
+         * 右键菜单选项
+         * 刷新所选、关闭所选、关闭其他、关闭所有
+         */
         refreshSelectedTag() {
             if (!this.selectedTag) return
             tagsViewMutations.delCacheOnly(this.selectedTag)
@@ -127,13 +127,13 @@ export default {
             else refreshPage()
         },
 
-        openMenu(tag, e) {
+        openContextMenu(e, tag) {
             e.preventDefault()
 
-            const menuMinWidth = 105
+            const contextMenuWidth = 105 //右键菜单的假定宽度
             const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
             const offsetWidth = this.$el.offsetWidth // container width
-            const maxLeft = offsetWidth - menuMinWidth // left boundary
+            const maxLeft = offsetWidth - contextMenuWidth // left boundary
             const left = e.clientX - offsetLeft + 15 // 15: margin right
 
             this.contextmenu.left = left > maxLeft ? maxLeft : left
@@ -156,8 +156,7 @@ export default {
                         key={path}
                         class={{'tags-view-item': true, active}}
                         to={{path, query, fullPath}}
-                        tag="a"
-                        v-on:contextmenu_native={e => this.openMenu(tag, e)}
+                        v-on:contextmenu_native={e => this.openContextMenu(e, tag)}
                         v-on:dblclick_native={e => closeSelectedTag(e, tag)}
                     >
                         {title}

@@ -1,5 +1,11 @@
 <template>
-    <el-drawer :visible="value" :with-header="false" append-to-body size="288px" @close="$emit('input', false)">
+    <el-drawer
+        :visible="value"
+        :with-header="false"
+        append-to-body
+        size="288px"
+        @close="$emit('input', false)"
+    >
         <div class="drawer-container">
             <el-divider>主题色</el-divider>
             <div class="drawer-item">
@@ -23,6 +29,22 @@
 
             <el-divider>页面设置</el-divider>
             <div class="drawer-item">
+                <span>显示logo</span>
+                <el-switch :value="pageGetters.showLogo" @input="changePageShowLogo"/>
+            </div>
+            <div class="drawer-item">
+                <span>logo位置</span>
+                <el-select
+                    :value="pageGetters.logoPosition"
+                    size="mini"
+                    style="width: 80px"
+                    @input="changePageLogoPosition"
+                >
+                    <el-option value="aside" label="侧栏"/>
+                    <el-option value="head" label="顶栏"/>
+                </el-select>
+            </div>
+            <div class="drawer-item">
                 <span>显示页头</span>
                 <el-switch :value="pageGetters.showPageHeader" @input="changePageShowHeader"/>
             </div>
@@ -32,10 +54,6 @@
             </div>
 
             <el-divider>侧边栏设置</el-divider>
-            <div class="drawer-item">
-                <span>显示logo</span>
-                <el-switch :value="asideGetters.showLogo" @input="changeAsideShowLogo"/>
-            </div>
             <div class="drawer-item">
                 <span>手风琴效果</span>
                 <el-switch :value="asideGetters.uniqueOpen" @input="changeAsideUniqueOpen"/>
@@ -198,6 +216,12 @@ export default {
             appMutations.navMode(v)
         },
 
+        changePageShowLogo(v) {
+            pageMutations.showLogo(v)
+        },
+        changePageLogoPosition(v) {
+            pageMutations.logoPosition(v)
+        },
         changePageShowHeader(v) {
             pageMutations.showPageHeader(v)
         },
@@ -205,9 +229,6 @@ export default {
             pageMutations.showBackToTop(v)
         },
 
-        changeAsideShowLogo(v) {
-            asideMutations.showLogo(v)
-        },
         changeAsideUniqueOpen(v) {
             asideMutations.uniqueOpen(v)
         },

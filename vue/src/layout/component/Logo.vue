@@ -1,23 +1,23 @@
 <script type="text/jsx">
-import {sidebarLogoUrl, title} from '@/config'
+import {title} from '@/config'
 
 export default {
-    name: 'SidebarLogo',
+    name: 'Logo',
 
     functional: true,
 
-    props: {collapse: Boolean},
+    props: {showTitle: Boolean},
 
     render(h, context) {
-        const {collapse} = context.props
+        const {showTitle} = context.props
 
-        const logoClass = {'sidebar-logo-container': true, 'collapse': collapse}
+        const logoClass = {'logo-container': true, 'no-title': !showTitle}
 
         return (
             <div class={logoClass}>
-                <router-link class="sidebar-logo-link" to="/">
-                    {sidebarLogoUrl && <img src={sidebarLogoUrl} class="sidebar-logo"/>}
-                    {!collapse && <h1 class="sidebar-title">{title}</h1>}
+                <router-link class="logo-link" to="/">
+                    <img src={`${process.env.BASE_URL}static/img/logo.svg`}/>
+                    {showTitle && <h1 class="logo-title">{title}</h1>}
                 </router-link>
             </div>
         )
@@ -30,28 +30,28 @@ export default {
 
 $logoSize: 30px;
 
-.sidebar-logo-container {
+.logo-container {
     position: relative;
     width: 100%;
     height: $nav-height;
     line-height: $nav-height;
     padding-left: 20px;
 
-    .sidebar-logo-link {
+    .logo-link {
+        display: block;
         height: 100%;
-        width: 100%;
 
-        .sidebar-logo {
-            width: $logoSize;
+        > img {
+            display: inline-block;
             height: $logoSize;
             vertical-align: middle;
 
-            & + .sidebar-title {
+            & + .logo-title {
                 margin-left: 12px;
             }
         }
 
-        .sidebar-title {
+        .logo-title {
             display: inline-block;
             margin: 0;
             color: #ffffff;
@@ -63,9 +63,8 @@ $logoSize: 30px;
         }
     }
 
-    &.collapse {
-        text-align: center;
-        padding-left: 0;
+    &.no-title {
+        padding-left: ($aside-icon-size + 20px * 2 - $logoSize) / 2;
     }
 }
 </style>

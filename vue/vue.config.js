@@ -64,13 +64,11 @@ module.exports = {
                 minRatio: 0.8,
                 deleteOriginalAssets: false,        //是否删除源文件
             }),
-            settings.isDev
-                ? new ThemeColorReplacer({
-                    fileName: 'css/theme-colors.[contenthash:8].css',
-                    matchColors: forElementUI.getElementUISeries('#1890ff'),
-                    changeSelector: forElementUI.changeSelector
-                })
-                : EMPTY_PLUGIN,
+            new ThemeColorReplacer({
+                fileName: 'css/theme-colors.[contenthash:8].css',
+                matchColors: forElementUI.getElementUISeries('#1890ff'),
+                changeSelector: forElementUI.changeSelector
+            }),
             settings.isDev ? EMPTY_PLUGIN : new BundleAnalyzerPlugin()
         ]
     },
