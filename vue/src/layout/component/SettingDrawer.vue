@@ -91,7 +91,6 @@
 <script>
 import client from 'webpack-theme-color-replacer/client'
 import forElementUI from 'webpack-theme-color-replacer/forElementUI'
-import {isDev} from '@/config'
 import CheckboxGroup from "@/component/checkbox/Group"
 import ColorCheckbox from "@/component/checkbox/ColorCheckbox"
 import ImgCheckbox from "@/component/checkbox/ImgCheckbox"
@@ -209,7 +208,7 @@ export default {
         },
 
         changeThemeColor(v) {
-            isDev && client.changer.changeColor({newColors: forElementUI.getElementUISeries(v)})
+            client.changer.changeColor({newColors: forElementUI.getElementUISeries(v)})
             appMutations.color(v)
         },
         changeNavMode(v) {
