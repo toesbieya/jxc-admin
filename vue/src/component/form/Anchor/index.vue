@@ -26,7 +26,7 @@ export default {
         bounds: {type: Number, default: 0},
         getContainer: {
             type: Function,
-            default: () => document.querySelector('#app .router-main>.scroll-container')
+            default: () => document.querySelector('#app .page-main>.scroll-container')
         },
     },
 

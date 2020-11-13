@@ -33,15 +33,15 @@
                 <el-switch :value="pageGetters.showLogo" @input="changePageShowLogo"/>
             </div>
             <div class="drawer-item">
-                <span>logo位置</span>
+                <span>分层结构</span>
                 <el-select
-                    :value="pageGetters.logoPosition"
+                    :value="pageGetters.position"
                     size="mini"
                     style="width: 80px"
-                    @input="changePageLogoPosition"
+                    @input="changePagePosition"
                 >
-                    <el-option value="aside" label="侧栏"/>
-                    <el-option value="head" label="顶栏"/>
+                    <el-option value="top-bottom" label="上下"/>
+                    <el-option value="left-right" label="左右"/>
                 </el-select>
             </div>
             <div class="drawer-item">
@@ -142,6 +142,8 @@ export default {
                     navMode: 'mix'
                 },
                 page: {
+                    showLogo: true,
+                    position: 'left-right',
                     showPageHeader: true,
                     showBackToTop: true
                 },
@@ -169,10 +171,11 @@ export default {
             appMutations.color(app.color)
             appMutations.navMode(app.navMode)
 
+            pageMutations.showLogo(page.showLogo)
+            pageMutations.position(page.position)
             pageMutations.showPageHeader(page.showPageHeader)
             pageMutations.showBackToTop(page.showBackToTop)
 
-            asideMutations.showLogo(aside.showLogo)
             asideMutations.uniqueOpen(aside.uniqueOpen)
             asideMutations.collapse(aside.collapse)
             asideMutations.showParentOnCollapse(aside.showParentOnCollapse)
@@ -188,6 +191,8 @@ export default {
             app.color = appGetters.color
             app.navMode = appGetters.navMode
 
+            page.showLogo = pageGetters.showLogo
+            page.position = pageGetters.position
             page.showPageHeader = pageGetters.showPageHeader
             page.showBackToTop = pageGetters.showBackToTop
 
@@ -218,8 +223,8 @@ export default {
         changePageShowLogo(v) {
             pageMutations.showLogo(v)
         },
-        changePageLogoPosition(v) {
-            pageMutations.logoPosition(v)
+        changePagePosition(v) {
+            pageMutations.position(v)
         },
         changePageShowHeader(v) {
             pageMutations.showPageHeader(v)
@@ -254,11 +259,13 @@ export default {
 
     created() {
         //增强所有以change开头的方法
-        for (const key of Object.keys(this)) {
-            if (!key.startsWith('change')) continue
-            const originMethod = this[key]
+        for (const [key, value] of Object.entries(this)) {
+            if (typeof value !== 'function' || !key.startsWith('change')) {
+                continue
+            }
+
             this[key] = (...arg) => {
-                originMethod.apply(this, arg)
+                value.apply(this, arg)
                 this.saveSetting()
             }
         }
@@ -269,6 +276,9 @@ export default {
         setLocalPersonalSettings(this.setting)
 
         this.updateLayoutStore()
+
+        //初始化时尝试修改主题色
+        this.changeThemeColor(this.setting.app.color)
     }
 }
 </script>

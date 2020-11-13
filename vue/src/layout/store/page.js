@@ -13,8 +13,8 @@ const state = {
 
     //是否显示侧边栏或顶部导航栏的logo
     showLogo: true,
-    //logo位置，侧边栏（'aside'）、顶部导航栏（'head）
-    logoPosition: 'aside',
+    //分层结构，上下（'top-bottom'）、左右（'left-right'）
+    position: 'left-right',
     //是否显示页头
     showPageHeader: true,
     //是否显示返回顶部按钮

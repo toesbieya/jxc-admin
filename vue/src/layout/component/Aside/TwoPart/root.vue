@@ -52,6 +52,11 @@ export default {
     computed: {
         menus() {
             return appGetters.menus.map(root => ({...root, children: undefined}))
+        },
+
+        //是否需要显示logo
+        showLogo() {
+            return pageGetters.showLogo && pageGetters.position === 'left-right'
         }
     },
 
@@ -99,8 +104,6 @@ export default {
     },
 
     render() {
-        const showLogo = pageGetters.showLogo && pageGetters.logoPosition === 'aside'
-
         return (
             <div class="root-sidebar-container">
                 <div
@@ -108,7 +111,7 @@ export default {
                     on-mouseleave={() => this.mouseOutside = true}
                     on-mouseenter={() => this.mouseOutside = false}
                 >
-                    {showLogo && <logo show-title={!this.mouseOutside}/>}
+                    {this.showLogo && <logo show-title={!this.mouseOutside}/>}
                     <ul class="el-menu el-menu--vertical">
                         {this.menus.map(({fullPath, meta: {title, icon}}) => (
                             <item

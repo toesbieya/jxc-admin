@@ -56,6 +56,12 @@ module.exports = {
             }
         },
         plugins: [
+            new ThemeColorReplacer({
+                fileName: 'css/theme-colors.[contenthash:8].css',
+                matchColors: forElementUI.getElementUISeries('#1890ff'),
+                changeSelector: forElementUI.changeSelector,
+                injectCss: true
+            }),
             new CompressionWebpackPlugin({
                 filename: '[path].gz[query]',
                 algorithm: 'gzip',
@@ -63,11 +69,6 @@ module.exports = {
                 threshold: 10 * 1024,               //对10K以上的数据进行压缩
                 minRatio: 0.8,
                 deleteOriginalAssets: false,        //是否删除源文件
-            }),
-            new ThemeColorReplacer({
-                fileName: 'css/theme-colors.[contenthash:8].css',
-                matchColors: forElementUI.getElementUISeries('#1890ff'),
-                changeSelector: forElementUI.changeSelector
             }),
             settings.isDev ? EMPTY_PLUGIN : new BundleAnalyzerPlugin()
         ]

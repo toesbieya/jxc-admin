@@ -10,9 +10,6 @@ const state = {
     //抽屉模式时的显隐
     show: false,
 
-    //显示顶部logo
-    showLogo: true,
-
     //手风琴效果
     uniqueOpen: true,
 

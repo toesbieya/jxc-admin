@@ -4,15 +4,13 @@ import VNavbar from './Navbar'
 import TagsView from './TagsView'
 
 export default {
-    name: "Header",
-
-    components: {VNavbar, TagsView},
+    functional: true,
 
     render() {
         return (
-            <header class="header-container">
-                <v-navbar/>
-                {tagsViewGetters.enabled && <tags-view/>}
+            <header>
+                <VNavbar/>
+                {tagsViewGetters.enabled && <TagsView/>}
             </header>
         )
     }

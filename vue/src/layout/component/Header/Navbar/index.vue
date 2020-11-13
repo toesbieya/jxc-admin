@@ -4,9 +4,11 @@ import GuideMixin from '@/mixin/guide'
 import Bell from "./component/Bell"
 import Hamburger from './component/Hamburger'
 import HeadMenu from "./component/HeadMenu"
+import Logo from "@/layout/component/Logo"
 import SettingDrawer from '@/layout/component/SettingDrawer'
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
+import {getters as pageGetters} from "@/layout/store/page"
 import {getSidebarMenus} from "@/layout/util"
 import {elConfirm} from "@/util/message"
 import {refreshPage} from "@/util/route"
@@ -16,7 +18,7 @@ export default {
 
     mixins: [GuideMixin.navbar],
 
-    components: {Hamburger, Bell, HeadMenu, SettingDrawer},
+    components: {Bell, Hamburger, HeadMenu, Logo, SettingDrawer},
 
     data: () => ({settingDrawer: false}),
 
@@ -38,6 +40,14 @@ export default {
             }
         },
 
+        renderLogo() {
+            const render =
+                !appGetters.isMobile
+                && pageGetters.showLogo
+                && pageGetters.position === 'top-bottom'
+
+            if (render) return <logo show-title/>
+        },
         renderHamburger() {
             //渲染折叠按钮的条件
             //①侧边栏有菜单
@@ -107,7 +117,9 @@ export default {
     render() {
         return (
             <nav class="navbar">
-                <div style="flex: 0.5">
+                {this.renderLogo()}
+
+                <div style="flex: 1">
                     {this.renderHamburger()}
                     {this.renderHeadMenuMenu()}
                 </div>
@@ -133,7 +145,7 @@ export default {
     align-items: center;
     flex-wrap: nowrap;
     height: $nav-height;
-    padding: 0 12px;
+    padding-left: 12px;
     transition: height .3s ease-in-out;
     position: relative;
     z-index: 9;
@@ -160,6 +172,18 @@ export default {
 
         &:hover {
             background: rgba(0, 0, 0, .025)
+        }
+    }
+
+    .logo-container {
+        width: auto;
+        min-width: 192px;
+        padding-left: 0;
+
+        > .logo-link > h1 {
+            font-weight: 400;
+            color: #303133;
+            font-size: 16px;
         }
     }
 

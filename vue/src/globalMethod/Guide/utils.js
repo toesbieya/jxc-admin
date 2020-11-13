@@ -32,7 +32,7 @@ export function getStyleProperty(element, propertyName, prefixVendor = false) {
 }
 
 export function inMainPage(element) {
-    const appView = document.querySelector('.router-main')
+    const appView = document.querySelector('.page-main')
     if (!appView) throw new Error('路由页面未加载')
     return appView.contains(element)
 }

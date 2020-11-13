@@ -6,6 +6,19 @@
     display: none;
 }
 
+//hover时，菜单左侧图标放大
+.el-menu-item,
+.el-submenu__title {
+    > .icon, > .el-tooltip > .icon {
+        transition: transform .1s;
+    }
+
+    &:hover > .icon,
+    &:hover > .el-tooltip > .icon {
+        transform: scale(1.2);
+    }
+}
+
 /*-------侧边栏垂直菜单开始---------*/
 .el-menu--vertical.el-menu {
     overflow-y: auto;

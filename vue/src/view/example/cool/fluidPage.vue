@@ -38,7 +38,7 @@ export default {
     },
 
     mounted() {
-        this.parentDom = document.querySelector('.router-main')
+        this.parentDom = document.querySelector('.page-main')
         this.width = this.parentDom.clientWidth
         this.height = this.parentDom.clientHeight
         this.$_resizeHandler = debounce(() => {

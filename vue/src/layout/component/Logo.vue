@@ -17,7 +17,7 @@ export default {
             <div class={logoClass}>
                 <router-link class="logo-link" to="/">
                     <img src={`${process.env.BASE_URL}static/img/logo.svg`}/>
-                    {showTitle && <h1 class="logo-title">{title}</h1>}
+                    {showTitle && <h1>{title}</h1>}
                 </router-link>
             </div>
         )
@@ -46,12 +46,12 @@ $logoSize: 30px;
             height: $logoSize;
             vertical-align: middle;
 
-            & + .logo-title {
+            & + h1 {
                 margin-left: 12px;
             }
         }
 
-        .logo-title {
+        > h1 {
             display: inline-block;
             margin: 0;
             color: #ffffff;

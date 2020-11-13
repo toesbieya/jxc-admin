@@ -69,6 +69,11 @@ export default {
 
             //鼠标在侧边栏外部，true
             return this.mouseOutside
+        },
+
+        //是否需要显示logo
+        showLogo() {
+            return pageGetters.showLogo && (this.isMobile || pageGetters.position === 'left-right')
         }
     },
 
@@ -159,15 +164,13 @@ export default {
     render() {
         if (this.menus.length <= 0) return
 
-        const showLogo = pageGetters.showLogo && pageGetters.logoPosition === 'aside'
-
         const aside = (
             <aside
                 class={{'aside': true, 'sidebar': true, 'collapse': this.collapse}}
                 on-mouseleave={() => this.mouseOutside = true}
                 on-mouseenter={() => this.mouseOutside = false}
             >
-                {showLogo && <logo show-title={!this.collapse}/>}
+                {this.showLogo && <logo show-title={!this.collapse}/>}
                 <nav-menu
                     menus={this.menus}
                     collapse={this.collapse}
