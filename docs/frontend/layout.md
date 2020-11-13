@@ -85,13 +85,6 @@ PC端的行为是切换侧边栏的折叠状态，移动端是切换侧边栏在
 在设置面板中修改数据后，会将配置写入localStorage。
 在面板mounted时，会将localStorage中的配置数据同步到`Layout`的store中
 
-::: tip 注意 
-设置面板中的主题色修改功能默认只在dev环境下生效，为啥呢，因为还在研究原理。  
-想放开限制需要：
-1. 修改`@/layout/component/header/navbar/component/SettingDrawer`中的`changeThemeColor`方法
-2. 修改`vue.config.js`中的`configureWebpack.plugins`配置项
-:::
-
 ## 头部多页签
 
 文件目录：`@/layout/component/Header/component/Tagsview/index.vue`。
