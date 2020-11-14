@@ -43,14 +43,9 @@ export default {
             )
         },
         renderTableAndPagination({loading, table, pagination}) {
-            //为了配合autoAdaptHeightMixin
-            if (!table.props || !table.props.maxHeight) {
-                table.props.maxHeight = this.tableMaxHeight
-            }
-
             return (
                 <el-row v-loading={loading} class="table-container">
-                    <abstract-table {...table}/>
+                    <abstract-table max-height={this.tableMaxHeight} {...table}/>
                     <abstract-pagination {...pagination}/>
                 </el-row>
             )

@@ -9,39 +9,38 @@ import {debounce} from "@/util"
 export default {
     data() {
         return {
-            tableMaxHeight: undefined
+            tableMaxHeight: undefined,
+            desiredDistance: undefined
         }
     },
 
     methods: {
+        //设置表格距离视窗底部的理想距离（分页高度 + el-card的1px边距 + el-card padding + 页面margin）
+        calcDesiredDistance() {
+            const pageViewMargin = parseFloat(cssVariables['pageViewMargin'])
+            const paginationHeight = this.$el.querySelector('.table-container > .el-pagination') ? 50 : 0
+            this.desiredDistance = paginationHeight + 1 + 20 + pageViewMargin
+        },
+
         resize() {
             const clientHeight = window.innerHeight
-            const pageViewMargin = parseFloat(cssVariables['pageViewMargin'])
 
             //计算表格底部距离视窗底部的距离
             const tableRect = this.$refs.table.$el.getBoundingClientRect()
-            const bottomDistanceBetweenWindowAndTable = clientHeight - tableRect.top - tableRect.height
+            const distance = clientHeight - tableRect.top - tableRect.height
 
-            //判断有无分页组件，分页组件总高度为70px（本身50px高度，margin-top 20px）
-            const paginationHeight = this.$el.querySelector('.table-container > .el-pagination') ? 70 : 0
-
-            //表格距离视窗底部的理想距离（分页高度 + el-card的1px边距 + el-card padding + 页面margin）
-            const bottomDistanceBetweenWindowAndTableShouldBe =
-                paginationHeight
-                + 1
-                + 20
-                + pageViewMargin
-
-            const overHeight = bottomDistanceBetweenWindowAndTableShouldBe - bottomDistanceBetweenWindowAndTable
-            if (overHeight > 0) {
-                this.tableMaxHeight = tableRect.height - overHeight
+            if (this.desiredDistance === undefined) {
+                this.calcDesiredDistance()
             }
+
+            const overHeight = this.desiredDistance - distance
+            this.tableMaxHeight = tableRect.height - overHeight
         },
         createResizeObserver() {
             if (this.resizeObserver) return
 
             this.resizeObserver = new ResizeObserver(this.resize)
-            this.resizeObserver.observe(this.$refs.table.$el)
+            this.resizeObserver.observe(this.$el)
 
             this.$once('hook:beforeDestroy', () => {
                 this.resizeObserver && this.resizeObserver.disconnect()

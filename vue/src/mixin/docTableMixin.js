@@ -102,7 +102,7 @@ export default {
             if (this.config.loading) return
             this.config.loading = true
             //折叠所有行
-            this.tableData.forEach(row => this.$refs.table.toggleRowExpansion(row, false))
+            this.tableData.forEach(row => this.$children[0].$refs.table.toggleRowExpansion(row, false))
             this.row = null
             this.api.search
                 .request(this.mergeSearchForm())
