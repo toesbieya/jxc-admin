@@ -1,20 +1,18 @@
 <script type="text/jsx">
 import offlineMixin from './mixin/offline'
 import VAside from './component/Aside'
-import VHeader from './component/Header'
+import VNavbar from './component/Navbar'
 import VPage from './component/Page'
-import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
+import {getters as appGetters} from "@/layout/store/app"
 import {getters as pageGetters} from "@/layout/store/page"
 import {getters as tagsViewGetters} from "@/layout/store/tagsView"
-import {debounce} from "@/util"
-import {isMobile} from "@/util/browser"
 
 export default {
     name: 'Layout',
 
     mixins: [offlineMixin],
 
-    components: {VAside, VHeader, VPage},
+    components: {VAside, VNavbar, VPage},
 
     computed: {
         isLeftRight() {
@@ -40,26 +38,15 @@ export default {
         }
     },
 
-    mounted() {
-        this.$_resizeHandler = debounce(() => {
-            !document.hidden && appMutations.isMobile(isMobile())
-        })
-        this.$_resizeHandler()
-
-        window.addEventListener('resize', this.$_resizeHandler)
-
-        this.$once('hook:beforeDestroy', () => {
-            window.removeEventListener('resize', this.$_resizeHandler)
-        })
-    },
-
     render() {
+        const aside = this.renderAside && <v-aside/>
+
         return (
             <section class={this.wrapperClass}>
-                {this.isLeftRight ? this.renderAside && <v-aside/> : <v-header/>}
+                {this.isLeftRight ? aside : <v-navbar/>}
 
                 <section class={this.containerClass}>
-                    {this.isLeftRight ? <v-header/> : <v-aside/>}
+                    {this.isLeftRight ? <v-navbar/> : aside}
                     <v-page/>
                 </section>
             </section>

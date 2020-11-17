@@ -5,11 +5,12 @@ import BackToTop from "./component/BackToTop"
 import PageHeader from "./component/PageHeader"
 import PageView from "./component/PageView"
 import PageFooter from "./component/PageFooter"
+import TagsView from './component/TagsView'
 
 export default {
     name: 'Page',
 
-    components: {BackToTop, PageHeader, PageView, PageFooter},
+    components: {BackToTop, PageHeader, PageView, PageFooter, TagsView},
 
     computed: {
         renderPageHeader() {
@@ -26,6 +27,8 @@ export default {
 
         return (
             <main class="page-main">
+                {enabled && <tags-view/>}
+
                 <div v-show={!showIframe} class={this.pageClass}>
                     {this.renderPageHeader && <page-header/>}
 
@@ -61,8 +64,10 @@ export default {
 @import "~@/asset/style/variables.scss";
 
 .page-main {
-    position: relative;
+    display: flex;
+    flex-direction: column;
     flex: 1;
+    position: relative;
     overflow: hidden;
     background-color: #f0f2f5;
 

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {isEmpty} from "@/util"
+import {debounce, isEmpty} from "@/util"
 import {isMobile} from "@/util/browser"
 import {createGetters, createMutations} from "@/util/observable"
 
@@ -67,3 +67,7 @@ function sort(routes) {
         }
     })
 }
+
+window.addEventListener('resize', debounce(() => {
+    !document.hidden && mutations.isMobile(isMobile())
+}))

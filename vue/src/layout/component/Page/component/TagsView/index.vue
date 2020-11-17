@@ -189,12 +189,12 @@ export default {
 
     render() {
         return (
-            <nav class="tags-view-container">
+            <div class="tags-view-container">
                 <scroll-panel ref="scrollPanel" class="tags-view-wrapper">
                     {this.renderTags()}
                 </scroll-panel>
                 {this.renderContextMenu()}
-            </nav>
+            </div>
         )
     }
 }
