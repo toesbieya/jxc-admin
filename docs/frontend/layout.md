@@ -69,7 +69,7 @@ PC端的行为是切换侧边栏的折叠状态，移动端是切换侧边栏在
 文件目录：`@/layout/component/Header/component/Navbar/HeadMenu.vue`。
 
 头部导航菜单基本可以视为垂直版的侧边栏菜单，也具有*点击已激活的菜单可刷新路由*的功能，此外还扩展了以下功能：
-- 仿ant design的响应式（目前还存在组件未更新的问题，初步判断是element-ui的问题）
+- 仿ant design的响应式
 
 头部导航菜单**不会**在以下情形渲染：
 - 是移动端
