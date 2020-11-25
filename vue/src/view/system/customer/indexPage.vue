@@ -164,6 +164,7 @@ export default {
         },
 
         add() {
+            this.row = null
             this.type = 'add'
             this.editDialog = true
         },

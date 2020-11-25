@@ -4,6 +4,7 @@
 * */
 import AbstractPagination from '@/component/abstract/Pagination'
 import AbstractTable from '@/component/abstract/Table'
+import {findComponentByTag} from "@/util/vue"
 
 const mixin = {
     components: {AbstractPagination, AbstractTable},
@@ -33,7 +34,7 @@ const mixin = {
 
     watch: {
         row(v) {
-            !v && this.$refs.table && this.$refs.table.setCurrentRow()
+            !v && this.$_getElTableInstance().setCurrentRow()
         },
 
         tablePageNeedSearchMap: {
@@ -47,9 +48,17 @@ const mixin = {
     },
 
     methods: {
+        $_getElTableInstance() {
+            if (!this.$_elTableInstance) {
+                this.$_elTableInstance = findComponentByTag(this, 'el-table')
+            }
+
+            return this.$_elTableInstance
+        },
+
         rowClick(row) {
             if (this.row === row) {
-                this.$refs.table.setCurrentRow()
+                this.$_getElTableInstance().setCurrentRow()
                 this.row = null
             }
             else this.row = row

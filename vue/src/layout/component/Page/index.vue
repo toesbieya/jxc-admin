@@ -67,6 +67,7 @@ export default {
     display: flex;
     flex-direction: column;
     flex: 1;
+    position: relative;
     overflow: hidden;
     background-color: #f0f2f5;
 
