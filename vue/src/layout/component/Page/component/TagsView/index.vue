@@ -146,11 +146,11 @@ export default {
             e.preventDefault()
 
             const contextMenuWidth = 105 //右键菜单的假定宽度
-            const offsetWidth = this.$el.offsetWidth // container width
-            const maxLeft = offsetWidth - contextMenuWidth // left boundary
-            const left = e.clientX + 15 // 15: margin right
+            const {left: elLeft, width: elWidth} = this.$el.getBoundingClientRect()
+            const maxLeft = elWidth + elLeft - contextMenuWidth
+            const left = e.clientX
 
-            this.contextmenu.left = left > maxLeft ? maxLeft : left
+            this.contextmenu.left = (left > maxLeft ? maxLeft : left) + 15
             this.contextmenu.top = e.clientY
             this.contextmenu.show = true
 
