@@ -3,7 +3,8 @@ import offlineMixin from './mixin/offline'
 import VAside from './component/Aside'
 import VNavbar from './component/Navbar'
 import VPage from './component/Page'
-import {getters as appGetters} from "@/layout/store/app"
+import SettingDrawer from './component/SettingDrawer'
+import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
 import {getters as pageGetters} from "@/layout/store/page"
 import {getters as tagsViewGetters} from "@/layout/store/tagsView"
 
@@ -12,11 +13,14 @@ export default {
 
     mixins: [offlineMixin],
 
-    components: {VAside, VNavbar, VPage},
+    components: {VAside, VNavbar, VPage, SettingDrawer},
 
     computed: {
         isLeftRight() {
             return pageGetters.position === 'left-right'
+        },
+        renderAside() {
+            return appGetters.isMobile || ['aside', 'aside-two-part', 'mix'].includes(appGetters.navMode)
         },
         wrapperClass() {
             return {
@@ -32,9 +36,12 @@ export default {
                 this.isLeftRight && 'flex-column',
                 tagsViewGetters.enabled && 'has-tags-view'
             ]
-        },
-        renderAside() {
-            return appGetters.isMobile || ['aside', 'aside-two-part', 'mix'].includes(appGetters.navMode)
+        }
+    },
+
+    methods: {
+        closeSettingDrawer() {
+            appMutations.showSettingDrawer(false)
         }
     },
 
@@ -49,6 +56,11 @@ export default {
                     {this.isLeftRight ? <v-navbar/> : aside}
                     <v-page/>
                 </section>
+
+                <setting-drawer
+                    value={appGetters.showSettingDrawer}
+                    on-input={this.closeSettingDrawer}
+                />
             </section>
         )
     }
@@ -63,7 +75,6 @@ export default {
 
 .app-wrapper {
     display: flex;
-    position: relative;
     height: 100%;
     width: 100%;
 
@@ -71,7 +82,12 @@ export default {
         display: flex;
         flex: 1;
         overflow: hidden;
-        position: relative;
+    }
+
+    //左右结构时，侧边栏z-index需大于导航栏
+    //上下结构时，侧边栏z-index需小于导航栏
+    &.flex-column .aside {
+        z-index: 9;
     }
 }
 </style>

@@ -1,0 +1,11 @@
+.navbar.dark {
+    background-color: $root-menu-dark-background;
+
+    .navbar-item {
+        color: rgba(255, 255, 255, .85);
+
+        &:hover {
+            background: $--color-primary;
+        }
+    }
+}

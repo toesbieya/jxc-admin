@@ -1,48 +1,34 @@
 <script type="text/jsx">
-import OnePart from './OnePart'
-import TwoPart from './TwoPart'
+import OnePart from './component/OnePartRoot'
+import TwoPartRoot from './component/TwoPartRoot'
+import TwoPartSub from './component/TwoPartSub'
 import {getters as appGetters} from "@/layout/store/app"
+import {getters as asideGetters} from "@/layout/store/aside"
 
 export default {
     functional: true,
 
     render() {
+        let children
+
         //移动端只能使用抽屉模式的单层侧边栏
         if (appGetters.isMobile) {
-            return <OnePart/>
+            children = <OnePart/>
+        }
+        else {
+            switch (appGetters.navMode) {
+                case 'mix':
+                case 'aside':
+                    children = <OnePart/>
+                    break
+                case 'aside-two-part':
+                    children = [<TwoPartRoot/>, <TwoPartSub/>]
+            }
         }
 
-        switch (appGetters.navMode) {
-            case 'mix':
-            case 'aside':
-                return <OnePart/>
-            case 'aside-two-part':
-                return <TwoPart/>
-        }
+        return <aside class={`aside ${asideGetters.theme}`}>{children}</aside>
     }
 }
 </script>
 
-<style lang="scss">
-.aside {
-    display: flex;
-    position: relative;
-}
-
-/* 侧边栏切换动画开始 */
-.sidebar-enter-active {
-    transition: all 0.2s;
-}
-
-.sidebar-enter,
-.sidebar-leave-active {
-    opacity: 0;
-    transform: translateY(30px) skewY(10deg)
-}
-
-.sidebar-leave-active {
-    position: absolute;
-}
-
-/* 侧边栏切换动画结束 */
-</style>
+<style lang="scss" src="./style.scss"></style>

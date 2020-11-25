@@ -1,0 +1,89 @@
+@import "~@/asset/style/variables.scss";
+
+.aside {
+    display: flex;
+    z-index: 11;
+
+    //移动端下侧边栏抽屉不能设置z-index，否则会被modal遮住
+    @include mobile {
+        z-index: auto;
+    }
+
+    //单层和双层侧边栏
+    .sidebar,
+    .root-sidebar,
+    .sub-sidebar {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: $aside-width;
+        box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+        transition: all 0.2s;
+
+        //折叠状态
+        &.collapse {
+            width: $aside-collapse-width;
+
+            //隐藏菜单文字
+            .menu-item-content,
+            .sub-sidebar-title {
+                display: none;
+            }
+        }
+    }
+}
+
+//页面为上下结构时，侧边栏的抽屉模式需要扣除导航栏的高度
+.el-drawer.drawer-behind-header {
+    top: $nav-height;
+}
+
+
+/* 双侧侧边栏开始 */
+
+.root-sidebar-container {
+    position: relative;
+    width: $aside-collapse-width;
+    height: 100%;
+}
+
+.root-sidebar {
+    position: absolute;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: none !important;
+    border-right-width: 1px;
+    border-right-style: solid;
+}
+
+.sub-sidebar-title {
+    height: $nav-height;
+    line-height: $nav-height;
+    padding-left: 20px;
+    font-size: 16px;
+}
+
+/* 双侧侧边栏结束 */
+
+
+/* 侧边栏切换动画开始 */
+
+.sidebar-enter-active {
+    transition: all 0.2s;
+}
+
+.sidebar-enter,
+.sidebar-leave-active {
+    opacity: 0;
+    transform: translateY(30px) skewY(10deg)
+}
+
+.sidebar-leave-active {
+    position: absolute;
+}
+
+/* 侧边栏切换动画结束 */
+
+
+@import "theme-light";
+@import "theme-dark";

@@ -1,0 +1,11 @@
+.navbar.light {
+    background-color: #ffffff;
+
+    .navbar-item {
+        color: $menu-text-light-color;
+
+        &:hover {
+            background: rgba(0, 0, 0, .025);
+        }
+    }
+}

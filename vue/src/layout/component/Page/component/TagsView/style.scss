@@ -1,15 +1,12 @@
 @import "~@/asset/style/variables.scss";
 
 .tags-view-container {
-    z-index: 8;
     height: $tags-view-height;
-    background-color: #f0f2f5;
     box-shadow: inset 0 0 3px 2px hsla(0, 0%, 39.2%, .1);
 
     .tags-view-wrapper {
         height: 100%;
         white-space: nowrap;
-        position: relative;
         overflow-x: auto;
 
         &::-webkit-scrollbar {
@@ -18,15 +15,16 @@
 
         .tags-view-item {
             $margin: 4px;
+            $border-width: 1px;
+
             display: inline-block;
-            position: relative;
             cursor: pointer;
             height: #{$tags-view-height - $margin * 2};
-            line-height: #{$tags-view-height - $margin * 2};
+            line-height: #{$tags-view-height - $margin * 2 - $border-width * 2};
             color: #909399;
             background-color: #ffffff;
             border-radius: 3px;
-            border: 1px solid #e8eaec;
+            border: $border-width solid #dcdfe6;
             padding: 0 12px;
             font-size: 12px;
             margin: $margin;
@@ -42,12 +40,12 @@
 
             &::before {
                 content: '';
-                background: #e8eaec;
+                position: relative;
+                background-color: #e8eaec;
                 display: inline-block;
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
-                position: relative;
                 top: 1px;
                 margin-right: 5px;
             }
@@ -61,18 +59,9 @@
             }
 
             .el-icon-close {
-                vertical-align: 2px;
                 border-radius: 50%;
                 font-size: 14px;
                 margin-left: 10px;
-
-                &:before {
-                    vertical-align: -3px;
-                }
-
-                &:hover {
-                    color: #3A71A8;
-                }
             }
         }
     }

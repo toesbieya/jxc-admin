@@ -7,6 +7,10 @@ const state = {
     //区分pc和移动端
     isMobile: isMobile(),
 
+    //设置抽屉的显隐
+    //放这里的原因是navbar可能会重新渲染，从而导致抽屉的重新渲染
+    showSettingDrawer: false,
+
     //当前激活的顶部菜单的fullPath
     activeRootMenu: '',
 

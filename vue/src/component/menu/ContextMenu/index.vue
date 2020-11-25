@@ -70,12 +70,12 @@ export default {
     },
 
     render() {
-        if (!this.value || !Array.isArray(this.items) || this.items.length === 0) return
+        if (!Array.isArray(this.items)) return
 
         const style = {left: this.realLeft, top: this.realTop}
 
         return (
-            <ul class="context-menu" style={style}>
+            <ul v-show={this.value} class="context-menu" style={style}>
                 {this.items.map(i => (
                     i && <item on-click={i.click}>{i.content}</item>
                 ))}
@@ -90,9 +90,9 @@ export default {
 
 .context-menu {
     margin: 0;
-    background: $aside-menu-background;
+    background: $menu-dark-background;
     z-index: 10;
-    position: absolute;
+    position: fixed;
     list-style-type: none;
     padding: 5px 0;
     border-radius: 4px;

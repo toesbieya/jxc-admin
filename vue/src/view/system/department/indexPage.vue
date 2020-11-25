@@ -110,9 +110,8 @@ export default {
         openMenu(e, obj) {
             e.preventDefault()
             this.currentNode = obj
-            const {left, top} = this.$el.getBoundingClientRect()
-            this.contextmenu.left = e.clientX - left + 15
-            this.contextmenu.top = e.clientY - top
+            this.contextmenu.left = e.clientX  + 15
+            this.contextmenu.top = e.clientY
             this.contextmenu.show = true
         },
 

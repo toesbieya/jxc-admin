@@ -67,13 +67,12 @@ export default {
     display: flex;
     flex-direction: column;
     flex: 1;
-    position: relative;
     overflow: hidden;
     background-color: #f0f2f5;
 
     > .scroll-container {
-        height: 100%;
         display: flex;
+        flex: 1;
         flex-direction: column;
         overflow-y: overlay;
         overflow-x: inherit;

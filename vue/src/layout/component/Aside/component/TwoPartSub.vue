@@ -27,6 +27,10 @@ export default {
         collapse() {
             return asideGetters.collapse && !asideGetters.isMobile
         },
+
+        className() {
+            return {'sub-sidebar': true, 'collapse': this.collapse}
+        }
     },
 
     watch: {
@@ -77,17 +81,19 @@ export default {
         if (this.menus.length <= 0) return
 
         return (
-            <div class={{'sub-sidebar': true, 'collapse': this.collapse}}>
+            <div class={this.className}>
                 <div class="sub-sidebar-title">
                     {this.rootMenu && this.rootMenu.meta.title}
                 </div>
                 <nav-menu
                     menus={this.menus}
+                    theme={asideGetters.theme}
                     collapse={this.collapse}
                     default-active={this.activeMenu}
                     unique-opened={asideGetters.uniqueOpen}
-                    show-parent={asideGetters.showParentOnCollapse}
+                    show-parent-on-collapse={asideGetters.showParentOnCollapse}
                     switch-transition
+                    switch-transition-name="sidebar"
                     on-select={this.onSelect}
                 />
             </div>
@@ -95,37 +101,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-@import "~@/asset/style/variables.scss";
-
-.sub-sidebar {
-    display: flex;
-    flex-direction: column;
-    width: $aside-width;
-    background-color: $aside-menu-background;
-    font-size: 0;
-    height: 100vh;
-    z-index: 10;
-    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-    transition: all 0.2s ease-in-out;
-
-    //折叠状态
-    &.collapse {
-        width: $aside-icon-size + 20px * 2;
-
-        .sub-sidebar-title,
-        .menu-item-content {
-            display: none;
-        }
-    }
-
-    &-title {
-        height: $nav-height;
-        line-height: $nav-height;
-        padding-left: 20px;
-        color: #ffffff;
-        font-size: 16px;
-    }
-}
-</style>

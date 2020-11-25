@@ -36,5 +36,6 @@ export default {
 .bell-badge .el-badge__content {
     top: 15px !important;
     right: 10px !important;
+    border: none;
 }
 </style>

@@ -8,7 +8,7 @@
 
 <script>
 import PanelGroupItem from './PanelGroupItem'
-import variables from '@/asset/style/variables.scss'
+import cssVariables from '@/asset/style/variables.scss'
 import {getFourBlock} from '@/api/statistic'
 import {isEmpty} from "@/util"
 import {auth} from "@/util/auth"
@@ -26,7 +26,7 @@ export default {
                     id: 'online',
                     path: '/system/user',
                     icon: 'svg-user',
-                    color: variables.info,
+                    color: cssVariables.info,
                     value: 0,
                     text: '在线用户'
                 },
@@ -34,7 +34,7 @@ export default {
                     id: 'purchase',
                     path: '/purchase/order',
                     icon: 'svg-shopping',
-                    color: variables.primary,
+                    color: cssVariables.primary,
                     value: 0,
                     text: '今日采购额'
                 },
@@ -42,14 +42,14 @@ export default {
                     id: 'sell',
                     path: '/sell/order',
                     icon: 'svg-sell',
-                    color: variables.warning,
+                    color: cssVariables.warning,
                     value: 0,
                     text: '今日销售额'
                 },
                 {
                     id: 'profit',
                     icon: 'svg-money',
-                    color: variables.success,
+                    color: cssVariables.success,
                     value: 0,
                     text: '今日毛利润'
                 },

@@ -101,15 +101,17 @@ export default {
 
         openContextMenu(e, obj, node) {
             e.preventDefault()
+
             this.currentCategory = obj ? {
                 ...obj,
                 level: node.level,
                 parent: node.parent ? node.parent.data : null
             } : null
+
             this.$refs.tree.$refs.tree.setCurrentKey(obj ? obj.id : null)
-            const {left, top} = this.$el.getBoundingClientRect()
-            this.contextmenu.left = e.clientX - left + 15
-            this.contextmenu.top = e.clientY - top
+
+            this.contextmenu.left = e.clientX + 15
+            this.contextmenu.top = e.clientY
             this.contextmenu.show = true
         }
     },

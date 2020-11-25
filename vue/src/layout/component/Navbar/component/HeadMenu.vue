@@ -1,7 +1,6 @@
 <script type="text/jsx">
 /**
  * 顶部菜单，参考了ant design的响应式设计
- * TODO 菜单隐藏后再显示出来存在BUG，怀疑是组件复用的问题
  */
 import menuMixin from "@/layout/mixin/menu"
 import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
@@ -18,14 +17,20 @@ export default {
 
     props: {
         //是否在只有一个顶部菜单时仍然渲染
-        alwaysShow: Boolean
+        alwaysShow: Boolean,
+
+        //主题由父组件控制
+        theme: String
     },
 
     data() {
         return {
             //最后一个不被隐藏的顶部菜单的数组下标
             //为undefined时，说明不需要隐藏菜单，为-1时，说明需要隐藏全部菜单
-            lastVisibleIndex: undefined
+            lastVisibleIndex: undefined,
+
+            //用于生成el-submenu的key
+            seed: 0
         }
     },
 
@@ -42,6 +47,30 @@ export default {
                 case 'mix':
                     return appGetters.menus.map(root => ({...root, children: undefined}))
             }
+        },
+
+        //实际用于渲染的菜单数组
+        realMenus() {
+            const {lastVisibleIndex, menus} = this
+
+            //不需要隐藏菜单
+            if (lastVisibleIndex === undefined) {
+                return menus
+            }
+
+            const fullPath = `_${this.seed}`
+
+            //隐藏全部菜单
+            if (lastVisibleIndex === -1) {
+                return [{fullPath, meta: {icon: 'el-icon-menu'}, children: menus}]
+            }
+
+            const visible = menus.slice(0, lastVisibleIndex + 1)
+            const hidden = menus.slice(lastVisibleIndex + 1)
+
+            visible.push({fullPath, meta: {title: '...'}, children: hidden})
+
+            return visible
         }
     },
 
@@ -65,6 +94,11 @@ export default {
             handler(mode) {
                 this.setActiveMenu(mode)
             }
+        },
+
+        //变动时修改种子，避免组件不更新
+        lastVisibleIndex() {
+            this.seed++
         }
     },
 
@@ -146,22 +180,6 @@ export default {
             this.$once('hook:beforeDestroy', () => {
                 this.resizeObserver && this.resizeObserver.disconnect()
             })
-        },
-
-        renderVisibleMenus(visibleMenus) {
-            return visibleMenus.map(m => <nav-menu-item menu={m} show-icon-max-depth={1}/>)
-        },
-        renderHiddenMenus(hiddenMenus, hideAll) {
-            if (hiddenMenus.length <= 0) return
-
-            const content = hideAll
-                ? <v-icon slot="title" icon={'el-icon-menu'}/>
-                : <span slot="title" class="menu-item-content">{'...'}</span>
-
-            const children = hiddenMenus.map(m => <nav-menu-item menu={m} show-icon-max-depth={0}/>)
-            children.unshift(content)
-
-            return <el-submenu index={'_'}>{children}</el-submenu>
         }
     },
 
@@ -171,34 +189,18 @@ export default {
     },
 
     render() {
-        const {lastVisibleIndex, menus} = this
-        if (!Array.isArray(menus) || menus.length <= 0 || menus.length === 1 && !this.alwaysShow) {
+        if (this.menus.length <= 0 || this.menus.length === 1 && !this.alwaysShow) {
             return
-        }
-
-        let visibleMenus = menus, hiddenMenus = []
-        if (lastVisibleIndex !== undefined) {
-            //不需要隐藏菜单
-            if (lastVisibleIndex === -1) {
-                visibleMenus = []
-                hiddenMenus = menus
-            }
-            //需要隐藏全部菜单
-            else if (lastVisibleIndex !== menus.length - 1) {
-                visibleMenus = menus.slice(0, lastVisibleIndex + 1)
-                hiddenMenus = menus.slice(lastVisibleIndex + 1)
-            }
         }
 
         return (
             <nav-menu
+                menus={this.realMenus}
                 mode="horizontal"
+                theme={this.theme}
                 default-active={this.activeMenu}
                 on-select={this.onSelect}
-            >
-                {this.renderVisibleMenus(visibleMenus)}
-                {this.renderHiddenMenus(hiddenMenus, hiddenMenus.length === menus.length)}
-            </nav-menu>
+            />
         )
     }
 }

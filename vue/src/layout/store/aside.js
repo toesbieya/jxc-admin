@@ -10,6 +10,9 @@ const state = {
     //抽屉模式时的显隐
     show: false,
 
+    //主题，light 或 dark
+    theme: 'light',
+
     //手风琴效果
     uniqueOpen: true,
 

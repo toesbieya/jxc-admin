@@ -6,6 +6,6 @@ const files = require.context('./child', false, /\.js$/)
 export default {
     path: '/dev',
     component: {template: `<div><div>开发专用页面</div><router-view/></div>`},
-    meta: {title: '开发专用页面', noAuth: true, noCache: true, alwaysShow: true},
+    meta: {title: '开发专用页面', icon: 'svg-develop', noAuth: true, noCache: true, alwaysShow: true},
     children: context2array(files)
 }

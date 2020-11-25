@@ -94,9 +94,10 @@
 }
 
 .el-menu {
-    border: none;
     height: 100%;
     width: 100%;
+    border: none !important;
+    overflow: hidden;
 
     &::-webkit-scrollbar {
         display: none;
@@ -125,6 +126,11 @@
         color: inherit;
     }
 
+    //原先垂直时右侧展开箭头偏上
+    .el-submenu__icon-arrow {
+        margin-top: -4px;
+    }
+
     //弹出菜单
     &.el-menu--popup {
         max-height: 88vh;
@@ -137,6 +143,14 @@
         .el-submenu__title {
             padding: 0 20px;
         }
+    }
+
+    &--horizontal > .el-menu-item:not(.is-disabled):hover,
+    &--horizontal > .el-menu-item:not(.is-disabled):focus,
+    &--horizontal > .el-submenu .el-submenu__title:hover,
+    &--horizontal .el-menu .el-menu-item,
+    &--horizontal .el-menu .el-submenu__title {
+        background-color: inherit;
     }
 }
 

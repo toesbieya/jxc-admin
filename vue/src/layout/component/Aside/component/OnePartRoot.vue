@@ -32,6 +32,12 @@ export default {
         renderInDrawer() {
             return this.isMobile || asideGetters.autoHide
         },
+        //el-drawer的自定义类名
+        drawerClass() {
+            return this.isMobile || pageGetters.position !== 'top-bottom'
+                ? undefined
+                : 'drawer-behind-header'
+        },
 
         //侧边栏的显隐状态，true显示、false隐藏
         show() {
@@ -74,6 +80,15 @@ export default {
         //是否需要显示logo
         showLogo() {
             return pageGetters.showLogo && (this.isMobile || pageGetters.position === 'left-right')
+        },
+
+        //是否需要使用侧边栏的切换动画
+        switchTransition() {
+            return !this.isMobile && appGetters.navMode !== 'aside'
+        },
+
+        className() {
+            return {'sidebar': true, 'collapse': this.collapse}
         }
     },
 
@@ -165,22 +180,24 @@ export default {
         if (this.menus.length <= 0) return
 
         const aside = (
-            <aside
-                class={{'aside': true, 'sidebar': true, 'collapse': this.collapse}}
+            <div
+                class={this.className}
                 on-mouseleave={() => this.mouseOutside = true}
                 on-mouseenter={() => this.mouseOutside = false}
             >
                 {this.showLogo && <logo show-title={!this.collapse}/>}
                 <nav-menu
                     menus={this.menus}
+                    theme={asideGetters.theme}
                     collapse={this.collapse}
                     default-active={this.activeMenu}
                     unique-opened={asideGetters.uniqueOpen}
-                    show-parent={asideGetters.showParentOnCollapse}
-                    switch-transition
+                    show-parent-on-collapse={asideGetters.showParentOnCollapse}
+                    switch-transition={this.switchTransition}
+                    switch-transition-name="sidebar"
                     on={{'select': this.onSelect, 'hook:mounted': this.watchOpenedMenus}}
                 />
-            </aside>
+            </div>
         )
 
         if (this.renderInDrawer) {
@@ -188,6 +205,7 @@ export default {
                 <el-drawer
                     visible={this.show}
                     with-header={false}
+                    custom-class={this.drawerClass}
                     modal={this.isMobile} //设置自动隐藏时不使用遮罩
                     direction="ltr"
                     size="auto"
@@ -202,28 +220,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-@import "~@/asset/style/variables.scss";
-
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    width: $aside-width;
-    background-color: $aside-menu-background;
-    font-size: 0;
-    height: 100vh;
-    z-index: 10;
-    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
-    transition: all 0.2s ease-in-out;
-
-    //折叠状态
-    &.collapse {
-        width: $aside-icon-size + 20px * 2;
-
-        .menu-item-content {
-            display: none;
-        }
-    }
-}
-</style>

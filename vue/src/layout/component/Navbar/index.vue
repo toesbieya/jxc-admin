@@ -5,9 +5,9 @@ import Bell from "./component/Bell"
 import Hamburger from './component/Hamburger'
 import HeadMenu from "./component/HeadMenu"
 import Logo from "@/layout/component/Logo"
-import SettingDrawer from '@/layout/component/SettingDrawer'
-import {getters as appGetters} from "@/layout/store/app"
+import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
+import {getters as navbarGetters} from "@/layout/store/navbar"
 import {getters as pageGetters} from "@/layout/store/page"
 import {getSidebarMenus} from "@/layout/util"
 import {elConfirm} from "@/util/message"
@@ -18,11 +18,51 @@ export default {
 
     mixins: [GuideMixin.navbar],
 
-    components: {Bell, Hamburger, HeadMenu, Logo, SettingDrawer},
+    components: {Bell, Hamburger, HeadMenu, Logo},
 
-    data: () => ({settingDrawer: false}),
+    computed: {
+        ...mapState('user', ['avatar', 'name', 'prepareLogout']),
 
-    computed: mapState('user', ['avatar', 'name', 'prepareLogout']),
+        //渲染导航栏logo的条件
+        //①桌面端
+        //②设置了显示logo
+        //③导航模式为顶部导航或页面为上下结构
+        renderLogo() {
+            return !appGetters.isMobile
+                && pageGetters.showLogo
+                && (appGetters.navMode === 'head' || pageGetters.position === 'top-bottom')
+        },
+
+        //渲染折叠按钮的条件
+        //①侧边栏有菜单
+        //②移动端
+        //③桌面端是双层侧边栏导航
+        //④桌面端且是侧边栏导航或混合导航时，未设置侧边栏自动隐藏
+        renderHamburger() {
+            const hasSidebarMenus = getSidebarMenus().length > 0,
+                isMobile = appGetters.isMobile,
+                correctMode =
+                    ['aside', 'mix'].includes(appGetters.navMode) && !asideGetters.autoHide
+                    || appGetters.navMode === 'aside-two-part'
+
+            return hasSidebarMenus && (isMobile || correctMode)
+        },
+        //判断汉堡包是否激活，需要考虑抽屉模式时的侧边栏
+        isHamburgerActive() {
+            return appGetters.isMobile ? asideGetters.show : !asideGetters.collapse
+        },
+
+        //渲染顶部导航菜单的条件
+        //①桌面端
+        //②导航模式为顶部导航或混合导航
+        renderHeadMenu() {
+            return !appGetters.isMobile && ['head', 'mix'].includes(appGetters.navMode)
+        },
+
+        className() {
+            return `navbar ${navbarGetters.theme}`
+        }
+    },
 
     methods: {
         command(command) {
@@ -40,161 +80,74 @@ export default {
             }
         },
 
-        renderLogo() {
-            const render =
-                !appGetters.isMobile
-                && pageGetters.showLogo
-                && pageGetters.position === 'top-bottom'
-
-            if (render) return <logo show-title/>
+        clickRefreshBtn() {
+            refreshPage()
         },
-        renderHamburger() {
-            //渲染折叠按钮的条件
-            //①侧边栏有菜单
-            //②移动端
-            //③桌面端是双层侧边栏导航
-            //④桌面端且是侧边栏导航或混合导航时，未设置侧边栏自动隐藏
-            const hasSidebarMenus = getSidebarMenus().length > 0,
-                isMobile = appGetters.isMobile,
-                correctMode =
-                    ['aside', 'mix'].includes(appGetters.navMode) && !asideGetters.autoHide
-                    || appGetters.navMode === 'aside-two-part',
-                renderHamburger = hasSidebarMenus && (isMobile || correctMode)
 
-            if (renderHamburger) {
-                const active = isMobile ? asideGetters.show : !asideGetters.collapse
-                return <hamburger class="navbar-item" active={active} on-click={() => asideMutations.switch()}/>
-            }
-        },
-        renderHeadMenuMenu() {
-            if (['head', 'mix'].includes(appGetters.navMode) && !appGetters.isMobile) {
-                return <head-menu always-show/>
-            }
-        },
-        renderActionButtons() {
-            return [
-                <bell class="navbar-item"/>,
-
-                <div class="navbar-item" title="刷新" on-click={() => refreshPage()}>
-                    <i class="el-icon-refresh-right navbar-icon"/>
-                </div>,
-
-                <div class="setting-btn navbar-item"
-                     title="个性设置"
-                     on-click={() => this.settingDrawer = true}
-                >
-                    <i class="el-icon-s-operation navbar-icon"/>
-                </div>
-            ]
-        },
-        renderUserButton() {
-            return (
-                <el-dropdown
-                    class="navbar-item"
-                    trigger="click"
-                    on-command={this.command}
-                >
-                    <div class="avatar-wrapper">
-                        <el-avatar size={30} src={this.avatar} icon="el-icon-user-solid"/>
-                        <span class="hidden-xs">{this.name}</span>
-                    </div>
-                    <el-dropdown-menu class="user-dropdown" slot="dropdown">
-                        <el-dropdown-item icon="el-icon-user" command="user">
-                            个人中心
-                        </el-dropdown-item>
-                        <el-dropdown-item class="hidden-xs" icon="el-icon-guide" command="guide">
-                            新手指引
-                        </el-dropdown-item>
-                        <el-dropdown-item divided icon="el-icon-switch-button" command="logout">
-                            退出登录
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            )
+        openSettingDrawer() {
+            appMutations.showSettingDrawer(true)
         }
     },
 
     render() {
         return (
-            <nav class="navbar">
-                {this.renderLogo()}
+            <nav class={this.className}>
+                {this.renderLogo && <logo show-title/>}
 
                 <div style="flex: 1">
-                    {this.renderHamburger()}
-                    {this.renderHeadMenuMenu()}
+                    {
+                        this.renderHamburger &&
+                        <hamburger
+                            class="navbar-item"
+                            active={this.isHamburgerActive}
+                            on-click={asideMutations.switch}
+                        />
+                    }
+
+                    {this.renderHeadMenu && <head-menu always-show theme={navbarGetters.theme}/>}
                 </div>
 
                 <div>
-                    {this.renderActionButtons()}
-                    {this.renderUserButton()}
-                </div>
+                    <bell class="navbar-item"/>
 
-                <setting-drawer v-model={this.settingDrawer}/>
+                    <div
+                        class="navbar-item"
+                        title="刷新"
+                        on-click={this.clickRefreshBtn}
+                    >
+                        <i class="el-icon-refresh-right navbar-icon"/>
+                    </div>
+
+                    <div
+                        class="setting-btn navbar-item"
+                        title="个性设置"
+                        on-click={this.openSettingDrawer}
+                    >
+                        <i class="el-icon-s-operation navbar-icon"/>
+                    </div>
+
+                    <el-dropdown class="navbar-item" on-command={this.command}>
+                        <div class="avatar-wrapper">
+                            <el-avatar size={30} src={this.avatar} icon="el-icon-user-solid"/>
+                            <span class="hidden-xs">{this.name}</span>
+                        </div>
+                        <el-dropdown-menu class="user-dropdown" slot="dropdown">
+                            <el-dropdown-item icon="el-icon-user" command="user">
+                                个人中心
+                            </el-dropdown-item>
+                            <el-dropdown-item class="hidden-xs" icon="el-icon-guide" command="guide">
+                                新手指引
+                            </el-dropdown-item>
+                            <el-dropdown-item divided icon="el-icon-switch-button" command="logout">
+                                退出登录
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
             </nav>
         )
     }
 }
 </script>
 
-<style lang="scss">
-@import "~@/asset/style/variables.scss";
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    height: $nav-height;
-    padding-left: 12px;
-    transition: height .3s ease-in-out;
-    position: relative;
-    z-index: 9;
-    background-color: #ffffff;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
-
-    > div {
-        display: flex;
-        flex-wrap: nowrap;
-        height: 100%;
-    }
-
-    .navbar-icon {
-        font-size: 18px;
-    }
-
-    .navbar-item {
-        display: flex;
-        align-items: center;
-        padding: 0 8px;
-        color: #5a5e66;
-        transition: background .3s;
-        cursor: pointer;
-
-        &:hover {
-            background: rgba(0, 0, 0, .025)
-        }
-    }
-
-    .logo-container {
-        width: auto;
-        min-width: 192px;
-        padding-left: 0;
-
-        > .logo-link > h1 {
-            font-weight: 400;
-            color: #303133;
-            font-size: 16px;
-        }
-    }
-
-    .avatar-wrapper {
-        display: flex;
-        align-items: center;
-
-        span {
-            margin-right: 5px;
-            font-size: 18px;
-        }
-    }
-}
-</style>
+<style lang="scss" src="./style.scss"></style>

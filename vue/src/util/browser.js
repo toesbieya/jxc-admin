@@ -1,3 +1,7 @@
+import cssVariables from '@/asset/style/variables.scss'
+
+const maxMobileWidth = parseFloat(cssVariables.maxMobileWidth)
+
 /**
  * 根据body宽度判断是否为移动端，是则返回true
  *
@@ -5,7 +9,7 @@
  */
 export function isMobile() {
     const rect = document.body.getBoundingClientRect()
-    return rect.width < 501
+    return rect.width <= maxMobileWidth
 }
 
 /**

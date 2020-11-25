@@ -1,0 +1,39 @@
+.el-menu--light {
+    //侧边栏垂直菜单
+    &.el-menu--vertical {
+        &.el-menu,
+        .el-menu {
+            //菜单的文字以及hover颜色
+            .el-menu-item,
+            .el-submenu__title {
+                color: $menu-text-light-color;
+
+                &:hover {
+                    color: $menu-text-hover-light-color;
+                }
+            }
+
+            //弹出菜单的父级
+            &.el-menu--popup .popover-menu__title {
+                color: $menu-text-hover-light-color;
+                border-bottom-color: #dcdfe6;
+            }
+        }
+    }
+
+    //顶部水平菜单
+    &.el-menu--horizontal {
+        &.el-menu,
+        .el-menu {
+            //菜单的文字以及hover颜色
+            .el-menu-item,
+            .el-submenu__title {
+                color: $menu-text-light-color;
+
+                &:hover {
+                    color: $menu-text-hover-light-color;
+                }
+            }
+        }
+    }
+}

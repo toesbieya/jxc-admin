@@ -55,6 +55,18 @@
 
             <el-divider>侧边栏设置</el-divider>
             <div class="drawer-item">
+                <span>主题风格</span>
+                <el-select
+                    :value="asideGetters.theme"
+                    size="mini"
+                    style="width: 80px"
+                    @input="changeAsideTheme"
+                >
+                    <el-option value="light" label="亮色"/>
+                    <el-option value="dark" label="暗色"/>
+                </el-select>
+            </div>
+            <div class="drawer-item">
                 <span>手风琴效果</span>
                 <el-switch :value="asideGetters.uniqueOpen" @input="changeAsideUniqueOpen"/>
             </div>
@@ -69,6 +81,20 @@
             <div class="drawer-item">
                 <span>自动隐藏</span>
                 <el-switch :value="asideGetters.autoHide" @input="changeAsideAutoHide"/>
+            </div>
+
+            <el-divider>导航栏设置</el-divider>
+            <div class="drawer-item">
+                <span>主题风格</span>
+                <el-select
+                    :value="navbarGetters.theme"
+                    size="mini"
+                    style="width: 80px"
+                    @input="changeNavbarTheme"
+                >
+                    <el-option value="light" label="亮色"/>
+                    <el-option value="dark" label="暗色"/>
+                </el-select>
             </div>
 
             <el-divider>多页签设置</el-divider>
@@ -96,6 +122,7 @@ import ColorCheckbox from "@/component/checkbox/ColorCheckbox"
 import ImgCheckbox from "@/component/checkbox/ImgCheckbox"
 import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
+import {getters as navbarGetters, mutations as navbarMutations} from "@/layout/store/navbar"
 import {getters as pageGetters, mutations as pageMutations} from "@/layout/store/page"
 import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
 import {mergeObj} from "@/util"
@@ -110,7 +137,7 @@ export default {
 
     data() {
         return {
-            appGetters, asideGetters, pageGetters, tagsViewGetters,
+            appGetters, asideGetters, navbarGetters, pageGetters, tagsViewGetters,
 
             colors: ['#f5222d', '#fa541c', '#fadb14', '#3eaf7c', '#13c2c2', '#1890ff', '#722ed1', '#eb2f96'],
             navModes: [
@@ -148,11 +175,14 @@ export default {
                     showBackToTop: true
                 },
                 aside: {
-                    showLogo: true,
+                    theme: 'light',
                     uniqueOpen: true,
                     collapse: false,
                     showParentOnCollapse: false,
                     autoHide: false
+                },
+                navbar: {
+                    theme: 'light'
                 },
                 tagsView: {
                     enabled: true,
@@ -164,51 +194,29 @@ export default {
     },
 
     methods: {
-        //按照此处的设置项修改layout中的store
-        updateLayoutStore() {
-            const {app, page, aside, tagsView} = this.setting
+        //将此处的设置项数据同步到layout中的store
+        syncLayoutStore() {
+            const {app, page, aside, navbar, tagsView} = this.setting
 
-            appMutations.color(app.color)
-            appMutations.navMode(app.navMode)
-
-            pageMutations.showLogo(page.showLogo)
-            pageMutations.position(page.position)
-            pageMutations.showPageHeader(page.showPageHeader)
-            pageMutations.showBackToTop(page.showBackToTop)
-
-            asideMutations.uniqueOpen(aside.uniqueOpen)
-            asideMutations.collapse(aside.collapse)
-            asideMutations.showParentOnCollapse(aside.showParentOnCollapse)
-            asideMutations.autoHide(aside.autoHide)
-
-            tagsViewMutations.enabled(tagsView.enabled)
-            tagsViewMutations.shortcut(tagsView.shortcut)
-            tagsViewMutations.persistent(tagsView.persistent)
+            Object.entries(app).forEach(([k, v]) => appMutations[k](v))
+            Object.entries(page).forEach(([k, v]) => pageMutations[k](v))
+            Object.entries(aside).forEach(([k, v]) => asideMutations[k](v))
+            Object.entries(navbar).forEach(([k, v]) => navbarMutations[k](v))
+            Object.entries(tagsView).forEach(([k, v]) => tagsViewMutations[k](v))
         },
         //将layout中的store数据同步到此处的设置项
-        syncLayoutStore() {
-            const {app, page, aside, tagsView} = this.setting
-            app.color = appGetters.color
-            app.navMode = appGetters.navMode
+        syncSettingDrawer() {
+            const {app, page, aside, navbar, tagsView} = this.setting
 
-            page.showLogo = pageGetters.showLogo
-            page.position = pageGetters.position
-            page.showPageHeader = pageGetters.showPageHeader
-            page.showBackToTop = pageGetters.showBackToTop
-
-            aside.showLogo = asideGetters.showLogo
-            aside.uniqueOpen = asideGetters.uniqueOpen
-            aside.collapse = asideGetters.collapse
-            aside.showParentOnCollapse = asideGetters.showParentOnCollapse
-            aside.autoHide = asideGetters.autoHide
-
-            tagsView.enabled = tagsViewGetters.enabled
-            tagsView.shortcut = tagsViewGetters.shortcut
-            tagsView.persistent = tagsViewGetters.persistent
+            Object.keys(app).forEach(k => app[k] = appGetters[k])
+            Object.keys(page).forEach(k => page[k] = pageGetters[k])
+            Object.keys(aside).forEach(k => aside[k] = asideGetters[k])
+            Object.keys(navbar).forEach(k => navbar[k] = navbarGetters[k])
+            Object.keys(tagsView).forEach(k => tagsView[k] = tagsViewGetters[k])
         },
         //将此处的设置项保存到本地
         saveSetting() {
-            this.syncLayoutStore()
+            this.syncSettingDrawer()
             setLocalPersonalSettings(this.setting)
         },
 
@@ -233,6 +241,9 @@ export default {
             pageMutations.showBackToTop(v)
         },
 
+        changeAsideTheme(v) {
+            asideMutations.theme(v)
+        },
         changeAsideUniqueOpen(v) {
             asideMutations.uniqueOpen(v)
         },
@@ -244,6 +255,10 @@ export default {
         },
         changeAsideAutoHide(v) {
             asideMutations.autoHide(v)
+        },
+
+        changeNavbarTheme(v) {
+            navbarMutations.theme(v)
         },
 
         changeTagsViewEnabled(v) {
@@ -275,7 +290,7 @@ export default {
         //由于数据结构可能发生变化，所以在合并后覆盖本地数据
         setLocalPersonalSettings(this.setting)
 
-        this.updateLayoutStore()
+        this.syncLayoutStore()
 
         //初始化时尝试修改主题色
         this.changeThemeColor(this.setting.app.color)
@@ -293,7 +308,7 @@ export default {
     .drawer-item {
         display: flex;
         justify-content: space-between;
-        color: rgba(0, 0, 0, .65);
+        color: #606266;
         font-size: 14px;
         padding: 12px 0;
     }

@@ -1,0 +1,49 @@
+@import "~@/asset/style/variables.scss";
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: $nav-height;
+    padding-left: 12px;
+    z-index: 10;
+    box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+    transition: all .2s;
+
+    > div {
+        display: flex;
+        flex-wrap: nowrap;
+        height: 100%;
+    }
+
+    .navbar-icon {
+        font-size: 18px;
+    }
+
+    .navbar-item {
+        display: flex;
+        align-items: center;
+        padding: 0 8px;
+        cursor: pointer;
+    }
+
+    .logo-container {
+        width: auto;
+        min-width: 192px;
+        padding-left: 8px;
+    }
+
+    .avatar-wrapper {
+        display: flex;
+        align-items: center;
+
+        span {
+            margin-right: 5px;
+            font-size: 18px;
+        }
+    }
+}
+
+@import "theme-light";
+@import "theme-dark";

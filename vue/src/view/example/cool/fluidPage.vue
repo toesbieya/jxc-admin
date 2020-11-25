@@ -1,5 +1,5 @@
 <template>
-    <div style="position: absolute;top: 0;right: 0;left: 0;bottom: 0;">
+    <div style="margin: -24px">
         <canvas :height="height" :width="width" id="canvas-fluid" style="display: block"/>
     </div>
 </template>

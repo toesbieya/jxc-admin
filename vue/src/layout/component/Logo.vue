@@ -31,7 +31,6 @@ export default {
 $logoSize: 30px;
 
 .logo-container {
-    position: relative;
     width: 100%;
     height: $nav-height;
     line-height: $nav-height;
@@ -54,17 +53,20 @@ $logoSize: 30px;
         > h1 {
             display: inline-block;
             margin: 0;
-            color: #ffffff;
+            color: $--color-primary;
             font-weight: 600;
             line-height: $nav-height;
-            font-size: 14px;
-            font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+            font-size: 18px;
             vertical-align: middle;
         }
     }
 
     &.no-title {
-        padding-left: ($aside-icon-size + 20px * 2 - $logoSize) / 2;
+        padding-left: ($aside-collapse-width - $logoSize) / 2;
     }
+}
+
+.dark .logo-container .logo-link > h1 {
+    color: #ffffff;
 }
 </style>

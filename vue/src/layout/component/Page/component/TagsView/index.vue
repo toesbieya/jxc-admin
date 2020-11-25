@@ -26,7 +26,22 @@ export default {
 
     computed: {
         visitedViews: () => tagsViewGetters.visitedViews,
-        menus: () => appGetters.menus
+
+        menus: () => appGetters.menus,
+
+        contextMenuItems() {
+            return [
+                {content: '刷新', click: this.refreshSelectedTag},
+                this.isAffix(this.selectedTag)
+                    ? undefined
+                    : {
+                        content: '关闭',
+                        click: () => this.closeSelectedTag(this.selectedTag)
+                    },
+                {content: '关闭其他', click: this.closeOthersTags},
+                {content: '关闭全部', click: this.closeAllTags}
+            ]
+        }
     },
 
     watch: {
@@ -131,10 +146,9 @@ export default {
             e.preventDefault()
 
             const contextMenuWidth = 105 //右键菜单的假定宽度
-            const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
             const offsetWidth = this.$el.offsetWidth // container width
             const maxLeft = offsetWidth - contextMenuWidth // left boundary
-            const left = e.clientX - offsetLeft + 15 // 15: margin right
+            const left = e.clientX + 15 // 15: margin right
 
             this.contextmenu.left = left > maxLeft ? maxLeft : left
             this.contextmenu.top = e.clientY
@@ -159,27 +173,11 @@ export default {
                         v-on:contextmenu_native={e => this.openContextMenu(e, tag)}
                         v-on:dblclick_native={e => closeSelectedTag(e, tag)}
                     >
-                        {title}
+                        <span>{title}</span>
                         {!affix && <i class="el-icon-close" on-click={e => closeSelectedTag(e, tag)}/>}
                     </router-link>
                 )
             })
-        },
-        renderContextMenu() {
-            const menu = this.contextmenu
-            const items = [
-                {content: '刷新', click: this.refreshSelectedTag},
-                this.isAffix(this.selectedTag)
-                    ? undefined
-                    : {
-                        content: '关闭',
-                        click: () => this.closeSelectedTag(this.selectedTag)
-                    },
-                {content: '关闭其他', click: this.closeOthersTags},
-                {content: '关闭全部', click: this.closeAllTags}
-            ]
-
-            return <context-menu v-model={menu.show} items={items} left={menu.left} top={menu.top}/>
         }
     },
 
@@ -193,7 +191,13 @@ export default {
                 <scroll-panel ref="scrollPanel" class="tags-view-wrapper">
                     {this.renderTags()}
                 </scroll-panel>
-                {this.renderContextMenu()}
+
+                <context-menu
+                    v-model={this.contextmenu.show}
+                    items={this.contextMenuItems}
+                    left={this.contextmenu.left}
+                    top={this.contextmenu.top}
+                />
             </div>
         )
     }

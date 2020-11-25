@@ -1,0 +1,18 @@
+.dark {
+    &.aside {
+        background-color: $menu-dark-background;
+    }
+
+    .root-sidebar,
+    .root-sidebar > .el-menu--vertical.el-menu {
+        background-color: $root-menu-dark-background;
+    }
+
+    .root-sidebar {
+        border-right-color: #101117;
+    }
+
+    .sub-sidebar-title {
+        color: #ffffff;
+    }
+}

@@ -1,6 +1,7 @@
 <script type="text/jsx">
 import menuMixin from "@/layout/mixin/menu"
 import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
+import {getters as asideGetters} from "@/layout/store/aside"
 import {getters as pageGetters} from "@/layout/store/page"
 import Logo from '@/layout/component/Logo'
 import {scrollIntoViewVertically} from "@/util/browser"
@@ -18,17 +19,12 @@ const Item = {
         const {title, icon, active} = context.props
         const {click} = context.listeners
 
-        const iconComponent =
-            icon
-                ? <v-icon icon={icon}/>
-                : <em class="icon" style="font-style: normal">{title[0]}</em>
-
         return (
             <li
                 class={{'el-menu-item': true, 'is-active': active}}
                 on-click={click}
             >
-                {iconComponent}
+                <v-icon icon={icon}/>
                 <span class="menu-item-content">{title}</span>
             </li>
         )
@@ -57,6 +53,14 @@ export default {
         //是否需要显示logo
         showLogo() {
             return pageGetters.showLogo && pageGetters.position === 'left-right'
+        },
+
+        containerClass() {
+            return {'root-sidebar': true, 'collapse': this.mouseOutside}
+        },
+
+        menuClass() {
+            return `el-menu el-menu--vertical el-menu--${asideGetters.theme}`
         }
     },
 
@@ -107,12 +111,12 @@ export default {
         return (
             <div class="root-sidebar-container">
                 <div
-                    class={{'root-sidebar': true, 'collapse': this.mouseOutside}}
+                    class={this.containerClass}
                     on-mouseleave={() => this.mouseOutside = true}
                     on-mouseenter={() => this.mouseOutside = false}
                 >
                     {this.showLogo && <logo show-title={!this.mouseOutside}/>}
-                    <ul class="el-menu el-menu--vertical">
+                    <ul class={this.menuClass}>
                         {this.menus.map(({fullPath, meta: {title, icon}}) => (
                             <item
                                 title={title}
@@ -128,40 +132,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss">
-@import "~@/asset/style/variables.scss";
-
-$background-color: #1d2935;
-
-.root-sidebar-container {
-    width: $aside-icon-size + 20px * 2;
-    position: relative;
-}
-
-.root-sidebar {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    height: 100vh;
-    width: $aside-width;
-    background-color: $background-color;
-    overflow: hidden;
-    z-index: 11;
-    border-right: 1px solid #101117;
-    transition: all 0.2s ease-in-out;
-
-    > .el-menu--vertical.el-menu {
-        background-color: $background-color;
-    }
-
-    //折叠状态
-    &.collapse {
-        width: $aside-icon-size + 20px * 2;
-
-        .menu-item-content {
-            display: none;
-        }
-    }
-}
-</style>

@@ -1,0 +1,61 @@
+.el-menu--dark {
+    //侧边栏垂直菜单
+    &.el-menu--vertical {
+        &.el-menu,
+        .el-menu {
+            background-color: $menu-dark-background;
+
+            //菜单的文字以及hover颜色
+            .el-menu-item,
+            .el-submenu__title {
+                color: $menu-text-dark-color;
+
+                &:hover {
+                    color: $menu-text-dark-hover-color;
+                }
+            }
+
+            //子级菜单的背景颜色
+            &.el-menu--inline,
+            .el-submenu .el-submenu > .el-submenu__title {
+                background-color: $sub-menu-dark-background;
+            }
+
+            //子级菜单内阴影
+            &.el-menu--inline {
+                box-shadow: inset 0 2px 8px rgba(0, 0, 0, .45)
+            }
+
+            //设置了显示弹出菜单的父级
+            &.el-menu--popup .popover-menu__title {
+                color: $menu-text-dark-hover-color;
+                border-bottom-color: #101117;
+            }
+        }
+    }
+
+    //顶部水平菜单
+    &.el-menu--horizontal {
+        &.el-menu,
+        .el-menu {
+            background-color: $root-menu-dark-background;
+
+            //菜单的文字以及hover颜色
+            .el-menu-item,
+            .el-submenu__title {
+                color: $menu-text-dark-color;
+
+                &:hover {
+                    color: $menu-text-dark-hover-color;
+                }
+            }
+        }
+
+        &.el-menu > .el-menu-item,
+        &.el-menu > .el-submenu > .el-submenu__title,
+        &.el-menu > .el-menu-item:hover,
+        &.el-menu > .el-submenu > .el-submenu__title:hover {
+            border-bottom: none;
+        }
+    }
+}
