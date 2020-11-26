@@ -29,7 +29,7 @@
             //设置了显示弹出菜单的父级
             &.el-menu--popup .popover-menu__title {
                 color: $menu-text-dark-hover-color;
-                border-bottom-color: #101117;
+                border-bottom-color: $border-color-dark;
             }
         }
     }

@@ -1,8 +1,10 @@
 <script type="text/jsx">
+import hamburgerMixin from '@/layout/mixin/hamburger'
 import menuMixin from "@/layout/mixin/menu"
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
 import {getters as pageGetters} from "@/layout/store/page"
+import Hamburger from '@/layout/component/Hamburger'
 import Logo from '@/layout/component/Logo'
 import NavMenu from '@/component/menu/NavMenu'
 import {getSidebarMenus, getActiveMenuByRoute} from "@/layout/util"
@@ -11,9 +13,9 @@ import {moveToActiveMenuVertically} from "@/util/element-ui/elMenu"
 export default {
     name: "Sidebar",
 
-    mixins: [menuMixin],
+    mixins: [hamburgerMixin, menuMixin],
 
-    components: {Logo, NavMenu},
+    components: {Hamburger, Logo, NavMenu},
 
     data() {
         return {
@@ -197,6 +199,7 @@ export default {
                     switch-transition-name="sidebar"
                     on={{'select': this.onSelect, 'hook:mounted': this.watchOpenedMenus}}
                 />
+                {this.renderHamburger && <hamburger class="el-menu-item"/>}
             </div>
         )
 

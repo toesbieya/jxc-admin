@@ -31,6 +31,17 @@
             }
         }
     }
+
+    //垂直菜单占满剩余空间
+    .el-menu--vertical {
+        flex: 1;
+    }
+
+    //底部汉堡包
+    .hamburger {
+        border-top-width: 1px;
+        border-top-style: solid;
+    }
 }
 
 //页面为上下结构时，侧边栏的抽屉模式需要扣除导航栏的高度

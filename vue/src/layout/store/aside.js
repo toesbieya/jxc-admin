@@ -23,7 +23,10 @@ const state = {
     showParentOnCollapse: false,
 
     //自动隐藏
-    autoHide: false
+    autoHide: false,
+
+    //汉堡包的位置，aside 或 head
+    hamburgerPosition: 'aside'
 }
 
 const store = Vue.observable(state)

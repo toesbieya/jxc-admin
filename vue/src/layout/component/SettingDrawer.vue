@@ -82,6 +82,18 @@
                 <span>自动隐藏</span>
                 <el-switch :value="asideGetters.autoHide" @input="changeAsideAutoHide"/>
             </div>
+            <div class="drawer-item">
+                <span>汉堡包位置</span>
+                <el-select
+                    :value="asideGetters.hamburgerPosition"
+                    size="mini"
+                    style="width: 90px"
+                    @input="changeAsideHamburgerPosition"
+                >
+                    <el-option value="aside" label="侧边栏"/>
+                    <el-option value="head" label="导航栏"/>
+                </el-select>
+            </div>
 
             <el-divider>导航栏设置</el-divider>
             <div class="drawer-item">
@@ -179,7 +191,8 @@ export default {
                     uniqueOpen: true,
                     collapse: false,
                     showParentOnCollapse: false,
-                    autoHide: false
+                    autoHide: false,
+                    hamburgerPosition: 'aside'
                 },
                 navbar: {
                     theme: 'light'
@@ -255,6 +268,9 @@ export default {
         },
         changeAsideAutoHide(v) {
             asideMutations.autoHide(v)
+        },
+        changeAsideHamburgerPosition(v) {
+            asideMutations.hamburgerPosition(v)
         },
 
         changeNavbarTheme(v) {

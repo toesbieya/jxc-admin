@@ -1,22 +1,21 @@
 <script type="jsx">
 import {mapState} from 'vuex'
-import GuideMixin from '@/mixin/guide'
+import guideMixin from '@/mixin/guide'
+import hamburgerMixin from '@/layout/mixin/hamburger'
 import Bell from "./component/Bell"
-import Hamburger from './component/Hamburger'
+import Hamburger from '@/layout/component/Hamburger'
 import HeadMenu from "./component/HeadMenu"
 import Logo from "@/layout/component/Logo"
 import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
-import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
 import {getters as navbarGetters} from "@/layout/store/navbar"
 import {getters as pageGetters} from "@/layout/store/page"
-import {getSidebarMenus} from "@/layout/util"
 import {elConfirm} from "@/util/message"
 import {refreshPage} from "@/util/route"
 
 export default {
     name: 'navbar',
 
-    mixins: [GuideMixin.navbar],
+    mixins: [guideMixin.navbar, hamburgerMixin],
 
     components: {Bell, Hamburger, HeadMenu, Logo},
 
@@ -31,25 +30,6 @@ export default {
             return !appGetters.isMobile
                 && pageGetters.showLogo
                 && (appGetters.navMode === 'head' || pageGetters.position === 'top-bottom')
-        },
-
-        //渲染折叠按钮的条件
-        //①侧边栏有菜单
-        //②移动端
-        //③桌面端是双层侧边栏导航
-        //④桌面端且是侧边栏导航或混合导航时，未设置侧边栏自动隐藏
-        renderHamburger() {
-            const hasSidebarMenus = getSidebarMenus().length > 0,
-                isMobile = appGetters.isMobile,
-                correctMode =
-                    ['aside', 'mix'].includes(appGetters.navMode) && !asideGetters.autoHide
-                    || appGetters.navMode === 'aside-two-part'
-
-            return hasSidebarMenus && (isMobile || correctMode)
-        },
-        //判断汉堡包是否激活，需要考虑抽屉模式时的侧边栏
-        isHamburgerActive() {
-            return appGetters.isMobile ? asideGetters.show : !asideGetters.collapse
         },
 
         //渲染顶部导航菜单的条件
@@ -94,16 +74,9 @@ export default {
             <nav class={this.className}>
                 {this.renderLogo && <logo show-title/>}
 
-                <div style="flex: 1">
-                    {
-                        this.renderHamburger &&
-                        <hamburger
-                            class="navbar-item"
-                            active={this.isHamburgerActive}
-                            on-click={asideMutations.switch}
-                        />
-                    }
+                {this.renderHamburger && <hamburger class="navbar-item navbar-icon"/>}
 
+                <div style="flex: 1">
                     {this.renderHeadMenu && <head-menu always-show theme={navbarGetters.theme}/>}
                 </div>
 

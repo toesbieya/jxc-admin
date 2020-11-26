@@ -199,6 +199,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~@/asset/style/variables.scss";
+
 .tree-select-container {
     padding: 8px;
 
@@ -208,7 +210,7 @@ export default {
 
     .el-tree-node__label.is-disabled {
         background-color: #edf2fc;
-        border-color: #dcdfe6;
+        border-color: $border-color-light;
         cursor: not-allowed;
     }
 }

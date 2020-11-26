@@ -9,7 +9,7 @@
         margin: -#{$page-view-margin} -#{$page-view-margin} 0 -#{$page-view-margin};
         padding: 16px 32px 0 32px;
         background: #fff;
-        border-bottom: 1px solid #dcdfe6;
+        border-bottom: 1px solid $border-color-light;
 
         > .el-page-header {
             padding: 0 0 24px 0;

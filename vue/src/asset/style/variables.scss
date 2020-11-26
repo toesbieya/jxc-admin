@@ -47,6 +47,11 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
     }
 }
 
+//亮色边框的颜色，使用的element-ui原定义
+$border-color-light: #dcdfe6;
+//暗色边框的颜色
+$border-color-dark: #101117;
+
 //菜单中icon的大小
 $menu-icon-size: 14px;
 //菜单中icon和文字的距离
@@ -100,5 +105,5 @@ $dialog-top: 100px;
     warning: $--color-warning;
     pageViewMargin: $page-view-margin;
     dialogTop: $dialog-top;
-    menuPadding:$menu-padding;
+    menuPadding: $menu-padding;
 }
