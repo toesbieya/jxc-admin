@@ -13,8 +13,7 @@
             <div slot="content">
                 <slot name="title"/>
             </div>
-            <div
-                style="position: absolute;left: 0;top: 0;height: 100%;width: 100%;display: inline-block;box-sizing: border-box;padding: 0 20px;">
+            <div :style="iconContainerStyle">
                 <slot/>
             </div>
         </el-tooltip>
@@ -27,7 +26,7 @@
 </template>
 
 <script>
-import MenuMixin from 'element-ui/packages/menu/src/menu-mixin'
+import MenuMixin from './mixin'
 import Emitter from 'element-ui/lib/mixins/emitter'
 
 export default {
@@ -46,6 +45,10 @@ export default {
     computed: {
         active() {
             return this.index === this.rootMenu.activeIndex
+        },
+
+        iconContainerStyle() {
+            return `position: absolute;left: 0;top: 0;height: 100%;width: 100%;display: inline-block;box-sizing: border-box;padding: 0 ${this.inlineIndent}px;`
         }
     },
 

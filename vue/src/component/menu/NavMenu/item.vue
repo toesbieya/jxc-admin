@@ -30,17 +30,17 @@ function getOnlyChild(menu) {
     return null
 }
 
-function renderSingleMenu(h, {index, icon, title}) {
+function renderSingleMenu(h, {index, inlineIndent, icon, title}) {
     return (
-        <el-menu-item key={index} index={index}>
+        <el-menu-item key={index} index={index} inline-indent={inlineIndent}>
             <MenuItemContent icon={icon} title={title}/>
         </el-menu-item>
     )
 }
 
-function renderSubMenu(h, {index, icon, title, popperClass, children}) {
+function renderSubMenu(h, {index, inlineIndent, icon, title, popperClass, children}) {
     return (
-        <el-submenu key={index} index={index} popper-class={popperClass}>
+        <el-submenu key={index} index={index} inline-indent={inlineIndent} popper-class={popperClass}>
             <MenuItemContent slot="title" icon={icon} title={title}/>
             {children}
         </el-submenu>
@@ -57,7 +57,7 @@ function renderChildrenWithParentMenu(h, {icon, title, children}) {
 }
 
 function renderMenu(h, props) {
-    const {menu, popperClass, showParent, collapse, showIconMaxDepth, depth = 1} = props
+    const {menu, inlineIndent, popperClass, showParent, collapse, showIconMaxDepth, depth = 1} = props
 
     const onlyOneChild = getOnlyChild(menu)
 
@@ -67,6 +67,7 @@ function renderMenu(h, props) {
         const {fullPath, meta: {icon, title}} = onlyOneChild
         return renderSingleMenu(h, {
             index: fullPath,
+            inlineIndent,
             icon: getIcon({icon, showIconMaxDepth, depth}),
             title
         })
@@ -86,6 +87,7 @@ function renderMenu(h, props) {
 
     return renderSubMenu(h, {
         index: menu.fullPath,
+        inlineIndent,
         icon: getIcon({icon, showIconMaxDepth, depth}),
         title,
         popperClass,
@@ -105,6 +107,9 @@ export default {
 
         //折叠时的展开菜单是否显示父级
         showParent: Boolean,
+
+        //向左缩进的单位距离
+        inlineIndent: Number,
 
         //是否为折叠状态
         collapse: Boolean,

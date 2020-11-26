@@ -45,7 +45,7 @@
             //菜单文字的最大宽度
             > .menu-item-content {
                 //侧边栏宽度、菜单左右padding、左侧图标宽度、距离左右的距离、右侧图标宽度
-                max-width: $aside-width - 20px * 2 - $menu-icon-size - $menu-icon-text-gap * 2 - 12px;
+                max-width: $aside-width - $menu-padding * 2 - $menu-icon-size - $menu-icon-text-gap * 2 - 12px;
             }
         }
 

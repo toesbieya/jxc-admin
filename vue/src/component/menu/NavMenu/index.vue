@@ -1,4 +1,5 @@
 <script type="text/jsx">
+import cssVariables from '@/asset/style/variables.scss'
 import Item from './item'
 
 export default {
@@ -40,6 +41,7 @@ export default {
         } = context
 
         const themeClassName = `el-menu--${theme}`
+        const inlineIndent = parseFloat(cssVariables.menuPadding)
 
         let items = children || menus.map(m => (
             <Item
@@ -47,6 +49,7 @@ export default {
                 popper-class={themeClassName}
                 show-parent={showParentOnCollapse}
                 collapse={collapse}
+                inline-indent={inlineIndent}
                 show-icon-max-depth={showIconMaxDepth}
             />
         ))

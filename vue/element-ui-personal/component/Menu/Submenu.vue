@@ -1,5 +1,5 @@
 <script type="text/jsx">
-import MenuMixin from 'element-ui/packages/menu/src/menu-mixin'
+import MenuMixin from './mixin'
 import Emitter from 'element-ui/lib/mixins/emitter'
 import Popper from 'element-ui/lib/utils/vue-popper'
 
