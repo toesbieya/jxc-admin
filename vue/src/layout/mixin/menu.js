@@ -4,6 +4,7 @@
 import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
 import {refreshPage} from "@/util/route"
 import {isExternal} from "@/util/validate"
+import {findComponentByTag} from "@/util/vue"
 
 export default {
     data() {
@@ -23,7 +24,6 @@ export default {
             //外部链接时打开新窗口
             if (isExternal(fullPath)) {
                 window.open(fullPath)
-                //重置高亮菜单
                 return this.resetActiveMenu()
             }
 
@@ -39,24 +39,18 @@ export default {
         //由于侧边栏菜单数组更新后，el-menu不一定会更新（当数组中不存在单级菜单时）
         //所以手动更新el-menu的当前高亮菜单
         resetActiveMenu() {
-            const menu = this.$refs.menu
+            const menu = this.$_getElMenuInstance()
             menu && menu.updateActiveIndex(this.activeMenu)
         },
 
-        //渲染el-menu时监听其展开菜单
-        watchOpenedMenus() {
-            //尝试取消之前设置的监听
-            if (this.watchOpenedMenusCallback) {
-                this.watchOpenedMenusCallback()
-                this.watchOpenedMenusCallback = null
+        //获取el-menu实例
+        //目前被侧边栏和双层侧边栏的主菜单使用
+        $_getElMenuInstance() {
+            if (!this.$_elMenuInstance) {
+                this.$_elMenuInstance = findComponentByTag(this, 'el-menu')
             }
 
-            const menu = this.$refs.menu
-            if (!menu) return
-
-            this.watchOpenedMenusCallback = menu.$watch('openedMenus', v => {
-                this.openedMenuNum = v.length
-            })
+            return this.$_elMenuInstance
         }
     }
 }

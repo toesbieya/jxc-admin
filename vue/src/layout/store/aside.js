@@ -26,7 +26,10 @@ const state = {
     autoHide: false,
 
     //汉堡包的位置，aside 或 head
-    hamburgerPosition: 'aside'
+    hamburgerPosition: 'aside',
+
+    //是否显示搜索框
+    search: true
 }
 
 const store = Vue.observable(state)

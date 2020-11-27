@@ -4,15 +4,19 @@ import {isEmpty} from "@/util"
 
 /**
  * 判断是否需要鉴权，需要则返回true
- * 以下情况不需要鉴权：①无meta、②设置了noAuth=true、③没有名称
+ * 以下情况不需要鉴权：①无meta、②是redirect、③没有名称、④设置了noAuth=true
  *
  * @param route vue-router的routeConfig或项目中说明的路由配置项
  * @return {boolean}
  */
 export function needAuth(route) {
-    if (route.path.startsWith('/redirect')) return false
-    const {meta} = route
-    return !meta || !meta.noAuth || isEmpty(meta.title) && isEmpty(meta.dynamicTitle)
+    const {path, meta} = route
+
+    if (!meta || path.startsWith('/redirect')) return false
+
+    if (isEmpty(meta.title) && isEmpty(meta.dynamicTitle)) return false
+
+    return meta.noAuth !== true
 }
 
 /**

@@ -29,10 +29,6 @@
 
             <el-divider>页面设置</el-divider>
             <div class="drawer-item">
-                <span>显示logo</span>
-                <el-switch :value="pageGetters.showLogo" @input="changePageShowLogo"/>
-            </div>
-            <div class="drawer-item">
                 <span>分层结构</span>
                 <el-select
                     :value="pageGetters.position"
@@ -43,6 +39,10 @@
                     <el-option value="top-bottom" label="上下"/>
                     <el-option value="left-right" label="左右"/>
                 </el-select>
+            </div>
+            <div class="drawer-item">
+                <span>显示logo</span>
+                <el-switch :value="pageGetters.showLogo" @input="changePageShowLogo"/>
             </div>
             <div class="drawer-item">
                 <span>显示页头</span>
@@ -67,6 +67,18 @@
                 </el-select>
             </div>
             <div class="drawer-item">
+                <span>汉堡包位置</span>
+                <el-select
+                    :value="asideGetters.hamburgerPosition"
+                    size="mini"
+                    style="width: 90px"
+                    @input="changeAsideHamburgerPosition"
+                >
+                    <el-option value="aside" label="侧边栏"/>
+                    <el-option value="head" label="导航栏"/>
+                </el-select>
+            </div>
+            <div class="drawer-item">
                 <span>手风琴效果</span>
                 <el-switch :value="asideGetters.uniqueOpen" @input="changeAsideUniqueOpen"/>
             </div>
@@ -83,16 +95,8 @@
                 <el-switch :value="asideGetters.autoHide" @input="changeAsideAutoHide"/>
             </div>
             <div class="drawer-item">
-                <span>汉堡包位置</span>
-                <el-select
-                    :value="asideGetters.hamburgerPosition"
-                    size="mini"
-                    style="width: 90px"
-                    @input="changeAsideHamburgerPosition"
-                >
-                    <el-option value="aside" label="侧边栏"/>
-                    <el-option value="head" label="导航栏"/>
-                </el-select>
+                <span>显示搜索框</span>
+                <el-switch :value="asideGetters.search" @input="changeAsideSearch"/>
             </div>
 
             <el-divider>导航栏设置</el-divider>
@@ -181,18 +185,19 @@ export default {
                     navMode: 'mix'
                 },
                 page: {
-                    showLogo: true,
                     position: 'left-right',
+                    showLogo: true,
                     showPageHeader: true,
                     showBackToTop: true
                 },
                 aside: {
                     theme: 'light',
+                    hamburgerPosition: 'aside',
                     uniqueOpen: true,
                     collapse: false,
                     showParentOnCollapse: false,
                     autoHide: false,
-                    hamburgerPosition: 'aside'
+                    search: true
                 },
                 navbar: {
                     theme: 'light'
@@ -241,11 +246,11 @@ export default {
             appMutations.navMode(v)
         },
 
-        changePageShowLogo(v) {
-            pageMutations.showLogo(v)
-        },
         changePagePosition(v) {
             pageMutations.position(v)
+        },
+        changePageShowLogo(v) {
+            pageMutations.showLogo(v)
         },
         changePageShowHeader(v) {
             pageMutations.showPageHeader(v)
@@ -256,6 +261,9 @@ export default {
 
         changeAsideTheme(v) {
             asideMutations.theme(v)
+        },
+        changeAsideHamburgerPosition(v) {
+            asideMutations.hamburgerPosition(v)
         },
         changeAsideUniqueOpen(v) {
             asideMutations.uniqueOpen(v)
@@ -269,8 +277,8 @@ export default {
         changeAsideAutoHide(v) {
             asideMutations.autoHide(v)
         },
-        changeAsideHamburgerPosition(v) {
-            asideMutations.hamburgerPosition(v)
+        changeAsideSearch(v) {
+            asideMutations.search(v)
         },
 
         changeNavbarTheme(v) {

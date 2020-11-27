@@ -3,7 +3,6 @@ import {mapState} from 'vuex'
 import guideMixin from '@/mixin/guide'
 import hamburgerMixin from '@/layout/mixin/hamburger'
 import Bell from "./component/Bell"
-import Hamburger from '@/layout/component/Hamburger'
 import HeadMenu from "./component/HeadMenu"
 import Logo from "@/layout/component/Logo"
 import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
@@ -17,7 +16,7 @@ export default {
 
     mixins: [guideMixin.navbar, hamburgerMixin],
 
-    components: {Bell, Hamburger, HeadMenu, Logo},
+    components: {Bell, HeadMenu, Logo},
 
     computed: {
         ...mapState('user', ['avatar', 'name', 'prepareLogout']),

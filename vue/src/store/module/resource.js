@@ -7,7 +7,7 @@ import {str2routeConfig, metaExtend} from "@/router/util"
 import {getAll} from "@/api/system/resource"
 import {isEmpty, deepClone} from "@/util"
 import {needAuth, auth} from "@/util/auth" // 此处存在循环引用？
-import {createTree} from "@/util/tree"
+import {createTree, shakeTree} from "@/util/tree"
 import {isExternal} from "@/util/validate"
 
 const state = {
@@ -42,7 +42,7 @@ const mutations = {
 }
 
 const actions = {
-    init({state, commit}, {resources, admin}) {
+    init({state, commit}, {admin}) {
         return getAll
             .request()
             .then(({data}) => {
@@ -55,7 +55,7 @@ const actions = {
                 !state.init && addDynamicRoutes(routes)
 
                 //生成经过权限过滤后的菜单
-                appMutations.menus(getAuthorizedMenus({resources, admin}, routes))
+                appMutations.menus(getAuthorizedMenus(routes))
 
                 //设置初始化完成的标志
                 commit('init', true)
@@ -70,7 +70,7 @@ function transformOriginRouteData(data) {
     //未开启后端动态路由功能时，返回前端预设的静态路由
     if (!routeConfig.useBackendDataAsRoute) return getDynamicRoutes()
 
-    data = deepClone(data).filter(i => {
+    const treeArray = deepClone(data).filter(i => {
         //过滤掉数据接口或者未启用的项
         if (i.type === 3 || !i.enable) {
             return false
@@ -84,16 +84,22 @@ function transformOriginRouteData(data) {
         return true
     })
 
-    return createTree(data)
+    return createTree(treeArray)
 }
 
 //获取经过权限控制后的菜单
-function getAuthorizedMenus({resources, admin}, menus) {
+function getAuthorizedMenus(menus) {
     menus = deepClone(menus)
     clean(menus)
     addFullPath(menus)
-    filter(menus, i => !needAuth(i) || auth(i.fullPath))
-    return menus
+    return shakeTree(menus, i => {
+        //非叶子节点时，当定义了children属性却没有子节点时移除
+        if (i.children && i.children.length === 0) {
+            return false
+        }
+
+        return !needAuth(i) || auth(i.fullPath)
+    })
 }
 
 //删除不显示的菜单(没有children且没有meta.title)
@@ -135,23 +141,8 @@ function addFullPath(routes, basePath = '/') {
     })
 }
 
-//若没有children且传入的validate校验方法未通过，则删除，若有，当children长度为0时删除
-function filter(arr, validate) {
-    for (let i = arr.length - 1; i >= 0; i--) {
-        const {children} = arr[i]
-
-        if (!children || children.length <= 0) {
-            !validate(arr[i]) && arr.splice(i, 1)
-            continue
-        }
-
-        filter(children, validate)
-
-        children.length <= 0 && arr.splice(i, 1)
-    }
-}
-
 //根据权限列表生成哈希表：<权限路径，权限id>
+//该方法只处理叶子节点或者是接口类型的节点
 function generateResourceMap(resources) {
     if (!Array.isArray(resources) || resources.length <= 0) {
         return {}

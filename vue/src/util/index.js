@@ -262,3 +262,8 @@ export function deepClone(source) {
         }, {})
     }
 }
+
+//有空值判断的trim
+export function trim(str) {
+    return isEmpty(str) ? str : str.trim()
+}

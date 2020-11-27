@@ -1,14 +1,38 @@
 <script type="text/jsx">
+import {isEmpty} from "@/util"
+
 const MenuItemContent = {
     functional: true,
 
-    props: {icon: String, title: String},
+    props: {
+        icon: String,
+        title: String,
+        highlight: String
+    },
 
     render(h, context) {
-        const {icon, title} = context.props
+        const {icon, title, highlight} = context.props
+        const content = isEmpty(highlight)
+            ? title
+            : getHighlightContent(h, title, highlight)
 
-        return [<v-icon icon={icon}/>, <span slot="title" class="menu-item-content">{title}</span>]
+        return [<v-icon icon={icon}/>, <span slot="title" class="menu-item-content">{content}</span>]
     }
+}
+
+//获得高亮的菜单内容vnode
+function getHighlightContent(h, title, highlight) {
+    const start = title.indexOf(highlight)
+
+    if (start === -1) return title
+
+    const end = start + highlight.length
+
+    return [
+        title.substring(0, start),
+        <span class="menu-highlight-result">{title.substring(start, end)}</span>,
+        title.substring(end)
+    ]
 }
 
 //根据showIconMaxDepth、depth判断是否需要限制图标的显示
@@ -30,18 +54,18 @@ function getOnlyChild(menu) {
     return null
 }
 
-function renderSingleMenu(h, {index, inlineIndent, icon, title}) {
+function renderSingleMenu(h, {index, inlineIndent, icon, title, highlight}) {
     return (
         <el-menu-item key={index} index={index} inline-indent={inlineIndent}>
-            <MenuItemContent icon={icon} title={title}/>
+            <MenuItemContent icon={icon} title={title} highlight={highlight}/>
         </el-menu-item>
     )
 }
 
-function renderSubMenu(h, {index, inlineIndent, icon, title, popperClass, children}) {
+function renderSubMenu(h, {index, inlineIndent, icon, title, popperClass, highlight, children}) {
     return (
         <el-submenu key={index} index={index} inline-indent={inlineIndent} popper-class={popperClass}>
-            <MenuItemContent slot="title" icon={icon} title={title}/>
+            <MenuItemContent slot="title" icon={icon} title={title} highlight={highlight}/>
             {children}
         </el-submenu>
     )
@@ -57,7 +81,7 @@ function renderChildrenWithParentMenu(h, {icon, title, children}) {
 }
 
 function renderMenu(h, props) {
-    const {menu, inlineIndent, popperClass, showParent, collapse, showIconMaxDepth, depth = 1} = props
+    const {menu, inlineIndent, popperClass, highlight, showParent, collapse, showIconMaxDepth, depth = 1} = props
 
     const onlyOneChild = getOnlyChild(menu)
 
@@ -69,7 +93,8 @@ function renderMenu(h, props) {
             index: fullPath,
             inlineIndent,
             icon: getIcon({icon, showIconMaxDepth, depth}),
-            title
+            title,
+            highlight
         })
     }
 
@@ -91,6 +116,7 @@ function renderMenu(h, props) {
         icon: getIcon({icon, showIconMaxDepth, depth}),
         title,
         popperClass,
+        highlight,
         children
     })
 }
@@ -104,6 +130,9 @@ export default {
 
         //弹出菜单的自定义类名
         popperClass: String,
+
+        //需要高亮的字符串
+        highlight: String,
 
         //折叠时的展开菜单是否显示父级
         showParent: Boolean,

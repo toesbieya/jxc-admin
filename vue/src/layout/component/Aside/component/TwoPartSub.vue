@@ -1,5 +1,7 @@
 <script type="text/jsx">
+import hamburgerMixin from '@/layout/mixin/hamburger'
 import menuMixin from "@/layout/mixin/menu"
+import menuSearchMixin from '@/layout/mixin/menuSearch'
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters} from "@/layout/store/aside"
 import NavMenu from "@/component/menu/NavMenu"
@@ -9,7 +11,7 @@ import {moveToActiveMenuVertically} from "@/util/element-ui/elMenu"
 export default {
     name: "SubSidebar",
 
-    mixins: [menuMixin],
+    mixins: [hamburgerMixin, menuMixin, menuSearchMixin],
 
     components: {NavMenu},
 
@@ -42,7 +44,7 @@ export default {
 
                 this.activeMenu = getActiveMenuByRoute(this.$route)
 
-                const menu = this.$refs.menu
+                const menu = this.$_getElMenuInstance()
                 if (!menu) return
                 const item = menu.items[this.activeMenu]
 
@@ -63,7 +65,7 @@ export default {
         onSelect(index, indexPath, item, jump = true) {
             //开启手风琴模式时，激活没有子级的菜单时收起其它展开项
             if (asideGetters.uniqueOpen && indexPath.length === 1) {
-                const menu = this.$refs.menu
+                const menu = this.$_getElMenuInstance()
                 const opened = menu.openedMenus
                 opened.forEach(i => i !== index && menu.closeMenu(i))
             }
@@ -73,7 +75,7 @@ export default {
 
         //滚动至当前激活的菜单
         moveToCurrentMenu() {
-            moveToActiveMenuVertically(this.$refs.menu)
+            moveToActiveMenuVertically(this.$_getElMenuInstance())
         }
     },
 
@@ -85,6 +87,9 @@ export default {
                 <div class="sub-sidebar-title">
                     {this.rootMenu && this.rootMenu.meta.title}
                 </div>
+
+                {asideGetters.search && <menu-search on-search={this.handlerSearch}/>}
+
                 <nav-menu
                     menus={this.menus}
                     theme={asideGetters.theme}
@@ -96,6 +101,8 @@ export default {
                     switch-transition-name="sidebar"
                     on-select={this.onSelect}
                 />
+
+                {this.renderHamburger && <hamburger class="el-menu-item"/>}
             </div>
         )
     }

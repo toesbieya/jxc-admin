@@ -1,10 +1,10 @@
 <script type="text/jsx">
 import hamburgerMixin from '@/layout/mixin/hamburger'
 import menuMixin from "@/layout/mixin/menu"
+import menuSearchMixin from '@/layout/mixin/menuSearch'
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
 import {getters as pageGetters} from "@/layout/store/page"
-import Hamburger from '@/layout/component/Hamburger'
 import Logo from '@/layout/component/Logo'
 import NavMenu from '@/component/menu/NavMenu'
 import {getSidebarMenus, getActiveMenuByRoute} from "@/layout/util"
@@ -13,9 +13,9 @@ import {moveToActiveMenuVertically} from "@/util/element-ui/elMenu"
 export default {
     name: "Sidebar",
 
-    mixins: [hamburgerMixin, menuMixin],
+    mixins: [hamburgerMixin, menuMixin, menuSearchMixin],
 
-    components: {Hamburger, Logo, NavMenu},
+    components: {Logo, NavMenu},
 
     data() {
         return {
@@ -30,7 +30,7 @@ export default {
         //侧边栏菜单
         menus: () => getSidebarMenus(),
 
-        //当时移动端或设置了侧边栏自动隐藏时将侧边栏用抽屉包裹
+        //当是移动端或设置了侧边栏自动隐藏时将侧边栏用抽屉包裹
         renderInDrawer() {
             return this.isMobile || asideGetters.autoHide
         },
@@ -89,6 +89,11 @@ export default {
             return !this.isMobile && appGetters.navMode !== 'aside'
         },
 
+        //是否需要显示搜索框
+        renderMenuSearch() {
+            return !this.isMobile && asideGetters.search
+        },
+
         className() {
             return {'sidebar': true, 'collapse': this.collapse}
         }
@@ -103,7 +108,7 @@ export default {
 
                 this.activeMenu = getActiveMenuByRoute(this.$route)
 
-                const menu = this.$refs.menu
+                const menu = this.$_getElMenuInstance()
                 if (!menu) return
                 const item = menu.items[this.activeMenu]
 
@@ -154,7 +159,7 @@ export default {
         onSelect(index, indexPath, item, jump = true) {
             //开启手风琴模式时，激活没有子级的菜单时收起其它展开项
             if (asideGetters.uniqueOpen && indexPath.length === 1) {
-                const menu = this.$refs.menu
+                const menu = this.$_getElMenuInstance()
                 const opened = menu.openedMenus
                 opened.forEach(i => i !== index && menu.closeMenu(i))
             }
@@ -168,9 +173,25 @@ export default {
             }
         },
 
+        //渲染el-menu时监听其展开菜单
+        watchOpenedMenus() {
+            //尝试取消之前设置的监听
+            if (this.watchOpenedMenusCallback) {
+                this.watchOpenedMenusCallback()
+                this.watchOpenedMenusCallback = null
+            }
+
+            const menu = this.$_getElMenuInstance()
+            if (!menu) return
+
+            this.watchOpenedMenusCallback = menu.$watch('openedMenus', v => {
+                this.openedMenuNum = v.length
+            })
+        },
+
         //滚动至当前激活的菜单
         moveToCurrentMenu() {
-            moveToActiveMenuVertically(this.$refs.menu)
+            moveToActiveMenuVertically(this.$_getElMenuInstance())
         }
     },
 
@@ -188,7 +209,11 @@ export default {
                 on-mouseenter={() => this.mouseOutside = false}
             >
                 {this.showLogo && <logo show-title={!this.collapse}/>}
+
+                {this.renderMenuSearch && <menu-search on-search={this.handlerSearch}/>}
+
                 <nav-menu
+                    ref="nav-menu"
                     menus={this.menus}
                     theme={asideGetters.theme}
                     collapse={this.collapse}
@@ -199,7 +224,8 @@ export default {
                     switch-transition-name="sidebar"
                     on={{'select': this.onSelect, 'hook:mounted': this.watchOpenedMenus}}
                 />
-                {this.renderHamburger && <hamburger class="el-menu-item"/>}
+
+                {!this.renderInDrawer && this.renderHamburger && <hamburger class="el-menu-item"/>}
             </div>
         )
 

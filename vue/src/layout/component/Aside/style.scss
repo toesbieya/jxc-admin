@@ -4,9 +4,9 @@
     display: flex;
     z-index: 11;
 
-    //移动端下侧边栏抽屉不能设置z-index，否则会被modal遮住
+    //移动端下侧边栏抽屉不能设置z-index，否则会被el-drawer的遮罩遮住
     @include mobile {
-        z-index: auto;
+        z-index: auto !important;
     }
 
     //单层和双层侧边栏

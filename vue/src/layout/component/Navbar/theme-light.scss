@@ -2,10 +2,10 @@
     background-color: #ffffff;
 
     .navbar-item {
-        color: $menu-text-light-color;
+        color: $navbar-item-light-color;
 
         &:hover {
-            background: rgba(0, 0, 0, .025);
+            background: $navbar-item-hover-light-color;
         }
     }
 }

@@ -2,10 +2,10 @@
     background-color: $root-menu-dark-background;
 
     .navbar-item {
-        color: rgba(255, 255, 255, .85);
+        color: $navbar-item-dark-color;
 
         &:hover {
-            background: $--color-primary;
+            background: $navbar-item-hover-dark-color;
         }
     }
 }

@@ -1,3 +1,4 @@
+import Hamburger from '@/layout/component/Hamburger'
 import {getters as appGetters} from "@/layout/store/app"
 import {getters as asideGetters} from "@/layout/store/aside"
 import {getSidebarMenus} from "@/layout/util"
@@ -7,6 +8,8 @@ import {getSidebarMenus} from "@/layout/util"
  */
 
 export default {
+    components: {Hamburger},
+
     computed: {
         //渲染汉堡包的条件
         //①侧边栏有菜单

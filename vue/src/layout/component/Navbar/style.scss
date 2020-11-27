@@ -6,7 +6,7 @@
     align-items: center;
     flex-wrap: nowrap;
     height: $nav-height;
-    padding-left: 12px;
+    padding-left: $navbar-padding-left;
     z-index: 10;
     box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
     transition: all .2s;
@@ -30,8 +30,8 @@
 
     .logo-container {
         width: auto;
-        min-width: 192px;
-        padding-left: 8px;
+        min-width: $aside-width - $navbar-padding-left;
+        padding-left: $menu-padding - $navbar-padding-left;
     }
 
     .avatar-wrapper {

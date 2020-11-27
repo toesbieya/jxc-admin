@@ -1,5 +1,8 @@
 .aside.dark {
-    background-color: $menu-dark-background;
+    &,
+    > .el-drawer__wrapper .el-drawer__body {
+        background-color: $menu-dark-background;
+    }
 
     .root-sidebar,
     .root-sidebar > .el-menu--vertical.el-menu {

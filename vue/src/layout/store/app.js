@@ -42,33 +42,41 @@ function sort(routes) {
         return
     }
 
+    //菜单排序值的空值处理
     const getSortValue = item => {
-        const sort = deepTap(item)
+        const sort = deepGetSortValue(item)
         return isEmpty(sort) ? 10000 : sort
     }
-    const deepTap = item => {
-        const {name, children = [], meta: {title, hidden, sort} = {}} = item
+
+    //获取菜单的排序值
+    const deepGetSortValue = item => {
+        const {children = [], meta: {hidden, sort} = {}} = item
+
         if (hidden) return null
+
         if (!isEmpty(sort)) return sort
-        //如果是类似首页那样的路由层级
-        if (isEmpty(name, title) && children.length === 1) {
-            return deepTap(children[0])
+
+        //如果只有一个子节点，那么取子节点的排序值
+        if (children.length === 1) {
+            return deepGetSortValue(children[0])
         }
+
         return null
     }
 
+    //对根节点排序
     routes.sort((pre, next) => {
         pre = getSortValue(pre)
         next = getSortValue(next)
         if (pre < next) return -1
-        else if (pre === next) return 0
-        else return 1
+        if (pre === next) return 0
+        return 1
     })
+
+    //对每一个根节点的子级排序
     routes.forEach(route => {
         const {children} = route
-        if (children && children.length) {
-            sort(children)
-        }
+        children && children.length && sort(children)
     })
 }
 

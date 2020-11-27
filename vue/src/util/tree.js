@@ -1,4 +1,4 @@
-import {deepClone} from "@/util/index"
+import {deepClone} from "@/util"
 import {createWorker} from '@/util/worker'
 
 const DEFAULT_PROPS = {id: 'id', pid: 'pid', children: 'children', leafHasChildren: true}
@@ -114,26 +114,34 @@ export function createLimitTreeByMap(fullMap, limit) {
 
 /**
  * 根据判断函数裁剪树，当节点不满足predicate且无下级节点时将被裁剪
+ * 此方法会改变原数组的children属性！
  *
  * @param tree {array}            原始树
- * @param predicate {function}    判断节点是否满足条件的函数，传入一个节点data
+ * @param predicate {function}    返回false时移除该节点，传入当前节点
  * @param childrenKey {string}    节点中代表子节点数组含义的字段名称，比如[{ch:[...]}]就是'ch'
- * @return {array} 经过裁剪后的树
+ * @return {array}                经过裁剪后的树
  */
-function shakeTree(tree = [], predicate = () => true, childrenKey = 'children') {
+export function shakeTree(tree, predicate = () => true, childrenKey = 'children') {
+    if (!tree) return undefined
+
     return tree.filter(data => {
-        data[childrenKey] = shakeTree(data[childrenKey], predicate)
-        return predicate(data) || data[childrenKey].length
+        const children = shakeTree(data[childrenKey], predicate, childrenKey)
+
+        if (children) {
+            data[childrenKey] = children
+        }
+
+        return predicate(data) || children && children.length > 0
     })
 }
 
 /**
- * 自底向上计算每个节点下有多少子节点
+ * 自底向上计算每个节点的value
  *
  * @param node
  * @param valueKey {string}
  * @param childrenKey {string}
- * @return {*|number}
+ * @return {number}
  */
 function calc(node, valueKey = 'value', childrenKey = 'children') {
     if (!node) return 0
@@ -181,9 +189,7 @@ export function flatTree(tree, childrenKey = 'children') {
 
 export function getNodesByDfs(node) {
     const nodes = []
-    const stack = []
-
-    stack.push(node)
+    const stack = [node]
 
     while (stack.length > 0) {
         const item = stack.pop()
@@ -199,8 +205,7 @@ export function getNodesByDfs(node) {
 
 export function getNodesByBfs(node) {
     const nodes = []
-    const queue = []
-    queue.unshift(node)
+    const queue = [node]
 
     while (queue.length > 0) {
         const item = queue.shift()

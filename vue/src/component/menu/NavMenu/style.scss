@@ -1,13 +1,20 @@
 @import "~@/asset/style/variables.scss";
 
-//设置菜单图标的大小和与文字的间隔
 .el-menu {
+    //图标的大小
     .icon {
         font-size: $menu-icon-size;
     }
 
+    //图标与文字的间隔
     .icon + .menu-item-content {
         margin-left: $menu-icon-text-gap;
+    }
+
+    //菜单的高亮关键字
+    .menu-highlight-result {
+        vertical-align: unset;
+        color: $--color-success;
     }
 }
 

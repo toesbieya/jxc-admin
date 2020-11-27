@@ -78,10 +78,20 @@ $aside-width: 208px;
 //侧边栏折叠时的宽度
 $aside-collapse-width: $menu-icon-size + $menu-padding * 2;
 
-//头部导航栏高度
+//导航栏高度
 $nav-height: 48px;
+//导航栏的padding-left
+$navbar-padding-left: 12px;
+//亮色导航栏的功能项颜色
+$navbar-item-light-color: $menu-text-light-color;
+//暗色导航栏的功能项颜色
+$navbar-item-dark-color: rgba(255, 255, 255, .85);
+//亮色导航栏的功能项hover颜色
+$navbar-item-hover-light-color: rgba(255, 255, 255, .85);
+//暗色导航栏的功能项hover颜色
+$navbar-item-hover-dark-color: #0f2438;
 
-//头部多页签栏高度
+//多页签栏高度
 $tags-view-height: 32px;
 
 //页头行高

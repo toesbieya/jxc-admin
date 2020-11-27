@@ -34,7 +34,7 @@ $logoSize: 30px;
     width: 100%;
     height: $nav-height;
     line-height: $nav-height;
-    padding-left: $menu-padding;
+    padding: 0 $menu-padding;
 
     .logo-link {
         display: block;
