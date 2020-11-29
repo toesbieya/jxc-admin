@@ -47,14 +47,17 @@ export default {
         command(command) {
             switch (command) {
                 case 'user':
-                    this.$router.push('/user')
+                    const path = '/user'
+                    this.$route.path !== path && this.$router.push(path)
                     break
                 case 'guide':
                     this.$guide(0, this.guideSteps)
                     break
                 case 'logout':
-                    if (this.prepareLogout) return
-                    elConfirm('确认退出?').then(() => this.$store.dispatch('user/logout'))
+                    if (!this.prepareLogout) {
+                        elConfirm('确认退出?')
+                            .then(() => this.$store.dispatch('user/logout'))
+                    }
                     break
             }
         },
@@ -103,14 +106,18 @@ export default {
                             <el-avatar size={30} src={this.avatar} icon="el-icon-user-solid"/>
                             <span class="hidden-xs">{this.name}</span>
                         </div>
-                        <el-dropdown-menu class="user-dropdown" slot="dropdown">
+                        <el-dropdown-menu
+                            slot="dropdown"
+                            class={navbarGetters.theme}
+                            visible-arrow={false}
+                        >
                             <el-dropdown-item icon="el-icon-user" command="user">
                                 个人中心
                             </el-dropdown-item>
                             <el-dropdown-item class="hidden-xs" icon="el-icon-guide" command="guide">
                                 新手指引
                             </el-dropdown-item>
-                            <el-dropdown-item divided icon="el-icon-switch-button" command="logout">
+                            <el-dropdown-item icon="el-icon-switch-button" command="logout">
                                 退出登录
                             </el-dropdown-item>
                         </el-dropdown-menu>

@@ -154,7 +154,14 @@ export default {
 
             if (!this.searchText) return this.items = parent.children
 
-            const predicate = item => item.id.startsWith(this.searchText) || item.name.startsWith(this.searchText)
+            //以0-9开头的的搜索词都根据id去查
+            const firstCharCode = this.searchText.charCodeAt(0)
+            const useId = 48 <= firstCharCode && firstCharCode <= 57
+            const predicate = (
+                () => useId
+                    ? item => item.id.startsWith(this.searchText)
+                    : item => item.name.startsWith(this.searchText)
+            )()
 
             this.items = parent.children.filter(predicate)
         },
@@ -176,6 +183,7 @@ export default {
             prev.push(item)
             const next = deepClone(DEFAULT_TABS)
 
+            //选择省份时
             if (level === 1) {
                 //选择直辖市的时候，最大深度-1，移除'市'tab
                 if (PROVINCE_CITIES.some(i => i.id === item.id)) {

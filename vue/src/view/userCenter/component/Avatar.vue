@@ -1,29 +1,26 @@
 <template>
     <abstract-dialog :loading="loading" title="上传头像" :value="value" width="50%" @close="cancel">
-        <el-row class="avatar-cropper">
-            <div class="img-wrapper">
-                <vue-cropper
-                    ref="cropper"
-                    :img="img"
-                    :info="false"
-                    autoCrop
-                    autoCropHeight="200px"
-                    autoCropWidth="200px"
-                    fixedBox
-                    full
-                    outputType="png"
-                    @wheel.native.prevent="scale"
-                />
-            </div>
+        <div class="avatar-cropper">
+            <vue-cropper
+                ref="cropper"
+                :img="img"
+                :info="false"
+                autoCrop
+                autoCropHeight="200px"
+                autoCropWidth="200px"
+                fixedBox
+                full
+                outputType="png"
+                @wheel.native.prevent="scale"
+            />
 
             <input
                 ref="input"
                 accept="image/png, image/jpeg, image/gif, image/jpg"
-                style="display: none"
                 type="file"
                 @change="chooseImage"
             >
-        </el-row>
+        </div>
 
         <template v-slot:footer>
             <el-button plain size="small" @click="$refs.input.click()">选择图片</el-button>
@@ -61,18 +58,36 @@ export default {
     },
 
     methods: {
+        clear() {
+            this.loading = false
+            this.$refs.cropper.clearCrop()
+            this.img && window.URL.revokeObjectURL(this.img)
+            this.img = ''
+            this.name = ''
+        },
+
+        scale(e) {
+            const eventDelta = e.wheelDelta || -(e.detail || 0) * 40
+            this.$refs.cropper.changeScale(eventDelta / 120)
+        },
+
         chooseImage(e) {
             if (this.loading) return
+
             this.clear()
-            let file = e.target.files[0]
+
+            const file = e.target.files[0]
+
             if (!file.type.includes('image')) {
                 return elError('请上传图片')
             }
+
             if (file.size > 1048576) {
                 return elError('上传的图片不能大于1M')
             }
+
             this.name = file.name
-            let reader = new FileReader()
+            const reader = new FileReader()
             reader.onload = e => {
                 this.img = window.URL.createObjectURL(new Blob([e.target.result]))
             }
@@ -95,19 +110,6 @@ export default {
             })
         },
 
-        clear() {
-            this.loading = false
-            this.$refs.cropper.clearCrop()
-            if (this.img) window.URL.revokeObjectURL(this.img)
-            this.img = ''
-            this.name = ''
-        },
-
-        scale(e) {
-            const eventDelta = e.wheelDelta || -(e.detail || 0) * 40
-            this.$refs.cropper.changeScale(eventDelta / 120)
-        },
-
         cancel() {
             this.closeDialog()
             this.clear()
@@ -118,17 +120,17 @@ export default {
 
 <style lang="scss">
 .avatar-cropper {
+    height: 500px;
+    width: 100%;
+    border: 1px solid #ebebeb;
+
     .cropper-crop-box {
-        border: 1px solid #39f;
         border-radius: 50%;
         overflow: hidden;
     }
 
-    .img-wrapper {
-        height: 500px;
-        width: 100%;
-        display: inline-block;
-        border: 1px solid #ebebeb;
+    > input[type=file] {
+        display: none;
     }
 }
 </style>

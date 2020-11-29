@@ -90,7 +90,7 @@ export default {
 
 .context-menu {
     margin: 0;
-    background: $menu-dark-background;
+    background: $menu-background-dark;
     z-index: 10;
     position: fixed;
     list-style-type: none;

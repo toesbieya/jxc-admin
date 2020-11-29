@@ -6,16 +6,16 @@
             //菜单的文字以及hover颜色
             .el-menu-item,
             .el-submenu__title {
-                color: $menu-text-light-color;
+                color: $menu-text-color-light;
 
                 &:hover {
-                    color: $menu-text-hover-light-color;
+                    color: $menu-text-hover-color-light;
                 }
             }
 
             //弹出菜单的父级
             &.el-menu--popup .popover-menu__title {
-                color: $menu-text-hover-light-color;
+                color: $menu-text-hover-color-light;
                 border-bottom-color: $border-color-light;
             }
         }
@@ -28,10 +28,10 @@
             //菜单的文字以及hover颜色
             .el-menu-item,
             .el-submenu__title {
-                color: $menu-text-light-color;
+                color: $menu-text-color-light;
 
                 &:hover {
-                    color: $menu-text-hover-light-color;
+                    color: $menu-text-hover-color-light;
                 }
             }
         }

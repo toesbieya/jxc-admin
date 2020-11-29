@@ -47,11 +47,6 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
     }
 }
 
-//亮色边框的颜色，使用的element-ui原定义
-$border-color-light: #dcdfe6;
-//暗色边框的颜色
-$border-color-dark: #101117;
-
 //菜单中icon的大小
 $menu-icon-size: 14px;
 //菜单中icon和文字的距离
@@ -59,19 +54,19 @@ $menu-icon-text-gap: 10px;
 //菜单的padding
 $menu-padding: $menu-icon-size + $menu-icon-text-gap;
 //暗色菜单的背景色
-$menu-dark-background: #304156;
+$menu-background-dark: #304156;
 //暗色子级菜单的背景色
-$sub-menu-dark-background: darken($menu-dark-background, 5%);
+$sub-menu-background-dark: darken($menu-background-dark, 5%);
 //暗色主菜单的背景色（用于双层侧边栏的主菜单和顶部导航栏）
-$root-menu-dark-background: #001529;
+$root-menu-background-dark: #1F293D;
 //亮色菜单的文字颜色
-$menu-text-light-color: #303133;
-//亮色菜单的文字hover颜色
-$menu-text-hover-light-color: $--color-primary;
+$menu-text-color-light: #303133;
 //暗色菜单的文字颜色
-$menu-text-dark-color: rgba(255, 255, 255, .65);
+$menu-text-color-dark: rgba(255, 255, 255, .65);
+//亮色菜单的文字hover颜色
+$menu-text-hover-color-light: $--color-primary;
 //暗色菜单的文字hover颜色
-$menu-text-dark-hover-color: rgba(255, 255, 255, 1);
+$menu-text-hover-color-dark: rgba(255, 255, 255, 1);
 
 //侧边栏宽度
 $aside-width: 208px;
@@ -83,13 +78,13 @@ $nav-height: 48px;
 //导航栏的padding-left
 $navbar-padding-left: 12px;
 //亮色导航栏的功能项颜色
-$navbar-item-light-color: $menu-text-light-color;
+$navbar-item-color-light: $menu-text-color-light;
 //暗色导航栏的功能项颜色
-$navbar-item-dark-color: rgba(255, 255, 255, .85);
+$navbar-item-color-dark: rgba(255, 255, 255, .85);
 //亮色导航栏的功能项hover背景颜色
-$navbar-item-hover-light-color: rgba(255, 255, 255, .85);
+$navbar-item-hover-color-light: rgba(255, 255, 255, .85);
 //暗色导航栏的功能项hover背景颜色
-$navbar-item-hover-dark-color: lighten($root-menu-dark-background, 5%);
+$navbar-item-hover-color-dark: lighten($root-menu-background-dark, 5%);
 
 //多页签栏高度
 $tags-view-height: 32px;
@@ -100,6 +95,11 @@ $page-header-line-height: 26px;
 $page-header-padding: 12px;
 //路由页面的margin
 $page-view-margin: 24px;
+
+//亮色边框的颜色，使用的element-ui原定义
+$border-color-light: #dcdfe6;
+//暗色边框的颜色
+$border-color-dark: darken($root-menu-background-dark, 5%);
 
 //dialog距离顶部的距离，用于<el-dialog>的top属性、<el-dialog>中滚动区域的最大高度
 $dialog-top: 100px;

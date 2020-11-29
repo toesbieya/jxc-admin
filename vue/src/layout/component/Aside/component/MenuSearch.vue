@@ -51,6 +51,6 @@ export default {
 .dark .aside-search .el-input__inner {
     border: none;
     color: #ffffff;
-    background-color: lighten($menu-dark-background, 5%);
+    background-color: lighten($menu-background-dark, 5%);
 }
 </style>

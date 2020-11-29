@@ -1,12 +1,12 @@
 .aside.dark {
     &,
     > .el-drawer__wrapper .el-drawer__body {
-        background-color: $menu-dark-background;
+        background-color: $menu-background-dark;
     }
 
     .root-sidebar,
     .root-sidebar > .el-menu--vertical.el-menu {
-        background-color: $root-menu-dark-background;
+        background-color: $root-menu-background-dark;
     }
 
     .root-sidebar {
@@ -21,7 +21,7 @@
         border-top-color: $border-color-dark;
 
         i {
-            color: $menu-text-dark-color;
+            color: $menu-text-color-dark;
         }
     }
 }

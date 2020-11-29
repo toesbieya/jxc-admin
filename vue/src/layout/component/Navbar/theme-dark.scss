@@ -1,11 +1,27 @@
 .navbar.dark {
-    background-color: $root-menu-dark-background;
+    background-color: $root-menu-background-dark;
 
     .navbar-item {
-        color: $navbar-item-dark-color;
+        color: $navbar-item-color-dark;
 
         &:hover {
-            background: $navbar-item-hover-dark-color;
+            background: $navbar-item-hover-color-dark;
+        }
+    }
+}
+
+//暗色主题的下拉菜单
+.dark.el-dropdown-menu {
+    background-color: $root-menu-background-dark;
+    border: none;
+
+    .el-dropdown-menu__item {
+        color: $menu-text-color-dark;
+
+        &:hover,
+        &:focus {
+            background-color: unset;
+            color: $menu-text-hover-color-dark;
         }
     }
 }

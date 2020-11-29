@@ -2,10 +2,10 @@
     background-color: #ffffff;
 
     .navbar-item {
-        color: $navbar-item-light-color;
+        color: $navbar-item-color-light;
 
         &:hover {
-            background: $navbar-item-hover-light-color;
+            background: $navbar-item-hover-color-light;
         }
     }
 }
