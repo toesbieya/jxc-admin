@@ -16,14 +16,13 @@
             }
 
             //子级菜单的背景颜色
-            &.el-menu--inline,
-            .el-submenu .el-submenu > .el-submenu__title {
+            &.el-menu--inline {
                 background-color: $sub-menu-dark-background;
             }
 
             //子级菜单内阴影
             &.el-menu--inline {
-                box-shadow: inset 0 2px 8px rgba(0, 0, 0, .45)
+                box-shadow: inset 0 2px 8px darken($sub-menu-dark-background, 10%)
             }
 
             //设置了显示弹出菜单的父级

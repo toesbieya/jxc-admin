@@ -61,7 +61,7 @@ $menu-padding: $menu-icon-size + $menu-icon-text-gap;
 //暗色菜单的背景色
 $menu-dark-background: #304156;
 //暗色子级菜单的背景色
-$sub-menu-dark-background: #1f2d3d;
+$sub-menu-dark-background: darken($menu-dark-background, 5%);
 //暗色主菜单的背景色（用于双层侧边栏的主菜单和顶部导航栏）
 $root-menu-dark-background: #001529;
 //亮色菜单的文字颜色
@@ -86,10 +86,10 @@ $navbar-padding-left: 12px;
 $navbar-item-light-color: $menu-text-light-color;
 //暗色导航栏的功能项颜色
 $navbar-item-dark-color: rgba(255, 255, 255, .85);
-//亮色导航栏的功能项hover颜色
+//亮色导航栏的功能项hover背景颜色
 $navbar-item-hover-light-color: rgba(255, 255, 255, .85);
-//暗色导航栏的功能项hover颜色
-$navbar-item-hover-dark-color: #0f2438;
+//暗色导航栏的功能项hover背景颜色
+$navbar-item-hover-dark-color: lighten($root-menu-dark-background, 5%);
 
 //多页签栏高度
 $tags-view-height: 32px;
