@@ -7,10 +7,13 @@ export default {
     functional: true,
 
     render(h, context) {
-        const {data, children, scopedSlots} = context
+        const {data, children} = context
 
-        if (!scopedSlots.empty) {
-            scopedSlots.empty = () => <Empty/>
+        if (!data.scopedSlots) {
+            data.scopedSlots = {}
+        }
+        if (!data.scopedSlots.empty) {
+            data.scopedSlots.empty = () => <Empty/>
         }
 
         return (
@@ -22,13 +25,6 @@ export default {
                 {...data}
             >
                 {children}
-                {
-                    Object
-                        .entries(scopedSlots)
-                        .map(([name, slot]) => (
-                            name !== 'default' && <slot slot={name}>{slot()}</slot>
-                        ))
-                }
             </el-table>
         )
     }

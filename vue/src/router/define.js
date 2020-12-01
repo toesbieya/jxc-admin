@@ -1,9 +1,9 @@
 import Layout from "@/layout/index"
-import Redirect from "@/view/app/redirect"
-import Login from "@/view/app/login/index"
-import Page403 from "@/view/app/403"
-import Page404 from "@/view/app/404"
-import Page500 from "@/view/app/500"
+import Redirect from "@/view/_app/redirect"
+import Login from "@/view/_app/login/index"
+import Page403 from "@/view/_app/403"
+import Page404 from "@/view/_app/404"
+import Page500 from "@/view/_app/500"
 import routes from './module'
 import {deepClone} from "@/util"
 

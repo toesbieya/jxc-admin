@@ -16,23 +16,28 @@
     will-change: unset !important;
 }
 
-.guide-popover-action {
-    position: relative;
-    height: 100%;
-    width: 100%;
+.guide-popover-container {
+    min-width: 300px;
 
-    .action-close {
-        display: inline-block;
-    }
+    .guide-popover-action {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        margin-top: 20px;
 
-    .action-step {
-        display: inline-block;
-        right: 0;
-        position: absolute;
+        .action-close {
+            display: inline-block;
+        }
 
-        .prev-btn {
+        .action-step {
+            display: inline-block;
+            right: 0;
             position: absolute;
-            right: 90px;
+
+            .prev-btn {
+                position: absolute;
+                right: 90px;
+            }
         }
     }
 }

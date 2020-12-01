@@ -9,13 +9,12 @@ export default {
 
     props: {
         value: Boolean,
-        title: String,
         loading: {type: Boolean, default: true},
         width: {type: String, default: '30%'}
     },
 
     render(h, context) {
-        const {data, children, listeners, props: {value, title, loading, width}} = context
+        const {data, children, listeners, props: {value, loading, width}} = context
 
         const onClose = function () {
             return listeners.close ? () => listeners.close(false) : () => ({})
@@ -26,13 +25,11 @@ export default {
                 v-drag-dialog
                 visible={value}
                 custom-class="abstract-dialog"
-                top={cssVariables['dialogTop']}
+                top={cssVariables.dialogTop}
                 width={width}
                 on-close={onClose}
                 {...data}
             >
-                <slot slot="title" name="title">{title}</slot>
-
                 <div class="abstract-dialog-container">
                     <LoadingMask show={loading}/>
                     <el-scrollbar>
@@ -42,8 +39,6 @@ export default {
                         <div style="margin-bottom: 17px"/>
                     </el-scrollbar>
                 </div>
-
-                <slot slot="footer" name="footer"/>
             </el-dialog>
         )
     }

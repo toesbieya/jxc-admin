@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import OrgTreeNode from "./OrgTreeNode"
+import OrgTreeNode from "./node"
 
 export default {
     name: 'OrgTree',
@@ -136,4 +136,4 @@ export default {
 }
 </script>
 
-<style lang="scss" src="./tree.scss"></style>
+<style lang="scss" src="./style.scss"></style>

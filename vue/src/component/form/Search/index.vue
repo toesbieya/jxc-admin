@@ -34,11 +34,9 @@ export default {
         handleCollapse() {
             this.collapse = !this.collapse
         },
-
         handleSearch() {
             this.$emit('search')
         },
-
         handleReset() {
             if (!this.initialModel || !this.model) {
                 return
@@ -51,8 +49,8 @@ export default {
             const vw = getElementInnerWidth(this.$el.parentNode)
 
             if (vw < 768) return this.xs
-            else if (vw < 998) return this.sm
-            else if (vw < 1200) return this.md
+            if (vw < 998) return this.sm
+            if (vw < 1200) return this.md
             return this.lg
         },
 
@@ -63,6 +61,7 @@ export default {
 
             //考虑后面的按钮组的占位
             this.num = num === 1 ? num : num - 1
+
             this.showCollapse = this.num < this.$slots.default.length
         },
 

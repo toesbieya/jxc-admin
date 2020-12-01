@@ -1,0 +1,50 @@
+@import "~@/asset/style/variables.scss";
+
+.form-validate-info {
+    &.el-popper {
+        padding: 0;
+    }
+
+    &-ref {
+        padding: 0 10px;
+        cursor: pointer;
+    }
+
+    &-ref,
+    &-item .el-icon-circle-close {
+        color: $--color-danger;
+    }
+
+    &-title {
+        text-align: center;
+        padding: 5px 16px 4px;
+    }
+
+    &-content {
+        max-height: 300px;
+        overflow: auto;
+    }
+
+    &-item {
+        padding: 8px 16px;
+        border-top: 1px solid $border-color-light;
+        cursor: pointer;
+
+        &:hover {
+            background-color: rgba($--color-primary, .1);
+        }
+
+        .el-icon-circle-close {
+            float: left;
+            margin-top: 4px;
+            margin-right: 12px;
+            padding-bottom: 22px;
+        }
+
+        &-label {
+            margin-top: 2px;
+            color: #909399;
+            font-size: 12px;
+        }
+    }
+}

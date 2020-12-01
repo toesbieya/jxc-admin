@@ -1,25 +1,24 @@
 <template>
     <div>
-        <el-popover ref="popover" :value="showPopover" trigger="manual" width="300">
-            <div v-html="step.content" style="padding: 10px"/>
+        <el-popover ref="popover" :value="showPopover" trigger="manual">
+            <div class="guide-popover-container">
+                <div v-html="step.content"/>
 
-            <div class="guide-popover-action">
-                <div class="action-close">
-                    <el-button v-if="hasDone" size="small" @click="exit">
-                        {{ step.doneBtnText }}
-                    </el-button>
-                    <el-button v-else size="small" @click="exit">
-                        {{ step.closeBtnText }}
-                    </el-button>
-                </div>
+                <div class="guide-popover-action">
+                    <div class="action-close">
+                        <el-button size="mini" type="dashed" plain @click="exit">
+                            {{ hasDone ? step.doneBtnText : step.closeBtnText }}
+                        </el-button>
+                    </div>
 
-                <div class="action-step">
-                    <el-button v-if="showPrevBtn" class="prev-btn" size="small" @click="previous">
-                        {{ step.prevBtnText }}
-                    </el-button>
-                    <el-button v-if="showNextBtn" class="next-btn" size="small" @click="next">
-                        {{ step.nextBtnText }}
-                    </el-button>
+                    <div class="action-step">
+                        <el-button v-if="showPrevBtn" class="prev-btn" size="mini" plain @click="previous">
+                            {{ step.prevBtnText }}
+                        </el-button>
+                        <el-button v-if="showNextBtn" class="next-btn" size="mini" plain @click="next">
+                            {{ step.nextBtnText }}
+                        </el-button>
+                    </div>
                 </div>
             </div>
 
@@ -35,10 +34,9 @@
 <script>
 /**
  * 由driver.js改造而来
- * vue里交互型的导航不太行，太多东西做不到，换成引导手册吧
  */
 import {debounce, isEmpty, deepClone} from "@/util"
-import {addHighlightClasses, getCalculatedPosition, inMainPage, jump, removeHighlightClasses} from "./utils"
+import {addHighlightClasses, getCalculatedPosition, removeHighlightClasses} from "./utils"
 
 export default {
     name: "Guide",
@@ -73,9 +71,7 @@ export default {
             return this.currentStep === this.steps.length - 1
         },
         step() {
-            if (!this.isActive
-                || this.steps.length <= 0
-                || !this.steps[this.currentStep]) {
+            if (!this.isActive || this.steps.length <= 0 || !this.steps[this.currentStep]) {
                 return {}
             }
 
@@ -89,7 +85,7 @@ export default {
 
     watch: {
         isActive(v) {
-            v ? document.body.classList.add('overflow-hidden') : document.body.classList.remove('overflow-hidden')
+            document.body.classList[v ? 'add' : 'remove']('overflow-hidden')
         }
     },
 
@@ -115,11 +111,10 @@ export default {
             this.showOverlay = true
             this.showStage = true
         },
-
-        exit() {
+        exit(force) {
             if (!this.isActive) return
 
-            if (this.beforeExit) {
+            if (!force && this.beforeExit) {
                 const result = this.beforeExit(this.hasDone)
                 if (result && result.then) {
                     result.then(this.$_clear)
@@ -138,13 +133,12 @@ export default {
             if (this.step.onPrevious) {
                 const result = this.step.onPrevious()
                 if (result && result.then) {
-                    result.then(this.$_movePrevious)
+                    result.then(this.$_movePrevious, this.$_moveEnd)
                 }
-                else result !== false && this.$_movePrevious()
+                else result ? this.$_movePrevious() : this.$_moveEnd()
             }
             else this.$_movePrevious()
         },
-
         next() {
             if (!this.isActive || this.moving) return
             this.moving = true
@@ -152,9 +146,9 @@ export default {
             if (this.step.onNext) {
                 const result = this.step.onNext()
                 if (result && result.then) {
-                    result.then(this.$_moveNext)
+                    result.then(this.$_moveNext, this.$_moveEnd)
                 }
-                else result !== false && this.$_moveNext()
+                else result ? this.$_moveNext() : this.$_moveEnd()
             }
             else this.$_moveNext()
         },
@@ -170,13 +164,15 @@ export default {
             this.currentStep--
             this.$_highlight()
         },
-
         $_moveNext() {
             if (!this.isActive) return
             this.currentStep++
             this.$_highlight()
         },
-
+        $_moveEnd() {
+            this.$refs.popover.updatePopper()
+            this.moving = false
+        },
         $_clear() {
             if (!this.isActive) return
             this.isActive = false
@@ -185,11 +181,10 @@ export default {
             this.currentStep = 0
             this.steps = []
             this.beforeExit = null
-            if (this.highlightedElement) removeHighlightClasses(this.highlightedElement)
+            this.highlightedElement && removeHighlightClasses(this.highlightedElement)
             this.highlightedElement = null
             this.lastHighlightedElement = null
         },
-
         $_highlight() {
             if (isEmpty(this.step.element)) throw new Error(`step${this.currentStep}中element为空`)
 
@@ -199,23 +194,22 @@ export default {
 
             if (el === this.highlightedElement) return
 
-            if (this.highlightedElement) removeHighlightClasses(this.highlightedElement)
+            this.highlightedElement && removeHighlightClasses(this.highlightedElement)
 
             this.lastHighlightedElement = this.highlightedElement
             this.highlightedElement = el
 
-            if (inMainPage(el)) jump(el)
+            el.scrollIntoView({block: 'center'})
 
             this.$_setStageStyle(getCalculatedPosition(el))
 
             window.setTimeout(() => {
-                this.$refs.popover.updatePopper()
-                this.moving = false
+                this.$_moveEnd()
+                this.step.onHighlighted && this.step.onHighlighted()
             }, 300)
 
             addHighlightClasses(el)
         },
-
         $_setStageStyle({top, left, right, bottom}) {
             const width = right - left
             const height = bottom - top
@@ -224,7 +218,7 @@ export default {
                 `height:${height}px;` +
                 `top:${top}px;` +
                 `left:${left}px;` +
-                `backgroundColor:${this.step.stageBackground}`
+                `background-color:${this.step.stageBackground}`
         }
     },
 

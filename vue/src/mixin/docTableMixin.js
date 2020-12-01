@@ -1,6 +1,6 @@
 import tableMixin from '@/mixin/tablePageMixin'
 import LinerProgress from '@/component/LinerProgress'
-import ListPage from '@/view/app/common/ListPage'
+import ListPage from '@/view/_common/ListPage'
 import {isEmpty} from "@/util"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 import {auth} from "@/util/auth"

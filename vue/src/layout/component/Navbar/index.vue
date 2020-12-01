@@ -1,6 +1,5 @@
 <script type="jsx">
 import {mapState} from 'vuex'
-import guideMixin from '@/mixin/guide'
 import hamburgerMixin from '@/layout/mixin/hamburger'
 import Bell from "./component/Bell"
 import HeadMenu from "./component/HeadMenu"
@@ -14,9 +13,31 @@ import {refreshPage} from "@/util/route"
 export default {
     name: 'navbar',
 
-    mixins: [guideMixin.navbar, hamburgerMixin],
+    mixins: [hamburgerMixin],
 
     components: {Bell, HeadMenu, Logo},
+
+    data() {
+        return {
+            guideSteps: [
+                {
+                    element: '.setting-btn.navbar-item',
+                    content: '这是个性设置按钮，可以根据自己喜好进行一些设置',
+                },
+                {
+                    element: '.navbar .el-dropdown.navbar-item',
+                    content: '这是用户中心',
+                },
+                {
+                    element: '.tags-view-container',
+                    content: `<p>这是tab栏，可以右键tab页进行相关操作</p>
+                              <p>ctrl + ← → 可以进行tab页的左右切换</p>
+                              <p>当tab过多时通过鼠标滚轮来滚动</p>
+                              <p>双击可以关闭</p>`,
+                },
+            ]
+        }
+    },
 
     computed: {
         ...mapState('user', ['avatar', 'name', 'prepareLogout']),
@@ -51,7 +72,7 @@ export default {
                     this.$route.path !== path && this.$router.push(path)
                     break
                 case 'guide':
-                    this.$guide(0, this.guideSteps)
+                    this.$guide(this.guideSteps)
                     break
                 case 'logout':
                     if (!this.prepareLogout) {

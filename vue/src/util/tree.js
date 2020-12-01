@@ -1,23 +1,38 @@
 import {deepClone} from "@/util"
 import {createWorker} from '@/util/worker'
 
-const DEFAULT_PROPS = {id: 'id', pid: 'pid', children: 'children', leafHasChildren: true}
+const DEFAULT_PROPS = {
+    //节点的id属性名称
+    id: 'id',
+
+    //节点的父级id属性名称
+    pid: 'pid',
+
+    //节点的子级节点属性名称
+    children: 'children',
+
+    //根节点的判定方法，传入函数时参数为节点对象
+    rootPredicate: 0,
+
+    //叶子节点是否能有children属性
+    leafHasChildren: false
+}
 
 /**
  * 列表转树形结构
  *
  * @param list {array}
- * @param rootSign {number|String|Function} 根节点的判定方法
- * @param props 树的配置项，{id, pid, children, leafHasChildren}
+ * @param props 树的配置项，{id, pid, children, rootPredicate, leafHasChildren}
  * @return {array}
  */
-export function createTree(list, rootSign = 0, props = {}) {
+export function createTree(list, props = {}) {
     if (!list || list.length <= 0) return []
 
     const {
         id = DEFAULT_PROPS.id,
         pid = DEFAULT_PROPS.pid,
         children = DEFAULT_PROPS.children,
+        rootPredicate = DEFAULT_PROPS.rootPredicate,
         leafHasChildren = DEFAULT_PROPS.leafHasChildren
     } = props
 
@@ -29,9 +44,9 @@ export function createTree(list, rootSign = 0, props = {}) {
     })
 
     const predicate = (() => {
-        return typeof rootSign === 'function'
-            ? rootSign
-            : key => key === rootSign
+        return typeof rootPredicate === 'function'
+            ? rootPredicate
+            : key => key === rootPredicate
     })()
 
     return list.filter(node => {
@@ -105,7 +120,7 @@ export function createLimitTreeByMap(fullMap, limit) {
         findParent(node)
     }
 
-    const result = createTree(Object.values(resultNodes), '0')
+    const result = createTree(Object.values(resultNodes), {rootPredicate: '0'})
 
     result.forEach(i => calc(i))
 

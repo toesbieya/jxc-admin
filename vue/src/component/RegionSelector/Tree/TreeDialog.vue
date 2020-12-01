@@ -58,11 +58,9 @@ export default {
         return (
             <abstract-dialog
                 v-model={this.visible}
-                directives={[{name: 'drag-dialog'}]}
                 class="tree-dialog"
                 title="选择行政区域"
                 loading={this.loading}
-                appendToBody={true}
                 v-on:close={this.closeDialog}
             >
                 <el-tree

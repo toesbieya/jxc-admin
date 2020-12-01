@@ -165,7 +165,7 @@ $page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
     a {
         color: #337ab7;
         cursor: pointer;
-        text-decoration: none;
+        text-decoration: underline;
     }
 }
 

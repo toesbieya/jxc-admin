@@ -31,26 +31,6 @@ export function getStyleProperty(element, propertyName, prefixVendor = false) {
     return propertyValue && propertyValue.toLowerCase ? propertyValue.toLowerCase() : propertyValue
 }
 
-export function inMainPage(element) {
-    const appView = document.querySelector('.page-main')
-    if (!appView) throw new Error('路由页面未加载')
-    return appView.contains(element)
-}
-
-export function jump(element) {
-    if (!element.scrollIntoView) {
-        scrollManually(element)
-        return
-    }
-
-    try {
-        element.scrollIntoView({behavior: 'instant', block: 'center'})
-    }
-    catch (e) {
-        scrollManually(element)
-    }
-}
-
 export function removeHighlightClasses(element) {
     element.classList.remove(CLASS_HIGHLIGHTED_ELEMENT)
     element.classList.remove(CLASS_POSITION_RELATIVE)
@@ -123,12 +103,4 @@ function fixStackingContext(element) {
 
         parentNode = parentNode.parentNode
     }
-}
-
-function scrollManually(element) {
-    const elementRect = element.getBoundingClientRect()
-    const absoluteElementTop = elementRect.top + window.pageYOffset
-    const middle = absoluteElementTop - (window.innerHeight / 2)
-
-    window.scrollTo(0, middle)
 }

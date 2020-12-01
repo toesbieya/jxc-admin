@@ -21,9 +21,17 @@ export default {
 
     props: {
         reference: Function,
+
+        //锚点链接数组，{ref：链接对应的ref，使用reference()[ref]取得对应的dom, label：链接名称}
         data: {type: Array, default: () => []},
+
+        //距离窗口顶部达到指定偏移量后触发，单位px
         offsetTop: {type: Number, default: 15},
+
+        //锚点区域边界，单位px
         bounds: {type: Number, default: 0},
+
+        //指定滚动的容器
         getContainer: {
             type: Function,
             default: () => document.querySelector('#app .page-main>.scroll-container')
@@ -33,33 +41,44 @@ export default {
     data: () => ({cur: null}),
 
     methods: {
+        //彻底销毁本组件
         close() {
             this.$el.remove()
             this.$destroy()
         },
 
+        //获取当前激活的锚点链接的ref值
         getCur(offsetTop, bounds) {
             const sections = []
             const container = this.getContainer()
             for (const {ref} of this.data) {
                 const target = this.getDomFromRef(ref)
                 if (!target) continue
+
                 const top = getTopDistance(target, container)
                 if (top <= offsetTop + bounds) {
                     sections.push({ref, top})
                 }
             }
+
+            //可能有多个满足条件的dom，取距滚动容器最远的那个
             if (sections.length) {
                 const max = sections.reduce((prev, curr) => (curr.top > prev.top ? curr : prev))
                 return max.ref
             }
+
             return null
         },
 
         getDomFromRef(ref) {
             const refs = this.reference()
+
             if (!refs) return null
-            return refs[ref]['$el'] || refs[ref][0]['$el']
+
+            const target = Array.isArray(refs[ref]) ? refs[ref][0] : refs[ref]
+
+            //可能是vue组件实例，也可能是dom
+            return target.$el || target
         },
 
         click(ref) {
@@ -88,14 +107,15 @@ export default {
     },
 
     mounted() {
+        this.scroll = debounce(this.scroll)
+
         this.scroll()
 
         const container = this.getContainer()
-        this.handleScroll = debounce(this.scroll)
 
-        container.addEventListener('scroll', this.handleScroll)
+        container.addEventListener('scroll', this.scroll)
         this.$once('hook:beforeDestroy', () => {
-            container.removeEventListener('scroll', this.handleScroll)
+            container.removeEventListener('scroll', this.scroll)
         })
     }
 }
@@ -110,7 +130,7 @@ export default {
     top: 200px;
     min-width: 72px;
     border-radius: 4px 0 0 4px;
-    background: #fff;
+    background: #ffffff;
     box-shadow: 0 2px 12px 0 rgba(166, 167, 173, 0.5);
     z-index: 100;
 
@@ -119,7 +139,7 @@ export default {
         height: 28px;
         line-height: 28px;
         text-align: center;
-        color: #7C7E85;
+        color: #909399;
         padding: 0 10px;
         font-size: 12px;
         cursor: pointer;
@@ -130,7 +150,7 @@ export default {
         }
 
         &:not(:last-child) {
-            box-shadow: 0 1px 0 0 rgba(166, 167, 173, 0.1);
+            border-bottom: 1px solid rgba(166, 167, 173, 0.1);
         }
     }
 }

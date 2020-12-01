@@ -13,13 +13,13 @@ export function isMobile() {
 }
 
 /**
- * 判断是否为dom元素
+ * 判断是否为dom元素，是则返回true
  *
  * @param obj
  * @return {boolean}
  */
 export function isDom(obj) {
-    return !!obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string'
+    return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string'
 }
 
 /**

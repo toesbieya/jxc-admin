@@ -1,6 +1,6 @@
-import defaultRoot from './defaultRoot'
-import exampleRoot from './exampleRoot'
-import devRoot from './devRoot'
-import docRoot from './docRoot'
+import admin from './admin'
+import example from './example'
+import dev from './dev'
+import doc from './doc'
 
-export default [defaultRoot, exampleRoot, devRoot, docRoot]
+export default [admin, example, dev, doc]

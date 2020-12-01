@@ -4,7 +4,7 @@ import {isEmpty} from "@/util"
 
 let Constructor = Vue.extend(Main)
 
-const PuzzleVerify = function ({left, top} = {}) {
+export default function ({left, top} = {}) {
     const instance = new Constructor()
     const position = getPosition({height: instance.height + 130, width: instance.width + 20, left, top})
 
@@ -42,5 +42,3 @@ function getPosition({height, width, left, top} = {}) {
 function center(full, part) {
     return Math.round((full - part) / 2)
 }
-
-export default PuzzleVerify

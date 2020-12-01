@@ -1,11 +1,12 @@
 <template>
     <transition name="el-message-fade" @after-leave="handleAfterLeave">
-        <div v-show="visible"
-             :class="messageClass"
-             :style="positionStyle"
-             role="alert"
-             @mouseenter="clearTimer"
-             @mouseleave="startTimer"
+        <div
+            v-show="visible"
+            :class="messageClass"
+            :style="positionStyle"
+            role="alert"
+            @mouseenter="clearTimer"
+            @mouseleave="startTimer"
         >
             <i v-if="iconClass" :class="iconClass"/>
             <i v-else :class="typeClass"/>
@@ -44,6 +45,7 @@ export default {
             center: false
         }
     },
+
     computed: {
         messageClass() {
             return [
@@ -70,11 +72,13 @@ export default {
             return `animation-duration: ${this.duration}ms;animation-play-state:running`
         }
     },
+
     watch: {
         closed(newVal) {
             if (newVal) this.visible = false
         }
     },
+
     methods: {
         handleAfterLeave() {
             this.$destroy(true)
@@ -98,6 +102,7 @@ export default {
             }
         }
     },
+
     mounted() {
         this.startTimer()
     }

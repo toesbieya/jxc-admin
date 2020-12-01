@@ -7,6 +7,7 @@ import {getters as appGetters, mutations as appMutations} from "@/layout/store/a
 import NavMenu from "@/component/menu/NavMenu"
 import NavMenuItem from "@/component/menu/NavMenu/item"
 import {getActiveMenuByRoute} from "@/layout/util"
+import {isDom} from "@/util/browser"
 
 export default {
     name: "HeadMenu",
@@ -130,9 +131,11 @@ export default {
         //获取初始菜单的总宽度，只在mounted时调用一次
         setChildrenWidth() {
             const ul = this.getMenuEl()
-            if (!ul) return
+            if (!isDom(ul)) return
+
             const menuItemNodes = ul.children
             if (!menuItemNodes || menuItemNodes.length === 0) return
+
             //'更多'菜单的宽度，由于不考虑自定义，所以直接写死
             this.overflowedIndicatorWidth = 50
             this.menuItemSizes = Array.from(menuItemNodes).map(i => i.getBoundingClientRect().width)
@@ -163,7 +166,7 @@ export default {
         },
         createResizeObserver() {
             //菜单未渲染时，移除之前的observer
-            if (!this.getMenuEl()) {
+            if (!isDom(this.getMenuEl())) {
                 if (this.resizeObserver) {
                     this.resizeObserver.disconnect()
                     this.resizeObserver = null

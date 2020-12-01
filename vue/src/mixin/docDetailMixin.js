@@ -2,10 +2,10 @@ import {commonMethods} from "@/mixin/docTableMixin"
 import AbstractForm from '@/component/abstract/Form'
 import AbstractFormItem from "@/component/abstract/Form/item"
 import AbstractTable from "@/component/abstract/Table"
-import DetailPage from "@/view/app/common/DetailPage"
+import CollapseCard from '@/component/CollapseCard'
+import DetailPage from "@/view/_common/DetailPage"
 import DocHistory from '@/component/biz/doc/DocHistory'
 import DocSteps from '@/component/biz/doc/DocSteps'
-import FormCollapseCard from '@/component/form/CollapseCard'
 import UploadFile from '@/component/UploadFile'
 import {isEmpty, mergeObj} from '@/util'
 import {auth} from "@/util/auth"
@@ -18,10 +18,10 @@ export default {
         AbstractForm,
         AbstractFormItem,
         AbstractTable,
+        CollapseCard,
         DetailPage,
         DocHistory,
         DocSteps,
-        FormCollapseCard,
         UploadFile
     },
 

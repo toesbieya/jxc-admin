@@ -38,6 +38,25 @@ export default {
     },
 
     methods: {
+        //滚动到验证不通过的表单项
+        onClick({prop}) {
+            const formItem = this.getFormItem(prop)
+            formItem && formItem.$el.scrollIntoView({block: 'center'})
+            this.$refs.popover.doClose()
+        },
+
+        //获取el-form实例
+        getForm() {
+            return typeof this.form === 'function' ? this.form() : this.form
+        },
+
+        //根据prop获取el-form-item实例
+        getFormItem(prop) {
+            const form = this.getForm()
+            return form && form.fields.find(i => i.prop === prop)
+        },
+
+        //el-form触发validate事件时调用
         onValidate(prop, success, msg) {
             const alreadyIndex = this.error.findIndex(i => i.prop === prop)
             if (alreadyIndex !== -1) {
@@ -46,31 +65,16 @@ export default {
             }
             else {
                 if (success) return
-                const formItem = this.findFormItem(prop)
+                const formItem = this.getFormItem(prop)
                 this.error.push({prop, msg, label: formItem.label})
             }
-        },
-
-        onClick({prop}) {
-            const formItem = this.findFormItem(prop)
-            formItem && formItem.$el.scrollIntoView({block: 'center'})
-            this.$refs.popover.doClose()
-        },
-
-        getFormRef() {
-            return typeof this.form === 'function' ? this.form() : this.form
-        },
-
-        findFormItem(prop) {
-            const form = this.getFormRef()
-            if (!form) return
-            return form.fields.find(i => i.prop === prop)
         }
     },
 
     mounted() {
-        const form = this.getFormRef()
+        const form = this.getForm()
         if (!form) return
+
         form.$on('validate', this.onValidate)
         this.$once('hook:beforeDestroy', () => {
             form.$off('validate', this.onValidate)
@@ -79,58 +83,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "~@/asset/style/variables.scss";
-
-.form-validate-info {
-    &.el-popper {
-        padding: 0;
-    }
-
-    &-ref {
-        padding: 0 10px;
-        cursor: pointer;
-    }
-
-    &-title {
-        text-align: center;
-        padding: 5px 16px 4px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-
-    &-content {
-        max-height: 300px;
-        overflow: overlay;
-    }
-
-    &-item {
-        padding: 8px 16px;
-        background-color: #ffffff;
-        border-bottom: 1px solid #f0f0f0;
-        cursor: pointer;
-        transition: background-color .3s;
-
-        &:hover {
-            background-color: #e6f7ff;
-        }
-
-        .el-icon-circle-close {
-            float: left;
-            margin-top: 4px;
-            margin-right: 12px;
-            padding-bottom: 22px;
-        }
-
-        &-label {
-            margin-top: 2px;
-            color: rgba(0, 0, 0, .45);
-            font-size: 12px;
-        }
-    }
-
-    &-ref,
-    &-item .el-icon-circle-close {
-        color: $--color-danger;
-    }
-}
-</style>
+<style lang="scss" src="./style.scss"></style>

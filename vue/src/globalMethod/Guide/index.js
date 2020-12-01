@@ -14,7 +14,7 @@ const defaultOptions = {
     prevBtnText: '上一步',
 }
 
-const guide = function (start, steps, beforeExit) {
+const guide = function (steps, index, beforeExit) {
     if (instance) instance.exit()
     else {
         instance = new GuideConstructor({data: {options: defaultOptions}})
@@ -25,15 +25,15 @@ const guide = function (start, steps, beforeExit) {
     instance.steps = steps
     instance.beforeExit = beforeExit
 
-    this.$nextTick(() => instance.start(start))
+    this.$nextTick(() => instance.start(index))
 }
 
 guide.config = function (config) {
     mergeObj(defaultOptions, config)
 }
 
-guide.exit = function () {
-    instance && instance.exit()
+guide.exit = function (force) {
+    instance && instance.exit(force)
 }
 
 export default guide

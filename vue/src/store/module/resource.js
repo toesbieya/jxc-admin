@@ -22,6 +22,8 @@ const state = {
 
 const mutations = {
     resource(state, {data, admin}) {
+        data = deepClone(data)
+
         state.resourceMap = generateResourceMap(data)
 
         //如果不是admin用户，那么过滤admin类型的权限
@@ -48,9 +50,10 @@ const actions = {
             .then(({data}) => {
                 commit('resource', {data: data || [], admin})
 
-                //动态添加路由，这里不需要进行权限过滤
                 const routes = transformOriginRouteData(data)
                 metaExtend(routes)
+
+                //动态添加路由，这里不需要进行权限过滤
                 //可能存在多次调用的情况，所以仅在第一次调用时添加进vue-router
                 !state.init && addDynamicRoutes(routes)
 
