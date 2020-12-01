@@ -41,7 +41,7 @@
 │   ├── component              # 公用组件
 │   ├── config
 │   │   │── index.js           # 基础配置项
-│   ├── directive              # 自定义指令集合
+│   ├── directive              # 全局指令
 │   ├── filter                 # 自定义过滤器集合
 │   ├── globalMethod           # 全局方法，已挂载到Vue原型上，使用this.$xx调用
 │   ├── layout                 # 布局文件夹，包含了导航栏、侧边栏、多页签、全局页脚
@@ -56,6 +56,8 @@
 │   ├── store                  # vuex配置
 │   ├── util                   # 工具类
 │   ├── view                   # 路由页面集合
+│   │   │── _app               # 系统页面，如登录注册、404等
+│   │   └── _common            # 公用页面
 │   ├── App.vue
 │   └── main.js
 ```
