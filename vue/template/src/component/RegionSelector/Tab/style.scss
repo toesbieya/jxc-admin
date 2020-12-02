@@ -1,0 +1,139 @@
+.rg-header, .rg-search {
+    padding: 2px 10px 0;
+    background-color: #ffffff;
+}
+
+.rg-header {
+    h3 {
+        padding: 6px;
+        margin: 0;
+        color: #24292e;
+        font-size: 16px;
+    }
+
+    button {
+        position: absolute;
+        -webkit-appearance: none;
+        padding: 0;
+        cursor: pointer;
+        background: 0 0;
+        border: 0;
+        outline: none;
+        color: #999;
+        top: 9px;
+
+        i {
+            font-size: 16px;
+        }
+
+        &:hover {
+            color: #000000;
+        }
+
+        &.rg-removeall-button {
+            right: 32px
+        }
+
+        &.rg-done-button {
+            right: 8px;
+        }
+    }
+}
+
+.rg-level-tabs {
+    margin-top: 10px;
+    background-color: #ffffff;
+
+    ul {
+        padding: 0;
+        margin: 0;
+        line-height: 1.5;
+        border-bottom: 1px solid #eee;
+
+        li {
+            display: inline-block;
+            position: relative;
+
+            a {
+                display: block;
+                padding: 0.2rem 1rem 0.6rem;
+                font-size: 14px;
+                color: #bbb;
+                text-decoration: none;
+                cursor: pointer;
+                line-height: 1.43;
+            }
+
+            &.active {
+                a {
+                    color: #333;
+                    background-color: #ffffff;
+                    font-weight: 600;
+                }
+
+                &::after {
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    bottom: 0;
+                    height: 0.2rem;
+                    width: 100%;
+                    background-color: #bbb;
+                }
+            }
+        }
+    }
+}
+
+.rg-results-container {
+    .rg-results {
+        margin: 0;
+        padding: 5px;
+        width: 364px;
+        line-height: 1.5;
+
+        li {
+            overflow: hidden;
+            padding: 3px 10px;
+            font-size: 14px;
+            color: #000000;
+            cursor: pointer;
+
+            &.rg-item {
+                display: inline-block;
+                color: #777;
+
+                &:hover {
+                    color: #000000;
+                    background-color: #F5F5F5;
+                }
+
+                &.active {
+                    background-color: #E4EAEE;
+                    color: #000000;
+                }
+            }
+
+            &.rg-message-box {
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+                cursor: default;
+            }
+        }
+    }
+}
+
+.rg-input {
+    background-color: #f5f5f5;
+    border: 0;
+    width: 100%;
+    font-size: 14px;
+    padding: 6px;
+    outline: none !important;
+    border-radius: 2px;
+
+    &::-webkit-input-placeholder {
+        color: #999;
+    }
+}

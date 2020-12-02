@@ -1,0 +1,46 @@
+@import "~@/asset/style/variables.scss";
+
+.skeleton-page-wrapper {
+    margin: $page-view-margin;
+}
+
+.skeleton-page {
+    width: 100%;
+    display: table;
+
+    & + & {
+        margin-top: 20px;
+    }
+
+    &__header,
+    &__content {
+        display: table-cell;
+    }
+
+    &__header {
+        padding-top: 2px;
+        padding-right: 16px;
+        vertical-align: top;
+    }
+
+    &__content {
+        width: 100%;
+
+        > .q-skeleton {
+            width: 50%;
+        }
+
+        .skeleton-page__paragraph {
+            margin-top: 28px;
+            padding: 0;
+
+            .q-skeleton:last-child:not(:first-child):not(:nth-child(2)) {
+                width: 61%;
+            }
+
+            .q-skeleton + .q-skeleton {
+                margin-top: 16px;
+            }
+        }
+    }
+}

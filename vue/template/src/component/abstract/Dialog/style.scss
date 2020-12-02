@@ -1,0 +1,18 @@
+.abstract-dialog {
+    .el-dialog__body {
+        padding: 0;
+    }
+
+    .abstract-dialog-container {
+        position: relative;
+        width: 100%;
+
+        .abstract-dialog-body {
+            padding: 24px 24px 0
+        }
+
+        .el-form {
+            padding: 0;
+        }
+    }
+}

@@ -1,0 +1,109 @@
+@import "~@/asset/style/variables.scss";
+
+.el-menu {
+    //图标的大小
+    .icon {
+        font-size: $menu-icon-size;
+    }
+
+    //图标与文字的间隔
+    .icon + .menu-item-content {
+        margin-left: $menu-icon-text-gap;
+    }
+
+    //菜单的高亮关键字
+    .menu-highlight-result {
+        vertical-align: unset;
+        color: $--color-success;
+    }
+}
+
+//原始样式使用 '>' 可能导致侧边栏折叠时还会显示右侧箭头图标
+//此样式只对垂直状态生效
+.el-menu--collapse .el-submenu .el-submenu__title .el-submenu__icon-arrow {
+    display: none;
+}
+
+//hover时，菜单左侧图标放大（弹出菜单的父级不放大）
+.el-menu-item:not(.popover-menu__title),
+.el-submenu__title {
+    > .icon,
+    > .el-tooltip > .icon {
+        transition: transform .1s;
+    }
+
+    &:hover > .icon,
+    &:hover > .el-tooltip > .icon {
+        transform: scale(1.2);
+    }
+}
+
+//侧边栏垂直菜单
+.el-menu--vertical {
+    &.el-menu {
+        overflow-y: auto;
+    }
+
+    &.el-menu,
+    .el-menu {
+        //菜单文字
+        .el-menu-item,
+        .el-submenu__title {
+            > .menu-item-content {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                //侧边栏宽度、菜单左右padding、左侧图标宽度、距离左右的距离、右侧图标宽度
+                width: $aside-width - $menu-padding * 2 - $menu-icon-size - $menu-icon-text-gap * 2 - 12px;
+            }
+        }
+
+        //弹出菜单的父级
+        &.el-menu--popup .popover-menu__title {
+            cursor: auto;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+        }
+    }
+}
+
+//顶部水平菜单
+.el-menu--horizontal {
+    //顶部菜单的顶级节点
+    &.el-menu {
+        //不显示折叠展开按钮
+        > .el-submenu > .el-submenu__title > .el-submenu__icon-arrow {
+            display: none;
+        }
+
+        //顶级节点的高度以及hover颜色
+        > .el-menu-item,
+        > .el-submenu > .el-submenu__title {
+            height: $nav-height;
+            line-height: $nav-height;
+
+            &:hover {
+                border-bottom: 2px solid $--color-primary;
+            }
+        }
+    }
+
+    &.el-menu,
+    .el-menu {
+        //菜单的文字以及hover颜色
+        .el-menu-item,
+        .el-submenu__title {
+            > span {
+                max-width: 100px;
+            }
+        }
+
+        //submenu的右侧箭头会稍微偏上，不懂为啥
+        .el-submenu__icon-arrow {
+            margin-top: -4px;
+        }
+    }
+}
+
+
+@import "./theme-light";
+@import "./theme-dark";

@@ -1,0 +1,230 @@
+@import "~normalize.css/normalize.css";
+@import "./variables";
+@import "~element-ui/packages/theme-chalk/src/index";
+@import "~@ele/style/index.scss";
+@import "./element-ui";
+@import './display';
+@import "./transition";
+@import "./nprogress";
+
+body {
+    height: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#app {
+    height: 100%;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+a:focus,
+a:active,
+div:focus {
+    outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+}
+
+//非移动端的滚动条样式修改
+@include pc {
+    ::-webkit-scrollbar {
+        width: 6px;
+
+        &:horizontal {
+            height: 6px;
+        }
+
+        &-thumb {
+            width: 6px;
+            //border-radius: 5px;
+            background-color: rgba($--color-primary, 0.8);
+
+            &:hover {
+                background-color: rgba($--color-primary, 1);
+            }
+        }
+    }
+}
+
+.clearfix {
+    @include clearfix;
+}
+
+.overflow-hidden {
+    overflow: hidden !important;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+
+/*----------路由页面的最大高度开始----------*/
+$page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
+
+.max-view-height.full {
+    height: 100vh;
+}
+
+.max-view-height {
+    overflow-y: hidden;
+    max-height: calc(100vh - #{$page-view-margin * 2});
+}
+
+.has-nav .max-view-height {
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height});
+}
+
+.has-tags-view .max-view-height {
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$tags-view-height});
+}
+
+.has-page-header .max-view-height {
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$page-header-offsetHeight});
+}
+
+.has-nav.has-tags-view .max-view-height {
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height});
+}
+
+.has-nav .has-page-header .max-view-height {
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$page-header-offsetHeight});
+}
+
+.has-nav.has-tags-view .has-page-header .max-view-height {
+    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height} - #{$page-header-offsetHeight});
+}
+
+/*----------路由页面的最大高度结束----------*/
+
+
+.table-container {
+    margin-top: 10px;
+}
+
+.table-image {
+    cursor: pointer;
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.card-container {
+    position: relative;
+
+    .el-scrollbar__wrap {
+        overflow-x: hidden;
+    }
+}
+
+.tip-row {
+    position: relative;
+    z-index: 1;
+    background: #fafafa;
+    padding: 8px 24px;
+    margin-bottom: 20px;
+    border-radius: 2px;
+    display: block;
+    line-height: 32px;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    color: #337ab7;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    * + & {
+        margin-top: 40px;
+    }
+
+    a {
+        color: #337ab7;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+
+//小圆点
+.dot {
+    width: 6px;
+    height: 6px;
+    display: inline-block;
+    border-radius: 50%;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    margin-right: 11px;
+    background: $--color-info;
+
+    &.success {
+        background: $--color-success;
+    }
+
+    &.primary {
+        background: $--color-primary;
+    }
+
+    &.error {
+        background: $--color-danger;
+    }
+}
+
+.button-group {
+    .el-button {
+        margin-top: 10px;
+        margin-right: 10px;
+
+        & + .el-button {
+            margin-left: 0;
+        }
+    }
+}
+
+.table-add-btn {
+    margin: 8px 0;
+
+    .el-button {
+        width: 100%;
+    }
+}
+
+.el-form-item__content {
+    > .el-tree {
+        margin-top: 8px;
+    }
+
+    > .el-switch {
+        vertical-align: baseline;
+    }
+}
+
+.el-table a {
+    color: $--color-primary;
+}
+
+

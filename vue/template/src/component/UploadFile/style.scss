@@ -1,0 +1,34 @@
+@import "~@/asset/style/variables.scss";
+
+.disabled .el-upload--picture-card {
+    display: none;
+}
+
+.el-upload-list--picture-card {
+    .el-progress {
+        width: 100%;
+        height: 100%;
+
+        .el-progress-circle {
+            height: 100% !important;
+            width: 100% !important;
+        }
+    }
+
+    .progress-mask {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background-color: #ffffff;
+        opacity: 0.9;
+
+        .el-progress__text {
+            color: $--color-primary;
+        }
+    }
+}
+
+.upload-tooltip {
+    max-width: 146px;
+}

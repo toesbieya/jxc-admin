@@ -1,0 +1,14 @@
+.aside.light {
+    .root-sidebar {
+        background-color: #ffffff;
+        border-right-color: $border-color-light;
+    }
+
+    .hamburger {
+        border-top-color: $border-color-light;
+
+        i {
+            color: $menu-text-color-light;
+        }
+    }
+}
