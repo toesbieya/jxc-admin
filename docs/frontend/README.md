@@ -2,6 +2,8 @@
 
 这是在[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin) 的基础上改造而来的。
 
+分为需要配合后端使用的full版（vue/full）和精简版（vue/template），以下说明均以full版为准。
+
 ## 功能
 
 ```
