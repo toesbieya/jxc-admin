@@ -56,7 +56,6 @@
 <script>
 import {isEmpty} from "@/util"
 import {elSuccess} from "@/util/message"
-import {md5} from "@/util/secret"
 
 export default {
     name: "LoginForm",
@@ -90,10 +89,7 @@ export default {
                 if (!valid) return
                 this.loading = true
                 this.$verify()
-                    .then(() => this.$store.dispatch('user/login', {
-                        ...this.form,
-                        password: md5(this.form.password)
-                    }))
+                    .then(() => this.$store.dispatch('user/login', this.form))
                     .then(this.success)
                     .catch(() => this.loading = false)
             })

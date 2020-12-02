@@ -1,7 +1,6 @@
 <script type="jsx">
 import {mapState} from 'vuex'
 import hamburgerMixin from '@/layout/mixin/hamburger'
-import Bell from "./component/Bell"
 import HeadMenu from "./component/HeadMenu"
 import Logo from "@/layout/component/Logo"
 import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
@@ -15,7 +14,7 @@ export default {
 
     mixins: [hamburgerMixin],
 
-    components: {Bell, HeadMenu, Logo},
+    components: {HeadMenu, Logo},
 
     data() {
         return {
@@ -104,8 +103,6 @@ export default {
                 </div>
 
                 <div>
-                    <bell class="navbar-item"/>
-
                     <div
                         class="navbar-item"
                         title="刷新"

@@ -1,5 +1,4 @@
 <script type="text/jsx">
-import offlineMixin from './mixin/offline'
 import VAside from './component/Aside'
 import VNavbar from './component/Navbar'
 import VPage from './component/Page'
@@ -10,8 +9,6 @@ import {getters as tagsViewGetters} from "@/layout/store/tagsView"
 
 export default {
     name: 'Layout',
-
-    mixins: [offlineMixin],
 
     components: {VAside, VNavbar, VPage, SettingDrawer},
 

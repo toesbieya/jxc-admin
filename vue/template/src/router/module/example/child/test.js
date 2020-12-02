@@ -1,12 +1,7 @@
 export default {
     path: 'test',
-    meta: {title: '测试页面', icon: 'el-icon-warning'},
+    meta: {title: '测试页面', icon: 'el-icon-warning', alwaysShow: true},
     children: [
-        {
-            path: 'develop',
-            component: 'example/test/develop/',
-            meta: {title: '开发测试'}
-        },
         {
             path: 'cache',
             meta: {title: '详情页缓存测试', noCache: false},

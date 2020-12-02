@@ -8,11 +8,6 @@ export default {
             meta: {title: '消息提示'}
         },
         {
-            path: 'bottomTip',
-            component: 'example/globalMethod/bottomTip',
-            meta: {title: '底部消息提示'}
-        },
-        {
             path: 'guide',
             component: 'example/globalMethod/guide',
             meta: {title: '导航'}

@@ -7,13 +7,6 @@
             <el-input ref="username" v-model="form.username" :maxlength="20" placeholder="请输入登录名称"/>
         </el-form-item>
 
-        <el-form-item prop="nick">
-            <span class="svg-container">
-                <v-icon icon="svg-user"/>
-            </span>
-            <el-input v-model="form.nick" :maxlength="100" placeholder="请输入昵称"/>
-        </el-form-item>
-
         <el-form-item prop="pwd">
             <el-tooltip v-model="capsTooltip" :tabindex="-1" content="大写锁定已打开" manual placement="left">
                 <span class="svg-container">
@@ -53,45 +46,24 @@
 </template>
 
 <script>
-import {register, checkLoginName, checkNickName} from "@/api/account"
-import {debounce} from "@/util"
 import {elSuccess} from "@/util/message"
-import {md5} from "@/util/secret"
 
 export default {
     name: "RegisterForm",
 
     data() {
-        const validateLoginName = debounce((r, v, c) => {
-            checkLoginName
-                .request(this.form.username, this.form.id)
-                .then(({msg}) => msg ? c(msg) : c())
-                .catch(e => c(e))
-        }, 300)
-        const validateNickName = debounce((r, v, c) => {
-            checkNickName
-                .request(this.form.nick, this.form.id)
-                .then(({msg}) => msg ? c(msg) : c())
-                .catch(e => c(e))
-        }, 300)
         const validateRepwd = (r, v, c) => {
             return v !== this.form.pwd ? c('两次密码输入不一致') : c()
         }
         return {
             form: {
                 username: '',
-                nick: '',
                 pwd: '',
                 repwd: ''
             },
             rules: {
                 username: [
-                    {required: true, message: '请输入登录名称', trigger: 'change'},
-                    {validator: validateLoginName, trigger: 'change'}
-                ],
-                nick: [
-                    {required: true, message: '请输入昵称', trigger: 'change'},
-                    {validator: validateNickName, trigger: 'change'}
+                    {required: true, message: '请输入登录名称', trigger: 'change'}
                 ],
                 pwd: [
                     {required: true, message: '请输入密码', trigger: 'change'},
@@ -112,18 +84,8 @@ export default {
             if (this.loading) return
             this.$refs.form.validate(valid => {
                 if (!valid) return
-                this.loading = true
-                register
-                    .request({
-                        username: this.form.username,
-                        nick: this.form.nick,
-                        password: md5(this.form.pwd)
-                    })
-                    .then(() => {
-                        elSuccess('注册成功')
-                        this.$router.push('/login')
-                    })
-                    .catch(() => this.loading = false)
+                elSuccess('注册成功')
+                this.$router.push('/login')
             })
         },
 

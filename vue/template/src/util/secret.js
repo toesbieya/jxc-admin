@@ -1,7 +1,4 @@
 import pako from 'pako'
-import md5 from 'js-md5'
-
-export {md5}
 
 /**
  * 解压字符串

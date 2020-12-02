@@ -1,9 +1,8 @@
 import {createMutations} from "@/store/util"
 import {emptyOrDefault} from "@/util"
-import {autoCompleteUrl} from "@/util/file"
 import {getUser, setUser} from "@/util/storage"
 import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
-import {login, logout} from '@/api/account'
+import {elError} from "@/util/message"
 
 //刷新时从本地存储中获取用户信息
 const user = getUser()
@@ -15,8 +14,6 @@ const state = {
     /*用户基本信息*/
     id: emptyOrDefault(user.id, null),
     name: emptyOrDefault(user.name),
-    roleName: emptyOrDefault(user.roleName),
-    deptName: emptyOrDefault(user.deptName),
     avatar: emptyOrDefault(user.avatar),
     admin: emptyOrDefault(user.admin, false),
     token: emptyOrDefault(user.token),
@@ -28,36 +25,29 @@ const mutations = createMutations(state, true)
 const actions = {
     login({commit, dispatch}, userInfo) {
         const {username, password} = userInfo
-        return login
-            .request({username: username.trim(), password})
-            .then(({data: user}) => {
-                if (user.admin === true) user.roleName = '超级管理员'
-                user.avatar = autoCompleteUrl(user.avatar)
-                commit('$all', user)
-                setUser(user)
-                return dispatch('socket/init', null, {root: true})
-            })
+        if (username !== 'admin') {
+            elError('登录时请用admin作为用户名！')
+            return Promise.reject()
+        }
+        const user = {id: 1, admin: true, name: username, avatar: null, token: 'token'}
+        commit('$all', user)
+        setUser(user)
+        return Promise.resolve()
     },
 
     logout({commit, state, dispatch}) {
         return new Promise((resolve, reject) => {
             if (state.prepareLogout) return Promise.reject()
             commit('prepareLogout', true)
-            logout
-                .request(state.token)
-                .then(() => {
-                    commit('resource/init', false, {root: true})
-                    return Promise.all([
-                        dispatch('socket/close', null, {root: true}),
-                        dispatch('removeUser'),
-                        tagsViewMutations.delAllTagAndCache()
-                    ])
-                })
+            commit('resource/init', false, {root: true})
+            Promise.all([
+                dispatch('removeUser'),
+                tagsViewMutations.delAllTagAndCache()
+            ])
                 .then(() => {
                     resolve()
                     window.location.reload()
                 })
-                .catch(error => reject(error))
                 .finally(() => commit('prepareLogout', false))
         })
     },
