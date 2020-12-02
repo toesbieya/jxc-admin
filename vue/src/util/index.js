@@ -103,9 +103,9 @@ export function mergeObj(target, source) {
 /**
  * 日期格式化
  *
- * @param fmt {string} 格式，y(+..y)-年、M(+M)-月、d(+d)-天、H(+H)-时、m(+m)-分、s(+s)-秒、S-毫秒
- * @param date {Date}  可选，被格式化的日期
- * @return {string}    格式化后的日期字符串
+ * @param fmt {*|string}  格式，y(+..y)-年、M(+M)-月、d(+d)-天、H(+H)-时、m(+m)-分、s(+s)-秒、S-毫秒
+ * @param date {Date}     可选，被格式化的日期
+ * @return {string}       格式化后的日期字符串
  */
 export function timeFormat(fmt, date = new Date()) {
     if (isEmpty(fmt)) fmt = 'yyyy-MM-dd HH:mm:ss'
@@ -205,15 +205,16 @@ export function throttle(func, delay = 100) {
 
 /**
  * 循环等待成功事件
- * @param success 判断是否成功，true or false
- * @param callback 成功后的回调
- * @param interval 循环间隔，毫秒
- * @param maxTryTime 最大循环次数，超出reject，小于1视为Infinity
+ *
+ * @param success {function}   返回true时说明成功
+ * @param callback {function}  成功后的回调
+ * @param interval {number}    循环间隔，毫秒
+ * @param maxTryTime {number}  最大循环次数，超出reject，小于1视为Infinity
+ * @return {Promise}
  */
 export function waitUntilSuccess(success, callback, interval = 1000, maxTryTime = 0) {
     return new Promise((resolve, reject) => {
-        let fun,
-            count = 0
+        let fun, count = 0
 
         const check = () => {
             if (success()) {
@@ -221,9 +222,8 @@ export function waitUntilSuccess(success, callback, interval = 1000, maxTryTime 
                 typeof callback === 'function' && callback()
                 return resolve()
             }
-            if (maxTryTime >= 1) {
-                count++
-                if (count >= maxTryTime) return reject()
+            if (maxTryTime >= 1 && ++count >= maxTryTime) {
+                return reject()
             }
         }
 

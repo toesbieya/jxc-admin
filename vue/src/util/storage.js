@@ -3,11 +3,14 @@ import {isEmpty} from "@/util"
 import {unzip, zip} from "@/util/secret"
 
 const {keyPrefix, zip: defaultUseZip} = storage
+const sessionUserKey = 'SESS-USER'
+const localPersonalSettingsKey = 'LOCAL-PERSONAL-SETTINGS'
+const sessionTagsViewKey = 'SESS-TAGS-VIEW'
 
 /**
  * 读取本地存储
  * @param key {string}        键名，自动加上统一前缀
- * @param storage             window.sessionStorage或window.localStorage
+ * @param storage {Storage}   window.sessionStorage或window.localStorage
  * @param useZip {boolean}    是否启用了压缩
  * @return {*|undefined}
  */
@@ -28,7 +31,7 @@ export function get(key, storage = window.sessionStorage, useZip = defaultUseZip
  * 写入本地存储
  * @param key {string}        键名，自动加上统一前缀
  * @param obj                 需要写入本地存储的js对象
- * @param storage             window.sessionStorage或window.localStorage
+ * @param storage {Storage}   window.sessionStorage或window.localStorage
  * @param useZip {boolean}    是否启用了压缩
  */
 export function set(key, obj, storage = window.sessionStorage, useZip = defaultUseZip) {
@@ -38,9 +41,9 @@ export function set(key, obj, storage = window.sessionStorage, useZip = defaultU
 
 /**
  * 判断本地存储中是否存在指定键名
- * @param key {string}    键名，自动加上统一前缀
- * @param storage         window.sessionStorage或window.localStorage
- * @return {boolean}     存在则返回true
+ * @param key {string}       键名，自动加上统一前缀
+ * @param storage {Storage}  window.sessionStorage或window.localStorage
+ * @return {boolean}         存在则返回true
  */
 export function exist(key, storage = window.sessionStorage) {
     return !isEmpty(storage.getItem(`${keyPrefix}${key}`))
@@ -48,16 +51,12 @@ export function exist(key, storage = window.sessionStorage) {
 
 /**
  * 根据指定键名，移除本地存储对应项
- * @param key {string}    键名，自动加上统一前缀
- * @param storage         window.sessionStorage或window.localStorage
+ * @param key {string}       键名，自动加上统一前缀
+ * @param storage {Storage}  window.sessionStorage或window.localStorage
  */
 export function remove(key, storage = window.sessionStorage) {
     storage.removeItem(`${keyPrefix}${key}`)
 }
-
-const sessionUserKey = 'SESS-USER'
-const localPersonalSettingsKey = 'LOCAL-PERSONAL-SETTINGS'
-const sessionTagsViewKey = 'SESS-TAGS-VIEW'
 
 /**
  * 获取用户信息，获取失败时会清除用户信息并返回一个空对象

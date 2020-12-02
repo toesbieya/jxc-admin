@@ -40,7 +40,7 @@ export function auth(path) {
  * what i can
  * 批量生成canXxx的计算属性
  *
- * @param apiMap  <key:接口名称，value:接口对象>
+ * @param apiMap {object}  <key:接口名称，value:接口对象>
  * @return {object}
  */
 export function wic(apiMap) {

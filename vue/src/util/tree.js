@@ -2,19 +2,10 @@ import {deepClone} from "@/util"
 import {createWorker} from '@/util/worker'
 
 const DEFAULT_PROPS = {
-    //节点的id属性名称
     id: 'id',
-
-    //节点的父级id属性名称
     pid: 'pid',
-
-    //节点的子级节点属性名称
     children: 'children',
-
-    //根节点的判定方法，传入函数时参数为节点对象
     rootPredicate: 0,
-
-    //叶子节点是否能有children属性
     leafHasChildren: false
 }
 
@@ -22,7 +13,12 @@ const DEFAULT_PROPS = {
  * 列表转树形结构
  *
  * @param list {array}
- * @param props 树的配置项，{id, pid, children, rootPredicate, leafHasChildren}
+ * @param props 树的配置项
+ *     @param props.id {string} 节点的id属性名称
+ *     @param props.pid {string} 节点的父级id属性名称
+ *     @param props.children {string} 节点的子级节点属性名称
+ *     @param props.rootPredicate {*|function} 根节点的判定方法，传入函数时参数为节点对象
+ *     @param props.leafHasChildren {boolean} 叶子节点是否能有children属性
  * @return {array}
  */
 export function createTree(list, props = {}) {

@@ -1,9 +1,9 @@
 export default {
-    bind(el) {
+    bind(el, bind, vnode) {
         const dialogHeaderEl = el.querySelector('.el-dialog__header')
         const dragDom = el.querySelector('.el-dialog')
-        dialogHeaderEl.style.cssText += ';cursor:move;'
-        dragDom.style.cssText += ';top:0px;'
+
+        dialogHeaderEl.style.setProperty('cursor', 'move')
 
         dialogHeaderEl.addEventListener('mousedown', e => {
             // 鼠标按下，计算当前元素距离可视区的距离
@@ -55,7 +55,8 @@ export default {
                 }
 
                 // 移动当前元素
-                dragDom.style.cssText += `;left:${left + styL}px;top:${top + styT}px;`
+                dragDom.style.setProperty('left', `${left + styL}px`)
+                dragDom.style.setProperty('top', `${top + styT}px`)
             }
 
             function onMouseup() {
@@ -65,6 +66,17 @@ export default {
 
             window.addEventListener('mousemove', onMousemove)
             window.addEventListener('mouseup', onMouseup)
+        })
+
+        function resetStyle() {
+            dragDom.style.removeProperty('left')
+            dragDom.style.removeProperty('top')
+        }
+
+        //当dialog关闭时恢复原位
+        vnode.componentInstance.$on('closed', resetStyle)
+        vnode.componentInstance.$once('hook:beforeDestroy', () => {
+            vnode.componentInstance.$off('closed', resetStyle)
         })
     }
 }

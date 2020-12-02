@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import {elSuccess, elConfirm} from "@/util/message"
+
 export default {
     name: "guidePage",
 
@@ -26,19 +28,17 @@ export default {
                 {
                     element: '#example-guide-step1',
                     content: 'onNext钩子示例',
-                    onNext: () => this.$confirm('确认进行下一步吗？')
+                    onNext: () => elConfirm('确认进行下一步吗？', false)
                 },
                 {
                     element: '#example-guide-step2',
                     content: 'onPrevious钩子展示',
-                    onPrevious: () => this.$confirm('确认回到上一步吗？')
+                    onPrevious: () => elConfirm('确认回到上一步吗？', false)
                 },
                 {
                     element: '#example-guide-step3',
                     content: 'onHighlighted钩子示例',
-                    onHighlighted() {
-                        this.$message.info('到达第三步！')
-                    }
+                    onHighlighted: () => elSuccess('到达第三步！')
                 },
                 {
                     element: '#example-guide-step4',

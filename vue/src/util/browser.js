@@ -165,14 +165,13 @@ export function scrollIntoViewVertically(child, parent = window) {
  *
  * @param el {Window|HTMLElement|string|function} 滚动容器，或可用于querySelector的字符串，或一个返回DOM的函数
  * @param position {number} 滚动的目的地
- * @param options
+ * @param options 配置项
+ *     @param options.callback {function} 滚动完成的回调
+ *     @param options.duration {number} 滚动耗时
+ *     @param options.direction {string} 滚动方向，top滚动至距元素顶部distance的位置，left滚动至距元素左边distance的位置
  */
 export function scrollTo(el, position, options) {
-    const {
-        callback,          //滚动完成的回调
-        duration = 300,    //滚动耗时
-        direction = 'top'  //滚动方向，top滚动至距元素顶部distance的位置，left滚动至距元素左边distance的位置
-    } = options || {}
+    const {callback, duration = 300, direction = 'top'} = options || {}
 
     if (typeof el === 'string') {
         el = document.querySelector(el)

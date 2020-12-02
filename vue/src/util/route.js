@@ -21,8 +21,9 @@ export function refreshPage(route = router.currentRoute, replace = true) {
 
 /**
  * 关闭当前页，如果传入next则跳转到next页面
- * @param next 跳转的目标页面，作为第一个参数传入vue-router.replace
- * @return 仅在next有值时，返回vue-router.replace的结果
+ *
+ * @param next {string|route}   跳转的目标页面，作为第一个参数传入vue-router.replace
+ * @return {undefined|Promise}  仅在next有值时，返回vue-router.replace的结果
  */
 export function closeCurrentPage(next) {
     tagsViewMutations.delTagAndCache(router.currentRoute)

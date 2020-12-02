@@ -220,10 +220,10 @@ export default {
                 if (isEmpty(sub.price)) {
                     return `第${index + 1}个商品单价不能为空`
                 }
-                if (sub.num < 0 || !isInteger(sub.num)) {
+                if (!isInteger(sub.num) || sub.num < 0) {
                     return `第${index}个商品数量有误`
                 }
-                if (sub.price <= 0 || !isInteger(sub.price)) {
+                if (!isInteger(sub.price) || sub.price <= 0) {
                     return `第${index}个商品单价有误`
                 }
                 this.form.total = plus(this.form.total, mul(sub.num, sub.price))

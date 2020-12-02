@@ -1,32 +1,33 @@
 import {isEmpty, timeFormat} from '@/util'
 
+//时间戳格式化
 export function timestamp2Date(timestamp) {
     if (isEmpty(timestamp)) return ''
     return timeFormat(null, new Date(timestamp))
 }
 
-//经过多长时间，单位秒，最低时间为分钟
-export function timePass(time) {
-    if (!time || isNaN(time)) return 'NaN'
+//秒数格式化，最低时间为分钟
+export function secondFormat(time) {
+    if (!time || isNaN(time)) return ' NaN'
     if (time < 3600) return ~~(time / 60) + ' 分'
-    else if (time < 86400) return ~~(time / 3600) + ' 小时'
-    else return ~~(time / 86400) + ' 天'
+    if (time < 86400) return ~~(time / 3600) + ' 小时'
+    return ~~(time / 86400) + ' 天'
 }
 
-export function timeAgo(time) {
+//格式化当前和给定的时间戳之间的秒数差
+export function secondBetweenFormat(time) {
     const between = Date.now() / 1000 - Number(time)
-    if (between < 3600) {
-        return ~~(between / 60) + ' 分钟'
-    }
-    else if (between < 86400) {
-        return ~~(between / 3600) + ' 小时'
-    }
-    else {
-        return ~~(between / 86400) + ' 天'
-    }
+    return secondFormat(between)
 }
 
-export function numberFormatter(num, digits = 2) {
+/**
+ * 数字转存储单位，1024 => KB
+ *
+ * @param num {number}
+ * @param digits {number}  保留几位小数
+ * @return {string}
+ */
+export function number2StorageUnit(num, digits = 2) {
     if (isEmpty(num)) return ''
     const si = [
         {value: 1024 * 1024 * 1024 * 1024, symbol: 'TB'},
@@ -62,6 +63,6 @@ export function uppercaseFirst(string) {
 
 export default function (Vue) {
     Object
-        .entries({timestamp2Date, timePass, timeAgo, numberFormatter, toThousandFilter, uppercaseFirst})
+        .entries({timestamp2Date, secondFormat, secondBetweenFormat, number2StorageUnit, toThousandFilter, uppercaseFirst})
         .forEach(([key, value]) => Vue.filter(key, value))
 }

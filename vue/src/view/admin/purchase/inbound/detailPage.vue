@@ -162,7 +162,7 @@ export default {
                 if (isEmpty(sub.num)) {
                     return `第${index}个商品数量不能为空`
                 }
-                if (sub.num < 0 || !isInteger(sub.num)) {
+                if (!isInteger(sub.num) || sub.num < 0) {
                     return `第${index}个商品数量有误`
                 }
 

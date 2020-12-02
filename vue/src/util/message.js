@@ -21,15 +21,17 @@ export function elAlert(msg, callback = () => ({})) {
     })
 }
 
-export function elConfirm(msg = '确认进行该操作？') {
-    return new Promise(resolve => {
-        MessageBox.confirm(msg, {
-            type: 'warning',
-            cancelButtonClass: 'is-plain'
-        })
-            .then(() => resolve())
-            .catch(() => ({}))
+export function elConfirm(msg = '确认进行该操作？', ignoreReject = true) {
+    const promise = MessageBox.confirm(msg, {
+        type: 'warning',
+        cancelButtonClass: 'is-plain'
     })
+
+    if (ignoreReject) {
+        promise.catch(() => ({}))
+    }
+
+    return promise
 }
 
 export function elPrompt(msg) {

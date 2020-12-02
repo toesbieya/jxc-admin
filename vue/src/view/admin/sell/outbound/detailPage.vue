@@ -263,7 +263,7 @@ export default {
             let index = 1
             for (let sub of this.form.data) {
                 if (isEmpty(sub.num)) return `第${index}个商品的出库数量不能为空`
-                if (sub.num < 0 || !isInteger(sub.num)) return `第${index}个商品的出库数量有误`
+                if (!isInteger(sub.num) || sub.num < 0) return `第${index}个商品的出库数量有误`
                 index++
             }
 

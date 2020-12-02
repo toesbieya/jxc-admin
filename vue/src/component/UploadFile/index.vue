@@ -211,7 +211,7 @@ export default {
             }
             const maxSize = parseMaxSize(this.maxSize)
             if (file.size > maxSize) {
-                elError(`${file.name}的大小超出${this.$options.filters.numberFormatter(maxSize)}`)
+                elError(`${file.name}的大小超出${this.$options.filters.number2StorageUnit(maxSize)}`)
                 return false
             }
         },

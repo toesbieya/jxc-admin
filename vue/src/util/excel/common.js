@@ -8,14 +8,16 @@ import {flatTree} from "@/util/tree"
  * 导出excel的抽象模板
  * 响应头为json时进行前端导出，否则直接下载文件
  *
- * @param url              搜索的请求地址
- * @param searchForm       搜索参数
- * @param options          {object}，只有前端导出时才需要
- * @param json2workbook    将json数据转换为workbook的函数，参考./exceljs.js #json2workbook
- * @param workbook2excel   workbook对象转换为excel文件，参考./exceljs.js #workbook2excel
+ * @param url {string}                 搜索的请求地址
+ * @param params {*}                   向后台发送请求时携带的参数
+ * @param options                      前端导出时需要的配置项
+ *     @param options.columns {array}  json2workbook所需参数
+ *     @param options.merge {object}   json2workbook所需参数
+ * @param json2workbook {function}     将json数据转换为workbook的函数，参考./exceljs.js #json2workbook
+ * @param workbook2excel {function}    workbook对象转换为excel文件，参考./exceljs.js #workbook2excel
  */
-export function abstractExportExcel(url, searchForm, options, json2workbook, workbook2excel) {
-    request({url, method: 'post', responseType: 'blob', data: searchForm})
+export function abstractExportExcel(url, params, options, json2workbook, workbook2excel) {
+    request({url, method: 'post', responseType: 'blob', data: params})
         .then(({headers, data}) => {
             const contentType = headers['content-type']
             const contentDisposition = headers['content-disposition']
@@ -40,12 +42,12 @@ export function abstractExportExcel(url, searchForm, options, json2workbook, wor
  * 合并excel
  * 此方法会修改原始json数据（重写序号）
  *
- * @param props        需要合并的字段数组，用于映射json
- * @param data         json数组
- * @param primaryKey   该行json的唯一标识字段名
- * @param orderKey     该行json的序号字段名
- * @param ignoreRows   忽略的行数，默认为1（忽略表头）
- * @return {array}    包含合并信息的数组，形如['A1:A10',...]
+ * @param props {array}         需要合并的字段名数组，用于映射json
+ * @param data {array}          json数组
+ * @param primaryKey {string}   该行json的唯一标识字段名
+ * @param orderKey {string}     该行json的序号字段名
+ * @param ignoreRows {number}   忽略的行数，默认为1（忽略表头）
+ * @return {array}              包含合并信息的数组，形如['A1:A10',...]
  */
 export function mergeExcel(props, data, primaryKey, orderKey, ignoreRows = 1) {
     const result = [], merge = [], temp = []
@@ -122,8 +124,8 @@ export function mergeExcel(props, data, primaryKey, orderKey, ignoreRows = 1) {
  * 生成表头的二维数组以及合并结果
  * 参考element的table-header
  *
- * @param columns     列配置
- * @param separator   分隔符
+ * @param columns {array}      列配置
+ * @param separator {string}   分隔符
  * @return {{header: [], mergeCells: []}}
  */
 export function generateHeader(columns, separator = '-') {
@@ -209,9 +211,9 @@ export function generateHeader(columns, separator = '-') {
 /**
  * 生成二维数组，例如json为[{id:1,name:'x'}]，结果为[[1,'x']]
  *
- * @param data     json数组
- * @param propMap  表头和字段名的映射表
- * @return {array} 基数组为excel中每一行的二维数组
+ * @param data {array}      json数组
+ * @param propMap {object}  表头和字段名的映射表，propMap[字段名]=对应的表头的数组下标
+ * @return {array}          基数组为excel中每一行的二维数组
  */
 export function jsonArray2rowArray(data, propMap) {
     return data.map(i => Object.keys(i)

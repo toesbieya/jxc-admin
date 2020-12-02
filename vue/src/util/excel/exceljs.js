@@ -30,8 +30,8 @@ const defaultHeaderStyle = {
 /**
  * excel导出的具体实现
  */
-export function exportExcel(url, searchForm, options) {
-    abstractExportExcel(url, searchForm, options, json2workbook, workbook2excel)
+export function exportExcel(url, params, options) {
+    abstractExportExcel(url, params, options, json2workbook, workbook2excel)
 }
 
 export function workbook2excel(workbook, filename) {
@@ -42,10 +42,12 @@ export function workbook2excel(workbook, filename) {
 /**
  * 通过json数组生成workbook对象
  *
- * @param data         json数组
- * @param columns      列配置
- * @param mergeOption  合并配置项
- * @return workbook    exceljs的workbook对象
+ * @param data {array}                         json数组
+ * @param columns {array}                      列配置
+ * @param mergeOption                          合并配置项
+ *     @param mergeOption.primaryKey {string}  ./common.js #mergeExcel所需参数
+ *     @param mergeOption.orderKey {string}    ./common.js #mergeExcel所需参数
+ * @return workbook                            exceljs的workbook对象
  */
 export function json2workbook(data, columns, mergeOption) {
     const columnStyle = [] //列设置

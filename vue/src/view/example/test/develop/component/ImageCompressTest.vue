@@ -9,12 +9,12 @@
                     <el-button type="primary" @click="() => $refs.jpg.click()">选择图片</el-button>
                 </div>
                 <div v-show="jpg.input.src" class="image-container">
-                    <p>原始图片：{{ jpg.name }} ({{ jpg.input.size|numberFormatter }})</p>
+                    <p>原始图片：{{ jpg.name }} ({{ jpg.input.size|number2StorageUnit }})</p>
                     <img :src="jpg.input.src">
                 </div>
                 <div v-show="jpg.output.src" class="image-container">
                     <p>
-                        压缩后大小：({{ jpg.output.size|numberFormatter }})，
+                        压缩后大小：({{ jpg.output.size|number2StorageUnit }})，
                         压缩率：{{ jpg.compress }}%，
                         总耗时：{{ jpg.totalCost }}毫秒，
                         计算耗时：{{ jpg.calcCost }}毫秒
@@ -41,12 +41,12 @@
                     <el-button type="primary" @click="() => $refs.png.click()">选择图片</el-button>
                 </div>
                 <div v-show="png.input.src" class="image-container">
-                    <p>原始图片：{{ png.name }} ({{ png.input.size|numberFormatter }})</p>
+                    <p>原始图片：{{ png.name }} ({{ png.input.size|number2StorageUnit }})</p>
                     <img :src="png.input.src">
                 </div>
                 <div v-show="png.output.src" class="image-container">
                     <p>
-                        压缩后大小：({{ png.output.size|numberFormatter }})，
+                        压缩后大小：({{ png.output.size|number2StorageUnit }})，
                         压缩率：{{ png.compress }}%，
                         总耗时：{{ png.totalCost }}毫秒，
                         计算耗时：{{ png.calcCost }}毫秒
