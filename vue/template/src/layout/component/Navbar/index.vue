@@ -16,28 +16,6 @@ export default {
 
     components: {HeadMenu, Logo},
 
-    data() {
-        return {
-            guideSteps: [
-                {
-                    element: '.setting-btn.navbar-item',
-                    content: '这是个性设置按钮，可以根据自己喜好进行一些设置',
-                },
-                {
-                    element: '.navbar .el-dropdown.navbar-item',
-                    content: '这是用户中心',
-                },
-                {
-                    element: '.tags-view-container',
-                    content: `<p>这是tab栏，可以右键tab页进行相关操作</p>
-                              <p>ctrl + ← → 可以进行tab页的左右切换</p>
-                              <p>当tab过多时通过鼠标滚轮来滚动</p>
-                              <p>双击可以关闭</p>`,
-                },
-            ]
-        }
-    },
-
     computed: {
         ...mapState('user', ['avatar', 'name', 'prepareLogout']),
 
@@ -65,20 +43,9 @@ export default {
 
     methods: {
         command(command) {
-            switch (command) {
-                case 'user':
-                    const path = '/user'
-                    this.$route.path !== path && this.$router.push(path)
-                    break
-                case 'guide':
-                    this.$guide(this.guideSteps)
-                    break
-                case 'logout':
-                    if (!this.prepareLogout) {
-                        elConfirm('确认退出?')
-                            .then(() => this.$store.dispatch('user/logout'))
-                    }
-                    break
+            if (!this.prepareLogout) {
+                elConfirm('确认退出?')
+                    .then(() => this.$store.dispatch('user/logout'))
             }
         },
 
@@ -129,12 +96,6 @@ export default {
                             class={navbarGetters.theme}
                             visible-arrow={false}
                         >
-                            <el-dropdown-item icon="el-icon-user" command="user">
-                                个人中心
-                            </el-dropdown-item>
-                            <el-dropdown-item class="hidden-xs" icon="el-icon-guide" command="guide">
-                                新手指引
-                            </el-dropdown-item>
                             <el-dropdown-item icon="el-icon-switch-button" command="logout">
                                 退出登录
                             </el-dropdown-item>

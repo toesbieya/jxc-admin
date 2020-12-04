@@ -8,19 +8,9 @@ export default {
             meta: {title: '消息提示'}
         },
         {
-            path: 'guide',
-            component: 'example/globalMethod/guide',
-            meta: {title: '导航'}
-        },
-        {
             path: 'imageViewer',
             component: 'example/globalMethod/imageViewer',
             meta: {title: '图片预览'}
-        },
-        {
-            path: 'signature',
-            component: 'example/globalMethod/signature',
-            meta: {title: '手写签名'}
         },
         {
             path: 'verify',

@@ -1,5 +1,4 @@
 import {deepClone} from "@/util"
-import {createWorker} from '@/util/worker'
 
 const DEFAULT_PROPS = {
     id: 'id',
@@ -225,34 +224,4 @@ export function getNodesByBfs(node) {
     }
 
     return nodes
-}
-
-//借助worker生成树
-export function createTreeByWorker(list) {
-    return new Promise(resolve => {
-        const worker = createWorker(workerTree, list, ({data}) => {
-            resolve(data)
-            worker.terminate()
-        })
-    })
-}
-
-function workerTree() {
-    function createTree(list, rootSign = 0, idKey = 'id', pidKey = 'pid', childrenKey = 'children') {
-        if (!list || list.length <= 0) return []
-        let info = {}
-        list.forEach(i => {
-            i[childrenKey] = []
-            info[i[idKey]] = i
-        })
-        return list.filter(node => {
-            const key = node[pidKey]
-            info[key] && info[key][childrenKey].push(node)
-            return key === rootSign
-        })
-    }
-
-    self.addEventListener('message', ({data}) => {
-        self.postMessage(createTree(data))
-    })
 }
