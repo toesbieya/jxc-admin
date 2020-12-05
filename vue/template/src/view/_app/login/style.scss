@@ -5,25 +5,12 @@ $light_gray: #ffffff;
 $dark_gray: #889aa4;
 $cursor: #ffffff;
 
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-    .login-container .el-input input {
-        color: $cursor;
-    }
-}
-
 .login-page {
     display: flex;
     flex-direction: column;
     height: 100%;
     overflow: auto;
-
-    canvas {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        z-index: -1;
-        background: #2d3a4b;
-    }
+    background: #2d3a4b;
 
     .login-container {
         flex: 1;
@@ -41,15 +28,6 @@ $cursor: #ffffff;
             color: #eee;
             font-weight: bold;
             position: relative;
-
-            .set-animation {
-                color: #ffffff;
-                position: absolute;
-                top: 115px;
-                font-size: 18px;
-                right: 10px;
-                cursor: pointer;
-            }
         }
 
         .svg-container {

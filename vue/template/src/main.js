@@ -8,12 +8,10 @@ import router from '@/router'
 import '@/asset/icon'
 import '@/directive'
 import filters from './filter'
-import globalMethod from '@/globalMethod'
 
 Vue.use(Element)
 Vue.use(ElementPersonal)
 Vue.use(filters)
-Vue.use(globalMethod)
 
 Vue.config.productionTip = false
 
