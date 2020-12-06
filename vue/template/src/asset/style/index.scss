@@ -65,81 +65,11 @@ a:hover {
     }
 }
 
-.clearfix {
-    @include clearfix;
-}
-
-.overflow-hidden {
-    overflow: hidden !important;
-}
-
 .flex {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-content: space-between;
-}
-
-
-/*----------路由页面的最大高度开始----------*/
-$page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
-
-.max-view-height.full {
-    height: 100vh;
-}
-
-.max-view-height {
-    overflow-y: hidden;
-    max-height: calc(100vh - #{$page-view-margin * 2});
-}
-
-.has-nav .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height});
-}
-
-.has-tags-view .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$tags-view-height});
-}
-
-.has-page-header .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$page-header-offsetHeight});
-}
-
-.has-nav.has-tags-view .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height});
-}
-
-.has-nav .has-page-header .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$page-header-offsetHeight});
-}
-
-.has-nav.has-tags-view .has-page-header .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height} - #{$page-header-offsetHeight});
-}
-
-/*----------路由页面的最大高度结束----------*/
-
-
-.table-container {
-    margin-top: 10px;
-}
-
-.table-image {
-    cursor: pointer;
-    display: inline-block;
-    height: 32px;
-    width: 32px;
-    border-radius: 50%;
-    vertical-align: middle;
-    overflow: hidden;
-}
-
-.card-container {
-    position: relative;
-
-    .el-scrollbar__wrap {
-        overflow-x: hidden;
-    }
 }
 
 .tip-row {
@@ -168,63 +98,3 @@ $page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
         text-decoration: underline;
     }
 }
-
-//小圆点
-.dot {
-    width: 6px;
-    height: 6px;
-    display: inline-block;
-    border-radius: 50%;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    margin-right: 11px;
-    background: $--color-info;
-
-    &.success {
-        background: $--color-success;
-    }
-
-    &.primary {
-        background: $--color-primary;
-    }
-
-    &.error {
-        background: $--color-danger;
-    }
-}
-
-.button-group {
-    .el-button {
-        margin-top: 10px;
-        margin-right: 10px;
-
-        & + .el-button {
-            margin-left: 0;
-        }
-    }
-}
-
-.table-add-btn {
-    margin: 8px 0;
-
-    .el-button {
-        width: 100%;
-    }
-}
-
-.el-form-item__content {
-    > .el-tree {
-        margin-top: 8px;
-    }
-
-    > .el-switch {
-        vertical-align: baseline;
-    }
-}
-
-.el-table a {
-    color: $--color-primary;
-}
-
-
