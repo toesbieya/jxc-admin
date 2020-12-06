@@ -1,5 +1,5 @@
 function mountainHeight(position, roughness) {
-    let frequencies = [1721, 947, 547, 233, 73, 31, 7]
+    const frequencies = [1721, 947, 547, 233, 73, 31, 7]
     return frequencies.reduce((height, freq) => height * roughness - Math.cos(freq * position), 0)
 }
 

@@ -40,7 +40,7 @@ export default {
     align-items: center;
     flex-wrap: nowrap;
     font-size: 14px;
-    line-height: $page-header-line-height;
+    height: $page-header-height;
     padding: $page-header-padding $page-view-margin $page-header-padding $page-view-margin;
 
     > .el-breadcrumb .no-redirect {

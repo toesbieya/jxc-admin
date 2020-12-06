@@ -17,7 +17,11 @@ export default {
             return pageGetters.showPageHeader && this.$route.meta.pageHeader !== false
         },
         pageClass() {
-            return {'scroll-container': true, 'has-page-header': this.renderPageHeader}
+            return {
+                'scroll-container': true,
+                'has-page-header': this.renderPageHeader,
+                'has-page-footer': true
+            }
         }
     },
 

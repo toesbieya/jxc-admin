@@ -10,6 +10,7 @@ const animations = [
     {name: '雨', value: 'reflectRain'},
     {name: '流星雨', value: 'sparkRain'},
     {name: '阳光', value: 'sunlight'},
+    {name: '流光', value: 'fluxRay'},
 ]
 
 export default {

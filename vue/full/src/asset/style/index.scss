@@ -7,17 +7,17 @@
 @import "./transition";
 @import "./nprogress";
 
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
 body {
     height: 100%;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
     -webkit-tap-highlight-color: transparent;
-}
-
-html {
-    height: 100%;
-    box-sizing: border-box;
 }
 
 #app {
@@ -82,39 +82,66 @@ a:hover {
 
 
 /*----------路由页面的最大高度开始----------*/
-$page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
+//可能达到的最大高度
+$max-height: '100vh - #{$page-view-margin * 2}';
 
+.max-view-height {
+    max-height: calc(#{$max-height});
+}
+
+//即使高度不够也占满
 .max-view-height.full {
     height: 100vh;
 }
 
-.max-view-height {
-    overflow-y: hidden;
-    max-height: calc(100vh - #{$page-view-margin * 2});
-}
-
+//有导航栏
 .has-nav .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height});
+    max-height: calc(#{$max-height} - #{$nav-height});
 }
 
+//有多页签栏
 .has-tags-view .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$tags-view-height});
+    max-height: calc(#{$max-height} - #{$tags-view-height});
 }
 
+//有页头
 .has-page-header .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$page-header-offsetHeight});
+    max-height: calc(#{$max-height} - #{$page-header-height});
 }
 
+//有页脚
+.has-page-footer .max-view-height {
+    max-height: calc(#{$max-height} - #{$page-footer-height});
+}
+
+//同时有导航栏和多页签栏
 .has-nav.has-tags-view .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height});
+    max-height: calc(#{$max-height} - #{$nav-height} - #{$tags-view-height});
 }
 
+//同时有导航栏和页头
 .has-nav .has-page-header .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$page-header-offsetHeight});
+    max-height: calc(#{$max-height} - #{$nav-height} - #{$page-header-height});
 }
 
+//同时有导航栏和页脚
+.has-nav .has-page-footer .max-view-height {
+    max-height: calc(#{$max-height} - #{$nav-height} - #{$page-footer-height});
+}
+
+//同时有导航栏、多页签栏、页头
 .has-nav.has-tags-view .has-page-header .max-view-height {
-    max-height: calc(100vh - #{$page-view-margin * 2} - #{$nav-height} - #{$tags-view-height} - #{$page-header-offsetHeight});
+    max-height: calc(#{$max-height} - #{$nav-height} - #{$tags-view-height} - #{$page-header-height});
+}
+
+//同时有导航栏、多页签栏、页脚
+.has-nav.has-tags-view .has-page-footer .max-view-height {
+    max-height: calc(#{$max-height} - #{$nav-height} - #{$tags-view-height} - #{$page-footer-height});
+}
+
+//同时有导航栏、多页签栏、页头、页脚
+.has-nav.has-tags-view .has-page-header.has-page-footer .max-view-height {
+    max-height: calc(#{$max-height} - #{$nav-height} - #{$tags-view-height} - #{$page-header-height} - #{$page-footer-height});
 }
 
 /*----------路由页面的最大高度结束----------*/
@@ -226,5 +253,3 @@ $page-header-offsetHeight: $page-header-line-height + #{$page-view-margin * 2};
 .el-table a {
     color: $--color-primary;
 }
-
-
