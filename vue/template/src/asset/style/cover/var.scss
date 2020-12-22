@@ -1,0 +1,7 @@
+/*仅覆盖element-ui中的预设变量，不会被使用*/
+
+//el-menu的hover背景颜色
+$--menu-item-hover-fill: none;
+
+//引入element的scss时需要覆盖字体路径
+$--font-path: '~element-ui/lib/theme-chalk/fonts';

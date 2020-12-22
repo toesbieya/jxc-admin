@@ -1,7 +1,4 @@
-import {route as routeConfig} from '@/config'
-import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
-
-const {animate} = routeConfig
+import {getters as pageGetters, mutations as pageViewMutations} from "@/layout/store/page"
 
 export default {
     watch: {
@@ -13,7 +10,9 @@ export default {
     methods: {
         //根据访问的tab页的左右顺序来确定路由动画
         decideRouteTransition(to, from) {
-            let transitionName = animate.prev
+            const {next, prev} = pageGetters.transition
+
+            let transitionName = prev
 
             //这里认为页签数量不会太多，所以为了可读性使用两次循环查找
             const fromIndex = this.visitedViews.findIndex(i => i.path === from.path)
@@ -21,10 +20,10 @@ export default {
 
             //新开tab也认为顺序高于上一个tab
             if (toIndex === -1 || fromIndex < toIndex) {
-                transitionName = animate.next
+                transitionName = next
             }
 
-            tagsViewMutations.transitionName(transitionName)
+            pageViewMutations.transition({curr: transitionName})
         },
     }
 }

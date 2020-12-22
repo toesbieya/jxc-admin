@@ -1,5 +1,7 @@
 <template>
     <div class="login-page">
+        <canvas id="login-background"/>
+
         <div class="login-container" @click.stop>
             <div class="title">
                 {{ title }}

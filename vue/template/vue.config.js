@@ -1,8 +1,6 @@
 'use strict'
 const path = require('path')
 const settings = require('./src/config')
-const ThemeColorReplacer = require('webpack-theme-color-replacer')
-const forElementUI = require('webpack-theme-color-replacer/forElementUI')
 
 function resolve(dir) {
     return path.join(__dirname, dir)
@@ -33,15 +31,7 @@ module.exports = {
                 '@': resolve('src'),
                 '@ele': resolve('element-ui-personal')
             }
-        },
-        plugins: [
-            new ThemeColorReplacer({
-                fileName: 'css/theme-colors.[contenthash:8].css',
-                matchColors: forElementUI.getElementUISeries('#1890ff'),
-                changeSelector: forElementUI.changeSelector,
-                injectCss: true
-            })
-        ]
+        }
     },
     chainWebpack(config) {
         config.plugins.delete('preload')

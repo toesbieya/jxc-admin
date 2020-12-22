@@ -13,10 +13,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 .page-footer {
-    padding: 48px $page-view-margin $page-view-margin $page-view-margin;
+    height: $page-footer-height;
+    padding: $page-view-margin;
     text-align: center;
 
     .copyright {

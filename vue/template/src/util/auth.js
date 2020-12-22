@@ -27,13 +27,7 @@ export function needAuth(route) {
  * @return {boolean}
  */
 export function auth(path) {
-    if (store.state.user.admin === true) return true
-
-    const resourceMap = store.state.resource.resourceMap
-    if (!(path in resourceMap)) return true
-
-    const resources = store.state.user.resources
-    return resources && path in resources
+    return true
 }
 
 /**
@@ -52,4 +46,13 @@ export function wic(apiMap) {
     })
 
     return attrs
+}
+
+/**
+ * 判断是否已登录，已登录则返回true
+ *
+ * @return {boolean}
+ */
+export function isLogin() {
+    return !isEmpty(store.state.user.token)
 }

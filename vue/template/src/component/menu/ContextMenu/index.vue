@@ -86,11 +86,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 .context-menu {
     margin: 0;
-    background: $menu-background-dark;
+    background-color: $menu-background-dark;
     z-index: 10;
     position: fixed;
     list-style-type: none;

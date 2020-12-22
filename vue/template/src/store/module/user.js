@@ -25,33 +25,29 @@ const mutations = createMutations(state, true)
 const actions = {
     login({commit, dispatch}, userInfo) {
         const {username, password} = userInfo
-        if (username !== 'admin') {
-            elError('登录时请用admin作为用户名！')
-            return Promise.reject()
-        }
+
         const user = {id: 1, admin: true, name: username, avatar: null, token: 'token'}
+
         commit('$all', user)
         setUser(user)
+
         return Promise.resolve()
     },
 
     logout({commit, state, dispatch}) {
-        return new Promise((resolve, reject) => {
-            if (state.prepareLogout) return Promise.reject()
-            commit('prepareLogout', true)
-            commit('resource/init', false, {root: true})
-            Promise.all([
-                dispatch('removeUser'),
-                tagsViewMutations.delAllTagAndCache()
-            ])
-                .then(() => {
-                    resolve()
-                    window.location.reload()
-                })
-                .finally(() => commit('prepareLogout', false))
-        })
+        if (state.prepareLogout) return Promise.reject()
+
+        commit('prepareLogout', true)
+
+        return Promise.all([
+            dispatch('removeUser'),
+            tagsViewMutations.delAllTagAndCache()
+        ])
+            .then(() => window.location.reload())
+            .finally(() => commit('prepareLogout', false))
     },
 
+    //刷新本地存储中保存的用户数据
     refresh({state}) {
         setUser(state)
     },

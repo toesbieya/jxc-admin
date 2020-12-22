@@ -6,7 +6,6 @@ import App from '@/App'
 import store from '@/store'
 import router from '@/router'
 import '@/asset/icon'
-import '@/directive'
 import filters from './filter'
 
 Vue.use(Element)

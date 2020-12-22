@@ -5,9 +5,7 @@ export default {
     render() {
         return (
             <el-backtop target=".page-main .scroll-container" visibility-height={400} bottom={66}>
-                <div class="back-to-top">
-                    <v-icon icon="el-icon-top"/>
-                </div>
+                <v-icon icon="el-icon-top"/>
             </el-backtop>
         )
     }

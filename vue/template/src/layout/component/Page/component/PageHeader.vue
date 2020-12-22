@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 .page-header {
     display: flex;
@@ -40,16 +40,16 @@ export default {
     align-items: center;
     flex-wrap: nowrap;
     font-size: 14px;
-    line-height: $page-header-line-height;
+    height: $page-header-height;
     padding: $page-header-padding $page-view-margin $page-header-padding $page-view-margin;
 
     > .el-breadcrumb .no-redirect {
-        color: #909399;
+        color: $--color-text-secondary;
         cursor: text;
     }
 
     &-title {
-        color: #303133;
+        color: $--color-text-primary;
         font-weight: 600;
         font-size: 18px;
         overflow: hidden;

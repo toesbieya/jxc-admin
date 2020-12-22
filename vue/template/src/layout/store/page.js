@@ -6,6 +6,18 @@ import {bindThis} from "@/util"
 import {createGetters, createMutations} from "@/util/observable"
 
 const state = {
+    //路由过渡动画
+    transition: {
+        //当未启用多页签时的路由动画
+        default: 'el-fade-in-linear',
+        //要访问的tab顺序高于上一个访问的tab时的路由动画
+        next: 'left-out',
+        //要访问的tab顺序不高于上一个访问的tab时的路由动画
+        prev: 'right-out',
+        //当前使用的路由动画
+        curr: 'el-fade-in-linear'
+    },
+
     /*iframe的控制*/
     showIframe: false,
     currentIframe: '',
@@ -27,6 +39,11 @@ export const getters = createGetters(store)
 
 export const mutations = bindThis({
     ...createMutations(store),
+
+    //修改transition时使用Object.assign
+    transition(obj) {
+        Object.assign(store.transition, obj)
+    },
 
     addIframe(src) {
         !store.iframeList.includes(src) && store.iframeList.push(src)

@@ -1,4 +1,5 @@
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
+@import "~@/asset/style/mixin.scss";
 
 .exception {
     width: 100%;
@@ -16,7 +17,7 @@
 
     .content {
         h1 {
-            color: #434e59;
+            color: $--color-text-primary;
             font-size: 72px;
             font-weight: 600;
             line-height: 72px;
@@ -24,7 +25,7 @@
         }
 
         .desc {
-            color: rgba(0, 0, 0, .45);
+            color: $--color-text-secondary;
             font-size: 20px;
             line-height: 28px;
             margin-bottom: 16px;

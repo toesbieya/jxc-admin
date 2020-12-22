@@ -1,6 +1,6 @@
-import cssVariables from '@/asset/style/variables.scss'
+import cssVar from '@/asset/style/var.scss'
 
-const maxMobileWidth = parseFloat(cssVariables.maxMobileWidth)
+const maxMobileWidth = parseFloat(cssVar.maxMobileWidth)
 
 /**
  * 根据body宽度判断是否为移动端，是则返回true
