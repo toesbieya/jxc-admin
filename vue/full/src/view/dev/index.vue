@@ -4,6 +4,6 @@
 
 <script>
 export default {
-    name: "uploadFileDev"
+    name: "dev"
 }
 </script>

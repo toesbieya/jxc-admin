@@ -3,8 +3,6 @@ const path = require('path')
 const settings = require('./src/config')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const ThemeColorReplacer = require('webpack-theme-color-replacer')
-const forElementUI = require('webpack-theme-color-replacer/forElementUI')
 
 const EMPTY_PLUGIN = {apply: () => ({})}
 
@@ -56,12 +54,6 @@ module.exports = {
             }
         },
         plugins: [
-            new ThemeColorReplacer({
-                fileName: 'css/theme-colors.[contenthash:8].css',
-                matchColors: forElementUI.getElementUISeries('#1890ff'),
-                changeSelector: forElementUI.changeSelector,
-                injectCss: true
-            }),
             new CompressionWebpackPlugin({
                 filename: '[path].gz[query]',
                 algorithm: 'gzip',

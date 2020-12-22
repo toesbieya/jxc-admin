@@ -40,14 +40,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 .q-skeleton + .q-skeleton {
     margin-top: 20px;
 }
 
 .bg-primary {
-    background: $--color-primary;
+    background-color: $--color-primary;
 }
 
 .bg-info {

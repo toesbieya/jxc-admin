@@ -3,6 +3,7 @@ import {apiPrefix} from '@/config'
 import {MessageBox, Notification} from 'element-ui'
 import Message from '@ele/component/Message'
 import store from '@/store'
+import {isLogin} from '@/util/auth'
 
 const instance = axios.create({
     baseURL: apiPrefix,
@@ -13,7 +14,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     config => {
         //登录状态下socket断连时，除登出外中断一切请求
-        if (store.state.user.id && !store.state.socket.online && config.url !== '/account/logout') {
+        if (isLogin() && !store.state.websocket.online && config.url !== '/account/logout') {
             Message.error('请等待与服务器重新连接')
             return Promise.reject('')
         }

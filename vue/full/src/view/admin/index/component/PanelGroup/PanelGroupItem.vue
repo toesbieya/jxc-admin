@@ -31,7 +31,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
+@import "~@/asset/style/mixin.scss";
 
 .card-panel {
     height: 108px;
@@ -40,7 +41,7 @@ export default {
     position: relative;
     overflow: hidden;
     color: #666;
-    background: #ffffff;
+    background-color: #ffffff;
     border-radius: 4px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
     border-color: rgba(0, 0, 0, .05);

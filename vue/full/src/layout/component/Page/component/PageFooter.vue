@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 .page-footer {
     height: $page-footer-height;

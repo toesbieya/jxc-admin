@@ -24,17 +24,7 @@ module.exports = {
         mode: 'history',
 
         //是否使用由后端返回的数据作为路由
-        useBackendDataAsRoute: false,
-
-        //路由过渡动画设置，关联transition.css
-        animate: {
-            //当未启用多页签时的路由动画
-            default: 'el-fade-in-linear',
-            //要访问的tab顺序高于上一个访问的tab时的路由动画
-            next: 'left-out',
-            //要访问的tab顺序不高于上一个访问的tab时的路由动画
-            prev: 'right-out',
-        }
+        useBackendDataAsRoute: false
     },
 
     //文件配置

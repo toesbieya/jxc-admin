@@ -1,5 +1,5 @@
 <script type="text/jsx">
-import cssVariables from '@/asset/style/variables.scss'
+import cssVar from '@/asset/style/var.scss'
 import LoadingMask from './LoadingMask'
 
 export default {
@@ -25,7 +25,7 @@ export default {
                 v-drag-dialog
                 visible={value}
                 custom-class="abstract-dialog"
-                top={cssVariables.dialogTop}
+                top={cssVar.dialogTop}
                 width={width}
                 on-close={onClose}
                 {...data}

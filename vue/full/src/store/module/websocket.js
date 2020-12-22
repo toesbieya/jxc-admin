@@ -4,7 +4,7 @@ import {useMock, socketUrl} from '@/config'
 import SocketIO from 'socket.io-client'
 import {createMutations} from "@/store/util"
 
-let socket
+let websocket
 
 const state = {
     online: true
@@ -18,14 +18,14 @@ const actions = {
 
         if (useMock || isEmpty(id, token)) return
 
-        socket = initSocket({id, token})
+        websocket = initSocket({id, token})
 
-        bindDefaultEvent(socket, context)
-        bindCustomEvent(socket, context)
+        bindDefaultEvent(websocket, context)
+        bindCustomEvent(websocket, context)
     },
 
     close() {
-        socket && socket.close()
+        websocket && websocket.close()
     }
 }
 

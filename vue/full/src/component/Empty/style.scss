@@ -1,3 +1,5 @@
+@import "~@/asset/style/var";
+
 .ant-empty {
     padding: 20px;
     margin: 0 8px;
@@ -29,7 +31,7 @@
 
     &-normal {
         margin: 32px 0;
-        color: rgba(0, 0, 0, .25);
+        color: $--color-text-secondary;
 
         .ant-empty-image {
             height: 40px;
@@ -38,7 +40,7 @@
 
     &-small {
         margin: 8px 0;
-        color: rgba(0, 0, 0, .25);
+        color: $--color-text-secondary;
 
         .ant-empty-image {
             height: 35px;

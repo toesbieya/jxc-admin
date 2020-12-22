@@ -44,16 +44,16 @@
 
 #guide-stage {
     position: absolute;
-    background: white;
+    background-color: white;
     transition: all 0.3s;
     z-index: 1001 !important;
     border-radius: 2px;
-    /*background: transparent !important;
+    /*background-color: transparent !important;
     outline: 5000px solid rgba(0, 0, 0, 0.75);*/
 }
 
 #guide-overlay {
-    background: black;
+    background-color: black;
     position: fixed;
     top: 0;
     left: 0;
@@ -65,6 +65,6 @@
 
 #guide-highlight-element-cover {
     position: absolute;
-    background: transparent !important;
+    background-color: transparent !important;
     z-index: 1003 !important;
 }

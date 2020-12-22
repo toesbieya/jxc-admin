@@ -122,7 +122,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/mixin.scss";
+@import "~@/asset/style/var";
 
 .form-anchor {
     position: fixed;
@@ -130,8 +131,8 @@ export default {
     top: 200px;
     min-width: 72px;
     border-radius: 4px 0 0 4px;
-    background: #ffffff;
-    box-shadow: 0 2px 12px 0 rgba(166, 167, 173, 0.5);
+    background-color: $--background-color-base;
+    @include deep-shadow;
     z-index: 100;
 
     &-item {
@@ -139,7 +140,7 @@ export default {
         height: 28px;
         line-height: 28px;
         text-align: center;
-        color: #909399;
+        color: $--color-text-secondary;
         padding: 0 10px;
         font-size: 12px;
         cursor: pointer;
@@ -150,7 +151,7 @@ export default {
         }
 
         &:not(:last-child) {
-            border-bottom: 1px solid rgba(166, 167, 173, 0.1);
+            border-bottom: $--border-base;
         }
     }
 }

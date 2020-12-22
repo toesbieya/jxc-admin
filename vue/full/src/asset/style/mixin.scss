@@ -1,0 +1,32 @@
+@mixin clearfix {
+    &::after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+}
+
+@mixin deep-shadow {
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+}
+
+@mixin mobile {
+    @media (max-width: $max-mobile-width) {
+        @content
+    }
+}
+
+@mixin pc {
+    @media (min-width: $max-mobile-width) {
+        @content
+    }
+}
+
+@mixin max-width-on-mobile {
+    @include mobile {
+        max-width: 384px;
+    }
+}

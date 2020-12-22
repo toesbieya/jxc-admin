@@ -6,12 +6,12 @@ import {getDynamicRoutes} from '@/router/define'
 import {str2routeConfig, metaExtend} from "@/router/util"
 import {getAll} from "@/api/system/resource"
 import {isEmpty, deepClone} from "@/util"
-import {needAuth, auth} from "@/util/auth" // 此处存在循环引用？
+import {needAuth, auth} from "@/util/auth" //此处存在循环引用？
 import {createTree, shakeTree} from "@/util/tree"
 import {isExternal} from "@/util/validate"
 
 const state = {
-    //权限映射表：<权限路径，权限id>，用于util.auth
+    //权限映射表：<权限路径，权限id>，所有的权限数据，用于util.auth
     resourceMap: {},
     //权限树（当用户非admin时过滤了admin专属权限），用于菜单管理、角色管理中的权限选择
     resourceTree: [],
@@ -21,13 +21,13 @@ const state = {
 }
 
 const mutations = {
-    resource(state, {data, admin}) {
+    resource(state, {data, predicate}) {
         data = deepClone(data)
 
         state.resourceMap = generateResourceMap(data)
 
-        //如果不是admin用户，那么过滤admin类型的权限
-        if (!admin) data = data.filter(i => !i.admin)
+        //如果传入了过滤方法，那么过滤权限树
+        if (predicate) data = data.filter(predicate)
 
         //解析meta，这里不处理meta.dynamicTitle
         data.forEach(i => {
@@ -44,20 +44,30 @@ const mutations = {
 }
 
 const actions = {
-    init({state, commit}, {admin}) {
+    init({state, commit, rootState}) {
+        const user = rootState.user
+
         return getAll
             .request()
             .then(({data}) => {
-                commit('resource', {data: data || [], admin})
+                //如果不是admin用户，那么过滤admin类型的权限
+                const predicate = user.admin ? undefined : i => !i.admin
 
-                const routes = transformOriginRouteData(data)
+                commit('resource', {data: data || [], predicate})
+
+                //未开启后端动态路由功能时，使用前端预设的静态路由
+                const routes =
+                    routeConfig.useBackendDataAsRoute
+                        ? transformOriginRouteData(data)
+                        : getDynamicRoutes()
+
                 metaExtend(routes)
 
                 //动态添加路由，这里不需要进行权限过滤
                 //可能存在多次调用的情况，所以仅在第一次调用时添加进vue-router
                 !state.init && addDynamicRoutes(routes)
 
-                //生成经过权限过滤后的菜单
+                //生成经过权限过滤后的菜单，并传递给layout的store
                 appMutations.menus(getAuthorizedMenus(routes))
 
                 //设置初始化完成的标志
@@ -69,9 +79,6 @@ const actions = {
 //将后台返回的数据转换为合法的route数组
 function transformOriginRouteData(data) {
     if (!Array.isArray(data)) return []
-
-    //未开启后端动态路由功能时，返回前端预设的静态路由
-    if (!routeConfig.useBackendDataAsRoute) return getDynamicRoutes()
 
     const treeArray = deepClone(data).filter(i => {
         //过滤掉数据接口或者未启用的项
@@ -93,8 +100,49 @@ function transformOriginRouteData(data) {
 //获取经过权限控制后的菜单
 function getAuthorizedMenus(menus) {
     menus = deepClone(menus)
+
+    //删除不显示的菜单(没有children且没有meta.title)
+    function clean(menus) {
+        for (let i = menus.length - 1; i >= 0; i--) {
+            const {children = [], meta: {title, alwaysShow, hidden} = {}} = menus[i]
+
+            if (hidden) {
+                menus.splice(i, 1)
+                continue
+            }
+
+            if (children.length === 0) {
+                if (isEmpty(title)) {
+                    menus.splice(i, 1)
+                }
+                continue
+            }
+
+            clean(children)
+
+            if (children.length === 0 && !alwaysShow) {
+                menus.splice(i, 1)
+            }
+
+            //移除类似首页那样的无标题父级节点
+            if (isEmpty(title)) {
+                menus.splice(i, 1, ...children)
+            }
+        }
+    }
+
+    //菜单添加全路径
+    function addFullPath(routes, basePath = '/') {
+        routes.forEach(route => {
+            //外链保持原样
+            route.fullPath = isExternal(route.path) ? route.path : path.resolve(basePath, route.path)
+            route.children && addFullPath(route.children, route.fullPath)
+        })
+    }
+
     clean(menus)
     addFullPath(menus)
+
     return shakeTree(menus, i => {
         //非叶子节点时，当定义了children属性却没有子节点时移除
         if (i.children && i.children.length === 0) {
@@ -102,45 +150,6 @@ function getAuthorizedMenus(menus) {
         }
 
         return !needAuth(i) || auth(i.fullPath)
-    })
-}
-
-//删除不显示的菜单(没有children且没有meta.title)
-function clean(menus) {
-    for (let i = menus.length - 1; i >= 0; i--) {
-        const {children = [], meta: {title, alwaysShow, hidden} = {}} = menus[i]
-
-        if (hidden) {
-            menus.splice(i, 1)
-            continue
-        }
-
-        if (children.length === 0) {
-            if (isEmpty(title)) {
-                menus.splice(i, 1)
-            }
-            continue
-        }
-
-        clean(children)
-
-        if (children.length === 0 && !alwaysShow) {
-            menus.splice(i, 1)
-        }
-
-        //移除类似首页那样的无标题父级节点
-        if (isEmpty(title)) {
-            menus.splice(i, 1, ...children)
-        }
-    }
-}
-
-//菜单添加全路径
-function addFullPath(routes, basePath = '/') {
-    routes.forEach(route => {
-        //外链保持原样
-        route.fullPath = isExternal(route.path) ? route.path : path.resolve(basePath, route.path)
-        route.children && addFullPath(route.children, route.fullPath)
     })
 }
 

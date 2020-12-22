@@ -53,3 +53,12 @@ export function wic(apiMap) {
 
     return attrs
 }
+
+/**
+ * 判断是否已登录，已登录则返回true
+ *
+ * @return {boolean}
+ */
+export function isLogin() {
+    return !isEmpty(store.state.user.token)
+}

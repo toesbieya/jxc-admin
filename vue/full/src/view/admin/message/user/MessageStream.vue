@@ -153,7 +153,7 @@ export default {
         cursor: pointer;
         position: relative;
         color: #666;
-        background: #FFF9EA;
+        background-color: #FFF9EA;
 
         & + & {
             margin-top: 20px;
@@ -161,7 +161,7 @@ export default {
 
         &.viewed {
             cursor: auto;
-            background: transparent;
+            background-color: transparent;
 
             &::before {
                 visibility: hidden;

@@ -542,6 +542,6 @@ export default class WebGlFluid {
 
         const dataUri = textureToCanvas(texture, target.width, target.height).toDataURL()
         downloadURI('fluid.png', dataUri)
-        URL.revokeObjectURL(dataUri)
+        window.URL.revokeObjectURL(dataUri)
     }
 }

@@ -496,7 +496,7 @@ const WebGLFluid = canvas => {
         let captureCanvas = textureToCanvas(texture, target.width, target.height)
         let dataUri = captureCanvas.toDataURL()
         downloadURI('fluid.png', dataUri)
-        URL.revokeObjectURL(dataUri)
+        window.URL.revokeObjectURL(dataUri)
     }
 
     //startGUI();

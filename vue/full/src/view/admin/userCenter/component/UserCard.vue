@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 .user-card {
     .avatar-container {
@@ -81,7 +81,7 @@ export default {
         list-style: none;
 
         li {
-            border-bottom: 1px solid #EBEEF5;
+            border-bottom: 1px solid $--border-color-lighter;
             padding: 11px 0;
             font-size: 13px;
         }

@@ -1,14 +1,6 @@
 // cover some element-ui styles
-.el-alert {
-    &--info.is-light {
-        color: #606266;
-        background-color: #f0faff;
-        border: 1px solid #abdcff;
-
-        .el-icon-info {
-            color: $--color-primary;
-        }
-    }
+.el-backtop {
+    border-radius: 0;
 }
 
 .el-button {
@@ -57,7 +49,7 @@
     min-width: 384px;
 
     .el-dialog__header {
-        border-bottom: 1px solid #EBEEF5;
+        border-bottom: 1px solid $--border-color-lighter;
         padding: 17px;
 
         .el-dialog__title {
@@ -72,7 +64,7 @@
     }
 
     .el-dialog__footer {
-        border-top: 1px solid #EBEEF5;
+        border-top: 1px solid $--border-color-lighter;
         padding: 10px 16px;
     }
 
@@ -89,7 +81,7 @@
 }
 
 .el-loading-mask {
-    background: #ffffff;
+    background-color: $--color-white;
     color: $--color-primary;
 }
 
@@ -146,24 +138,25 @@
     @include max-width-on-mobile;
     border-width: 0;
 
-    .el-message__icon, .el-message__content {
-        color: #ffffff !important;
+    .el-message__icon,
+    .el-message__content {
+        color: $--color-white !important;
     }
 
     &.el-message--success {
-        background: $--color-success;
+        background-color: $--color-success;
     }
 
     &.el-message--info {
-        background: $--color-primary;
+        background-color: $--color-primary;
     }
 
     &.el-message--warning {
-        background: $--color-warning;
+        background-color: $--color-warning;
     }
 
     &.el-message--error {
-        background: $--color-danger;
+        background-color: $--color-danger;
     }
 }
 
@@ -175,10 +168,6 @@
 
 .el-notification {
     @include deep-shadow;
-
-    .el-notification__icon.el-icon-info {
-        color: $--color-primary;
-    }
 }
 
 .el-pagination {
@@ -214,37 +203,8 @@
     }
 }
 
-.el-table {
-    thead {
-        color: #303133
-    }
-
-    thead > tr > th {
-        background: #fbfbfb;
-    }
-}
-
 .el-textarea {
     .el-input__count {
-        background: transparent;
-    }
-}
-
-.el-upload {
-    $size: 100px;
-
-    &-list__item-thumbnail {
-        object-fit: cover;
-    }
-
-    &.el-upload--picture-card {
-        height: $size;
-        width: $size;
-        line-height: $size;
-    }
-
-    &-list .el-upload-list__item {
-        height: $size;
-        width: $size;
+        background-color: transparent;
     }
 }

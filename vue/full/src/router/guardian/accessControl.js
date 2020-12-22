@@ -1,6 +1,5 @@
 import store from "@/store"
-import {isEmpty} from "@/util"
-import {auth, needAuth} from "@/util/auth"
+import {isLogin, auth, needAuth} from "@/util/auth"
 
 const noLoginList = ['/login', '/register', '/403', '/404', '/500']
 
@@ -11,7 +10,7 @@ const beforeEach = async (to, from, next) => {
     }
 
     //未登录时返回登录页
-    if (isEmpty(store.state.user.id, store.state.user.token)) {
+    if (!isLogin()) {
         return next({path: '/login', query: {redirect: to.fullPath}})
     }
 

@@ -10,15 +10,15 @@
     }
 
     .root-sidebar {
-        border-right-color: $border-color-dark;
+        border-right-color: $--border-color-dark;
     }
 
     .sub-sidebar-title {
-        color: #ffffff;
+        color: $--color-white;
     }
 
     .hamburger {
-        border-top-color: $border-color-dark;
+        border-top-color: $--border-color-dark;
 
         i {
             color: $menu-text-color-dark;

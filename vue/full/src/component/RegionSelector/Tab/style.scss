@@ -1,13 +1,16 @@
-.rg-header, .rg-search {
+@import "~@/asset/style/var";
+
+.rg-header,
+.rg-search {
     padding: 2px 10px 0;
-    background-color: #ffffff;
+    background-color: $--color-white;
 }
 
 .rg-header {
     h3 {
         padding: 6px;
         margin: 0;
-        color: #24292e;
+        color: $--color-text-primary;
         font-size: 16px;
     }
 
@@ -19,7 +22,7 @@
         background: 0 0;
         border: 0;
         outline: none;
-        color: #999;
+        color: $--color-text-secondary;
         top: 9px;
 
         i {
@@ -27,7 +30,7 @@
         }
 
         &:hover {
-            color: #000000;
+            color: $--color-text-regular;
         }
 
         &.rg-removeall-button {
@@ -42,13 +45,12 @@
 
 .rg-level-tabs {
     margin-top: 10px;
-    background-color: #ffffff;
 
     ul {
         padding: 0;
         margin: 0;
         line-height: 1.5;
-        border-bottom: 1px solid #eee;
+        border-bottom: $--border-base;
 
         li {
             display: inline-block;
@@ -58,7 +60,7 @@
                 display: block;
                 padding: 0.2rem 1rem 0.6rem;
                 font-size: 14px;
-                color: #bbb;
+                color: $--color-text-secondary;
                 text-decoration: none;
                 cursor: pointer;
                 line-height: 1.43;
@@ -66,8 +68,7 @@
 
             &.active {
                 a {
-                    color: #333;
-                    background-color: #ffffff;
+                    color: $--color-text-primary;
                     font-weight: 600;
                 }
 
@@ -78,7 +79,7 @@
                     bottom: 0;
                     height: 0.2rem;
                     width: 100%;
-                    background-color: #bbb;
+                    background-color: $--color-text-placeholder;
                 }
             }
         }
@@ -89,28 +90,27 @@
     .rg-results {
         margin: 0;
         padding: 5px;
-        width: 364px;
+        width: 384px;
         line-height: 1.5;
 
         li {
             overflow: hidden;
             padding: 3px 10px;
             font-size: 14px;
-            color: #000000;
             cursor: pointer;
 
             &.rg-item {
                 display: inline-block;
-                color: #777;
+                color: $--color-text-secondary;
 
-                &:hover {
-                    color: #000000;
-                    background-color: #F5F5F5;
+                &:hover:not(.active) {
+                    color: $--color-text-primary;
+                    background-color: rgba($--color-text-placeholder,.2);
                 }
 
                 &.active {
-                    background-color: #E4EAEE;
-                    color: #000000;
+                    color: $--color-text-primary;
+                    background-color: rgba($--color-text-placeholder,.6);
                 }
             }
 
@@ -125,7 +125,7 @@
 }
 
 .rg-input {
-    background-color: #f5f5f5;
+    background-color: rgba($--color-text-placeholder,.2);
     border: 0;
     width: 100%;
     font-size: 14px;
@@ -134,6 +134,6 @@
     border-radius: 2px;
 
     &::-webkit-input-placeholder {
-        color: #999;
+        color: $--color-text-placeholder;
     }
 }

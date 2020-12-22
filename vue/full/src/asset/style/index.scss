@@ -1,11 +1,13 @@
 @import "~normalize.css/normalize.css";
-@import "./variables";
-@import "~element-ui/packages/theme-chalk/src/index";
+@import "./var.scss";
+@import "./cover/var.scss";
+@import "./mixin.scss";
+@import "~element-ui/packages/theme-chalk/src/index.scss";
 @import "~@ele/style/index.scss";
-@import "./element-ui";
-@import './display';
-@import "./transition";
-@import "./nprogress";
+@import "./cover/element-ui.scss";
+@import './display.scss';
+@import "./transition.scss";
+@import "./nprogress.scss";
 
 html {
     height: 100%;
@@ -59,7 +61,7 @@ a:hover {
             background-color: rgba($--color-primary, 0.8);
 
             &:hover {
-                background-color: rgba($--color-primary, 1);
+                background-color: $--color-primary;
             }
         }
     }
@@ -169,10 +171,11 @@ $max-height: '100vh - #{$page-view-margin * 2}';
     }
 }
 
+//仅用于演示用例
 .tip-row {
     position: relative;
     z-index: 1;
-    background: #fafafa;
+    background-color: #fafafa;
     padding: 8px 24px;
     margin-bottom: 20px;
     border-radius: 2px;
@@ -206,18 +209,18 @@ $max-height: '100vh - #{$page-view-margin * 2}';
     position: relative;
     top: -1px;
     margin-right: 11px;
-    background: $--color-info;
+    background-color: $--color-info;
 
     &.success {
-        background: $--color-success;
+        background-color: $--color-success;
     }
 
     &.primary {
-        background: $--color-primary;
+        background-color: $--color-primary;
     }
 
     &.error {
-        background: $--color-danger;
+        background-color: $--color-danger;
     }
 }
 

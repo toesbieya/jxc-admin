@@ -7,20 +7,13 @@
         @close="$emit('input', false)"
     >
         <div class="drawer-container">
-            <el-divider>主题色</el-divider>
-            <div class="drawer-item">
-                <checkbox-group :value="appGetters.color" @input="changeThemeColor">
-                    <color-checkbox v-for="i in colors" :key="i" :value="i"/>
-                </checkbox-group>
-            </div>
-
             <el-divider>导航模式</el-divider>
             <div class="drawer-item">
                 <checkbox-group :value="appGetters.navMode" @input="changeNavMode">
                     <img-checkbox
-                        v-for="{title, value, img} in navModes"
+                        v-for="{label, value, img} in navModes"
                         :key="value"
-                        :title="title"
+                        :label="label"
                         :value="value"
                         :img="img"
                     />
@@ -131,8 +124,6 @@
 </template>
 
 <script>
-import client from 'webpack-theme-color-replacer/client'
-import forElementUI from 'webpack-theme-color-replacer/forElementUI'
 import CheckboxGroup from "@/component/checkbox/Group"
 import ColorCheckbox from "@/component/checkbox/ColorCheckbox"
 import ImgCheckbox from "@/component/checkbox/ImgCheckbox"
@@ -155,25 +146,24 @@ export default {
         return {
             appGetters, asideGetters, navbarGetters, pageGetters, tagsViewGetters,
 
-            colors: ['#f5222d', '#fa541c', '#fadb14', '#3eaf7c', '#13c2c2', '#1890ff', '#722ed1', '#eb2f96'],
             navModes: [
                 {
-                    title: '侧边栏导航',
+                    label: '侧边栏导航',
                     value: 'aside',
                     img: 'https://gw.alipayobjects.com/zos/antfincdn/XwFOFbLkSM/LCkqqYNmvBEbokSDscrm.svg'
                 },
                 {
-                    title: '顶部导航',
+                    label: '顶部导航',
                     value: 'head',
                     img: 'https://gw.alipayobjects.com/zos/antfincdn/URETY8%24STp/KDNDBbriJhLwuqMoxcAr.svg'
                 },
                 {
-                    title: '混合导航',
+                    label: '混合导航',
                     value: 'mix',
                     img: 'https://gw.alipayobjects.com/zos/antfincdn/x8Ob%26B8cy8/LCkqqYNmvBEbokSDscrm.svg'
                 },
                 {
-                    title: '双层侧边栏导航',
+                    label: '双层侧边栏导航',
                     value: 'aside-two-part',
                     img: 'https://gw.alipayobjects.com/zos/antfincdn/XwFOFbLkSM/LCkqqYNmvBEbokSDscrm.svg'
                 }
@@ -181,7 +171,6 @@ export default {
 
             setting: {
                 app: {
-                    color: '#1890ff',
                     navMode: 'mix'
                 },
                 page: {
@@ -238,10 +227,6 @@ export default {
             setLocalPersonalSettings(this.setting)
         },
 
-        changeThemeColor(v) {
-            client.changer.changeColor({newColors: forElementUI.getElementUISeries(v)})
-            appMutations.color(v)
-        },
         changeNavMode(v) {
             appMutations.navMode(v)
         },
@@ -315,14 +300,13 @@ export default {
         setLocalPersonalSettings(this.setting)
 
         this.syncLayoutStore()
-
-        //初始化时尝试修改主题色
-        this.changeThemeColor(this.setting.app.color)
     }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "~@/asset/style/var";
+
 .drawer-container {
     padding: 24px;
     font-size: 14px;
@@ -332,7 +316,7 @@ export default {
     .drawer-item {
         display: flex;
         justify-content: space-between;
-        color: #606266;
+        color: $--color-text-regular;
         font-size: 14px;
         padding: 12px 0;
     }

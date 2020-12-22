@@ -59,7 +59,7 @@
             </collapse-card>
 
             <collapse-card ref="attachment" header="附件">
-                <upload-file
+                <qiniu-upload
                     :file-list="form.imageList"
                     :disabled="!canSave"
                     @remove="removeUpload"

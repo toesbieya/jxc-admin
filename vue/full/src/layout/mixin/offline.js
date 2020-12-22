@@ -1,11 +1,9 @@
-import {isEmpty} from "@/util"
+import {isLogin} from "@/util/auth"
 
 export default {
     computed: {
         showOfflineTip() {
-            const state = this.$store.state
-            const isLogin = !isEmpty(state.user.id, state.user.token)
-            return !state.socket.online && isLogin
+            return !this.$store.state.websocket.online && isLogin()
         },
     },
 

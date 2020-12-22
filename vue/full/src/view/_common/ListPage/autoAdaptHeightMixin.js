@@ -3,6 +3,7 @@
  * 监听el-table，动态设置max-height属性
  */
 
+import {debounce} from "@/util"
 import {findComponentByTag} from "@/util/vue"
 
 export default {
@@ -19,7 +20,7 @@ export default {
     },
 
     methods: {
-        //设置表格距离卡片容器底部的理想距离（分页高度 + el-card的1px边距 + el-card padding + 页面margin）
+        //设置表格距离卡片容器底部的理想距离（分页高度 + el-card的1px边距 + el-card padding）
         calcExpectedDistance() {
             const paginationHeight = this.$el.querySelector('.table-container > .el-pagination') ? 50 : 0
             this.expectedDistance = paginationHeight + 1 + 20
@@ -51,24 +52,21 @@ export default {
                 this.tableMaxHeight = tableRect.height - overHeight
             }
         },
-
-        createResizeObserver() {
-            if (this.resizeObserver) return
-
-            this.resizeObserver = new ResizeObserver(this.resize)
-            this.resizeObserver.observe(this.$el)
-            const searchFormInstance = findComponentByTag(this, 'search-form')
-            if (searchFormInstance) {
-                this.resizeObserver.observe(searchFormInstance.$el)
-            }
-
-            this.$once('hook:beforeDestroy', () => {
-                this.resizeObserver && this.resizeObserver.disconnect()
-            })
-        },
     },
 
     mounted() {
-        this.createResizeObserver()
+        //resize必须异步，否则新版chrome(87.0.4280.88)会出问题
+        this.resize = debounce(this.resize, 0)
+
+        this.resizeObserver = new ResizeObserver(this.resize)
+        this.resizeObserver.observe(this.$el)
+        const searchFormInstance = findComponentByTag(this, 'search-form')
+        if (searchFormInstance) {
+            this.resizeObserver.observe(searchFormInstance.$el)
+        }
+
+        this.$once('hook:beforeDestroy', () => {
+            this.resizeObserver && this.resizeObserver.disconnect()
+        })
     }
 }

@@ -24,5 +24,5 @@ new Vue({
     render: h => h(App)
 })
 
-//页面刷新时socket重连
-store.dispatch('socket/init').catch()
+//页面刷新时websocket重连
+store.dispatch('websocket/init').catch()

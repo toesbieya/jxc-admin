@@ -1,6 +1,6 @@
 import {createMutations} from "@/store/util"
 import {emptyOrDefault} from "@/util"
-import {autoCompleteUrl} from "@/util/file"
+import {autoCompleteUrl} from "@/util/file" //此处存在循环引用？
 import {getUser, setUser} from "@/util/storage"
 import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
 import {login, logout} from '@/api/account'
@@ -33,35 +33,32 @@ const actions = {
             .then(({data: user}) => {
                 if (user.admin === true) user.roleName = '超级管理员'
                 user.avatar = autoCompleteUrl(user.avatar)
+
                 commit('$all', user)
                 setUser(user)
-                return dispatch('socket/init', null, {root: true})
+
+                return dispatch('websocket/init', undefined, {root: true})
             })
     },
 
     logout({commit, state, dispatch}) {
-        return new Promise((resolve, reject) => {
-            if (state.prepareLogout) return Promise.reject()
-            commit('prepareLogout', true)
-            logout
-                .request(state.token)
-                .then(() => {
-                    commit('resource/init', false, {root: true})
-                    return Promise.all([
-                        dispatch('socket/close', null, {root: true}),
-                        dispatch('removeUser'),
-                        tagsViewMutations.delAllTagAndCache()
-                    ])
-                })
-                .then(() => {
-                    resolve()
-                    window.location.reload()
-                })
-                .catch(error => reject(error))
-                .finally(() => commit('prepareLogout', false))
-        })
+        if (state.prepareLogout) return Promise.reject()
+
+        commit('prepareLogout', true)
+
+        return logout
+            .request(state.token)
+            .then(() => Promise.all([
+                dispatch('websocket/close', null, {root: true}),
+                dispatch('removeUser'),
+                //因为可能开启了页签的持久化功能，所以退出登陆时通过清空store来清空持久化数据
+                tagsViewMutations.delAllTagAndCache()
+            ]))
+            .then(() => window.location.reload())
+            .finally(() => commit('prepareLogout', false))
     },
 
+    //刷新本地存储中保存的用户数据
     refresh({state}) {
         setUser(state)
     },

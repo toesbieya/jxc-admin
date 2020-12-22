@@ -6,7 +6,7 @@ import CollapseCard from '@/component/CollapseCard'
 import DetailPage from "@/view/_common/DetailPage"
 import DocHistory from '@/component/biz/doc/DocHistory'
 import DocSteps from '@/component/biz/doc/DocSteps'
-import UploadFile from '@/component/UploadFile'
+import QiniuUpload from '@/component/Upload/Qiniu'
 import {isEmpty, mergeObj} from '@/util'
 import {auth} from "@/util/auth"
 import {deleteUpload} from "@/api/file"
@@ -22,7 +22,7 @@ export default {
         DetailPage,
         DocHistory,
         DocSteps,
-        UploadFile
+        QiniuUpload
     },
 
     props: {
@@ -268,7 +268,7 @@ export default {
                 url: res.key,
                 name: file.name,
                 sort: this.attachmentSortSeed,
-                size: file.size
+                size: file.raw.size
             })
             this.attachmentSortSeed++
         },

@@ -1,0 +1,135 @@
+@import "~@/asset/style/var";
+
+$--upload-size: 90px;
+
+.upload-file {
+    display: inline-block;
+
+    &-item,
+    &-trigger {
+        height: $--upload-size;
+        width: $--upload-size;
+        float: left;
+        border-radius: 4px;
+    }
+
+    &-item {
+        position: relative;
+        margin: 0 8px 8px 0;
+        border: 1px solid $--border-color-base;
+        overflow: hidden;
+
+        > img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        &-action,
+        &-loading {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .6);
+        }
+
+        &-action {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            opacity: 0;
+
+            > i {
+                color: $--color-white;
+                cursor: pointer;
+                transition: transform .1s;
+
+                &:hover {
+                    transform: scale(1.2);
+                }
+            }
+        }
+
+        &-loading {
+            padding-top: ($--upload-size - $--font-size-small * 2 - $--font-size-extra-large) / 2;
+            text-align: center;
+            color: $--color-white;
+
+            > i {
+                font-size: $--font-size-extra-large;
+            }
+
+            > p {
+                font-size: $--font-size-small;
+            }
+        }
+
+        &-status-label {
+            position: absolute;
+            right: -15px;
+            top: -6px;
+            width: 40px;
+            height: 24px;
+            text-align: center;
+            transform: rotate(45deg);
+
+            > i {
+                font-size: 12px;
+                color: $--color-white;
+                margin-top: 11px;
+                transform: rotate(-45deg);
+            }
+        }
+
+        &.is-success > &-status-label {
+            background-color: $--color-success;
+        }
+
+        &.is-error > &-status-label {
+            background-color: $--color-danger;
+        }
+
+        &:hover {
+            > .upload-file-item-action {
+                opacity: 1;
+            }
+
+            > .upload-file-item-status-label {
+                display: none;
+            }
+        }
+    }
+
+    &-trigger {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px dashed $--border-color-base;
+        cursor: pointer;
+        background-color: $--background-color-base;
+
+        > i {
+            font-size: 20px;
+            color: $--color-text-regular;
+        }
+
+        > input {
+            display: none;
+        }
+
+        &:hover {
+            border-color: $--color-primary;
+        }
+    }
+
+    &.is-disabled > &-trigger {
+        border-color: $--disabled-border-base;
+        cursor: not-allowed;
+
+        &:hover {
+            border-color: $--disabled-border-base;
+        }
+    }
+}

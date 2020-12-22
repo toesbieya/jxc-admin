@@ -17,8 +17,6 @@ const state = {
     //所有的树形菜单，每个元素为顶部菜单，顶部菜单的子级（如果有）为侧边栏菜单
     menus: [],
 
-    //主题色
-    color: '#1890ff',
     //导航模式，'aside'、'aside-two-part'、'head'、'mix'
     navMode: 'mix'
 }

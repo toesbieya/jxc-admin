@@ -26,8 +26,8 @@ export default {
     },
 
     render() {
-        const {showIframe, iframeList, currentIframe} = pageGetters
-        const {cachedViews, transitionName, enabled} = tagsViewGetters
+        const {transition, showIframe, iframeList, currentIframe} = pageGetters
+        const {cachedViews, enabled} = tagsViewGetters
 
         return (
             <main class="page-main">
@@ -38,7 +38,7 @@ export default {
 
                     <page-view
                         include={cachedViews}
-                        transition-name={transitionName}
+                        transition-name={transition.curr}
                         cacheable={enabled}
                     />
 
@@ -64,38 +64,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "~@/asset/style/variables.scss";
-
-.page-main {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-    background-color: #f0f2f5;
-
-    > .scroll-container {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        overflow-y: overlay;
-        overflow-x: inherit;
-
-        > .page-view {
-            margin: $page-view-margin;
-            flex: 1;
-        }
-    }
-
-    .back-to-top {
-        height: 100%;
-        width: 100%;
-        background-color: #f2f5f6;
-        box-shadow: 0 0 6px rgba(0, 0, 0, .12);
-        text-align: center;
-        line-height: 40px;
-        color: #1989fa;
-    }
-}
-</style>
+<style lang="scss" src="./style.scss"></style>

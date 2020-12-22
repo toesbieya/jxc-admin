@@ -2,8 +2,7 @@
  * 多页签的响应式数据
  */
 import Vue from 'vue'
-import {route as routeConfig} from "@/config"
-import {mutations as pageMutations} from "@/layout/store/page"
+import {getters as pageGetters, mutations as pageMutations} from "@/layout/store/page"
 import {getRouterViewCacheKey} from "@/layout/util"
 import {bindThis} from "@/util"
 import {createGetters, createMutations} from "@/util/observable"
@@ -20,10 +19,7 @@ const state = {
     visitedViews: [],
 
     //缓存的页签，用于<keep-router-view-alive/>:include
-    cachedViews: [],
-
-    //路由过渡动画名称
-    transitionName: routeConfig.animate.default
+    cachedViews: []
 }
 
 const store = Vue.observable(state)
@@ -42,7 +38,7 @@ export const mutations = bindThis({
         store.enabled = v
 
         if (!v) {
-            this.transitionName(routeConfig.animate.default)
+            pageMutations.transition({curr: pageGetters.transition.default})
             this.delAllTagAndCache()
         }
     },

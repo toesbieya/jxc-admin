@@ -320,7 +320,7 @@ export default {
         init() {
             this.curNode = null
             this.clearForm()
-            return this.$store.dispatch('resource/init', this.$store.state.user)
+            return this.$store.dispatch('resource/init')
         },
         clearForm() {
             resetObj(this.form)

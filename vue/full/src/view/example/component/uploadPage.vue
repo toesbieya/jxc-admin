@@ -1,22 +1,25 @@
 <template>
     <div>
         <div class="tip-row">
-            根据业务需求简单封装了upload，集成自带预览组件<br/>
+            根据业务需求简单封装了upload<br/>
+            图片使用<a href="https://github.com/sachinchoolur/lightgallery.js" target="_blank">lightgallery</a>预览，
             非图片类型的文件使用<a href="https://github.com/kekingcn/kkFileView" target="_blank">kkFileView</a>预览
         </div>
-        <upload-file :file-list="fileList"/>
+        <qiniu-upload :file-list="fileList"/>
         <div class="tip-row">原始使用axios的上传</div>
         <input @change="change" type="file">
     </div>
 </template>
 
 <script>
-import UploadFile from '@/component/UploadFile'
+import QiniuUpload from "@/component/Upload/Qiniu"
 import request from "@/api/request"
 
 export default {
     name: "uploadExample",
-    components: {UploadFile},
+
+    components: {QiniuUpload},
+
     data() {
         return {
             fileList: [
@@ -35,6 +38,7 @@ export default {
             ]
         }
     },
+
     methods: {
         change(e) {
             let file = e.target.files[0]
@@ -51,7 +55,8 @@ export default {
             //也可以用RequestParam根据键名去取额外参数
             param.append('extraParam1', "额外参数1")
             param.append('extraParam2', "额外参数2")
-            request.post('/test/upload', param, {headers: {"Content-Type": "multipart/form-data"}})
+            request
+                .post('/test/upload', param, {headers: {"Content-Type": "multipart/form-data"}})
                 .then(({data}) => alert(data))
         }
     }

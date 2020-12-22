@@ -43,7 +43,7 @@ export default {
             text-align: center;
 
             &.is-active {
-                background: #f0faff;
+                background-color: #f0faff;
             }
         }
 

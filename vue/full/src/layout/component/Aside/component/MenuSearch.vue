@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 //侧边栏折叠时不显示
 .collapse .aside-search {
@@ -50,7 +50,7 @@ export default {
 //暗色主题
 .dark .aside-search .el-input__inner {
     border: none;
-    color: #ffffff;
+    color: $--color-white;
     background-color: lighten($menu-background-dark, 5%);
 }
 </style>

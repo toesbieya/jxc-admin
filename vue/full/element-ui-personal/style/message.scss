@@ -7,7 +7,7 @@
         position: absolute;
         box-shadow: 0 1px 3px rgba(#000, .2), 0 1px 1px rgba(#000, .14), 0 2px 1px -1px rgba(#000, .12);
         background-color: $--color-danger;
-        color: #ffffff;
+        color: $--color-white;
         border-radius: 4px;
         top: -10px;
         left: -10px;
@@ -23,7 +23,7 @@
         left: 10px;
         right: 10px;
         animation: el-message-progress linear;
-        background: currentColor;
+        background-color: currentColor;
         opacity: .3;
         transform-origin: 0 50%;
         transform: scaleX(0);

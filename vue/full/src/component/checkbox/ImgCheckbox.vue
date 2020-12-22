@@ -6,11 +6,14 @@ export default {
 
     mixins: [common],
 
-    props: ['img'],
+    props: {
+        img: String,
+        label: String
+    },
 
     render() {
         return (
-            <div class="img-checkbox" on-click={this.click}>
+            <div class="img-checkbox" title={this.label} on-click={this.click}>
                 <img src={this.img}/>
                 {this.checked && <i class="el-icon-check"/>}
             </div>
@@ -20,7 +23,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 .img-checkbox {
     width: 55px;

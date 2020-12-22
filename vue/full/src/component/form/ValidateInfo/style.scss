@@ -1,4 +1,4 @@
-@import "~@/asset/style/variables.scss";
+@import "~@/asset/style/var";
 
 .form-validate-info {
     &.el-popper {
@@ -27,7 +27,7 @@
 
     &-item {
         padding: 8px 16px;
-        border-top: 1px solid $border-color-light;
+        border-top: 1px solid $--border-color-base;
         cursor: pointer;
 
         &:hover {
@@ -43,7 +43,7 @@
 
         &-label {
             margin-top: 2px;
-            color: #909399;
+            color: $--color-text-secondary;
             font-size: 12px;
         }
     }

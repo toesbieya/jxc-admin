@@ -1,9 +1,9 @@
 <script type="text/jsx">
-import cssVariables from '@/asset/style/variables.scss'
+import cssVar from '@/asset/style/var.scss'
 import Item from './item'
 import {isEmpty, deepClone, trim} from "@/util"
 
-const inlineIndent = parseFloat(cssVariables.menuPadding)
+const inlineIndent = parseFloat(cssVar.menuPadding)
 
 export default {
     name: 'NavMenu',
