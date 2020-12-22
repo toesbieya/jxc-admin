@@ -1,9 +1,11 @@
 <template>
     <el-card :class="{collapsed}">
-        <div slot="header" class="clearfix">
-            <slot name="header">{{ header }}</slot>
-            <i class="el-icon-arrow-up collapse-card-icon"/>
-        </div>
+        <template v-slot:header>
+            <div class="clearfix">
+                <slot name="header">{{ header }}</slot>
+                <i class="el-icon-arrow-up collapse-card-icon"/>
+            </div>
+        </template>
         <slot/>
     </el-card>
 </template>

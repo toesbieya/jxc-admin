@@ -9,7 +9,7 @@
         @clear="() => $emit('clear')"
         @visible-change="visibleChange"
     >
-        <template slot="empty">
+        <template v-slot:empty>
             <div class="rg-header">
                 <h3>行政区划选择</h3>
 

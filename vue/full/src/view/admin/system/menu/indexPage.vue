@@ -7,17 +7,22 @@
                 <el-button icon="el-icon-plus" size="small" type="primary" @click="addRoot">添加根节点</el-button>
                 <el-button icon="el-icon-plus" size="small" type="primary" @click="addChild">添加子节点</el-button>
             </template>
+
             <el-button v-if="canDel" icon="el-icon-delete" size="small" type="danger" @click="del">删 除</el-button>
+
             <el-dropdown placement="bottom" size="small" @command="more">
                 <el-button plain size="small">
                     更多操作
                     <i class="el-icon-arrow-down el-icon--right"/>
                 </el-button>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item :command="{action:'expand',level:0}">展开全部</el-dropdown-item>
-                    <el-dropdown-item :command="{action:'collapse',level:0}">收起全部</el-dropdown-item>
-                    <el-dropdown-item :command="{action:'expand',level:1}">仅展开一级</el-dropdown-item>
-                </el-dropdown-menu>
+
+                <template v-slot:dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item :command="{action:'expand',level:0}">展开全部</el-dropdown-item>
+                        <el-dropdown-item :command="{action:'collapse',level:0}">收起全部</el-dropdown-item>
+                        <el-dropdown-item :command="{action:'expand',level:1}">仅展开一级</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
             </el-dropdown>
         </el-row>
 
@@ -69,7 +74,10 @@
                             placeholder="请选择类型"
                             @change="typeChange"
                         >
-                            <v-icon slot="prefix" :icon="getNodeInfo({data:form}).icon"/>
+                            <template v-slot:prefix>
+                                <v-icon :icon="getNodeInfo({data:form}).icon"/>
+                            </template>
+
                             <el-option
                                 v-for="{label,value,icon} in nodeType"
                                 :key="value"

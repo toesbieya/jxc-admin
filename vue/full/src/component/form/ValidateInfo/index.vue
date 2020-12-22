@@ -15,7 +15,7 @@
                 <div class="form-validate-info-item-label">{{ i.label }}</div>
             </div>
         </div>
-        <template slot="reference">
+        <template v-slot:reference>
             <span v-show="error.length > 0" class="form-validate-info-ref">
                 <i class="el-icon-circle-close"/>
                 {{ error.length }}

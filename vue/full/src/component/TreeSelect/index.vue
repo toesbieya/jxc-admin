@@ -13,36 +13,38 @@
         @change="e => $emit('change',e)"
         @remove-tag="removeTag"
     >
-        <div class="tree-select-container" slot="empty">
-            <el-input
-                ref="search"
-                v-if="filterable && filterMethod"
-                v-model="search"
-                size="mini"
-                clearable
-                @input="onSearch"
-            />
-            <el-tree
-                ref="tree"
-                :data="data"
-                :node-key="nodeKey"
-                :props="props"
-                :show-checkbox="multiple"
-                :default-checked-keys="defaultCheckedKeys"
-                :current-node-key="multiple ? undefined : value"
-                :highlight-current="!multiple"
-                :expand-on-click-node="false"
-                :check-on-click-node="multiple"
-                :filter-node-method="filterMethod"
-                :accordion="accordion"
-                @node-click="nodeClick"
-                @check="check"
-            >
-                <slot slot-scope="{node,data}">
-                    <span :class="{'el-tree-node__label':true,'is-disabled':node.disabled}">{{ node.label }}</span>
-                </slot>
-            </el-tree>
-        </div>
+        <template v-slot:empty>
+            <div class="tree-select-container">
+                <el-input
+                    ref="search"
+                    v-if="filterable && filterMethod"
+                    v-model="search"
+                    size="mini"
+                    clearable
+                    @input="onSearch"
+                />
+                <el-tree
+                    ref="tree"
+                    :data="data"
+                    :node-key="nodeKey"
+                    :props="props"
+                    :show-checkbox="multiple"
+                    :default-checked-keys="defaultCheckedKeys"
+                    :current-node-key="multiple ? undefined : value"
+                    :highlight-current="!multiple"
+                    :expand-on-click-node="false"
+                    :check-on-click-node="multiple"
+                    :filter-node-method="filterMethod"
+                    :accordion="accordion"
+                    @node-click="nodeClick"
+                    @check="check"
+                >
+                    <slot slot-scope="{node,data}">
+                        <span :class="{'el-tree-node__label':true,'is-disabled':node.disabled}">{{ node.label }}</span>
+                    </slot>
+                </el-tree>
+            </div>
+        </template>
     </el-select>
 </template>
 

@@ -17,7 +17,9 @@
             <collapse-card ref="base" header="基础信息">
                 <abstract-form-item label="销售订单" prop="pid">
                     <el-input v-if="canSave" :value="form.pid" readonly>
-                        <el-button slot="append" @click="parentDialog=true">选择</el-button>
+                        <template v-slot:append>
+                            <el-button @click="parentDialog=true">选择</el-button>
+                        </template>
                     </el-input>
                     <template v-else>{{ form.pid }}</template>
                 </abstract-form-item>
@@ -30,9 +32,15 @@
                                   :summary-method="summaryStock(row)">
                             <el-table-column align="center" label="#" type="index" width="80"/>
                             <el-table-column align="center">
-                                <template slot="header">
+                                <template v-slot:header>
                                     出库数量
-                                    <el-button v-if="canSave" type="text" size="small" @click="openStock(row)">选择库存
+                                    <el-button
+                                        v-if="canSave"
+                                        type="text"
+                                        size="small"
+                                        @click="openStock(row)"
+                                    >
+                                        选择库存
                                     </el-button>
                                 </template>
                                 <template v-slot="d">

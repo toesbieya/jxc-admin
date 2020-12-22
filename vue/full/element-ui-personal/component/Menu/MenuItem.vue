@@ -10,9 +10,9 @@
             effect="dark"
             placement="right"
         >
-            <div slot="content">
+            <template v-slot:content>
                 <slot name="title"/>
-            </div>
+            </template>
             <div :style="iconContainerStyle">
                 <slot/>
             </div>

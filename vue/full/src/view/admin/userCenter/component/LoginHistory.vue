@@ -2,7 +2,9 @@
     <div v-loading="config.loading">
         <abstract-table :data="tableData" :highlight-current-row="false">
             <el-table-column align="center" type="index" width="60">
-                <el-button icon="el-icon-refresh-right" slot="header" style="padding: 0" type="text" @click="search"/>
+                <template v-slot:header>
+                    <el-button icon="el-icon-refresh-right" style="padding: 0" type="text" @click="search"/>
+                </template>
             </el-table-column>
             <el-table-column align="center" label="ip" prop="ip" show-overflow-tooltip/>
             <el-table-column align="center" label="地址" prop="address" show-overflow-tooltip/>

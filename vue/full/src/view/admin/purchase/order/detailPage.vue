@@ -17,7 +17,9 @@
             <collapse-card ref="base" header="基础信息">
                 <abstract-form-item label="供应商" prop="sname">
                     <el-input v-if="canSave" :value="form.sname" readonly>
-                        <el-button slot="append" @click="supplierDialog=true">选择</el-button>
+                        <template v-slot:append>
+                            <el-button @click="supplierDialog = true">选择</el-button>
+                        </template>
                     </el-input>
                     <template v-else>{{ form.sname }}</template>
                 </abstract-form-item>
@@ -75,17 +77,19 @@
                             <el-button type="text" @click="() => delSub(row,$index)">删除</el-button>
                         </template>
                     </el-table-column>
-                    <div v-if="canSave" slot="append" class="table-add-btn">
-                        <el-button
-                            plain
-                            type="dashed"
-                            icon="el-icon-plus"
-                            :disabled="!canAddSub"
-                            @click="addSub"
-                        >
-                            添加采购商品
-                        </el-button>
-                    </div>
+                    <template v-if="canSave" v-slot:append>
+                        <div class="table-add-btn">
+                            <el-button
+                                plain
+                                type="dashed"
+                                icon="el-icon-plus"
+                                :disabled="!canAddSub"
+                                @click="addSub"
+                            >
+                                添加采购商品
+                            </el-button>
+                        </div>
+                    </template>
                 </abstract-table>
             </collapse-card>
 

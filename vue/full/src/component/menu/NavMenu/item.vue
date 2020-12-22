@@ -16,7 +16,10 @@ const MenuItemContent = {
             ? title
             : getHighlightContent(h, title, highlight)
 
-        return [<v-icon icon={icon}/>, <span slot="title" class="menu-item-content">{content}</span>]
+        return [
+            <v-icon icon={icon}/>,
+            <span slot="title" class="menu-item-content">{content}</span>
+        ]
     }
 }
 

@@ -2,7 +2,9 @@
     <div v-loading="config.loading">
         <abstract-table :data="tableData" :highlight-current-row="false">
             <el-table-column align="center" label="#" type="index" width="60">
-                <el-button icon="el-icon-refresh-right" slot="header" style="padding: 0" type="text" @click="search"/>
+                <template v-slot:header>
+                    <el-button icon="el-icon-refresh-right" style="padding: 0" type="text" @click="search"/>
+                </template>
             </el-table-column>
             <el-table-column align="center" label="ip" prop="ip" show-overflow-tooltip/>
             <el-table-column align="center" label="操作" prop="action" show-overflow-tooltip/>
@@ -12,11 +14,13 @@
             <el-table-column align="center" label="状态" width="80">
                 <template v-slot="{row}">
                     <el-tooltip :disabled="row.success" placement="left">
-                        <div slot="content" style="max-width: 60vw">
-                            <el-scrollbar wrap-class="el-select-dropdown__wrap">
-                                <p>{{ row.error }}</p>
-                            </el-scrollbar>
-                        </div>
+                        <template v-slot:content>
+                            <div style="max-width: 60vw">
+                                <el-scrollbar wrap-class="el-select-dropdown__wrap">
+                                    <p>{{ row.error }}</p>
+                                </el-scrollbar>
+                            </div>
+                        </template>
                         <el-tag :type="row.success ? 'success' : 'danger'" size="small" effect="dark">
                             {{ row.success ? '成功' : '失败' }}
                         </el-tag>

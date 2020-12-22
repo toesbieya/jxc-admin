@@ -22,7 +22,9 @@
                 </div>
             </div>
 
-            <div slot="reference" v-show="showStage" id="guide-stage" :style="stageStyle"/>
+            <template v-slot:reference>
+                <div v-show="showStage" id="guide-stage" :style="stageStyle"/>
+            </template>
         </el-popover>
 
         <div v-if="showStage" id="guide-highlight-element-cover" :style="stageStyle" @click.prevent.stop/>

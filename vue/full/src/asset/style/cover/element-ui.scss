@@ -1,4 +1,16 @@
 // cover some element-ui styles
+.el-alert {
+    &--info.is-light {
+        color: $--color-text-regular;
+        background-color: rgba($--color-primary, .1);
+        border: 1px solid rgba($--color-primary, .5);
+
+        .el-icon-info {
+            color: $--color-primary;
+        }
+    }
+}
+
 .el-backtop {
     border-radius: 0;
 }

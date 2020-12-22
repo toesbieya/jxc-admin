@@ -8,12 +8,12 @@
             <el-card>
                 <el-tabs v-model="activeTab" stretch>
                     <el-tab-pane v-for="i in tabs" v-once :key="i.label" :name="i.name">
-                        <span slot="label">
+                        <template v-slot:label>
                             {{ i.label }}
                             <el-tooltip :content="i.intro" placement="top">
                                 <i v-if="i.intro" class="el-icon-question" style="color: #4AB7BD"/>
                             </el-tooltip>
-                        </span>
+                        </template>
                     </el-tab-pane>
 
                     <transition mode="out-in" name="el-fade-in-linear">

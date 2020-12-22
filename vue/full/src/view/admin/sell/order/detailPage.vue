@@ -17,7 +17,9 @@
             <collapse-card ref="base" header="基础信息">
                 <abstract-form-item label="客 户" prop="customerName">
                     <el-input v-if="canSave" :value="form.customerName" readonly>
-                        <el-button slot="append" @click="customerDialog=true">选择</el-button>
+                        <template v-slot:append>
+                            <el-button @click="customerDialog=true">选择</el-button>
+                        </template>
                     </el-input>
                     <template v-else>{{ form.customerName }}</template>
                 </abstract-form-item>
@@ -58,17 +60,19 @@
                             {{ row.remainNum === 0 ? '已全部出库' : '未全部出库' }}
                         </template>
                     </el-table-column>
-                    <div v-if="canSave" slot="append" class="table-add-btn">
-                        <el-button
-                            plain
-                            type="dashed"
-                            icon="el-icon-plus"
-                            :disabled="!canAddSub"
-                            @click="stockDialog=true"
-                        >
-                            添加销售商品
-                        </el-button>
-                    </div>
+                    <template v-if="canSave" v-slot:append>
+                        <div class="table-add-btn">
+                            <el-button
+                                plain
+                                type="dashed"
+                                icon="el-icon-plus"
+                                :disabled="!canAddSub"
+                                @click="stockDialog=true"
+                            >
+                                添加销售商品
+                            </el-button>
+                        </div>
+                    </template>
                 </abstract-table>
             </collapse-card>
 

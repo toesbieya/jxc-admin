@@ -17,7 +17,9 @@
             <collapse-card ref="base" header="基础信息">
                 <abstract-form-item label="采购订单" prop="pid">
                     <el-input v-if="canSave" :value="form.pid" readonly>
-                        <el-button slot="append" @click="parentDialog=true">选择</el-button>
+                        <template v-slot:append>
+                            <el-button @click="parentDialog=true">选择</el-button>
+                        </template>
                     </el-input>
                     <template v-else>{{ form.pid }}</template>
                 </abstract-form-item>

@@ -49,12 +49,16 @@
                     权限树操作
                     <i class="el-icon-arrow-up el-icon--right"/>
                 </el-button>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item :command="{action:'expand',level:0}">展开全部</el-dropdown-item>
-                    <el-dropdown-item :command="{action:'collapse',level:0}">收起全部</el-dropdown-item>
-                    <el-dropdown-item :command="{action:'expand',level:1}">仅展开一级</el-dropdown-item>
-                </el-dropdown-menu>
+
+                <template v-slot:dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item :command="{action:'expand',level:0}">展开全部</el-dropdown-item>
+                        <el-dropdown-item :command="{action:'collapse',level:0}">收起全部</el-dropdown-item>
+                        <el-dropdown-item :command="{action:'expand',level:1}">仅展开一级</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
             </el-dropdown>
+
             <el-button plain size="small" @click="closeDialog">取 消</el-button>
             <el-button v-if="canEdit" size="small" type="primary" @click="confirm">确 定</el-button>
         </template>
