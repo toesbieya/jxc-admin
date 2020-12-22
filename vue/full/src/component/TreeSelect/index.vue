@@ -211,8 +211,7 @@ export default {
     }
 
     .el-tree-node__label.is-disabled {
-        background-color: $--font-color-disabled-base;
-        border-color: $--border-color-base;
+        color: $--disabled-color-base;
         cursor: not-allowed;
     }
 }
