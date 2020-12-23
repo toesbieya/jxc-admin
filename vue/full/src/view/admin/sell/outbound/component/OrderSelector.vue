@@ -19,7 +19,7 @@
                     <el-table-column align="center" type="expand">
                         <template v-slot="{row}">
                             <liner-progress :show="row._loading"/>
-                            <div style="text-align: center" v-show="!row._loading">
+                            <div v-show="!row._loading" style="text-align: center">
                                 <el-table
                                     :data="row.data"
                                     row-key="id"
@@ -38,10 +38,11 @@
                                     <el-table-column align="center" label="未出库数量" prop="remainNum"/>
                                 </el-table>
                                 <el-button
+                                    v-if="row.data && row.data.length > 0"
                                     size="small"
                                     style="margin-top: 10px"
                                     type="primary"
-                                    @click="() => confirm(row)"
+                                    @click="confirm(row)"
                                 >
                                     确定
                                 </el-button>
@@ -134,11 +135,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.el-table {
-    .nets-table-btn {
-        margin: 0 auto;
-    }
-}
-</style>

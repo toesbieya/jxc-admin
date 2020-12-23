@@ -1,6 +1,8 @@
 <script type="text/jsx">
 import {deepClone} from "@/util"
 import {getElementInnerWidth} from '@/util/browser'
+import {clearableComponentTag, clearFormItem} from "@/util/element-ui/elForm"
+import {findComponentByTag} from "@/util/vue"
 
 export default {
     name: "SearchForm",
@@ -42,6 +44,12 @@ export default {
                 return
             }
 
+            this.$slots.default.forEach(({componentInstance}) => {
+                const item = findComponentByTag(componentInstance, tag => clearableComponentTag.includes(tag))
+                item && clearFormItem(item)
+            })
+
+            //因为表单可能存在无清空功能的组件，所以传递一次初始值
             this.$emit('reset', deepClone(this.initialModel))
         },
 
@@ -149,7 +157,7 @@ export default {
         flex-wrap: wrap;
     }
 
-    .hide {
+    .el-col.hide {
         display: none;
     }
 }

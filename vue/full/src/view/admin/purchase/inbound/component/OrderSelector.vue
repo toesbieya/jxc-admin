@@ -19,7 +19,7 @@
                     <el-table-column align="center" type="expand">
                         <template v-slot="{row}">
                             <liner-progress :show="row._loading"/>
-                            <div style="text-align: center" v-show="!row._loading">
+                            <div v-show="!row._loading" style="text-align: center">
                                 <el-table
                                     :data="row.data"
                                     row-key="id"
@@ -27,7 +27,7 @@
                                     @selection-change="row._selection = $event"
                                 >
                                     <el-table-column
-                                        :selectable="p=>p.remainNum>0"
+                                        :selectable="p=>p.remainNum > 0"
                                         align="center"
                                         type="selection"
                                         width="60"
@@ -134,11 +134,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.el-table {
-    .nets-table-btn {
-        margin: 0 auto;
-    }
-}
-</style>
