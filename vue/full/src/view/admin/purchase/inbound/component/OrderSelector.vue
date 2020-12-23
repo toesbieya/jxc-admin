@@ -24,7 +24,7 @@
                                     :data="row.data"
                                     row-key="id"
                                     border
-                                    @selection-change="row._selection=$event"
+                                    @selection-change="row._selection = $event"
                                 >
                                     <el-table-column
                                         :selectable="p=>p.remainNum>0"
@@ -38,6 +38,7 @@
                                     <el-table-column align="center" label="未入库数量" prop="remainNum"/>
                                 </el-table>
                                 <el-button
+                                    v-if="row.data && row.data.length > 0"
                                     size="small"
                                     style="margin-top: 10px"
                                     type="primary"
@@ -113,7 +114,7 @@ export default {
             row._loading = true
             getSubById
                 .request(row.id)
-                .then(data => {
+                .then(({data}) => {
                     row.data = data
                     row._loaded = true
                 })

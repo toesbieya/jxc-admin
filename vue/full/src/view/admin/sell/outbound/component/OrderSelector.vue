@@ -24,10 +24,10 @@
                                     :data="row.data"
                                     row-key="id"
                                     border
-                                    @selection-change="row._selection=$event"
+                                    @selection-change="row._selection = $event"
                                 >
                                     <el-table-column
-                                        :selectable="p=>p.remainNum>0"
+                                        :selectable="p=>p.remainNum > 0"
                                         align="center"
                                         type="selection"
                                         width="60"
@@ -111,8 +111,10 @@ export default {
         getSubList(row) {
             if (row._loaded || row._loading) return
             row._loading = true
-            getSubById(row.id)
-                .then(data => {
+            getSubById
+                .request(row.id)
+                .then(({data}) => {
+                    console.log(data)
                     row.data = data
                     row._loaded = true
                 })
