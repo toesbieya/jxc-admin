@@ -22,16 +22,13 @@ export function elAlert(msg, callback = () => ({})) {
 }
 
 export function elConfirm(msg = '确认进行该操作？', ignoreReject = true) {
-    const promise = MessageBox.confirm(msg, {
-        type: 'warning',
-        cancelButtonClass: 'is-plain'
-    })
-
-    if (ignoreReject) {
-        promise.catch(() => ({}))
-    }
-
-    return promise
+    return new Promise(((resolve, reject) => {
+        MessageBox.confirm(msg, {
+            type: 'warning',
+            cancelButtonClass: 'is-plain'
+        })
+            .then(resolve, ignoreReject ? () => ({}) : reject)
+    }))
 }
 
 export function elPrompt(msg) {

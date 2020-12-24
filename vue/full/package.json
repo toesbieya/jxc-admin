@@ -11,7 +11,7 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
     "decimal.js": "^10.2.0",
-    "element-ui": "^2.13.2",
+    "element-ui": "^2.14.1",
     "file-saver": "^2.0.5",
     "js-md5": "^0.7.3",
     "normalize.css": "^8.0.1",
