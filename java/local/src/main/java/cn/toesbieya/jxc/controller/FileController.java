@@ -2,11 +2,7 @@ package cn.toesbieya.jxc.controller;
 
 import cn.toesbieya.jxc.model.vo.R;
 import cn.toesbieya.jxc.service.FileService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
@@ -14,7 +10,6 @@ import java.net.URLDecoder;
 
 @RestController
 @RequestMapping("file")
-@Slf4j
 public class FileController {
     @Resource
     private FileService service;
@@ -23,6 +18,15 @@ public class FileController {
     public R delete(@RequestParam String url) throws UnsupportedEncodingException {
         service.delete(URLDecoder.decode(url, "utf-8"));
         return R.success("删除成功");
+    }
+
+    @PostMapping("deleteBatch")
+    public R deleteBatch(@RequestBody String[] urls) {
+        if (urls.length == 0) {
+            return R.fail("参数错误");
+        }
+        service.deleteBatch(urls);
+        return R.success("批量删除成功");
     }
 
     @GetMapping("getToken")
