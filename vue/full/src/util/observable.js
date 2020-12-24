@@ -18,7 +18,7 @@ export function createGetters(store) {
     return getters
 }
 
-//设置mutation
+//为Vue.observer返回的对象设置mutation
 export function createMutations(store, all = false) {
     const keys = Object.keys(store)
     const obj = {}

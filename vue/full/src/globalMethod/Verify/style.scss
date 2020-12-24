@@ -57,8 +57,6 @@
             padding-top: 10%;
 
             &__icon {
-                /*background-size: 764.70588%;
-                background-position: 0 70.70218%;*/
                 background-image: url(./image/loading.png);
                 margin: 11% auto 10px;
                 width: 34px;
@@ -197,20 +195,20 @@
             }
         }
     }
-}
 
-.puzzle-shake {
-    animation: shake 0.2s linear 3 both;
-}
+    &.is-error {
+        animation: shake 0.2s linear 3 both;
+    }
 
-@keyframes shake {
-    25% {
-        transform: translate3d(-6px, 0, 0)
-    }
-    75% {
-        transform: translate3d(6px, 0, 0)
-    }
-    100% {
-        transform: translate3d(0, 0, 0)
+    @keyframes shake {
+        25% {
+            transform: translate3d(-6px, 0, 0)
+        }
+        75% {
+            transform: translate3d(6px, 0, 0)
+        }
+        100% {
+            transform: translate3d(0, 0, 0)
+        }
     }
 }

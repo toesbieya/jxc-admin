@@ -3,7 +3,7 @@
         <div
             v-show="visible"
             class="puzzle-container"
-            :class="{'puzzle-shake':stat==='fail'}"
+            :class="{'is-error': stat === 'fail'}"
             :style="`left: ${positionLeft}px;top: ${positionTop}px;`"
         >
             <div class="puzzle-view" :style="`width:${width}px;height:${height}px;`">
@@ -32,7 +32,7 @@
 
             <div class="slider-container">
                 <div class="slider-track">
-                    <div class="slider-tip" :style="stat==='ready'?'opacity: 1':''">拖动滑块完成拼图</div>
+                    <div class="slider-tip" :style="stat === 'ready' ? 'opacity: 1' : ''">拖动滑块完成拼图</div>
                 </div>
                 <div class="slider-btn" :style="sliderBtnStyle" @mousedown="moveStart" @touchstart="moveStart"/>
             </div>
