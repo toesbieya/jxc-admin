@@ -9,7 +9,7 @@ import DocSteps from '@/component/biz/doc/DocSteps'
 import QiniuUpload from '@/component/Upload/Qiniu'
 import {isEmpty, mergeObj} from '@/util'
 import {auth} from "@/util/auth"
-import {deleteUpload} from "@/api/file"
+import {deleteUploadBatch} from "@/api/file"
 import {elAlert, elConfirm, elPrompt, elSuccess} from "@/util/message"
 import {closeCurrentPage} from "@/util/route"
 
@@ -50,8 +50,8 @@ export default {
                 remark: null,
                 data: [],
                 imageList: [],
-                uploadImageList: [],
-                deleteImageList: []
+                uploadImageList: [],//新上传文件的key数组
+                deleteImageList: [] //被删除的旧上传文件的key数组
             },
             rules: {}
         }
@@ -237,17 +237,8 @@ export default {
             return this.init(this.form.id)
         },
 
-        //关闭页面
+        //关闭页面并跳转到列表页
         close() {
-            //删除未保存的上传附件
-            const deleteArr = []
-            if (this.form.uploadImageList.length > 0) {
-                deleteArr.push(...this.form.uploadImageList.map(i => i.url))
-            }
-            if (deleteArr.length > 0) {
-                deleteUpload.request(deleteArr).catch(e => ({}))
-            }
-
             return closeCurrentPage(this.getTablePageUrl())
         },
         //获取列表页的地址
@@ -262,7 +253,14 @@ export default {
             this.$store.commit('needSearch/emit', this.getTablePageUrl())
         },
 
-        //附件操作
+        /*附件操作*/
+        //删除未保存的上传附件
+        clearUnusedFile() {
+            const deleteArr = this.form.uploadImageList.map(i => i.url)
+            if (deleteArr.length > 0) {
+                deleteUploadBatch.request(deleteArr).catch(e => ({}))
+            }
+        },
         uploadSuccess(file, res) {
             this.form.uploadImageList.push({
                 url: res.key,
@@ -272,15 +270,23 @@ export default {
             })
             this.attachmentSortSeed++
         },
-        removeUpload(file) {
-            this.form.deleteImageList.push(file.url)
-            const index = this.form.uploadImageList.findIndex(i => i.url === file.url)
-            if (index > -1) this.form.uploadImageList.splice(index, 1)
+        removeUpload({key, isNew}) {
+            //被删除的文件不是本次上传的
+            if (!isNew) {
+                return this.form.deleteImageList.push(key)
+            }
+
+            const index = this.form.uploadImageList.findIndex(i => i.url === key)
+            index > -1 && this.form.uploadImageList.splice(index, 1)
         }
     },
 
     mounted() {
         this.loading = false
         if (this.type !== 'add') return this.init(this.id)
+    },
+
+    beforeDestroy() {
+        this.clearUnusedFile()
     }
 }

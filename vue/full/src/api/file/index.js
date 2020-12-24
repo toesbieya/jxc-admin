@@ -1,4 +1,4 @@
-import {GetApi} from "@/api/request"
+import {GetApi, PostApi} from "@/api/request"
 
 export const getToken = new GetApi(
     '/file/getToken',
@@ -7,3 +7,5 @@ export const getToken = new GetApi(
 )
 
 export const deleteUpload = new GetApi('/file/delete', url => ({params: {url: encodeURIComponent(url)}}))
+
+export const deleteUploadBatch = new PostApi('/file/deleteBatch')

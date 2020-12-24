@@ -4,6 +4,7 @@
         :uploaded-file-list="uploadedFileList"
         :limit="limit"
         :multiple="multiple"
+        :disabled="disabled"
         :http-request="httpRequest"
         :before-upload="beforeUpload"
         @exceed="onExceed"
@@ -100,14 +101,17 @@ export default {
         },
         //移除
         onRemove(file) {
-            //若不是新上传的，触发remove事件
+            if (file.status !== 'success') return
+
+            //不是本次上传的
             if (!file.raw) {
-                this.$emit('remove', {url: file.downloadUrl.replace(fileConfig.storePrefix, '')})
+                const key = file.downloadUrl.replace(fileConfig.storePrefix, '')
+                return this.$emit('remove', {key, isNew: false})
             }
+
             //移除本次新上传的文件时，删除OSS上的文件
-            else if (file.response && !file.response.err) {
-                deleteUpload.request(file.raw.key)
-            }
+            deleteUpload.request(file.raw.key)
+            this.$emit('remove', {key: file.raw.key, isNew: true})
         },
 
         //上传前过滤文件，并根据文件类型修改缩略图
