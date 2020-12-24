@@ -3,10 +3,6 @@
 </template>
 
 <script>
-import CodeMirror from 'codemirror'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/rubyblue.css'
-import 'codemirror/mode/javascript/javascript'
 import {isEmpty} from "@/util"
 
 export default {
@@ -24,7 +20,7 @@ export default {
     },
 
     mounted() {
-        this.jsonEditor = CodeMirror.fromTextArea(
+        this.jsonEditor = window.CodeMirror.fromTextArea(
             this.$el,
             {
                 mode: 'application/json',

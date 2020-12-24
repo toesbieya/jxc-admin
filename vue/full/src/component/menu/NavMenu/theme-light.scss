@@ -13,6 +13,35 @@
                 }
             }
 
+            .el-menu-item::after {
+                position: absolute;
+                top: 10%;
+                right: 0;
+                height: 80%;
+                border-right: 3px solid $--color-primary;
+                opacity: 0;
+                transform: scaleY(0);
+                transition: transform .15s cubic-bezier(.645, .045, .355, 1);
+                content: "";
+            }
+
+            .el-menu-item.is-active {
+                &::before{
+                    position: absolute;
+                    top: 10%;
+                    left: 0;
+                    height: 80%;
+                    width: 100%;
+                    background-color: rgba($--color-primary, .1);
+                    content: "";
+                }
+
+                &::after {
+                    opacity: 1;
+                    transform: scaleY(1);
+                }
+            }
+
             //弹出菜单的父级
             &.el-menu--popup .popover-menu__title {
                 color: $menu-text-hover-color-light;
