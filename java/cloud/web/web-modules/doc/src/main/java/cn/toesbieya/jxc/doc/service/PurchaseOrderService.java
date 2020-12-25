@@ -96,19 +96,22 @@ public class PurchaseOrderService {
         boolean isFirstCreate = StringUtils.isEmpty(doc.getId());
         R result = isFirstCreate ? addMain(doc) : updateMain(doc);
 
-        historyMapper.insert(
-                BizDocHistory.builder()
-                        .pid(doc.getId())
-                        .type(DocHistoryEnum.COMMIT.getCode())
-                        .uid(doc.getCid())
-                        .uname(doc.getCname())
-                        .statusBefore(DocStatusEnum.DRAFT.getCode())
-                        .statusAfter(DocStatusEnum.WAIT_VERIFY.getCode())
-                        .time(System.currentTimeMillis())
-                        .build()
-        );
+        if (result.isSuccess()) {
+            historyMapper.insert(
+                    BizDocHistory.builder()
+                            .pid(doc.getId())
+                            .type(DocHistoryEnum.COMMIT.getCode())
+                            .uid(doc.getCid())
+                            .uname(doc.getCname())
+                            .statusBefore(DocStatusEnum.DRAFT.getCode())
+                            .statusAfter(DocStatusEnum.WAIT_VERIFY.getCode())
+                            .time(System.currentTimeMillis())
+                            .build()
+            );
+            result.setMsg("提交成功");
+        }
+        else result.setMsg("提交失败，" + result.getMsg());
 
-        result.setMsg(result.isSuccess() ? "提交成功" : "提交失败，" + result.getMsg());
         return result;
     }
 
