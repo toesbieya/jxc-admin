@@ -1,26 +1,4 @@
-import cssVar from '@/asset/style/var.scss'
-
-const maxMobileWidth = parseFloat(cssVar.maxMobileWidth)
-
-/**
- * 根据body宽度判断是否为移动端，是则返回true
- *
- * @return {boolean}
- */
-export function isMobile() {
-    const rect = document.body.getBoundingClientRect()
-    return rect.width <= maxMobileWidth
-}
-
-/**
- * 判断是否为dom元素，是则返回true
- *
- * @param obj
- * @return {boolean}
- */
-export function isDom(obj) {
-    return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string'
-}
+export {isMobile} from "el-admin-layout/src/util"
 
 /**
  * 获取元素的内宽（扣除左右padding后）
@@ -133,34 +111,6 @@ export function loadExternalResource(url, type = 'js') {
 }
 
 /**
- * 将dom按最小距离垂直地滚动至视窗内
- * 比如dom在视窗下，那么会滚动到视窗底部
- *
- * @param child {HTMLElement}          需要滚动的dom
- * @param parent {HTMLElement|Window}  包含child的容器
- */
-export function scrollIntoViewVertically(child, parent = window) {
-    const {scrollTop, scrollHeight, offsetHeight: containerHeight} = parent
-
-    //当菜单高度不足以滚动时跳过
-    if (scrollHeight <= containerHeight) return
-
-    const elHeight = child.offsetHeight, between = getTopDistance(child, parent)
-
-    //计算需要滚动的距离，undefined说明不需要滚动
-    let distance
-
-    if (between < 0) distance = between
-    else if (between + elHeight > containerHeight) {
-        distance = between + elHeight - containerHeight
-    }
-
-    if (distance !== undefined) {
-        parent.scrollTo({top: scrollTop + distance, behavior: 'smooth'})
-    }
-}
-
-/**
  * 平滑滚动至指定的位置
  *
  * @param el {Window|HTMLElement|string|function} 滚动容器，或可用于querySelector的字符串，或一个返回DOM的函数
@@ -180,7 +130,7 @@ export function scrollTo(el, position, options) {
         el = el()
     }
 
-    if (!isDom(el)) return
+    if (!el) return
 
     const toTop = direction === 'top'
     const elPosition = getScroll(el, toTop)

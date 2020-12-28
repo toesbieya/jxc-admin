@@ -4,7 +4,7 @@
  * ctrl + ←，上一个页签
  */
 
-import {getters as tagsViewGetters} from "@/layout/store/tagsView"
+import {tagsViewGetters} from "el-admin-layout"
 
 export default {
     computed: {
@@ -28,20 +28,36 @@ export default {
     methods: {
         //上一个页签
         gotoViewFront() {
-            if (this.visitedViews.length <= 1) return
-            let index = this.visitedViews.findIndex(view => view.path === this.$route.path)
+            const views = tagsViewGetters.visitedViews
+
+            if (views.length <= 1) return
+
+            let index = views.findIndex(view => view.path === this.$route.path)
+
             if (index < 0) return
-            if (index === 0) index = this.visitedViews.length
-            return this.$router.push({path: this.visitedViews[index - 1].path})
+
+            if (index === 0) {
+                index = views.length
+            }
+
+            return this.$router.push({path: views[index - 1].path})
         },
 
         //下一个页签
         gotoViewBehind() {
-            if (this.visitedViews.length <= 1) return
-            let index = this.visitedViews.findIndex(view => view.path === this.$route.path)
+            const views = tagsViewGetters.visitedViews
+
+            if (views.length <= 1) return
+
+            let index = views.findIndex(view => view.path === this.$route.path)
+
             if (index < 0) return
-            if (index + 1 > this.visitedViews.length - 1) index = -1
-            return this.$router.push({path: this.visitedViews[index + 1].path})
+
+            if (index + 1 > views.length - 1) {
+                index = -1
+            }
+
+            return this.$router.push({path: views[index + 1].path})
         },
 
         //快捷键监听

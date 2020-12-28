@@ -1,5 +1,5 @@
 <template>
-    <upload-picture-card
+    <upload-card-list
         ref="upload"
         :uploaded-file-list="uploadedFileList"
         :limit="limit"
@@ -24,7 +24,7 @@
 * 非图片类型的文件使用kkFileView预览
 * success、remove事件中的file地址不带七牛云外链前缀
 * */
-import UploadPictureCard from "./PictureCard"
+import UploadCardList from "./CardList"
 import axios from 'axios'
 import {deleteUpload} from '@/api/file'
 import {file as fileConfig} from '@/config'
@@ -46,7 +46,7 @@ function getCoverImage(url, fileType) {
 export default {
     name: "QiniuUpload",
 
-    components: {UploadPictureCard},
+    components: {UploadCardList},
 
     props: {
         disabled: Boolean,

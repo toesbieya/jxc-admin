@@ -87,7 +87,7 @@ export default {
 
     watch: {
         isActive(v) {
-            document.body.classList[v ? 'add' : 'remove']('overflow-hidden')
+            document.body.classList[v ? 'add' : 'remove']('guide-body-overflow-hidden')
         }
     },
 

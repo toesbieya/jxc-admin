@@ -1,4 +1,4 @@
-import Layout from '@/layout'
+import Layout from "@/layout"
 import SkeletonPage from '@/view/_common/SkeletonPage'
 import Page500 from '@/view/_app/500'
 import {isEmpty} from "@/util"

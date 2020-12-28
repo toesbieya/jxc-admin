@@ -1,6 +1,6 @@
 import path from 'path'
 import {route as routeConfig} from '@/config'
-import {mutations as appMutations} from "@/layout/store/app"
+import {appMutations} from "el-admin-layout"
 import {addDynamicRoutes} from '@/router'
 import {getDynamicRoutes} from '@/router/define'
 import {str2routeConfig, metaExtend} from "@/router/util"

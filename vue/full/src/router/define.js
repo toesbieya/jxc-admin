@@ -1,4 +1,4 @@
-import Layout from "@/layout/index"
+import Layout from "@/layout"
 import Redirect from "@/view/_app/redirect"
 import Login from "@/view/_app/login/index"
 import Page403 from "@/view/_app/403"

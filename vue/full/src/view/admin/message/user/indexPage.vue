@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import {getters as appGetters} from "@/layout/store/app"
+import {appGetters} from "el-admin-layout"
 import MessageStream from './MessageStream'
 
 export default {

@@ -6,6 +6,7 @@
                 <i class="el-icon-arrow-up collapse-card-icon"/>
             </div>
         </template>
+
         <slot/>
     </el-card>
 </template>

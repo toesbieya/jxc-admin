@@ -18,7 +18,7 @@
                     </div>
                 </div>
 
-                <transition name="fade">
+                <transition name="el-fade-in">
                     <div v-show="image.loading" class="puzzle-image-loading">
                         <div class="puzzle-image-loading__icon"/>
                         <div class="puzzle-image-loading__text">加载中...</div>
@@ -34,7 +34,12 @@
                 <div class="slider-track">
                     <div class="slider-tip" :style="stat === 'ready' ? 'opacity: 1' : ''">拖动滑块完成拼图</div>
                 </div>
-                <div class="slider-btn" :style="sliderBtnStyle" @mousedown="moveStart" @touchstart="moveStart"/>
+                <div
+                    :class="{'slider-btn': true, 'is-move': stat === 'move'}"
+                    :style="sliderStyle"
+                    @mousedown="moveStart"
+                    @touchstart="moveStart"
+                />
             </div>
 
             <div class="puzzle-footer">
@@ -53,21 +58,17 @@
 </template>
 
 <script>
-import BtnStopImage from './image/btn_stop.png'
-import BtnMoveImage from './image/btn_move.png'
-
 /*
-* https://github.com/Kevin-269581661/vue-puzzle-verification
-* 网上搬的例子，实际开发建议用极验
+* 在https://github.com/Kevin-269581661/vue-puzzle-verification基础上改造了样式
 * */
 export default {
     name: "PuzzleVerify",
 
     props: {
-        //动画名称，具体请查看transition.scss
+        //动画名称
         transition: {
             type: String,
-            default: 'scale'
+            default: 'puzzle-scale'
         },
         // 画布图片的尺寸
         width: {
@@ -122,13 +123,6 @@ export default {
         resultTipClass() {
             const showResultTip = ['success', 'fail'].includes(this.stat)
             return ['verify-result', `verify-${this.stat}`, showResultTip ? 'show-result' : '']
-        },
-
-        sliderBtnStyle() {
-            return {
-                ...this.sliderStyle,
-                'background-image': `url(${this.stat === 'move' ? BtnMoveImage : BtnStopImage})`
-            }
         }
     },
 

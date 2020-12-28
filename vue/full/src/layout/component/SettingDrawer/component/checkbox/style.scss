@@ -1,0 +1,34 @@
+@import "~@/asset/style/var";
+
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.color-checkbox {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    border-radius: 2px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.img-checkbox {
+    width: 55px;
+    margin: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+
+    .el-icon-check {
+        position: absolute;
+        color: $--color-primary;
+        font-weight: bold;
+        top: 25px;
+        right: 10px;
+    }
+}

@@ -152,6 +152,11 @@
             width: 25.38%;
             padding: 0 0 25.38% 0;
             cursor: pointer;
+            background-image: url(./image/btn_stop.png);
+
+            &.is-move {
+                background-image: url(./image/btn_move.png);
+            }
         }
     }
 
@@ -210,5 +215,23 @@
         100% {
             transform: translate3d(0, 0, 0)
         }
+    }
+}
+
+.puzzle-scale {
+    &-leave-active {
+        position: absolute
+    }
+
+    &-enter-active,
+    &-leave-active {
+        transition: opacity .3s, transform .3s cubic-bezier(0.215, 0.61, 0.355, 1)
+    }
+
+    &-enter,
+    &-leave,
+    &-leave-to {
+        opacity: 0;
+        transform: scale3d(0, 0, 1)
     }
 }

@@ -42,6 +42,10 @@
     }
 }
 
+.guide-body-overflow-hidden {
+    overflow: hidden !important;
+}
+
 #guide-stage {
     position: absolute;
     background-color: white;

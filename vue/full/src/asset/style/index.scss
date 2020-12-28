@@ -1,12 +1,11 @@
-@import "~normalize.css/normalize.css";
 @import "./var.scss";
 @import "./cover/var.scss";
 @import "./mixin.scss";
 @import "~element-ui/packages/theme-chalk/src/index.scss";
 @import "~@ele/style/index.scss";
+//layout中的样式需要覆盖element-ui原定义，所以放element-ui的后面
+@import "~@/layout/style.scss";
 @import "./cover/element-ui.scss";
-@import './display.scss';
-@import "./transition.scss";
 @import "./nprogress.scss";
 
 html {
@@ -16,6 +15,7 @@ html {
 
 body {
     height: 100%;
+    margin: 0;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
@@ -41,7 +41,6 @@ div:focus {
 a,
 a:focus,
 a:hover {
-    cursor: pointer;
     color: inherit;
     text-decoration: none;
 }
@@ -57,7 +56,7 @@ a:hover {
 
         &-thumb {
             width: 6px;
-            //border-radius: 5px;
+            border-radius: 5px;
             background-color: rgba($--color-primary, 0.8);
 
             &:hover {
@@ -71,10 +70,6 @@ a:hover {
     @include clearfix;
 }
 
-.overflow-hidden {
-    overflow: hidden !important;
-}
-
 .flex {
     display: flex;
     flex-wrap: wrap;
@@ -82,75 +77,16 @@ a:hover {
     align-content: space-between;
 }
 
-
-/*----------路由页面的最大高度开始----------*/
-//可能达到的最大高度
-$max-height: '100vh - #{$page-view-margin * 2}';
-
-.max-view-height {
-    max-height: calc(#{$max-height});
-}
-
-//即使高度不够也占满
-.max-view-height.full {
-    height: 100vh;
-}
-
-//有导航栏
-.has-nav .max-view-height {
-    max-height: calc(#{$max-height} - #{$nav-height});
-}
-
-//有多页签栏
-.has-tags-view .max-view-height {
-    max-height: calc(#{$max-height} - #{$tags-view-height});
-}
-
-//有页头
-.has-page-header .max-view-height {
-    max-height: calc(#{$max-height} - #{$page-header-height});
-}
-
-//有页脚
-.has-page-footer .max-view-height {
-    max-height: calc(#{$max-height} - #{$page-footer-height});
-}
-
-//同时有导航栏和多页签栏
-.has-nav.has-tags-view .max-view-height {
-    max-height: calc(#{$max-height} - #{$nav-height} - #{$tags-view-height});
-}
-
-//同时有导航栏和页头
-.has-nav .has-page-header .max-view-height {
-    max-height: calc(#{$max-height} - #{$nav-height} - #{$page-header-height});
-}
-
-//同时有导航栏和页脚
-.has-nav .has-page-footer .max-view-height {
-    max-height: calc(#{$max-height} - #{$nav-height} - #{$page-footer-height});
-}
-
-//同时有导航栏、多页签栏、页头
-.has-nav.has-tags-view .has-page-header .max-view-height {
-    max-height: calc(#{$max-height} - #{$nav-height} - #{$tags-view-height} - #{$page-header-height});
-}
-
-//同时有导航栏、多页签栏、页脚
-.has-nav.has-tags-view .has-page-footer .max-view-height {
-    max-height: calc(#{$max-height} - #{$nav-height} - #{$tags-view-height} - #{$page-footer-height});
-}
-
-//同时有导航栏、多页签栏、页头、页脚
-.has-nav.has-tags-view .has-page-header.has-page-footer .max-view-height {
-    max-height: calc(#{$max-height} - #{$nav-height} - #{$tags-view-height} - #{$page-header-height} - #{$page-footer-height});
-}
-
-/*----------路由页面的最大高度结束----------*/
-
-
 .table-container {
     margin-top: 10px;
+}
+
+.table-add-btn {
+    margin: 8px 0;
+
+    .el-button {
+        width: 100%;
+    }
 }
 
 .table-image {
@@ -168,6 +104,42 @@ $max-height: '100vh - #{$page-view-margin * 2}';
 
     .el-scrollbar__wrap {
         overflow-x: hidden;
+    }
+}
+
+.button-group {
+    .el-button {
+        margin-top: 10px;
+        margin-right: 10px;
+
+        & + .el-button {
+            margin-left: 0;
+        }
+    }
+}
+
+//小圆点
+.dot {
+    width: 6px;
+    height: 6px;
+    display: inline-block;
+    border-radius: 50%;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+    margin-right: 11px;
+    background-color: $--color-info;
+
+    &.success {
+        background-color: $--color-success;
+    }
+
+    &.primary {
+        background-color: $--color-primary;
+    }
+
+    &.error {
+        background-color: $--color-danger;
     }
 }
 
@@ -197,62 +169,4 @@ $max-height: '100vh - #{$page-view-margin * 2}';
         cursor: pointer;
         text-decoration: underline;
     }
-}
-
-//小圆点
-.dot {
-    width: 6px;
-    height: 6px;
-    display: inline-block;
-    border-radius: 50%;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    margin-right: 11px;
-    background-color: $--color-info;
-
-    &.success {
-        background-color: $--color-success;
-    }
-
-    &.primary {
-        background-color: $--color-primary;
-    }
-
-    &.error {
-        background-color: $--color-danger;
-    }
-}
-
-.button-group {
-    .el-button {
-        margin-top: 10px;
-        margin-right: 10px;
-
-        & + .el-button {
-            margin-left: 0;
-        }
-    }
-}
-
-.table-add-btn {
-    margin: 8px 0;
-
-    .el-button {
-        width: 100%;
-    }
-}
-
-.el-form-item__content {
-    > .el-tree {
-        margin-top: 8px;
-    }
-
-    > .el-switch {
-        vertical-align: baseline;
-    }
-}
-
-.el-table a {
-    color: $--color-primary;
 }

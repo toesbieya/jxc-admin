@@ -2,7 +2,7 @@ import {createMutations} from "@/store/util"
 import {emptyOrDefault} from "@/util"
 import {autoCompleteUrl} from "@/util/file" //此处存在循环引用？
 import {getUser, setUser} from "@/util/storage"
-import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
+import {tagsViewMutations} from "el-admin-layout"
 import {login, logout} from '@/api/account'
 
 //刷新时从本地存储中获取用户信息

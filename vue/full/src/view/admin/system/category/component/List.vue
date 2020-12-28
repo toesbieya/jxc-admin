@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ContextMenu from "@/component/menu/ContextMenu"
+import {ContextMenu} from "el-admin-layout"
 import CategoryTree from '@/component/biz/CategoryTree'
 import {add, del, getAll} from "@/api/system/category"
 import {isEmpty, waitUntilSuccess} from '@/util'
