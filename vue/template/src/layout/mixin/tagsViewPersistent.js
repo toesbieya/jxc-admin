@@ -4,7 +4,7 @@
  * 页签变化时写入本地存储
  */
 
-import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
+import {tagsViewGetters, tagsViewMutations} from "el-admin-layout"
 import {debounce} from "@/util"
 import {getTagsView, setTagsView} from "@/util/storage"
 
@@ -27,7 +27,7 @@ export default {
                 if (!v) return setTagsView()
 
                 //启用时先存储一次（仅在mounted后，否则此时页签数据不完整）
-                this._isMounted && this.persistentTagsView(this.visitedViews)
+                this._isMounted && this.persistentTagsView(tagsViewGetters.visitedViews)
 
                 this.watchVisitedViewsCallback = this.$watch('visitedViews', this.persistentTagsView)
             }

@@ -16,7 +16,7 @@ export default function (router) {
 }
 
 window.addEventListener('unhandledrejection', event => {
-    if (event.reason.stack.startsWith('Error: Redirected when going from')) {
+    if (event.reason.stack && event.reason.stack.startsWith('Error: Redirected when going from')) {
         event.preventDefault()
     }
 })

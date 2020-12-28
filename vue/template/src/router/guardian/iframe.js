@@ -1,4 +1,4 @@
-import {mutations as pageMutations} from "@/layout/store/page"
+import {pageMutations} from "el-admin-layout"
 
 const beforeEach = (to, from, next) => {
     //从iframe页面离开时，判断是否需要删除iframe

@@ -1,25 +1,25 @@
-@import "~normalize.css/normalize.css";
 @import "./var.scss";
 @import "./cover/var.scss";
 @import "./mixin.scss";
 @import "~element-ui/packages/theme-chalk/src/index.scss";
 @import "~@ele/style/index.scss";
+//layout中的样式需要覆盖element-ui原定义，所以放element-ui的后面
+@import "~@/layout/style.scss";
 @import "./cover/element-ui.scss";
-@import './display.scss';
-@import "./transition.scss";
 @import "./nprogress.scss";
-
-body {
-    height: 100%;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-    -webkit-tap-highlight-color: transparent;
-}
 
 html {
     height: 100%;
     box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+    -webkit-tap-highlight-color: transparent;
 }
 
 #app {
@@ -41,7 +41,6 @@ div:focus {
 a,
 a:focus,
 a:hover {
-    cursor: pointer;
     color: inherit;
     text-decoration: none;
 }
@@ -57,7 +56,7 @@ a:hover {
 
         &-thumb {
             width: 6px;
-            //border-radius: 5px;
+            border-radius: 5px;
             background-color: rgba($--color-primary, 0.8);
 
             &:hover {

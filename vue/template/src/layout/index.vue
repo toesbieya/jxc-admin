@@ -1,90 +1,101 @@
+<template>
+    <el-admin-layout :navbar-props="navbarProps" :page-props="pageProps"/>
+</template>
+
 <script type="text/jsx">
-import VAside from './component/Aside'
-import VNavbar from './component/Navbar'
-import VPage from './component/Page'
+import Vue from 'vue'
+import config from "@/config"
+import ElAdminLayout, {setIconRenderer, appMutations} from 'el-admin-layout'
+import Footer from './component/Footer'
 import SettingDrawer from './component/SettingDrawer'
-import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
-import {getters as pageGetters} from "@/layout/store/page"
-import {getters as tagsViewGetters} from "@/layout/store/tagsView"
+import tagsViewPersistent from './mixin/tagsViewPersistent'
+import tagsViewShortcut from './mixin/tagsViewShortcut'
+import {elConfirm} from "@/util/message"
+
+//设置一些基础信息
+appMutations.title(config.title)
+appMutations.logo(config.logo)
+
+//设置图标渲染方式
+setIconRenderer((h, data) => <v-icon {...data}/>)
 
 export default {
-    name: 'Layout',
+    name: "Layout",
 
-    components: {VAside, VNavbar, VPage, SettingDrawer},
+    mixins: [tagsViewPersistent, tagsViewShortcut],
+
+    components: {ElAdminLayout},
 
     computed: {
-        isLeftRight() {
-            return pageGetters.position === 'left-right'
-        },
-        renderAside() {
-            return appGetters.isMobile || ['aside', 'aside-two-part', 'mix'].includes(appGetters.navMode)
-        },
-        wrapperClass() {
+        navbarProps() {
+            const userInfo = this.$store.state.user
             return {
-                'app-wrapper': true,
-                'flex-column': !this.isLeftRight
+                user: {
+                    avatar: userInfo.avatar,
+                    name: userInfo.name
+                },
+                userDropdownItems: [
+                    {
+                        icon: 'el-icon-switch-button',
+                        command: 'logout',
+                        content: '退出登录',
+                        handler: this.logout
+                    }
+                ],
+                renderCustomActions: this.renderNavbarActions
             }
         },
-        containerClass() {
-            return [
-                'main-container',
-                'has-nav',
-                `nav-mode-${appGetters.navMode}`,
-                this.isLeftRight && 'flex-column',
-                tagsViewGetters.enabled && 'has-tags-view'
-            ]
+
+        pageProps() {
+            return {
+                renderFooter: () => <Footer/>
+            }
         }
     },
 
     methods: {
-        closeSettingDrawer() {
-            appMutations.showSettingDrawer(false)
+        logout() {
+            if (this.$store.state.user.prepareLogout) {
+                return
+            }
+
+            elConfirm('确认退出?').then(() => this.$store.dispatch('user/logout'))
+        },
+
+        openSettingDrawer() {
+            appMutations.showSettingDrawer(true)
+        },
+
+        renderNavbarActions(defaultActions) {
+            const customActions = [
+                <div
+                    class="setting-btn navbar-item"
+                    title="个性设置"
+                    on-click={this.openSettingDrawer}
+                >
+                    <i class="el-icon-s-operation navbar-icon"/>
+                </div>
+            ]
+
+            return customActions.concat(defaultActions)
         }
     },
 
-    render() {
-        const aside = this.renderAside && <v-aside/>
+    //提前创建设置抽屉，避免初始化同步设置数据时导致layout重新渲染
+    beforeCreate() {
+        const Drawer = Vue.extend(SettingDrawer)
+        const instance = new Drawer().$mount()
+        document.body.appendChild(instance.$el)
+        this.$_settingDrawerInstance = instance
+    },
 
-        return (
-            <section class={this.wrapperClass}>
-                {this.isLeftRight ? aside : <v-navbar/>}
-
-                <section class={this.containerClass}>
-                    {this.isLeftRight ? <v-navbar/> : aside}
-                    <v-page/>
-                </section>
-
-                <setting-drawer
-                    value={appGetters.showSettingDrawer}
-                    on-input={this.closeSettingDrawer}
-                />
-            </section>
-        )
-    }
+    //销毁时清除设置抽屉
+    beforeDestroy() {
+        if (this.$_settingDrawerInstance) {
+            this.$_settingDrawerInstance.$destroy()
+            this.$_settingDrawerInstance.$el.remove()
+            delete this.$_settingDrawerInstance
+        }
+    },
 }
 </script>
-
-<style lang="scss">
-.app-wrapper.flex-column,
-.main-container.flex-column {
-    flex-direction: column;
-}
-
-.app-wrapper {
-    display: flex;
-    height: 100%;
-    width: 100%;
-
-    > .main-container {
-        display: flex;
-        flex: 1;
-        overflow: hidden;
-    }
-
-    //左右结构时，侧边栏z-index需大于导航栏
-    //上下结构时，侧边栏z-index需小于导航栏
-    &.flex-column .aside {
-        z-index: 9;
-    }
-}
-</style>

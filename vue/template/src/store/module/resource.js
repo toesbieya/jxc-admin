@@ -1,5 +1,5 @@
 import path from 'path'
-import {mutations as appMutations} from "@/layout/store/app"
+import {appMutations} from "el-admin-layout"
 import {addDynamicRoutes} from '@/router'
 import {getDynamicRoutes} from '@/router/define'
 import {metaExtend} from "@/router/util"

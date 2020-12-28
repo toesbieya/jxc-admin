@@ -9,54 +9,6 @@
     }
 }
 
-.el-menu {
-    width: 100%;
-    border: none !important;
-    overflow: hidden;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
-    //子级菜单激活时，父级同样高亮
-    .el-menu-item.is-active,
-    .is-active > .el-submenu__title {
-        color: $--color-primary !important;
-    }
-
-    //箭头图标与字体同色
-    .el-submenu__title i {
-        color: inherit;
-    }
-
-    //原先垂直时右侧展开箭头偏上
-    .el-submenu__icon-arrow {
-        margin-top: -4px;
-    }
-
-    //弹出菜单
-    &.el-menu--popup {
-        max-height: 88vh;
-        min-width: 160px;
-        padding: 0;
-        margin-bottom: 0.5vh;
-        overflow-y: auto;
-
-        .el-menu-item,
-        .el-submenu__title {
-            padding: 0 $menu-padding;
-        }
-    }
-
-    &--horizontal > .el-menu-item:not(.is-disabled):hover,
-    &--horizontal > .el-menu-item:not(.is-disabled):focus,
-    &--horizontal > .el-submenu .el-submenu__title:hover,
-    &--horizontal .el-menu .el-menu-item,
-    &--horizontal .el-menu .el-submenu__title {
-        background-color: inherit;
-    }
-}
-
 .el-message {
     @include deep-shadow;
     @include max-width-on-mobile;

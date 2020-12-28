@@ -1,8 +1,7 @@
 import {createMutations} from "@/store/util"
 import {emptyOrDefault} from "@/util"
 import {getUser, setUser} from "@/util/storage"
-import {mutations as tagsViewMutations} from "@/layout/store/tagsView"
-import {elError} from "@/util/message"
+import {tagsViewMutations} from "el-admin-layout"
 
 //刷新时从本地存储中获取用户信息
 const user = getUser()

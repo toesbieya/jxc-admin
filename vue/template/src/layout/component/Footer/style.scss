@@ -1,0 +1,9 @@
+.page-footer > .copyright {
+    color: $--color-text-secondary;
+    font-size: 14px;
+
+    > a:hover {
+        color: $--color-primary;
+        text-decoration: underline;
+    }
+}

@@ -1,10 +1,10 @@
 <template>
     <el-drawer
-        :visible="value"
+        :visible="appGetters.showSettingDrawer"
         :with-header="false"
         append-to-body
         size="288px"
-        @close="$emit('input', false)"
+        @close="close"
     >
         <div class="drawer-container">
             <el-divider>导航模式</el-divider>
@@ -124,14 +124,21 @@
 </template>
 
 <script>
-import CheckboxGroup from "@/component/checkbox/Group"
-import ColorCheckbox from "@/component/checkbox/ColorCheckbox"
-import ImgCheckbox from "@/component/checkbox/ImgCheckbox"
-import {getters as appGetters, mutations as appMutations} from "@/layout/store/app"
-import {getters as asideGetters, mutations as asideMutations} from "@/layout/store/aside"
-import {getters as navbarGetters, mutations as navbarMutations} from "@/layout/store/navbar"
-import {getters as pageGetters, mutations as pageMutations} from "@/layout/store/page"
-import {getters as tagsViewGetters, mutations as tagsViewMutations} from "@/layout/store/tagsView"
+import CheckboxGroup from "./component/checkbox/Group"
+import ColorCheckbox from "./component/checkbox/ColorCheckbox"
+import ImgCheckbox from "./component/checkbox/ImgCheckbox"
+import {
+    appGetters,
+    appMutations,
+    asideGetters,
+    asideMutations,
+    navbarGetters,
+    navbarMutations,
+    pageGetters,
+    pageMutations,
+    tagsViewGetters,
+    tagsViewMutations
+} from "el-admin-layout"
 import {mergeObj} from "@/util"
 import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/util/storage"
 
@@ -139,8 +146,6 @@ export default {
     name: "SettingDrawer",
 
     components: {CheckboxGroup, ColorCheckbox, ImgCheckbox},
-
-    props: {value: Boolean},
 
     data() {
         return {
@@ -201,6 +206,10 @@ export default {
     },
 
     methods: {
+        close() {
+            appMutations.showSettingDrawer(false)
+        },
+
         //将此处的设置项数据同步到layout中的store
         syncLayoutStore() {
             const {app, page, aside, navbar, tagsView} = this.setting
@@ -303,22 +312,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-@import "~@/asset/style/var";
-
-.drawer-container {
-    padding: 24px;
-    font-size: 14px;
-    line-height: 1.5;
-    word-wrap: break-word;
-
-    .drawer-item {
-        display: flex;
-        justify-content: space-between;
-        color: $--color-text-regular;
-        font-size: 14px;
-        padding: 12px 0;
-    }
-}
-</style>

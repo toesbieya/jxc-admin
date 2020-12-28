@@ -40,16 +40,6 @@ export function set(key, obj, storage = window.sessionStorage, useZip = defaultU
 }
 
 /**
- * 判断本地存储中是否存在指定键名
- * @param key {string}       键名，自动加上统一前缀
- * @param storage {Storage}  window.sessionStorage或window.localStorage
- * @return {boolean}         存在则返回true
- */
-export function exist(key, storage = window.sessionStorage) {
-    return !isEmpty(storage.getItem(`${keyPrefix}${key}`))
-}
-
-/**
  * 根据指定键名，移除本地存储对应项
  * @param key {string}       键名，自动加上统一前缀
  * @param storage {Storage}  window.sessionStorage或window.localStorage

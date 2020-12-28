@@ -1,5 +1,4 @@
 import store from '@/store'
-import {uppercaseFirst} from "@/filter"
 import {isEmpty} from "@/util"
 
 /**
@@ -28,24 +27,6 @@ export function needAuth(route) {
  */
 export function auth(path) {
     return true
-}
-
-/**
- * what i can
- * 批量生成canXxx的计算属性
- *
- * @param apiMap {object}  <key:接口名称，value:接口对象>
- * @return {object}
- */
-export function wic(apiMap) {
-    const attrs = {}
-
-    Object.entries(apiMap).forEach(([key, value]) => {
-        const attrKey = `can${uppercaseFirst(key)}`
-        attrs[attrKey] = () => auth(value.url)
-    })
-
-    return attrs
 }
 
 /**

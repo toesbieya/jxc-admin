@@ -9,6 +9,9 @@ module.exports = {
     //页面标题、登录注册页的标题
     title: 'BiuBiuBiu~',
 
+    //logo地址
+    logo: `/static/img/logo.svg`,
+
     //路由配置
     route: {
         //路由模式，['hash','history']

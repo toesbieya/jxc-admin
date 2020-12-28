@@ -14,7 +14,7 @@ module.exports = {
     runtimeCompiler: true,
     lintOnSave: false,
     productionSourceMap: settings.isDev,
-    parallel: true,
+    transpileDependencies: ['el-admin-layout'],
     devServer: {
         port: process.env.port || 8079,
         contentBasePublicPath: settings.contextPath,

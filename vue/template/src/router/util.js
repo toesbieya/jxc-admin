@@ -4,17 +4,6 @@ import Page500 from '@/view/_app/500'
 import {isEmpty} from "@/util"
 import {isExternal, isString} from "@/util/validate"
 
-//json字符串转路由配置
-export function str2routeConfig(str) {
-    const parseOpt = (key, value) => {
-        if (key === 'dynamicTitle' && isString(value)) {
-            return isEmpty(value) ? undefined : eval(`(${value})`)
-        }
-        return value
-    }
-    return JSON.parse(str, parseOpt)
-}
-
 //根据json数组生成路由
 export function generateRoutes(jsonTree) {
     //将深度为2的节点合并为由其最末子节点组成的数组

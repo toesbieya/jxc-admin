@@ -1,7 +1,7 @@
 @import "~element-ui/packages/theme-chalk/src/common/var";
 
 //设定移动端的最大宽度，只能是number类型
-$max-mobile-width: 500px;
+$max-mobile-width: $--sm;
 
 //覆盖element颜色
 $--color-primary: #1890ff;
@@ -9,76 +9,3 @@ $--color-success: #21BA45;
 $--color-warning: #FF5722;
 $--color-danger: #F44336;
 $--color-info: #009688;
-
-//菜单中icon的大小
-$menu-icon-size: 14px;
-//菜单中icon和文字的距离
-$menu-icon-text-gap: 10px;
-//菜单的padding
-$menu-padding: $menu-icon-size + $menu-icon-text-gap;
-//暗色菜单的背景色
-$menu-background-dark: #304156;
-//暗色子级菜单的背景色
-$sub-menu-background-dark: darken($menu-background-dark, 5%);
-//暗色主菜单的背景色（用于双层侧边栏的主菜单和顶部导航栏）
-$root-menu-background-dark: #1F293D;
-//亮色菜单的文字颜色
-$menu-text-color-light: $--color-text-primary;
-//暗色菜单的文字颜色
-$menu-text-color-dark: rgba(255, 255, 255, .65);
-//亮色菜单的文字hover颜色
-$menu-text-hover-color-light: $--color-primary;
-//暗色菜单的文字hover颜色
-$menu-text-hover-color-dark: rgba(255, 255, 255, 1);
-
-//侧边栏宽度
-$aside-width: 208px;
-//侧边栏折叠时的宽度
-$aside-collapse-width: $menu-icon-size + $menu-padding * 2;
-
-//导航栏高度
-$nav-height: 48px;
-//导航栏的padding-left
-$navbar-padding-left: 12px;
-//亮色导航栏的功能项颜色
-$navbar-item-color-light: $menu-text-color-light;
-//暗色导航栏的功能项颜色
-$navbar-item-color-dark: rgba(255, 255, 255, .85);
-//亮色导航栏的功能项hover背景颜色
-$navbar-item-hover-color-light: rgba(255, 255, 255, .85);
-//暗色导航栏的功能项hover背景颜色
-$navbar-item-hover-color-dark: lighten($root-menu-background-dark, 5%);
-
-//多页签栏高度
-$tags-view-height: 32px;
-
-//页头高度，用于max-view-height
-$page-header-height: 44px;
-//页头的上下padding
-$page-header-padding: 12px;
-
-//路由页面的margin
-$page-view-margin: 24px;
-
-//页脚高度，用于max-view-height
-$page-footer-height: 64px;
-
-//暗色边框的颜色，用于nav-menu和侧边栏
-$--border-color-dark: darken($root-menu-background-dark, 5%);
-
-//dialog距离顶部的距离，用于<el-dialog>的top属性、<el-dialog>中滚动区域的最大高度
-$dialog-top: 100px;
-
-// the :export directive is the magic sauce for webpack
-// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
-:export {
-    maxMobileWidth: $max-mobile-width;
-    primary: $--color-primary;
-    info: $--color-info;
-    success: $--color-success;
-    danger: $--color-danger;
-    warning: $--color-warning;
-    pageViewMargin: $page-view-margin;
-    dialogTop: $dialog-top;
-    menuPadding: $menu-padding;
-}
