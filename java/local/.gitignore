@@ -4,3 +4,5 @@
 .mvn
 mvnw
 *.cmd
+*.jks
+application-prod.yml

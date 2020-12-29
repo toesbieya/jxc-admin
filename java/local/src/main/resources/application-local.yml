@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/my?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: root
+  redis:
+    host: localhost
+    port: 6379
+
+socket:
+  hostname: localhost
+  port: 12580
+
+qiniu:
+  access-key:
+  secret-key:
+  bucket:
