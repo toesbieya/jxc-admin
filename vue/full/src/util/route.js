@@ -2,7 +2,7 @@
  * 路由控制工具类
  */
 import router from "@/router"
-import {refreshPage as refreshLayoutPage, closeCurrentPage} from "el-admin-layout/src/util"
+import {refreshPage as refreshLayoutPage, closeCurrentPage as closeLayoutCurrentPage} from "el-admin-layout/src/util"
 
 /**
  * 路由刷新
@@ -15,4 +15,12 @@ export function refreshPage(route = router.currentRoute, replace) {
     return refreshLayoutPage(route, router, replace)
 }
 
-export {closeCurrentPage}
+/**
+ * 关闭当前页，如果传入next则跳转到next页面
+ *
+ * @param next {string|route}   跳转的目标页面，作为第一个参数传入vue-router.replace
+ * @return {undefined|Promise}  仅在next有值时，返回vue-router.replace的结果
+ */
+export function closeCurrentPage(next) {
+    return closeLayoutCurrentPage(router, next)
+}
