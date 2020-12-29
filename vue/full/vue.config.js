@@ -83,5 +83,21 @@ module.exports = {
             .loader('svg-sprite-loader')
             .options({symbolId: 'icon-[name]'})
             .end()
+
+        //将css合并到一个文件中
+        //https://github.com/vuejs/vue-cli/issues/2843
+        config.when(!settings.isDev, config => {
+            config.optimization.splitChunks({
+                cacheGroups: {
+                    styles: {
+                        name: 'styles',
+                        test: (m) => /css\/mini-extract/.test(m.type),
+                        chunks: 'all',
+                        minChunks: 1,
+                        enforce: true,
+                    },
+                }
+            })
+        })
     }
 }
