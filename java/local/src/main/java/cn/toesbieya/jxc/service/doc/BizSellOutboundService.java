@@ -209,12 +209,12 @@ public class BizSellOutboundService {
 
             BigDecimal gap = orderSub.getRemainNum().subtract(outboundNum);
 
-            //如果有任意一个采购商品的remainNum大于采购商品的num，则完成情况为进行中，否则为已完成
+            //如果有任意一个销售商品的remainNum大于销售商品的num，则完成情况为进行中，否则为已完成
             if (gap.compareTo(BigDecimal.ZERO) > 0) {
                 finish = DocFinishEnum.UNDERWAY;
             }
 
-            //更新采购订单子表的remainNum
+            //更新销售订单子表的remainNum
             orderSubMapper.update(
                     null,
                     Wrappers.lambdaUpdate(BizSellOrderSub.class)
