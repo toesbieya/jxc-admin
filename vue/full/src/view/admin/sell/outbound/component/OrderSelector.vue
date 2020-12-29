@@ -115,7 +115,6 @@ export default {
             getSubById
                 .request(row.id)
                 .then(({data}) => {
-                    console.log(data)
                     row.data = data
                     row._loaded = true
                 })
