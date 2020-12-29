@@ -63,6 +63,8 @@ public class UserActionAspect {
             action.setError(result.getMsg());
         }
 
+        service.insertUserAction(action);
+
         return result;
     }
 }

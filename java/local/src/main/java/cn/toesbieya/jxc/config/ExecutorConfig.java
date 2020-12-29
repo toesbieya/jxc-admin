@@ -28,13 +28,13 @@ public class ExecutorConfig implements AsyncConfigurer {
     public Executor scheduledExecutor() {
         ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
         //核心线程数
-        threadPoolTaskExecutor.setCorePoolSize(2);
+        threadPoolTaskExecutor.setCorePoolSize(1);
         //是否回收空闲线程
         threadPoolTaskExecutor.setAllowCoreThreadTimeOut(true);
         //最大线程数
         threadPoolTaskExecutor.setMaxPoolSize(5);
         //配置等待队列大小
-        threadPoolTaskExecutor.setQueueCapacity(2);
+        threadPoolTaskExecutor.setQueueCapacity(10);
         //配置线程池前缀
         threadPoolTaskExecutor.setThreadNamePrefix("scheduled-");
         //拒绝策略
