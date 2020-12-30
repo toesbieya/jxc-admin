@@ -2,9 +2,6 @@
 const path = require('path')
 const settings = require('./src/config')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-
-const EMPTY_PLUGIN = {apply: () => ({})}
 
 function resolve(dir) {
     return path.join(__dirname, dir)
@@ -61,8 +58,7 @@ module.exports = {
                 threshold: 10 * 1024,               //对10K以上的数据进行压缩
                 minRatio: 0.8,
                 deleteOriginalAssets: false,        //是否删除源文件
-            }),
-            settings.isDev ? EMPTY_PLUGIN : new BundleAnalyzerPlugin()
+            })
         ]
     },
     chainWebpack(config) {
