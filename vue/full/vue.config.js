@@ -49,28 +49,20 @@ module.exports = {
                 '@': resolve('src'),
                 '@ele': resolve('element-ui-personal')
             }
-        },
-        plugins: [
-            new CompressionWebpackPlugin({
-                filename: '[path].gz[query]',
-                algorithm: 'gzip',
-                test: new RegExp('\\.(js|css)$'),  //匹配文件名
-                threshold: 10 * 1024,               //对10K以上的数据进行压缩
-                minRatio: 0.8,
-                deleteOriginalAssets: false,        //是否删除源文件
-            })
-        ]
+        }
     },
     chainWebpack(config) {
         config.plugins.delete('preload')
         config.plugins.delete('prefetch')
 
         // set svg-sprite-loader
-        config.module
+        config
+            .module
             .rule('svg')
             .exclude.add(resolve('src/asset/icon'))
             .end()
-        config.module
+        config
+            .module
             .rule('icons')
             .test(/\.svg$/)
             .include.add(resolve('src/asset/icon'))
@@ -80,20 +72,31 @@ module.exports = {
             .options({symbolId: 'icon-[name]'})
             .end()
 
-        //将css合并到一个文件中
-        //https://github.com/vuejs/vue-cli/issues/2843
         config.when(!settings.isDev, config => {
-            config.optimization.splitChunks({
-                cacheGroups: {
-                    styles: {
-                        name: 'styles',
-                        test: (m) => /css\/mini-extract/.test(m.type),
-                        chunks: 'all',
-                        minChunks: 1,
-                        enforce: true,
-                    },
-                }
-            })
+            //将css合并到一个文件中
+            //https://github.com/vuejs/vue-cli/issues/2843
+            config
+                .optimization
+                .removeEmptyChunks(true)
+                .splitChunks({
+                    cacheGroups: {
+                        style: {
+                            name: 'style',
+                            //type: 'css/mini-extract',
+                            test: (m) => /css\/mini-extract/.test(m.type),
+                            chunks: 'all'
+                        },
+                    }
+                })
+
+            //生成gz
+            config
+                .plugin('compression-webpack-plugin')
+                .use(CompressionWebpackPlugin, [{
+                    test: new RegExp('\\.(js|css)$'),  //匹配文件名
+                    threshold: 10 * 1024,               //对10K以上的数据进行压缩
+                }])
+                .end()
         })
     }
 }

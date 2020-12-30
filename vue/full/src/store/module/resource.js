@@ -1,4 +1,3 @@
-import path from 'path'
 import {route as routeConfig} from '@/config'
 import {appMutations} from "el-admin-layout"
 import {addDynamicRoutes} from '@/router'
@@ -7,6 +6,7 @@ import {str2routeConfig, metaExtend} from "@/router/util"
 import {getAll} from "@/api/system/resource"
 import {isEmpty, deepClone} from "@/util"
 import {needAuth, auth} from "@/util/auth" //此处存在循环引用？
+import {resolvePath} from "@/util/path"
 import {createTree, shakeTree} from "@/util/tree"
 import {isExternal} from "@/util/validate"
 
@@ -135,7 +135,7 @@ function getAuthorizedMenus(menus) {
     function addFullPath(routes, basePath = '/') {
         routes.forEach(route => {
             //外链保持原样
-            route.fullPath = isExternal(route.path) ? route.path : path.resolve(basePath, route.path)
+            route.fullPath = isExternal(route.path) ? route.path : resolvePath(basePath, route.path)
             route.children && addFullPath(route.children, route.fullPath)
         })
     }
@@ -193,7 +193,7 @@ function generateResourceMap(resources) {
             parents.push(parent.path)
             parent = parent.parent
         }
-        return path.resolve(...parents.reverse())
+        return resolvePath(...parents.reverse())
     }
 
     //填充结果表
