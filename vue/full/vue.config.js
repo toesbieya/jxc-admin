@@ -1,4 +1,3 @@
-'use strict'
 const path = require('path')
 const settings = require('./src/config')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
@@ -7,7 +6,6 @@ function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
-// All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
     publicPath: settings.contextPath,
     outputDir: 'dist',
@@ -82,12 +80,12 @@ module.exports = {
                     cacheGroups: {
                         style: {
                             name: 'style',
-                            //type: 'css/mini-extract',
-                            test: (m) => /css\/mini-extract/.test(m.type),
+                            type: 'css/mini-extract',
                             chunks: 'all'
                         },
                     }
                 })
+                .end()
 
             //生成gz
             config
