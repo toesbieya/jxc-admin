@@ -1,6 +1,6 @@
 <template>
     <el-drawer
-        :visible="appGetters.showSettingDrawer"
+        :visible="visible"
         :with-header="false"
         append-to-body
         size="288px"
@@ -9,51 +9,37 @@
         <div class="drawer-container">
             <el-divider>导航模式</el-divider>
             <div class="drawer-item">
-                <checkbox-group :value="appGetters.navMode" @input="changeNavMode">
+                <checkbox-group v-model="setting.app.navMode">
                     <img-checkbox
                         v-for="{label, value, img} in navModes"
                         :key="value"
                         :label="label"
-                        :value="value"
+                        v-model="value"
                         :img="img"
                     />
                 </checkbox-group>
             </div>
 
-            <el-divider>页面设置</el-divider>
+            <el-divider>导航栏设置</el-divider>
             <div class="drawer-item">
-                <span>分层结构</span>
+                <span>主题风格</span>
                 <el-select
-                    :value="pageGetters.position"
+                    v-model="setting.navbar.theme"
                     size="mini"
                     style="width: 80px"
-                    @input="changePagePosition"
                 >
-                    <el-option value="top-bottom" label="上下"/>
-                    <el-option value="left-right" label="左右"/>
+                    <el-option value="light" label="亮色"/>
+                    <el-option value="dark" label="暗色"/>
                 </el-select>
-            </div>
-            <div class="drawer-item">
-                <span>显示logo</span>
-                <el-switch :value="pageGetters.showLogo" @input="changePageShowLogo"/>
-            </div>
-            <div class="drawer-item">
-                <span>显示页头</span>
-                <el-switch :value="pageGetters.showPageHeader" @input="changePageShowHeader"/>
-            </div>
-            <div class="drawer-item">
-                <span>显示返回顶部按钮</span>
-                <el-switch :value="pageGetters.showBackToTop" @input="changePageBackToTop"/>
             </div>
 
             <el-divider>侧边栏设置</el-divider>
             <div class="drawer-item">
                 <span>主题风格</span>
                 <el-select
-                    :value="asideGetters.theme"
+                    v-model="setting.aside.theme"
                     size="mini"
                     style="width: 80px"
-                    @input="changeAsideTheme"
                 >
                     <el-option value="light" label="亮色"/>
                     <el-option value="dark" label="暗色"/>
@@ -62,10 +48,9 @@
             <div class="drawer-item">
                 <span>汉堡包位置</span>
                 <el-select
-                    :value="asideGetters.hamburgerPosition"
+                    v-model="setting.aside.hamburgerPosition"
                     size="mini"
                     style="width: 90px"
-                    @input="changeAsideHamburgerPosition"
                 >
                     <el-option value="aside" label="侧边栏"/>
                     <el-option value="head" label="导航栏"/>
@@ -73,83 +58,98 @@
             </div>
             <div class="drawer-item">
                 <span>手风琴效果</span>
-                <el-switch :value="asideGetters.uniqueOpen" @input="changeAsideUniqueOpen"/>
+                <el-switch v-model="setting.aside.uniqueOpen"/>
             </div>
             <div class="drawer-item">
                 <span>折叠</span>
-                <el-switch :value="asideGetters.collapse" @input="changeAsideCollapse"/>
+                <el-switch v-model="setting.aside.collapse"/>
             </div>
             <div class="drawer-item">
                 <span>折叠时显示上级</span>
-                <el-switch :value="asideGetters.showParentOnCollapse" @input="changeAsideCollapseParent"/>
+                <el-switch v-model="setting.aside.showParentOnCollapse"/>
             </div>
             <div class="drawer-item">
                 <span>自动隐藏</span>
-                <el-switch :value="asideGetters.autoHide" @input="changeAsideAutoHide"/>
+                <el-switch v-model="setting.aside.autoHide"/>
             </div>
             <div class="drawer-item">
                 <span>显示搜索框</span>
-                <el-switch :value="asideGetters.search" @input="changeAsideSearch"/>
+                <el-switch v-model="setting.aside.search"/>
             </div>
 
-            <el-divider>导航栏设置</el-divider>
+            <el-divider>页面设置</el-divider>
             <div class="drawer-item">
-                <span>主题风格</span>
+                <span>分层结构</span>
                 <el-select
-                    :value="navbarGetters.theme"
+                    v-model="setting.page.position"
                     size="mini"
                     style="width: 80px"
-                    @input="changeNavbarTheme"
                 >
-                    <el-option value="light" label="亮色"/>
-                    <el-option value="dark" label="暗色"/>
+                    <el-option value="top-bottom" label="上下"/>
+                    <el-option value="left-right" label="左右"/>
                 </el-select>
+            </div>
+            <div class="drawer-item">
+                <span>显示logo</span>
+                <el-switch v-model="setting.page.showLogo"/>
+            </div>
+            <div class="drawer-item">
+                <span>显示页头</span>
+                <el-switch v-model="setting.page.showHeader"/>
+            </div>
+            <div class="drawer-item">
+                <span>显示页脚</span>
+                <el-switch v-model="setting.page.showFooter"/>
+            </div>
+            <div class="drawer-item">
+                <span>显示返回顶部按钮</span>
+                <el-switch v-model="setting.page.showBackToTop"/>
             </div>
 
             <el-divider>多页签设置</el-divider>
             <div class="drawer-item">
                 <span>启用</span>
-                <el-switch :value="tagsViewGetters.enabled" @input="changeTagsViewEnabled"/>
+                <el-switch v-model="setting.tagsView.enabled"/>
+            </div>
+            <div class="drawer-item">
+                <span>启用缓存</span>
+                <el-switch v-model="setting.tagsView.enableCache"/>
             </div>
             <div class="drawer-item">
                 <span>启用快捷键切换</span>
-                <el-switch :value="tagsViewGetters.shortcut" @input="changeTagsViewShortcut"/>
+                <el-switch v-model="setting.tagsView.shortcut"/>
             </div>
             <div class="drawer-item">
                 <span>持久化</span>
-                <el-switch :value="tagsViewGetters.persistent" @input="changeTagsViewPersistent"/>
+                <el-switch v-model="setting.tagsView.persistent"/>
             </div>
         </div>
     </el-drawer>
 </template>
 
 <script>
+import tagsViewPersistentMixin from "./mixin/tagsViewPersistent"
+import tagsViewShortcutMixin from "./mixin/tagsViewShortcut"
 import CheckboxGroup from "./component/checkbox/Group"
 import ColorCheckbox from "./component/checkbox/ColorCheckbox"
 import ImgCheckbox from "./component/checkbox/ImgCheckbox"
-import {
-    appGetters,
-    appMutations,
-    asideGetters,
-    asideMutations,
-    navbarGetters,
-    navbarMutations,
-    pageGetters,
-    pageMutations,
-    tagsViewGetters,
-    tagsViewMutations
-} from "el-admin-layout"
+import {appMutations, asideMutations, navbarMutations, pageMutations, tagsViewMutations} from "el-admin-layout"
 import {mergeObj} from "@/util"
 import {getLocalPersonalSettings, setLocalPersonalSettings} from "@/util/storage"
 
 export default {
     name: "SettingDrawer",
 
+    mixins: [tagsViewPersistentMixin, tagsViewShortcutMixin],
+
     components: {CheckboxGroup, ColorCheckbox, ImgCheckbox},
 
     data() {
         return {
-            appGetters, asideGetters, navbarGetters, pageGetters, tagsViewGetters,
+            //外部传入的获取vue根实例的函数
+            getRoot: () => undefined,
+
+            visible: false,
 
             navModes: [
                 {
@@ -181,11 +181,12 @@ export default {
                 page: {
                     position: 'left-right',
                     showLogo: true,
-                    showPageHeader: true,
+                    showHeader: true,
+                    showFooter: true,
                     showBackToTop: true
                 },
                 aside: {
-                    theme: 'light',
+                    theme: 'dark',
                     hamburgerPosition: 'aside',
                     uniqueOpen: true,
                     collapse: false,
@@ -194,10 +195,11 @@ export default {
                     search: true
                 },
                 navbar: {
-                    theme: 'light'
+                    theme: 'dark'
                 },
                 tagsView: {
                     enabled: true,
+                    enableCache: true,
                     shortcut: true,
                     persistent: true
                 }
@@ -207,7 +209,22 @@ export default {
 
     methods: {
         close() {
-            appMutations.showSettingDrawer(false)
+            this.visible = false
+        },
+
+        getMutationsByType(type) {
+            switch (type) {
+                case 'app':
+                    return appMutations
+                case 'aside':
+                    return asideMutations
+                case 'navbar':
+                    return navbarMutations
+                case 'page':
+                    return pageMutations
+                case 'tagsView':
+                    return tagsViewMutations
+            }
         },
 
         //将此处的设置项数据同步到layout中的store
@@ -218,97 +235,42 @@ export default {
             Object.entries(page).forEach(([k, v]) => pageMutations[k](v))
             Object.entries(aside).forEach(([k, v]) => asideMutations[k](v))
             Object.entries(navbar).forEach(([k, v]) => navbarMutations[k](v))
-            Object.entries(tagsView).forEach(([k, v]) => tagsViewMutations[k](v))
-        },
-        //将layout中的store数据同步到此处的设置项
-        syncSettingDrawer() {
-            const {app, page, aside, navbar, tagsView} = this.setting
-
-            Object.keys(app).forEach(k => app[k] = appGetters[k])
-            Object.keys(page).forEach(k => page[k] = pageGetters[k])
-            Object.keys(aside).forEach(k => aside[k] = asideGetters[k])
-            Object.keys(navbar).forEach(k => navbar[k] = navbarGetters[k])
-            Object.keys(tagsView).forEach(k => tagsView[k] = tagsViewGetters[k])
-        },
-        //将此处的设置项保存到本地
-        saveSetting() {
-            this.syncSettingDrawer()
-            setLocalPersonalSettings(this.setting)
-        },
-
-        changeNavMode(v) {
-            appMutations.navMode(v)
-        },
-
-        changePagePosition(v) {
-            pageMutations.position(v)
-        },
-        changePageShowLogo(v) {
-            pageMutations.showLogo(v)
-        },
-        changePageShowHeader(v) {
-            pageMutations.showPageHeader(v)
-        },
-        changePageBackToTop(v) {
-            pageMutations.showBackToTop(v)
-        },
-
-        changeAsideTheme(v) {
-            asideMutations.theme(v)
-        },
-        changeAsideHamburgerPosition(v) {
-            asideMutations.hamburgerPosition(v)
-        },
-        changeAsideUniqueOpen(v) {
-            asideMutations.uniqueOpen(v)
-        },
-        changeAsideCollapse(v) {
-            asideMutations.collapse(v)
-        },
-        changeAsideCollapseParent(v) {
-            asideMutations.showParentOnCollapse(v)
-        },
-        changeAsideAutoHide(v) {
-            asideMutations.autoHide(v)
-        },
-        changeAsideSearch(v) {
-            asideMutations.search(v)
-        },
-
-        changeNavbarTheme(v) {
-            navbarMutations.theme(v)
-        },
-
-        changeTagsViewEnabled(v) {
-            tagsViewMutations.enabled(v)
-        },
-        changeTagsViewShortcut(v) {
-            tagsViewMutations.shortcut(v)
-        },
-        changeTagsViewPersistent(v) {
-            tagsViewMutations.persistent(v)
+            tagsViewMutations.enabled(tagsView.enabled)
+            tagsViewMutations.enableCache(tagsView.enableCache)
         }
     },
 
     created() {
-        //增强所有以change开头的方法
-        for (const [key, value] of Object.entries(this)) {
-            if (typeof value !== 'function' || !key.startsWith('change')) {
-                continue
-            }
-
-            this[key] = (...arg) => {
-                value.apply(this, arg)
-                this.saveSetting()
-            }
-        }
-
+        //将本地存储的数据合并到此处
         mergeObj(this.setting, getLocalPersonalSettings())
 
         //由于数据结构可能发生变化，所以在合并后覆盖本地数据
         setLocalPersonalSettings(this.setting)
 
         this.syncLayoutStore()
+
+        //监听设置数据的变化
+        const noop = () => undefined
+        Object.entries(this.setting).forEach(([type, v]) => {
+            const mutations = this.getMutationsByType(type)
+
+            Object.keys(v).forEach(key => {
+                const mutation = (() => {
+                    const fun = mutations[key]
+
+                    //像tagsView中就有两项是没有对应的修改方法的
+                    return fun ? newVal => fun(newVal) : noop
+                })()
+
+                this.$watch(
+                    `setting.${type}.${key}`,
+                    v => {
+                        mutation(v)
+                        setLocalPersonalSettings(this.setting)
+                    }
+                )
+            })
+        })
     }
 }
 </script>

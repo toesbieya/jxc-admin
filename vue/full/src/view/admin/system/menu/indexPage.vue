@@ -202,8 +202,7 @@ export default {
                     noAuth: false,
                     iframe: null,
                     usePathKey: false,
-                    useFullPathKey: false,
-                    commonModule: null
+                    useFullPathKey: false
                 },
                 metaStr: null,
                 admin: false,

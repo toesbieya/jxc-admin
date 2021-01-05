@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Element from 'element-ui'
 import ElementPersonal from '@ele'
-import '@/asset/style/index.scss'
-import App from '@/App'
-import store from '@/store'
-import router from '@/router'
-import '@/asset/icon'
-import '@/directive'
+import './asset/style/index.scss'
+import './asset/icon'
+import './directive'
+import App from './App'
+import store from './store'
+import router from './router'
 import filters from './filter'
-import globalMethod from '@/globalMethod'
+import globalMethod from './globalMethod'
 
 Vue.use(Element)
 Vue.use(ElementPersonal)

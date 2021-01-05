@@ -2,7 +2,7 @@
  * 路由控制工具类
  */
 import router from "@/router"
-import {refreshPage as refreshLayoutPage, closeCurrentPage as closeLayoutCurrentPage} from "el-admin-layout/src/util"
+import {refreshPage as refreshLayoutPage, closeCurrentPage as closeLayoutCurrentPage} from "el-admin-layout/src/helper"
 
 /**
  * 路由刷新

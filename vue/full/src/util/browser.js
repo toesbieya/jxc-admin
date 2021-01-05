@@ -1,4 +1,9 @@
-export {isMobile} from "el-admin-layout/src/util"
+import {Const} from "el-admin-layout"
+
+export function isMobile() {
+    const rect = document.body.getBoundingClientRect()
+    return rect.width <= Const.maxMobileWidth
+}
 
 /**
  * 获取元素的内宽（扣除左右padding后）

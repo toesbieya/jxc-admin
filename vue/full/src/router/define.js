@@ -1,5 +1,5 @@
+import {injectDefaultRoute} from 'el-admin-layout'
 import Layout from "@/layout"
-import Redirect from "@/view/_app/redirect"
 import Login from "@/view/_app/login/index"
 import Page403 from "@/view/_app/403"
 import Page404 from "@/view/_app/404"
@@ -13,16 +13,7 @@ export function getDynamicRoutes() {
 
 //系统自有路由
 export default [
-    {
-        path: '/redirect',
-        component: Layout,
-        children: [
-            {
-                path: '*',
-                component: Redirect
-            }
-        ]
-    },
+    ...injectDefaultRoute(Layout),
     {
         path: '/login',
         alias: '/register',

@@ -29,8 +29,7 @@ const router = {
                     }
                 },
                 activeMenu: '/purchase/order',
-                usePathKey: true,
-                commonModule: '@/view/admin/purchase/order/detail'
+                usePathKey: true
             }
         },
         {
@@ -58,8 +57,7 @@ const router = {
                     }
                 },
                 activeMenu: '/purchase/inbound',
-                usePathKey: true,
-                commonModule: '@/view/admin/purchase/inbound/detail'
+                usePathKey: true
             }
         }
     ]

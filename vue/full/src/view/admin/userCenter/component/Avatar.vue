@@ -1,5 +1,5 @@
 <template>
-    <abstract-dialog :loading="loading" title="上传头像" :value="value" width="50%" @close="clear">
+    <abstract-dialog :loading="loading" title="上传头像" :value="value" width="50%" @close="close">
         <div class="avatar-cropper cropper-bg">
             <div v-show="!img" class="avatar-cropper-bg cropper-bg" title="选择图片" @click="handleBgClick"/>
 
@@ -54,6 +54,10 @@ export default {
             !this.img && this.chooseImage()
         },
 
+        close() {
+            this.closeDialog()
+            this.clear()
+        },
         clear() {
             this.loading = false
             this.cropper && this.cropper.destroy()

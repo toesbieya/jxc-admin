@@ -29,8 +29,7 @@ const router = {
                     }
                 },
                 activeMenu: '/sell/order',
-                usePathKey: true,
-                commonModule: '@/view/admin/sell/order/detail'
+                usePathKey: true
             }
         },
         {
@@ -58,8 +57,7 @@ const router = {
                     }
                 },
                 activeMenu: '/sell/outbound',
-                usePathKey: true,
-                commonModule: '@/view/admin/sell/outbound/detail'
+                usePathKey: true
             }
         }
     ]

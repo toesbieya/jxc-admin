@@ -16,8 +16,7 @@ export default {
                     component: 'example/test/cache/detail',
                     meta: {
                         title: '详情页1',
-                        usePathKey: true,
-                        commonModule: '@/view/example/test/cache/detailPage'
+                        usePathKey: true
                     }
                 },
                 {
@@ -25,8 +24,7 @@ export default {
                     component: 'example/test/cache/detail',
                     meta: {
                         title: '详情页2',
-                        usePathKey: true,
-                        commonModule: '@/view/example/test/cache/detailPage'
+                        usePathKey: true
                     }
                 }
             ]

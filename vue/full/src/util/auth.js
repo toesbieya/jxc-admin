@@ -1,3 +1,4 @@
+import {Const} from 'el-admin-layout'
 import store from '@/store'
 import {uppercaseFirst} from "@/filter"
 import {isEmpty} from "@/util"
@@ -12,7 +13,7 @@ import {isEmpty} from "@/util"
 export function needAuth(route) {
     const {path, meta} = route
 
-    if (!meta || path.startsWith('/redirect')) return false
+    if (!meta || path.startsWith(Const.redirectPath)) return false
 
     if (isEmpty(meta.title) && isEmpty(meta.dynamicTitle)) return false
 
