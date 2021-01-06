@@ -1,4 +1,6 @@
 module.exports = {
+    base: '/jxc-admin/',
+
     title: 'jxc-admin',
 
     description: "jxc-admin后台管理系统文档",

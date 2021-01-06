@@ -4,4 +4,4 @@
 
 - [在线预览](https://toesbieya.cn)    test/123456 (出现被挤掉的情况时请注册一个新账号)
 
-- [文档](https://doc.toesbieya.cn)
+- [文档](https://doc.toesbieya.cn/jxc-admin)
