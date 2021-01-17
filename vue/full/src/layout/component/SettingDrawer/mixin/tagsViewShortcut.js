@@ -5,6 +5,7 @@
  */
 
 import {tagsViewGetters} from "el-admin-layout"
+import {getRouterKey} from "el-admin-layout/src/config/logic"
 
 export default {
     watch: {
@@ -27,7 +28,8 @@ export default {
             const views = tagsViewGetters.visitedViews
             if (views.length <= 1) return
 
-            let index = views.findIndex(view => view.path === root.$route.path)
+            const key = getRouterKey(root.$route)
+            let index = views.findIndex(view => view.key === key)
             if (index < 0) return
 
             //上一个页签
@@ -39,7 +41,7 @@ export default {
                 index = index > views.length - 2 ? 0 : index + 1
             }
 
-            return root.$router.push({path: views[index].path})
+            return root.$router.push(views[index])
         },
 
         //快捷键监听

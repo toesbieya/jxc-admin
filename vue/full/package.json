@@ -10,7 +10,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "decimal.js": "^10.2.1",
-    "el-admin-layout": "^0.3.0",
+    "el-admin-layout": "^0.4.0",
     "element-ui": "^2.14.1",
     "file-saver": "^2.0.5",
     "js-md5": "^0.7.3",
