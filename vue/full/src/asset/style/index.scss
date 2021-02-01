@@ -6,6 +6,7 @@
 //layout中的样式需要覆盖element-ui原定义，所以放element-ui的后面
 @import "~@/layout/style.scss";
 @import "./cover/element-ui.scss";
+@import "./cover/el-admin-layout.scss";
 @import "./nprogress.scss";
 
 html {

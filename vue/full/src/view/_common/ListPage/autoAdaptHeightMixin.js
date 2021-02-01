@@ -3,7 +3,6 @@
  * 监听el-table，动态设置max-height属性
  */
 
-import {debounce} from "@/util"
 import {findComponentByTag} from "@/util/vue"
 
 export default {
@@ -13,7 +12,6 @@ export default {
             tableMaxHeight: undefined,
             //上一次的maxHeight，解决resize时表格高度不正确
             lastTableMaxHeight: undefined,
-
             //表格距离卡片容器底部的理想距离
             expectedDistance: undefined
         }
@@ -41,9 +39,12 @@ export default {
                 this.calcExpectedDistance()
             }
 
-            const overHeight = containerDistance + this.expectedDistance - tableDistance
+            //期望的表格距离视窗底部的距离
+            const expectedTableDistance = containerDistance + this.expectedDistance
+            //超出期望的距离，必定是非负数
+            const overHeight = expectedTableDistance - tableDistance
 
-            //overHeight为0说明表格刚好在卡片容器内
+            //overHeight为0说明表格在卡片容器内
             if (overHeight === 0) {
                 this.tableMaxHeight = this.lastTableMaxHeight
             }
@@ -55,9 +56,6 @@ export default {
     },
 
     mounted() {
-        //resize必须异步，否则新版chrome(87.0.4280.88)会出问题
-        this.resize = debounce(this.resize, 0)
-
         this.resizeObserver = new ResizeObserver(this.resize)
         this.resizeObserver.observe(this.$el)
         const searchFormInstance = findComponentByTag(this, 'search-form')
@@ -65,8 +63,12 @@ export default {
             this.resizeObserver.observe(searchFormInstance.$el)
         }
 
+        //卸载resizeObserver
         this.$once('hook:beforeDestroy', () => {
-            this.resizeObserver && this.resizeObserver.disconnect()
+            if (this.resizeObserver) {
+                this.resizeObserver.disconnect()
+                this.resizeObserver = null
+            }
         })
     }
 }
