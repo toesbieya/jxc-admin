@@ -1,6 +1,7 @@
 const path = require('path')
 const settings = require('./src/config')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const isDev = process.env.NODE_ENV === 'development'
 
 function resolve(dir) {
     return path.join(__dirname, dir)
@@ -12,7 +13,7 @@ module.exports = {
     assetsDir: 'static',
     runtimeCompiler: true,
     lintOnSave: false,
-    productionSourceMap: settings.isDev,
+    productionSourceMap: isDev,
     transpileDependencies: ['el-admin-layout'],
     devServer: {
         port: process.env.port || 8079,
@@ -70,7 +71,7 @@ module.exports = {
             .options({symbolId: 'icon-[name]'})
             .end()
 
-        config.when(!settings.isDev, config => {
+        config.when(!isDev, config => {
             //将css合并到一个文件中
             //https://github.com/vuejs/vue-cli/issues/2843
             config
