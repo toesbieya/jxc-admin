@@ -1,12 +1,10 @@
 const bodeParser = require('body-parser')
 const {success} = require('./util')
-const {apiPrefix, useMock} = require('../src/config')
+const {apiPrefix} = require('../src/config')
 
 const routes = require('./controller')
 
 module.exports = app => {
-    if (!useMock) return
-
     app.use(bodeParser.json())
 
     routes.forEach(route => {

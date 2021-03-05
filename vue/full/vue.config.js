@@ -37,9 +37,7 @@ module.exports = {
                         }
                     }
                 },
-        before(app) {
-            require('./mock')(app)
-        }
+        before: settings.useMock ? app => require('./mock')(app) : undefined
     },
     configureWebpack: {
         name: settings.title,
