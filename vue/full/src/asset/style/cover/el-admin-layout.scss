@@ -2,3 +2,12 @@
 .page-main > .scroll-container {
     overflow: overlay;
 }
+
+//TODO 升级el-admin-layout至0.8.3可解决
+.right-out,
+.left-out {
+    &-leave-active,
+    &-enter-active {
+        position: inherit;
+    }
+}

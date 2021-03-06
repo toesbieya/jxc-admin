@@ -45,7 +45,7 @@ export default {
 
         const tags = getTagsView()
         Array.isArray(tags) && tags.forEach(({fullPath, meta}) => {
-            const {route} = this.getRoot().$router.resolve(fullPath)
+            const {route} = this.$router.resolve(fullPath)
             route && tagsViewMutations.addTagOnly({...route, meta: {...route.meta, ...meta}})
         })
     }

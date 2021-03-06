@@ -22,13 +22,10 @@ export default {
 
     methods: {
         gotoViewByDirection(direction) {
-            const root = this.getRoot()
-            if (!root) return
-
             const views = tagsViewGetters.visitedViews
             if (views.length <= 1) return
 
-            const key = getRouterKey(root.$route)
+            const key = getRouterKey(this.$route)
             let index = views.findIndex(view => view.key === key)
             if (index < 0) return
 
@@ -41,7 +38,7 @@ export default {
                 index = index > views.length - 2 ? 0 : index + 1
             }
 
-            return root.$router.push(views[index])
+            return this.$router.push(views[index])
         },
 
         //快捷键监听

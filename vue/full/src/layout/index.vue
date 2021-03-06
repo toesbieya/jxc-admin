@@ -1,13 +1,34 @@
 <template>
-    <el-admin-layout :navbar-props="navbarProps" :page-props="pageProps"/>
+    <div style="height: 100%">
+        <el-admin-layout>
+            <!--设置icon渲染-->
+            <template v-slot:aside-menu-icon="{menu}">
+                <v-icon :icon="menu.meta.icon" class="menu-icon"/>
+            </template>
+            <template v-slot:header-menu-icon="{menu}">
+                <v-icon :icon="menu.meta.icon" class="menu-icon"/>
+            </template>
+
+            <!--自定义顶栏右侧元素-->
+            <template v-slot:header-right="defaultContent">
+                <header-right :default="defaultContent"/>
+            </template>
+
+            <!--页脚-->
+            <template v-slot:page-footer>
+                <v-footer/>
+            </template>
+        </el-admin-layout>
+
+        <setting-drawer ref="setting-drawer"/>
+    </div>
 </template>
 
 <script type="text/jsx">
-import Vue from 'vue'
 import config from "@/config"
-import ElAdminLayout, {Const, appMutations} from 'el-admin-layout'
-import Footer from './component/Footer'
-import NotifyBell from './component/NotifyBell'
+import ElAdminLayout, {appMutations, headerMutations} from 'el-admin-layout'
+import HeaderRight from './component/HeaderRight'
+import VFooter from './component/Footer'
 import SettingDrawer from './component/SettingDrawer'
 import offlineMixin from './mixin/offline'
 import {elConfirm} from "@/util/message"
@@ -16,25 +37,22 @@ import {elConfirm} from "@/util/message"
 appMutations.title(config.title)
 appMutations.logo(config.logo)
 
-//设置图标渲染方式
-Const.iconRenderer = (h, icon) => <v-icon icon={icon}/>
-
 export default {
     name: "Layout",
 
     mixins: [offlineMixin],
 
-    components: {ElAdminLayout, NotifyBell, SettingDrawer},
+    components: {ElAdminLayout, HeaderRight, VFooter, SettingDrawer},
 
     data() {
         return {
             guideSteps: [
                 {
-                    element: '.setting-btn.navbar-item',
+                    element: '.setting-btn.header-item',
                     content: '这是个性设置按钮，可以根据自己喜好进行一些设置',
                 },
                 {
-                    element: '.navbar .el-dropdown.navbar-item',
+                    element: '.header .el-dropdown.header-item',
                     content: '这是用户中心',
                 },
                 {
@@ -48,48 +66,9 @@ export default {
         }
     },
 
-    computed: {
-        navbarProps() {
-            const userInfo = this.$store.state.user
-            return {
-                avatar: userInfo.avatar,
-                username: userInfo.name,
-                userDropdownItems: [
-                    {
-                        icon: 'el-icon-user',
-                        command: 'user-center',
-                        content: '用户中心',
-                        handler: this.toUserCenter
-                    },
-                    {
-                        icon: 'el-icon-guide',
-                        command: 'guide',
-                        content: '新手指引',
-                        hideOnMobile: true,
-                        handler: this.startGuide
-                    },
-                    {
-                        icon: 'el-icon-switch-button',
-                        command: 'logout',
-                        content: '退出登录',
-                        handler: this.logout
-                    }
-                ],
-                renderCustomActions: this.renderNavbarActions
-            }
-        },
-
-        pageProps() {
-            return {
-                renderFooter: () => <Footer/>
-            }
-        }
-    },
-
     methods: {
         toUserCenter() {
-            const path = '/user'
-            this.$route.path !== path && this.$router.push(path)
+            this.$router.push('/user', () => undefined)
         },
         startGuide() {
             this.$guide(this.guideSteps)
@@ -103,40 +82,48 @@ export default {
         },
 
         openSettingDrawer() {
-            this.$_settingDrawerInstance.visible = true
-        },
-
-        renderNavbarActions(defaultActions) {
-            const customActions = [
-                <notify-bell class="navbar-item"/>,
-                <div
-                    class="setting-btn navbar-item"
-                    title="个性设置"
-                    on-click={this.openSettingDrawer}
-                >
-                    <i class="el-icon-s-operation navbar-icon"/>
-                </div>
-            ]
-
-            return customActions.concat(defaultActions.map(f => f()))
+            this.$refs['setting-drawer'].visible = true
         }
     },
 
-    //提前创建设置抽屉，避免初始化同步设置数据时导致layout重新渲染
-    beforeCreate() {
-        const Drawer = Vue.extend(SettingDrawer)
-        const instance = new Drawer({data: {getRoot: () => this}}).$mount()
-        document.body.appendChild(instance.$el)
-        this.$_settingDrawerInstance = instance
-    },
-
-    //销毁时清除设置抽屉
-    beforeDestroy() {
-        if (this.$_settingDrawerInstance) {
-            this.$_settingDrawerInstance.$destroy()
-            this.$_settingDrawerInstance.$el.remove()
-            delete this.$_settingDrawerInstance
-        }
-    },
+    created() {
+        //设置顶栏的用户头像和用户名称
+        this.$watch(
+            () => {
+                const userInfo = this.$store.state.user
+                return {
+                    avatar: userInfo.avatar,
+                    username: userInfo.name
+                }
+            },
+            ({avatar, username}) => {
+                headerMutations.avatar(avatar)
+                headerMutations.username(username)
+            },
+            {immediate: true}
+        )
+        //设置顶栏的下拉菜单项
+        headerMutations.dropdownItems([
+            {
+                icon: 'el-icon-user',
+                command: 'user-center',
+                content: '用户中心',
+                handler: this.toUserCenter
+            },
+            {
+                icon: 'el-icon-guide',
+                command: 'guide',
+                content: '新手指引',
+                hideOnMobile: true,
+                handler: this.startGuide
+            },
+            {
+                icon: 'el-icon-switch-button',
+                command: 'logout',
+                content: '退出登录',
+                handler: this.logout
+            }
+        ])
+    }
 }
 </script>

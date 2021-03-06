@@ -1,6 +1,6 @@
 <template>
     <el-badge :hidden="hidden" class="notify-bell-badge" is-dot title="消息提醒" @click.native="jump">
-        <i class="el-icon-bell navbar-icon"/>
+        <i class="el-icon-bell header-icon"/>
     </el-badge>
 </template>
 
