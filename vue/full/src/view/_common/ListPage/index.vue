@@ -61,7 +61,7 @@ export default {
         table.scopedSlots.default = $scopedSlots.tableColumn
 
         return (
-            <el-card v-loading={pageLoading} class="max-view-height">
+            <el-card v-loading={pageLoading}>
                 {this.renderSearchForm(search, $scopedSlots.searchForm)}
                 {this.renderButtons(buttons)}
                 {this.renderTableAndPagination({loading: dataLoading, table, pagination})}

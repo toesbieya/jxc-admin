@@ -3,71 +3,84 @@
  * 监听el-table，动态设置max-height属性
  */
 
-import {findComponentByTag} from "@/util/vue"
-
 export default {
+    props: {
+        //容器距离视窗底部的理想距离，默认是页面margin+页脚高度
+        bottomDistance: {type: Number, default: 24 + 64}
+    },
+
     data() {
         return {
             //el-table的max-height属性
-            tableMaxHeight: undefined,
-            //上一次的maxHeight，解决resize时表格高度不正确
-            lastTableMaxHeight: undefined,
-            //表格距离卡片容器底部的理想距离
-            expectedDistance: undefined
+            tableMaxHeight: undefined
         }
     },
 
     methods: {
-        //设置表格距离卡片容器底部的理想距离（分页高度 + el-card的1px边距 + el-card padding）
-        calcExpectedDistance() {
-            const paginationHeight = this.$el.querySelector('.table-container > .el-pagination') ? 50 : 0
-            this.expectedDistance = paginationHeight + 1 + 20
+        //位于表格底部与容器底部之间元素的高度，目前只考虑分页
+        getExtraHeight() {
+            //el-card的1px边距 + el-card padding
+            const extra = 1 + 20
+            const pagination = this.$el.querySelector('.el-pagination')
+
+            return pagination ? extra + pagination.offsetHeight : extra
         },
 
         resize() {
+            //被keep-alive缓存后，由activated -> deactivated时，_inactive为true
+            //此时一般是路由向另一个页面切换，不进行后续操作
+            if (this._inactive === true) return
+
+            if (this.thisResizeIsTriggeredByLast()) {
+                return this.removeTriggerMark()
+            }
+
             const clientHeight = window.innerHeight
 
-            //计算卡片容器底部距离视窗底部的距离
-            const containerRect = this.$el.getBoundingClientRect()
-            const containerDistance = clientHeight - containerRect.top - containerRect.height
+            const rect = this.$el.querySelector('.el-table').getBoundingClientRect()
 
-            //计算表格底部距离视窗底部的距离
-            const tableRect = this.$refs.table.$el.getBoundingClientRect()
-            const tableDistance = clientHeight - tableRect.top - tableRect.height
+            //表格顶部距离视窗底部的距离
+            const top = clientHeight - rect.top
 
-            if (this.expectedDistance === undefined) {
-                this.calcExpectedDistance()
+            //期望的表格底部距离视窗底部的距离
+            const expected = this.bottomDistance + this.getExtraHeight()
+
+            //当前表格理论上的最大高度，不一定会应用
+            const newVal = top - expected
+            const oldVal = this.tableMaxHeight
+
+            //表格最大高度并未超出期望
+            if (oldVal === undefined && newVal >= rect.height) {
+                return
             }
 
-            //期望的表格距离视窗底部的距离
-            const expectedTableDistance = containerDistance + this.expectedDistance
-            //超出期望的距离，必定是非负数
-            const overHeight = expectedTableDistance - tableDistance
-
-            //overHeight为0说明表格在卡片容器内
-            if (overHeight === 0) {
-                this.tableMaxHeight = this.lastTableMaxHeight
-            }
-            else {
-                this.lastTableMaxHeight = this.tableMaxHeight
-                this.tableMaxHeight = tableRect.height - overHeight
+            if (oldVal !== newVal) {
+                this.willTriggeredNextResize()
+                this.tableMaxHeight = newVal
             }
         },
+
+        thisResizeIsTriggeredByLast() {
+            return this.$_hasResize === true
+        },
+        willTriggeredNextResize() {
+            this.$_hasResize = true
+        },
+        removeTriggerMark() {
+            this.$_hasResize = false
+        }
     },
 
     mounted() {
-        this.resizeObserver = new ResizeObserver(this.resize)
-        this.resizeObserver.observe(this.$el)
-        const searchFormInstance = findComponentByTag(this, 'search-form')
-        if (searchFormInstance) {
-            this.resizeObserver.observe(searchFormInstance.$el)
-        }
+        //为了用户体验，不使用防抖
+        this.$_resizeObserver = new ResizeObserver(this.resize)
+        this.$_resizeObserver.observe(this.$el)
 
         //卸载resizeObserver
         this.$once('hook:beforeDestroy', () => {
-            if (this.resizeObserver) {
-                this.resizeObserver.disconnect()
-                this.resizeObserver = null
+            if (this.$_resizeObserver) {
+                this.$_resizeObserver.disconnect()
+                this.$_resizeObserver = null
             }
         })
     }
