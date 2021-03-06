@@ -1,8 +1,7 @@
 import {Const} from "el-admin-layout"
 
 export function isMobile() {
-    const rect = document.body.getBoundingClientRect()
-    return rect.width <= Const.maxMobileWidth
+    return document.body.clientWidth <= Const.maxMobileWidth
 }
 
 /**
