@@ -2,6 +2,8 @@
 
 这是在[vue-element-admin](https://github.com/PanJiaChen/vue-element-admin) 的基础上改造而来的。
 
+布局使用的是[el-admin-layout](https://github.com/toesbieya/el-admin-layout)
+
 分为需要配合后端使用的full版（vue/full）和精简版（vue/template），以下说明均以full版为准。
 
 ## 功能
@@ -14,14 +16,6 @@
   - 仿极验滑动验证
 
 - 动态路由、动态菜单
-
-- 布局
-  - 异步路由组件loading骨架屏
-  - 多种导航模式
-  - 仿ant design响应式的顶部菜单
-  - 无限级递归菜单
-  - 多页签（支持详情页缓存）
-  - 支持移动端
 
 - Excel导出，支持多级表头、合并行
 
@@ -46,7 +40,7 @@
 │   ├── directive              # 全局指令
 │   ├── filter                 # 自定义过滤器集合
 │   ├── globalMethod           # 全局方法，已挂载到Vue原型上，使用this.$xx调用
-│   ├── layout                 # 布局文件夹，包含了导航栏、侧边栏、多页签、全局页脚
+│   ├── layout                 # 布局
 │   ├── mixin                  # 公用混入
 │   ├── plugin                 # 一些插件，均使用import()来动态引入
 │   ├── router
