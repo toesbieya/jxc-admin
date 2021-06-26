@@ -48,7 +48,7 @@
  * 详情见iview-admin
  * https://admin.iviewui.com/component/org_tree_page
  */
-import ContextMenu from "el-admin-layout/src/component/TagsView/ContextMenu"
+import ContextMenu from "el-admin-layout/src/component/ContextMenu"
 import EditDialog from "./component/EditDialog"
 import OrgTreeView from "./component/OrgTreeView"
 import ZoomControl from './component/ZoomControl'
