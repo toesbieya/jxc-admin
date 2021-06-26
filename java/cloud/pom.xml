@@ -30,7 +30,7 @@
         <mybatis-plus.version>3.3.2</mybatis-plus.version>
         <pagehelper.version>1.2.12</pagehelper.version>
         <socketio.version>1.7.18</socketio.version>
-        <guava.version>28.1-jre</guava.version>
+        <guava.version>29.0-jre</guava.version>
         <fastjson.version>1.2.60</fastjson.version>
         <qiniu.version>[7.2.0, 7.2.99]</qiniu.version>
         <easyexcel.version>2.2.5</easyexcel.version>
