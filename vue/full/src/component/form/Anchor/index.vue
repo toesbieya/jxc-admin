@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import {debounce} from "@/util"
-import {getScroll, getTopDistance, scrollTo} from "@/util/browser"
+import {debounce} from '@/util'
+import {getScroll, getTopDistance, scrollTo} from '@/util/browser'
 
 export default {
-    name: "FormAnchor",
+    name: 'FormAnchor',
 
     props: {
         reference: Function,
@@ -34,7 +34,7 @@ export default {
         //指定滚动的容器
         getContainer: {
             type: Function,
-            default: () => document.querySelector('#app .page-main>.scroll-container')
+            default: () => document.querySelector('#app .page-main>.page-content')
         },
     },
 
