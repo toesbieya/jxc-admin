@@ -8,7 +8,7 @@
     "svgo": "svgo -f src/asset/icon/svg"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "decimal.js": "^10.2.1",
     "el-admin-layout": "^0.9.4",
     "element-ui": "^2.15.6",
