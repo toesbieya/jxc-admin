@@ -7,8 +7,6 @@ import TotalProfitGoods from "./component/TotalProfitGoods"
 export default {
     name: 'index',
 
-    functional: true,
-
     render() {
         return (
             <div>

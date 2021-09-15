@@ -1,5 +1,8 @@
 //路由表：默认页面
 
+/**
+ * @type {import('vue-router').RouteConfig[]}
+ */
 const router = [
     {
         path: 'index',
