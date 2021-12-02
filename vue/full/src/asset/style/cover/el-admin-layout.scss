@@ -1,4 +1,0 @@
-//如果使用auto的话，滚动条会占据容器宽度，这样<list-page/>的自适应高度比较麻烦，所以偷个懒
-.page-main > .page-content {
-    overflow: overlay;
-}

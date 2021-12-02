@@ -8,7 +8,7 @@
 
 <script>
 import PanelGroupItem from './PanelGroupItem'
-import cssVar from '@/asset/style/var.scss'
+import cssVar from '@/style/var.scss'
 import {getFourBlock} from '@/api/statistic'
 import {isEmpty} from "@/util"
 import {auth} from "@/util/auth"

@@ -7,24 +7,35 @@ function resolve(dir) {
     return path.join(__dirname, dir)
 }
 
+/**
+ * @type {import('@vue/cli-service').UserConfig}
+ */
 module.exports = {
     publicPath: settings.contextPath,
     outputDir: 'dist',
     assetsDir: 'static',
     runtimeCompiler: true,
     lintOnSave: false,
-    productionSourceMap: isDev,
+    productionSourceMap: false,
     transpileDependencies: ['el-admin-layout'],
-    devServer: {
-        port: process.env.port || 8079,
-        contentBasePublicPath: settings.contextPath,
-        open: true,
-        overlay: {
-            warnings: true,
-            errors: true
+    configureWebpack: {
+        name: settings.title,
+        resolve: {
+            alias: {
+                '@': resolve('src'),
+                '@ele': resolve('element-ui-personal')
+            }
         },
-        proxy:
-            settings.useMock
+        devServer: {
+            port: process.env.port || 8079,
+            client: {
+                overlay: {
+                    warnings: true,
+                    errors: true
+                },
+            },
+            proxy:
+              settings.useMock
                 ? null
                 : {
                     [settings.apiPrefix]: {
@@ -37,14 +48,10 @@ module.exports = {
                         }
                     }
                 },
-        before: settings.useMock ? app => require('./mock')(app) : undefined
-    },
-    configureWebpack: {
-        name: settings.title,
-        resolve: {
-            alias: {
-                '@': resolve('src'),
-                '@ele': resolve('element-ui-personal')
+            onBeforeSetupMiddleware(devServer) {
+                if (settings.useMock) {
+                    require('./mock')(devServer.app)
+                }
             }
         }
     },

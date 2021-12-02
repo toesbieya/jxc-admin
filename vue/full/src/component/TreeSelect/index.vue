@@ -201,7 +201,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/var";
+@import "~@/style/var";
 
 .tree-select-container {
     padding: 8px;

@@ -122,8 +122,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/mixin.scss";
-@import "~@/asset/style/var";
+@import "~@/style/mixin.scss";
+@import "~@/style/var";
 
 .form-anchor {
     position: fixed;

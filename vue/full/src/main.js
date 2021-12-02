@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Element from 'element-ui'
 import ElementPersonal from '@ele'
-import './asset/style/index.scss'
+import './style/index.scss'
 import './asset/icon'
 import './directive'
 import App from './App'

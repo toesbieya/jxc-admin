@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/asset/style/var";
+@import "~@/style/var";
 
 .user-card {
     .avatar-container {

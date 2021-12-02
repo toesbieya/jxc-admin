@@ -1,5 +1,5 @@
 <script type="text/jsx">
-import cssVar from '@/asset/style/var.scss'
+import cssVar from '@/style/var.scss'
 import LoadingMask from './LoadingMask'
 
 export default {

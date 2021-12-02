@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/asset/style/var";
+@import "~@/style/var";
 
 .q-skeleton + .q-skeleton {
     margin-top: 20px;
