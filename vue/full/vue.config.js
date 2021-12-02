@@ -18,6 +18,21 @@ module.exports = {
     lintOnSave: false,
     productionSourceMap: false,
     transpileDependencies: ['el-admin-layout'],
+    css: {
+        loaderOptions: {
+            css: {
+                modules: {
+                    auto: /var.scss$/
+                }
+            },
+            sass: {
+                // https://github.com/sass/dart-sass/issues/1388#issuecomment-916125648
+                sassOptions: {
+                    outputStyle: 'expanded'
+                }
+            }
+        }
+    },
     configureWebpack: {
         name: settings.title,
         resolve: {
