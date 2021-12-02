@@ -104,7 +104,7 @@ function getAuthorizedMenus(menus) {
     //删除不显示的菜单(没有children且没有meta.title)
     function clean(menus) {
         for (let i = menus.length - 1; i >= 0; i--) {
-            const {children = [], meta: {title, alwaysShow, hidden} = {}} = menus[i]
+            const {children = [], meta: {title, hidden} = {}} = menus[i]
 
             if (hidden) {
                 menus.splice(i, 1)
@@ -120,7 +120,7 @@ function getAuthorizedMenus(menus) {
 
             clean(children)
 
-            if (children.length === 0 && !alwaysShow) {
+            if (children.length === 0) {
                 menus.splice(i, 1)
             }
 

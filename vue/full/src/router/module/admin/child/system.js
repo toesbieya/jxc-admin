@@ -2,7 +2,7 @@
 
 const router = {
     path: 'system',
-    meta: {title: '系统管理', icon: 'svg-system', alwaysShow: true},
+    meta: {title: '系统管理', icon: 'svg-system'},
     children: [
         {
             path: 'department',

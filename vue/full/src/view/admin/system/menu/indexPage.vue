@@ -193,7 +193,6 @@ export default {
                     title: null,
                     dynamicTitle: null,
                     hidden: false,
-                    alwaysShow: false,
                     sort: null,
                     icon: null,
                     affix: false,

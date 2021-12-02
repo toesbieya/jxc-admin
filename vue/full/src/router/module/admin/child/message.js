@@ -2,7 +2,7 @@
 
 const router = {
     path: 'message',
-    meta: {title: '消息中心', icon: 'svg-message', alwaysShow: true},
+    meta: {title: '消息中心', icon: 'svg-message'},
     children: [
         {
             path: 'manage',

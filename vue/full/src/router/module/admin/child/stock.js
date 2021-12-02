@@ -2,7 +2,7 @@
 
 const router = {
     path: 'stock',
-    meta: {title: '库存管理', icon: 'svg-stock', alwaysShow: true},
+    meta: {title: '库存管理', icon: 'svg-stock'},
     children: [
         {
             path: 'current',
