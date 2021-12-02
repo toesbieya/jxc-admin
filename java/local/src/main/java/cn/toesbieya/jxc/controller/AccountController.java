@@ -30,7 +30,7 @@ public class AccountController {
 
     @GetMapping("logout")
     public R logout(HttpServletRequest request) {
-        UserVo user = SessionUtil.get();
+        UserVo user = SessionUtil.get(request);
         return service.logout(user, IpUtil.getIp(request));
     }
 
