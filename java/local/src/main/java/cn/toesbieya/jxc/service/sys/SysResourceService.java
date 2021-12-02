@@ -138,8 +138,8 @@ public class SysResourceService {
             }
         }
         //2.非数据接口的节点，其父节点必须为聚合菜单
-        else if (!parentType.equals(ResourceTypeEnum.FOLDER.getCode())) {
-            return "菜单只能以聚合菜单为父节点";
+        else if (!parentType.equals(ResourceTypeEnum.ROOT.getCode()) && !parentType.equals(ResourceTypeEnum.FOLDER.getCode())) {
+            return "菜单只能以聚合菜单或顶部菜单为父节点";
         }
         return null;
     }
