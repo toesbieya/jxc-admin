@@ -108,7 +108,7 @@ export default {
             this.parentObj = parent
             this.type = 'edit'
             mergeObj(this.form, current)
-            this.hasChildren = current.children.length > 0
+            this.hasChildren = Array.isArray(current.children) && current.children.length > 0
         },
 
         confirm() {

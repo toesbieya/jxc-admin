@@ -32,13 +32,6 @@
             </div>
         </div>
 
-        <context-menu
-            v-model="contextmenu.show"
-            :items="contextMenuItems"
-            :left="contextmenu.left"
-            :top="contextmenu.top"
-        />
-
         <edit-dialog v-model="editDialog" :data="currentNode" :type="type" @success="search"/>
     </el-card>
 </template>
@@ -48,7 +41,8 @@
  * 详情见iview-admin
  * https://admin.iviewui.com/component/org_tree_page
  */
-import ContextMenu from "el-admin-layout/src/component/ContextMenu"
+
+import { useContextMenu } from 'el-admin-layout'
 import EditDialog from "./component/EditDialog"
 import OrgTreeView from "./component/OrgTreeView"
 import ZoomControl from './component/ZoomControl'
@@ -60,7 +54,7 @@ import {createTreeByWorker} from "@/util/tree"
 export default {
     name: "departmentManagement",
 
-    components: {ContextMenu, EditDialog, OrgTreeView, ZoomControl},
+    components: {EditDialog, OrgTreeView, ZoomControl},
 
     data() {
         return {
@@ -70,12 +64,7 @@ export default {
             horizontal: false,
             currentNode: null,
             type: 'add',
-            editDialog: false,
-            contextmenu: {
-                show: false,
-                left: 0,
-                top: 0
-            }
+            editDialog: false
         }
     },
 
@@ -110,9 +99,14 @@ export default {
         openMenu(e, obj) {
             e.preventDefault()
             this.currentNode = obj
-            this.contextmenu.left = e.clientX  + 15
-            this.contextmenu.top = e.clientY
-            this.contextmenu.show = true
+
+            // 销毁之前的右键菜单实例
+            this.$contextmenu && this.$contextmenu()
+
+            this.$contextmenu = useContextMenu(this.contextMenuItems, {
+                left: e.clientX + 15,
+                top: e.clientY
+            })
         },
 
         //滚轮缩放

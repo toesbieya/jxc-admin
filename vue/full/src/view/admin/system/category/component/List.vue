@@ -3,18 +3,11 @@
         <el-scrollbar>
             <category-tree ref="tree" @node-click="see" @node-contextmenu="openContextMenu"/>
         </el-scrollbar>
-
-        <context-menu
-            v-model="contextmenu.show"
-            :items="contextMenuItems"
-            :left="contextmenu.left"
-            :top="contextmenu.top"
-        />
     </el-card>
 </template>
 
 <script>
-import ContextMenu from "el-admin-layout/src/component/ContextMenu"
+import { useContextMenu } from 'el-admin-layout'
 import CategoryTree from '@/component/biz/CategoryTree'
 import {add, del, getAll} from "@/api/system/category"
 import {isEmpty, waitUntilSuccess} from '@/util'
@@ -22,7 +15,7 @@ import {auth} from "@/util/auth"
 import {elConfirm, elError, elSuccess} from "@/util/message"
 
 export default {
-    components: {ContextMenu, CategoryTree},
+    components: {CategoryTree},
 
     props: ['form'],
 
@@ -60,7 +53,6 @@ export default {
         get() {
             this.loading = true
             this.currentCategory = null
-            this.contextmenu.show = false
             getAll
                 .request()
                 .then(({data}) => this.$store.commit('dataCache/categories', data))
@@ -102,6 +94,9 @@ export default {
         openContextMenu(e, obj, node) {
             e.preventDefault()
 
+            // 销毁之前的右键菜单实例
+            this.$contextmenu && this.$contextmenu()
+
             this.currentCategory = obj ? {
                 ...obj,
                 level: node.level,
@@ -110,9 +105,10 @@ export default {
 
             this.$refs.tree.$refs.tree.setCurrentKey(obj ? obj.id : null)
 
-            this.contextmenu.left = e.clientX + 15
-            this.contextmenu.top = e.clientY
-            this.contextmenu.show = true
+            this.$contextmenu = useContextMenu(this.contextMenuItems, {
+                left: e.clientX + 15,
+                top: e.clientY
+            })
         }
     },
 

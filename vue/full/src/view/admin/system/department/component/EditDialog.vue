@@ -64,6 +64,8 @@ export default {
             switch (this.type) {
                 case 'add':
                     return '添加部门'
+                case 'see':
+                    return `查看部门【${this.data.name}】`
                 case 'edit':
                     return `编辑部门【${this.data.name}】`
             }

@@ -8,9 +8,9 @@
     "svgo": "svgo -f src/asset/icon/svg"
   },
   "dependencies": {
-    "axios": "0.21.4",
+    "axios": "^0.25.0",
     "decimal.js": "^10.3.1",
-    "el-admin-layout": "^0.9.5",
+    "el-admin-layout": "^0.9.8",
     "element-ui": "^2.15.7",
     "file-saver": "^2.0.5",
     "js-md5": "0.7.3",
@@ -19,17 +19,17 @@
     "socket.io-client": "2.3.1",
     "vue": "^2.6.14",
     "vue-count-to": "^1.0.13",
-    "vue-router": "^3.5.3",
-    "vuex": "^3.6.2"
+    "vue-router": "^3.0.0",
+    "vuex": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^5.0.0-rc.1",
-    "@vue/cli-service": "^5.0.0-rc.1",
-    "compression-webpack-plugin": "^9.0.1",
-    "sass": "^1.44.0",
-    "sass-loader": "^12.3.0",
+    "@vue/cli-plugin-babel": "^5.0.0-rc.2",
+    "@vue/cli-service": "^5.0.0-rc.2",
+    "compression-webpack-plugin": "^9.2.0",
+    "sass": "^1.49.7",
+    "sass-loader": "^12.4.0",
     "svg-sprite-loader": "^6.0.11",
-    "svgo": "^1.3.2",
+    "svgo": "^2.8.0",
     "vue-template-compiler": "^2.6.14"
   },
   "browserslist": [
