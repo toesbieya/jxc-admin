@@ -5,3 +5,5 @@
 - [在线预览](https://toesbieya.cn/jxc-admin)    test/123456 (出现被挤掉的情况时请注册一个新账号)
 
 - [文档](https://doc.toesbieya.cn/jxc-admin)
+
+**服务器维护，暂时不可访问，有兴趣的可以自行clone本地运行**
