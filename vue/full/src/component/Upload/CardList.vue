@@ -158,7 +158,7 @@ export default {
                 return this.$emit('exceed')
             }
 
-            files.forEach(this.upload)
+            Array.from(files).forEach(this.upload)
         },
         //点击预览按钮
         handlePreview(file) {
