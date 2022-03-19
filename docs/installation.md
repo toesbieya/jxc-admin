@@ -5,10 +5,10 @@
 - jdk 1.8
 - mysql 8
 - redis 3.2+
-- node
+- node 16+
 - npm
-- kkFileView 2.2.0（非必须，只是用来文件预览）
-- nacos 1.3.1-BETA（如果是local版则不需要，[下载地址](https://github.com/alibaba/nacos/releases)）
+- kkFileView 4.0.0（非必须，只是用来文件预览），[下载地址](https://github.com/kekingcn/kkFileView/releases)
+- nacos 1.3.1-BETA（如果是local版则不需要），[下载地址](https://github.com/alibaba/nacos/releases)
 
 ::: warning 注意
 后端开发时ide需要安装lombok插件
