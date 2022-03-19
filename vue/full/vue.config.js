@@ -1,6 +1,5 @@
 const path = require('path')
 const { defineConfig } = require('@vue/cli-service')
-const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const settings = require('./src/config')
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -105,15 +104,6 @@ module.exports = defineConfig({
             }
           }
         })
-        .end()
-
-      //生成gz
-      config
-        .plugin('compression-webpack-plugin')
-        .use(CompressionWebpackPlugin, [{
-          test: new RegExp('\\.(js|css)$'),  //匹配文件名
-          threshold: 10 * 1024               //对10K以上的数据进行压缩
-        }])
         .end()
     })
   }

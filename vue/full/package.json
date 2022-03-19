@@ -13,6 +13,7 @@
     "el-admin-layout": "^0.9.8",
     "element-ui": "^2.15.7",
     "file-saver": "^2.0.5",
+    "js-base64": "^3.7.2",
     "js-md5": "0.7.3",
     "nprogress": "^0.2.0",
     "pako": "1.0.11",
@@ -23,9 +24,8 @@
     "vuex": "^3.0.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^5.0.0-rc.2",
-    "@vue/cli-service": "^5.0.0-rc.2",
-    "compression-webpack-plugin": "^9.2.0",
+    "@vue/cli-plugin-babel": "^5.0.3",
+    "@vue/cli-service": "^5.0.3",
     "sass": "^1.49.7",
     "sass-loader": "^12.4.0",
     "svg-sprite-loader": "^6.0.11",

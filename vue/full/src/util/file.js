@@ -1,4 +1,5 @@
 import {saveAs} from 'file-saver'
+import {encode} from 'js-base64'
 import request from "@/api/request"
 import {getToken} from "@/api/file"
 import {file as fileConfig} from '@/config'
@@ -20,12 +21,11 @@ const defaultOptions = {
 export function preview(url) {
     if (isTxt(url)) return window.open(url)
 
-    const connectChar = url.includes('?') ? '&' : '?'
-    url = url + connectChar + 'fullfilename=' + url.replace(fileConfig.storePrefix, '')
+    url = encodeURIComponent(encode(url))
 
     const anchor = document.createElement('a')
     anchor.style.display = 'none'
-    anchor.href = `${fileConfig.previewPrefix}/onlinePreview?url=${encodeURIComponent(url)}`
+    anchor.href = `${fileConfig.previewPrefix}/onlinePreview?url=${url}`
     anchor.target = '_blank'
     document.body.appendChild(anchor)
     anchor.click()
