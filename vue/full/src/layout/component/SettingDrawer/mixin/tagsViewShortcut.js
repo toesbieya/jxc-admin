@@ -5,7 +5,7 @@
  */
 
 import {tagsViewGetters} from "el-admin-layout"
-import {getRouterKey} from "el-admin-layout/dist/esm/config/logic"
+import {getRouterKey} from "el-admin-layout/src/config/logic"
 
 export default {
     watch: {

@@ -1,4 +1,5 @@
 const path = require('path')
+const sass = require('sass')
 const { defineConfig } = require('@vue/cli-service')
 const settings = require('./src/config')
 const isDev = process.env.NODE_ENV === 'development'
@@ -25,7 +26,8 @@ module.exports = defineConfig({
       sass: {
         // https://github.com/sass/dart-sass/issues/1388#issuecomment-916125648
         sassOptions: {
-          outputStyle: 'expanded'
+          outputStyle: 'expanded',
+          logger: sass.Logger.silent
         }
       }
     }
