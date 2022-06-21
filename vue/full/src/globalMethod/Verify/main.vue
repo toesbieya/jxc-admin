@@ -220,9 +220,10 @@ export default {
 
         initImage() {
             const imageListTemp = [
-                "https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=4018557288,1217151095&fm=26&gp=0.jpg",
-                "https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3252521864,872614242&fm=26&gp=0.jpg",
-                "https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg"
+                "https://static.toesbieya.cn/static/lock1.png",
+                "https://static.toesbieya.cn/static/lock2.png",
+                "https://static.toesbieya.cn/static/lock3.png",
+                "https://static.toesbieya.cn/static/lock4.png"
             ]
             this.image.loading = true
             let imgRandomIndex = Math.round(Math.random() * (imageListTemp.length - 1))
