@@ -48,25 +48,16 @@ module.exports = defineConfig({
           errors: true
         }
       },
-      proxy:
-        settings.useMock
-          ? null
-          : {
-            [settings.apiPrefix]: {
-              target: 'http://localhost:8081',
-              ws: true,
-              secure: false,
-              changeOrigin: true,
-              pathRewrite: {
-                [`^${settings.apiPrefix}`]: ''
-              }
-            }
-          },
-      setupMiddlewares(middlewares, devServer) {
-        if (settings.useMock) {
-          require('./mock')(devServer.app)
+      proxy: {
+        [settings.apiPrefix]: {
+          target: 'http://localhost:8081',
+          ws: true,
+          secure: false,
+          changeOrigin: true,
+          pathRewrite: {
+            [`^${settings.apiPrefix}`]: ''
+          }
         }
-        return middlewares
       }
     }
   },

@@ -133,7 +133,7 @@ export default {
     methods: {
         afterInit() {
             if (this.type !== 'edit') return Promise.resolve()
-            return getParentSubById.request(this.form.pid).then(data => this.parentSubList = data)
+            return getParentSubById.request(this.form.pid).then(({ data }) => this.parentSubList = data)
         },
         selectParent(id, sub) {
             this.parentSubList = sub

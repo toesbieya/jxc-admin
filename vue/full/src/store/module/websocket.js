@@ -1,6 +1,6 @@
 import {MessageBox} from "element-ui"
 import {isEmpty} from "@/util"
-import {useMock, socketUrl} from '@/config'
+import {socketUrl} from '@/config'
 import SocketIO from 'socket.io-client'
 import {createMutations} from "@/store/util"
 
@@ -16,7 +16,7 @@ const actions = {
     init(context) {
         const {id, token} = context.rootState.user
 
-        if (useMock || isEmpty(id, token)) return
+        if (isEmpty(id, token)) return
 
         websocket = initSocket({id, token})
 

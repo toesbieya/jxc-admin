@@ -13,10 +13,6 @@ module.exports = {
     //全局axios的baseUrl、devServer的路由前缀
     apiPrefix: '/api',
 
-    //是否在开发时使用mock，为true时不会启动websocket和代理
-    //为true时需要自行安装body-parser（npm i body-parser -D）
-    useMock: false,
-
     //socket连接地址
     socketUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:12580' : 'https://toesbieya.cn',
 
